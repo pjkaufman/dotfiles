@@ -2,6 +2,7 @@ alias c="clear && clear"
 alias update="sudo apt update -y && sudo apt upgrade -y && sudo flatpak update -y"
 alias gh="history | grep"
 alias hibernate="sudo systemctl hibernate"
+alias python="python3"
 # allows for easy running of obsidian via terminal
 alias obsidian="flatpak run md.obsidian.Obsidian &"
 # allows for easy running of brave via terminal

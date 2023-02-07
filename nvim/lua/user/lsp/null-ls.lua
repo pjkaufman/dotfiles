@@ -19,6 +19,11 @@ null_ls.setup {
     formatting.black.with { extra_args = { "--fast" } },
     formatting.stylua,
     formatting.google_java_format,
+    formatting.eslint,
+    formatting.codespell,
+    formatting.gofmt,
+    formatting.goimports,
+    formatting.protolint.with {extra_args = { "--fix" } },
     diagnostics.flake8,
   },
 }

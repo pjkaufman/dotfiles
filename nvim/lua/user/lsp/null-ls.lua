@@ -23,7 +23,11 @@ null_ls.setup {
     formatting.codespell,
     formatting.gofmt,
     formatting.goimports,
-    formatting.protolint.with {extra_args = { "--fix" } },
+    formatting.protolint.with { extra_args = { "--fix" } },
     diagnostics.flake8,
+    diagnostics.eslint,
+    diagnostics.codespell,
+    diagnostics.golangci_lint,
   },
+  update_in_insert = true,
 }

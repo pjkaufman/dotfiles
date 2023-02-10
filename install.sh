@@ -11,9 +11,9 @@ install_apt_package() {
     
     if [ -z $2 ]
     then
-      sudo apt install $2
-    else
-      sudo apt install $1
+      sudo apt install -y $2
+    else 
+      sudo apt install -y $1
     fi
   else
     echo "$1 is already installed"
@@ -47,12 +47,14 @@ add_ppa_and_install_package() {
     echo "adding $1 PPA and installing $2"
 
     sudo add-apt-repository ppa:$1
-    sudo apt update && sudo apt install $2
+    sudo apt update && sudo apt install -y $2
   else
     echo "$1 PPA already added"
   fi
 }
 
+# pip_install_package installs pip packages if it is not currently installed
+# $1 is the name of the pip package to install if it is not currently present
 pip_install_package() {
 
   if ! command -v $1 &> /dev/null
@@ -62,7 +64,46 @@ pip_install_package() {
   else
     echo "$1 is already installed"
   fi
+}
 
+# go_install_package installs a go package if it is not currently installed
+# $1 is the full installation value for go install to use 
+# $2 is the short name of the package to use in output for the script and the actual command name
+go_install_package() {
+
+  if ! command -v $2 &> /dev/null
+  then
+    echo "installing $2"
+    go install $1@latest 
+  else
+    echo "$2 is already installed"
+  fi
+}
+
+# npm_install_package installs an npm package if it is not currently installed
+# $1 is the npm package to install globally
+npm_install_package() {
+
+  if ! command -v $1 &> /dev/null
+  then
+    echo "installing $1"
+    npm install -g $1 
+  else
+    echo "$1 is already installed"
+  fi
+}
+
+# cargo_install_package installs a cargo package if it is not currently installed
+# $1 is the name of the cargo package to install
+cargo_install_package() {
+
+  if ! command -v $1 &> /dev/null
+  then
+    echo "installing $1"
+    cargo install $1 
+  else
+    echo "$1 is already installed"
+  fi
 }
 
 # handle_flatpak_installations determines whether or not to install the flatpaks
@@ -142,8 +183,9 @@ install_apt_package "curl"
 install_apt_package "btop" # task manager equivalent
 install_apt_package "python3"
 install_apt_package "pip3" "python3-pip"
+install_apt_package "cargo"
 
-if $is_work_computer
+if ! $is_work_computer
 then
   install_apt_package "imgp" # image compression
   install_apt_package "pandoc" # document conversion
@@ -151,11 +193,17 @@ then
   install_apt_package "kitty" # terminal
 fi
 
+# cargo packages
+
+setup_header_text "cargo packages:"
+
+cargo_install_package "topgrade"
+
 # PPA additions
 
 setup_header_text "PPA additions"
 
-if $is_work_computer
+if ! $is_work_computer
 then 
   add_ppa_and_install_package "syncthing/stable" "syncthing"
 fi
@@ -170,11 +218,29 @@ handle_flatpak_installations $is_work_computer
 
 # TODO: special package managers like nvm and gvm
 
+setup_header_text "gvm and nvm install:"
+
+if ! command -v gvm &> /dev/null
+then
+  echo "installing gvm"
+  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+else
+  echo "gvm is already installed"
+fi
+
+if [ -z ${NVM_DIR} ]
+then
+  echo "installing nvm"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+else
+  echo "nvm is already installed"
+fi
+
 # i3 setup
 
 setup_header_text "i3 setup:"
 
-if $is_work_computer
+if ! $is_work_computer
 then 
   install_apt_package "i3"
   install_apt_package "scrot" # screenshots
@@ -188,6 +254,30 @@ then
 else
   echo "skipping i3 setup"
 fi
+
+# neovim setup
+
+setup_header_text "Neovim setup:"
+
+# null-ls lsp formatters and diagnostics 
+pip_install_package "codespell"
+pip_install_package "black"
+pip_install_package "flake8"
+
+if $is_work_computer
+then
+  go_install_package "github.com/yoheimuta/protolint/cmd/protolint" "protolint"
+  go_install_package "golang.org/x/tools/cmd/goimports " "golangci-lint"
+fi
+
+go_install_package "golang.org/x/tools/cmd/gofmt" "gofmt"
+go_install_package "golang.org/x/tools/cmd/goimports" "goimports"
+
+npm_install_package "eslint"
+
+cargo_install_package "stylua"
+
+# TODO: handle google_java_format install
 
 # TODO: move scripts to bin
 

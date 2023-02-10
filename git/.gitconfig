@@ -1,10 +1,17 @@
 [push]
-        default = current
+  default = current
+; This is placed here to make sure that we can call out to cargo packages since it does
+; not allow use of ssh for authentication so we just make sure it does not get converted
+; to ssh in the first place
+[url "https://github.com/rust-lang/crates.io-index"]
+  insteadOf = https://github.com/rust-lang/crates.io-index
+[url "https://github.com"]
+  insteadOf = https://github.com/rust-lang/crates.io-index
 [url "git@github.com:"]
-        insteadOf = https://github.com/
+  insteadOf = https://github.com/
 [alias]
-        pullall = "!f(){ git pull \"\" && git submodule update --init --recursive; };"
-        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  pullall = "!f(){ git pull \"\" && git submodule update --init --recursive; };"
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [user]
 	name = Peter Kaufman
-	email = PeterJamesKaufman@gmail.com
+  email = PeterJamesKaufman@gmail.com

@@ -13,4 +13,5 @@ alias gnucash="flatpak run org.gnucash.GnuCash &"
 alias minecraft="flatpak run com.mojang.Minecraft &"
 # allows for easy running of Only Office via terminal
 alias office="flatpak run org.onlyoffice.desktopeditors &"
-
+# allows for easy running of Sigil via terminal
+alias sigil="flatpak run com.sigil_ebook.Sigil &"

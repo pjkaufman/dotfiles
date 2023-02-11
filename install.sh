@@ -127,18 +127,19 @@ ensure_file_symlink_is_in_place() {
 ensure_folder_symlink_is_in_place() {
   if [ -L $2 ] ; then
     if [ -d $2 ] ; then
-      echo "'$2' is already symlinked"
+      echo "'$2' is already symlinked, please check that it is the correct symlink"
+      return
     else
       echo "'$2' is a broken symlink"
+      ln -s "$1" "$2"
     fi
   elif [ -d $2 ] ; then
     echo "'$2' exists, but is not symlinked (implementation needed)"
-    exit
+    return
   else
     echo "'$2' does not exist"
+      ln -s "$1" "$2"
   fi
-  
-  ln -sf "$1" "$2"  
 }
 
 setup_header_text() {

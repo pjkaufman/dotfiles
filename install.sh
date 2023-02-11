@@ -2,21 +2,28 @@
 
 # helper functions
 
-# install_apt_package installs an apt package if it does not already exist
-install_apt_package() {
-
+# check_if_command_exists_and_run_install_command_otherwise if a command does not exist, it runs the install command provided
+# $1 is the command to verify exists 
+# $2 is the command to install the 
+check_if_command_exists_and_run_install_command_otherwise() {
   if ! command -v $1 &> /dev/null
   then
     echo "installing $1"
-    
-    if [ -z $2 ]
-    then
-      sudo apt install -y $2
-    else 
-      sudo apt install -y $1
-    fi
+    eval " $2" 
   else
     echo "$1 is already installed"
+  fi
+}
+
+# install_apt_package installs an apt package if it does not already exist
+# $1 is the name of the command to verify exists 
+# $2 is the actual name of the package to install for the command if the name is different from the command
+install_apt_package() {
+  if [ -z $2 ]
+  then
+    check_if_command_exists_and_run_install_command_otherwise $1 "sudo apt install -y $1"
+  else
+    check_if_command_exists_and_run_install_command_otherwise $1 "sudo apt install -y $2"
   fi
 }
 
@@ -25,7 +32,6 @@ install_apt_package() {
 # $1 is the name of the flatpak to install
 # $2 is the actual package name to install (i.e. the one with all of the periods in it)
 install_flatpak_package() {
-
   grep_output=`flatpak list | grep $2`
   if [ -z grep_output ]
   then
@@ -40,7 +46,6 @@ install_flatpak_package() {
 # $1 is the name of the package with a slash and the type of stability of the PPA (i.e. syncthing/stable)
 # $2 is the name of the package to install once the PPA has been added
 add_ppa_and_install_package() {
-
   grep_output=`apt-cache policy| grep $1`
   if [ -z grep_output ]
   then
@@ -56,61 +61,32 @@ add_ppa_and_install_package() {
 # pip_install_package installs pip packages if it is not currently installed
 # $1 is the name of the pip package to install if it is not currently present
 pip_install_package() {
-
-  if ! command -v $1 &> /dev/null
-  then
-    echo "installing $1"
-    pip3 install --user $1  
-  else
-    echo "$1 is already installed"
-  fi
+  check_if_command_exists_and_run_install_command_otherwise $1 "pip3 install --user $1"  
 }
 
 # go_install_package installs a go package if it is not currently installed
 # $1 is the full installation value for go install to use 
 # $2 is the short name of the package to use in output for the script and the actual command name
 go_install_package() {
-
-  if ! command -v $2 &> /dev/null
-  then
-    echo "installing $2"
-    go install $1@latest 
-  else
-    echo "$2 is already installed"
-  fi
+  check_if_command_exists_and_run_install_command_otherwise $2 "go install $1@latest" 
 }
 
 # npm_install_package installs an npm package if it is not currently installed
 # $1 is the npm package to install globally
 npm_install_package() {
-
-  if ! command -v $1 &> /dev/null
-  then
-    echo "installing $1"
-    npm install -g $1 
-  else
-    echo "$1 is already installed"
-  fi
+  check_if_command_exists_and_run_install_command_otherwise $1 "npm install -g $1" 
 }
 
 # cargo_install_package installs a cargo package if it is not currently installed
 # $1 is the name of the cargo package to install
 cargo_install_package() {
-
-  if ! command -v $1 &> /dev/null
-  then
-    echo "installing $1"
-    cargo install $1 
-  else
-    echo "$1 is already installed"
-  fi
+  check_if_command_exists_and_run_install_command_otherwise $1 "cargo install $1" 
 }
 
 # handle_flatpak_installations determines whether or not to install the flatpaks
 # and installs any that are missing
 # $1 is whether or not the computer is a work computer
 handle_flatpak_installations() {
-
   if $1
   then
     if ! command -v flatpak &> /dev/null
@@ -128,6 +104,41 @@ handle_flatpak_installations() {
   else
     echo "Skipping flatpak installation"
   fi
+}
+
+ensure_file_symlink_is_in_place() {
+  if [ -L $2 ] ; then
+    if [ -e $2 ] ; then
+      echo "'$2' is already symlinked"
+    else
+      echo "'$2' is a broken symlink"
+    fi
+  elif [ -e $2 ] ; then
+    echo "'$2' exists, but is not symlinked"
+    mv "$2" "$2.bak"
+  else
+    echo "'$2' does not exist"
+  fi
+  
+  ln -sf "$1" "$2"  
+}
+
+
+ensure_folder_symlink_is_in_place() {
+  if [ -L $2 ] ; then
+    if [ -d $2 ] ; then
+      echo "'$2' is already symlinked"
+    else
+      echo "'$2' is a broken symlink"
+    fi
+  elif [ -d $2 ] ; then
+    echo "'$2' exists, but is not symlinked (implementation needed)"
+    exit
+  else
+    echo "'$2' does not exist"
+  fi
+  
+  ln -sf "$1" "$2"  
 }
 
 setup_header_text() {
@@ -216,18 +227,14 @@ setup_header_text "Flatpak packages:"
 
 handle_flatpak_installations $is_work_computer
 
-# TODO: special package managers like nvm and gvm
+# special package managers like nvm and gvm
 
 setup_header_text "gvm and nvm install:"
 
-if ! command -v gvm &> /dev/null
-then
-  echo "installing gvm"
-  bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-else
-  echo "gvm is already installed"
-fi
+check_if_command_exists_and_run_install_command_otherwise "gvm" "bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)"
 
+# nvm is special and loads its command via autocompletion and checking the created variable
+# is more reliable than checking if the method exists
 if [ -z ${NVM_DIR} ]
 then
   echo "installing nvm"
@@ -270,7 +277,7 @@ then
   go_install_package "golang.org/x/tools/cmd/goimports " "golangci-lint"
 fi
 
-go_install_package "golang.org/x/tools/cmd/gofmt" "gofmt"
+# go_install_package "golang.org/x/tools/cmd/gofmt" "gofmt" # is a part of go
 go_install_package "golang.org/x/tools/cmd/goimports" "goimports"
 
 npm_install_package "eslint"
@@ -279,10 +286,21 @@ cargo_install_package "stylua"
 
 # TODO: handle google_java_format install
 
-# TODO: move scripts to bin
+# setup config symlinks
 
-# TODO: setup config symlinks
+setup_header_text "Symlink setup:"
+
+ensure_folder_symlink_is_in_place "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
+ensure_file_symlink_is_in_place "$HOME/dotfiles/git/.gitconfig" "$HOME/.gitconfig"
+ensure_file_symlink_is_in_place "$HOME/dotfiles/.bash_aliases" "$HOME/.bash_aliases"
+
+if ! $is_work_computer
+then
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/scripts/compress-epub.sh" "$HOME/bin/compressepub"
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/scripts/start-tmux.sh" "$HOME/bin/starttmux"
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"
+fi
 
 echo ""
 echo "environment setup complete"
-

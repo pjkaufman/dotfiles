@@ -203,6 +203,7 @@ then
   install_apt_package "pandoc" # document conversion
   install_apt_package "flameshot" # screenshots
   install_apt_package "kitty" # terminal
+  install_apt_package "evince" # pdf editor and viewer
 fi
 
 # cargo packages
@@ -244,6 +245,8 @@ then
 else
   echo "nvm is already installed"
 fi
+
+# TODO: add logic for wkhtml to pdf
 
 # i3 setup
 

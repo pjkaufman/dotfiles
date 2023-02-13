@@ -210,6 +210,7 @@ fi
 setup_header_text "cargo packages:"
 
 cargo_install_package "topgrade"
+cargo_install_package "cargo-update"
 
 # PPA additions
 
@@ -294,6 +295,7 @@ setup_header_text "Symlink setup:"
 ensure_folder_symlink_is_in_place "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
 ensure_file_symlink_is_in_place "$HOME/dotfiles/git/.gitconfig" "$HOME/.gitconfig"
 ensure_file_symlink_is_in_place "$HOME/dotfiles/.bash_aliases" "$HOME/.bash_aliases"
+ensure_file_symlink_is_in_place "$HOME/dotfiles/topgrade.toml" "$HOME/.config/topgrade.toml"
 
 if ! $is_work_computer
 then

@@ -275,6 +275,7 @@ setup_header_text "Neovim setup:"
 pip_install_package "codespell"
 pip_install_package "black"
 pip_install_package "flake8"
+pip_install_package "beautysh"
 
 if $is_work_computer
 then

@@ -44,3 +44,5 @@ golangci
 npm
 autocompletion
 pdf
+enum
+params

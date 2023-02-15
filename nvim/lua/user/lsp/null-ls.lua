@@ -23,7 +23,16 @@ local sources = {
 	formatting.gofmt,
 	formatting.goimports,
 	formatting.protolint.with({ extra_args = { "--fix" } }),
-	-- diagnostics
+  formatting.beautysh.with({
+        extra_args = function(params)
+          return params.options
+            and {
+              "-i",
+              vim.opt.tabstop,
+            }
+        end,
+      }),
+  -- diagnostics
 	diagnostics.flake8,
 	diagnostics.eslint.with({
 		method = null_ls.methods.DIAGNOSTICS_ON_SAVE,

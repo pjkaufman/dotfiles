@@ -7,10 +7,10 @@ function gh() {
 }
 
 function python() {
-  python3 "$@"
+  command python3 "$@"
 }
 
-function topgrade() {
+function update() {
   topgrade
 }
 

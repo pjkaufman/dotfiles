@@ -47,3 +47,16 @@ pdf
 enum
 params
 struct
+linter
+timestamp
+yaml
+unescape
+param
+frontmatter
+boolean
+whitespace
+enum
+UI
+enums
+html
+multicursor

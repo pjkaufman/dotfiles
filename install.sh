@@ -106,6 +106,15 @@ handle_flatpak_installations() {
   fi
 }
 
+# prepend_text_to_file takes the specified text and adds it to the start of the file specified
+# $1 is the text to add to the start of the file
+# $2 is the path for the file to put the text at the start of
+prepend_text_to_file() {
+  echo "$1" > /tmp/tmpfile.$$
+  cat "$2" >> /tmp/tmpfile.$$
+  mv /tmp/tmpfile.$$ "$2"
+}
+
 ensure_file_symlink_is_in_place() {
   if [ -L $2 ] ; then
     if [ -e $2 ] ; then
@@ -166,10 +175,12 @@ then
   if [ response_char = "y" ]
   then
     is_work_computer=false
-    echo 'export COMPUTER_TYPE=personal' >> ~/.bashrc 
+    # echo 'export COMPUTER_TYPE=personal' >> ~/.bashrc
+    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.bashrc
   else
     is_work_computer=true
-    echo 'export COMPUTER_TYPE=work' >> ~/.bashrc 
+    # echo 'export COMPUTER_TYPE=work' >> ~/.bashrc 
+    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.bashrc
   fi
 
   echo "Please make sure to run source your profile after the install."
@@ -303,8 +314,6 @@ ensure_file_symlink_is_in_place "$HOME/dotfiles/topgrade.toml" "$HOME/.config/to
 
 if ! $is_work_computer
 then
-  ensure_file_symlink_is_in_place "$HOME/dotfiles/scripts/compress-epub.sh" "$HOME/bin/compressepub"
-  ensure_file_symlink_is_in_place "$HOME/dotfiles/scripts/start-tmux.sh" "$HOME/bin/starttmux"
   ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty.conf" "$HOME/.config/kitty/kitty.conf"
   ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"
 fi

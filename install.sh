@@ -259,6 +259,8 @@ fi
 
 # TODO: add logic for wkhtml to pdf
 
+# TODO: add logic around ssh agent for github
+
 # i3 setup
 
 setup_header_text "i3 setup:"

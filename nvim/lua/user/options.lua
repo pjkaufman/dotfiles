@@ -42,3 +42,4 @@ vim.opt.formatoptions:remove({ "c", "r", "o" }) -- This is a sequence of letters
 vim.opt.linebreak = true
 vim.opt.spelllang = "en_us,es"                  -- Sets the language to English and Spanish for spell check languages
 vim.opt.spell = true
+vim.opt.spelloptions = "camel"

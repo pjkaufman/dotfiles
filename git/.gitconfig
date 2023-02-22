@@ -13,5 +13,9 @@
   pullall = "!f(){ git pull \"\" && git submodule update --init --recursive; };"
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 [user]
-	name = Peter Kaufman
+  name = Peter Kaufman
   email = PeterJamesKaufman@gmail.com
+[advice]
+  skippedCherryPicks = false
+[core]
+  editor = nvim

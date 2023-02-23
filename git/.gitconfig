@@ -21,4 +21,8 @@
 [core]
   editor = nvim
 [pull]
-	rebase = true
+  rebase = true
+[init]
+  defaultBranch = master
+[submodule]
+  recurse = true

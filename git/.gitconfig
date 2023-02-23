@@ -20,3 +20,5 @@
   skippedCherryPicks = false
 [core]
   editor = nvim
+[pull]
+	rebase = true

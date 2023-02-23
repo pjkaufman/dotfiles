@@ -1,5 +1,6 @@
 [push]
   default = current
+	autoSetupRemote = true
 ; This is placed here to make sure that we can call out to cargo packages since it does
 ; not allow use of ssh for authentication so we just make sure it does not get converted
 ; to ssh in the first place

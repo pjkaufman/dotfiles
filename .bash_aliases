@@ -31,7 +31,7 @@ function tls() {
 if [ ${COMPUTER_TYPE} = "personal" ]
 then
   function hibernate() {
-    sudo systemctl hibernate && echo "hello"
+    sudo systemctl hibernate
   }
 
   # allows for easy running of obsidian via terminal

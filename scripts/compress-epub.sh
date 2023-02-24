@@ -1,3 +1,4 @@
+#!/bin/bash
 echo 'running compression for each epub in dir'
 
 shopt -s nocaseglob # ignore file name case
@@ -46,4 +47,3 @@ echo 'before:'
 find . -type f -name '*.original' -exec du -ch {} + | grep total$ 
 
 echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
-

@@ -87,7 +87,7 @@ cargo_install_package() {
 # and installs any that are missing
 # $1 is whether or not the computer is a work computer
 handle_flatpak_installations() {
-  if $1
+  if ! $1
   then
     if ! command -v flatpak &> /dev/null
     then

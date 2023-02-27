@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Moving around
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+# git
+alias gu='git undo'

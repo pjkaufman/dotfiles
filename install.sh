@@ -197,31 +197,28 @@ fi
 
 setup_header_text "apt packages:"
 
-install_apt_package "git"
-install_apt_package "tmux"
-install_apt_package "grep"
-install_apt_package "curl"
-install_apt_package "btop" # task manager equivalent
-install_apt_package "python3"
-install_apt_package "pip3" "python3-pip"
-install_apt_package "cargo"
+declare -A apt_packages_to_install=( ["git"]="git" ["tmux"]="tmux" ["grep"]="grep" ["curl"]="curl" ["btop"]="btop" ["python3"]="python3" ["pip3"]="python3-pip" ["rename"]="rename" ["cargo"]="cargo")
+for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 
 if ! $is_work_computer
 then
-  install_apt_package "imgp" # image compression
-  install_apt_package "pandoc" # document conversion
-  install_apt_package "flameshot" # screenshots
-  install_apt_package "kitty" # terminal
-  install_apt_package "evince" # pdf editor and viewer
-  install_apt_package "rename" # regex rename files
+  personal_apt_packages_to_install=("imgp" "pandoc" "flameshot" "kitty" "evince")
+  for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done
+  # install_apt_package "imgp" # image compression
+  # install_apt_package "pandoc" # document conversion
+  # install_apt_package "flameshot" # screenshots
+  # install_apt_package "kitty" # terminal
+  # install_apt_package "evince" # pdf editor and viewer
 fi
 
 # cargo packages
 
 setup_header_text "cargo packages:"
 
-cargo_install_package "topgrade"
-cargo_install_package "cargo-update"
+cargo_packages_to_install=("topgrade" "cargo-update")
+for pkg in "${cargo_packages_to_install[@]}"; do cargo_install_package "$pkg"; done
+# cargo_install_package "topgrade"
+# cargo_install_package "cargo-update"
 
 # PPA additions
 
@@ -292,7 +289,7 @@ pip_install_package "beautysh"
 if $is_work_computer
 then
   go_install_package "github.com/yoheimuta/protolint/cmd/protolint" "protolint"
-  go_install_package "golang.org/x/tools/cmd/goimports " "golangci-lint"
+  go_install_package "golang.org/x/tools/cmd/goimports" "golangci-lint"
 fi
 
 # go_install_package "golang.org/x/tools/cmd/gofmt" "gofmt" # is a part of go
@@ -311,13 +308,25 @@ cargo_install_package "stylua"
 setup_header_text "Symlink setup:"
 
 ensure_folder_symlink_is_in_place "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
-ensure_file_symlink_is_in_place "$HOME/dotfiles/git/.gitconfig" "$HOME/.gitconfig"
-ensure_file_symlink_is_in_place "$HOME/dotfiles/.bash_aliases" "$HOME/.bash_aliases"
-ensure_file_symlink_is_in_place "$HOME/dotfiles/topgrade.toml" "$HOME/.config/topgrade.toml"
+
+
+declare -A file_symlink_info=( 
+  ["$HOME/dotfiles/git/.gitconfig"]="$HOME/.gitconfig" 
+  ["$HOME/dotfiles/bash/.bash_profile"]="$HOME/.bash_profile" 
+  ["$HOME/dotfiles/bash/.exports"]="$HOME/.exports" 
+  ["$HOME/dotfiles/bash/.functions"]="$HOME/.functions"
+  ["$HOME/dotfiles/bash/.path"]="$HOME/.path"
+  ["$HOME/dotfiles/bash/.hushlogin"]="$HOME/.hushlogin"
+  ["$HOME/dotfiles/bash/aliases"]="$HOME/.bash_aliases"
+  ["$HOME/dotfiles/topgrade/topgrade.toml"]="$HOME/.config/topgrade.toml"
+)
+for file in "${!file_symlink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${file_symlink_info[$file]}"; done
+
 
 if ! $is_work_computer
 then
-  ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/bash/.functions_personal" "$HOME/.functions_personal"
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
   ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"
 fi
 

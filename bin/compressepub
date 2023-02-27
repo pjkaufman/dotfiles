@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo 'running compression for each epub in dir'
 
 shopt -s nocaseglob # ignore file name case

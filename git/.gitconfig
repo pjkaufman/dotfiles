@@ -1,6 +1,6 @@
 [push]
   default = current
-	autoSetupRemote = true
+  autoSetupRemote = true
 ; This is placed here to make sure that we can call out to cargo packages since it does
 ; not allow use of ssh for authentication so we just make sure it does not get converted
 ; to ssh in the first place
@@ -13,6 +13,7 @@
 [alias]
   pullall = "!f(){ git pull \"\" && git submodule update --init --recursive; };"
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  undo = reset --soft HEAD~1
 [user]
   name = Peter Kaufman
   email = PeterJamesKaufman@gmail.com

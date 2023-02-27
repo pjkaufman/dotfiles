@@ -1,7 +1,13 @@
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
-# * ~/.extra_exports can be used for other settings you don’t want to commit.
-for file in ~/.{extra_exports,functions,path,exports}; do
+# * ~/.local_exports can be used for other settings you don’t want to commit.
+for file in ~/.{local_exports,functions,functions_personal,path,bash_aliases,exports}; do
   [ -r "$file" ] && [ -f "$file" ] && . "$file";
 done;
 unset file;
@@ -13,6 +19,10 @@ if [ -n "$BASH_VERSION" ]; then
 	  . "$HOME/.bashrc"
   fi
 fi
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
 
 # Case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob;
@@ -39,8 +49,8 @@ if [ -d "$HOME/.nvm" ] ; then
   nvm use 16.0
 fi
 
-# ~/.extra can be used for other settings you don’t want to commit.
-[ -r "$HOME/.extra" ] && [ -f "$HOME/.extra" ] && . "$HOME/.extra";
+# ~/.localrc can be used for other settings you don’t want to commit.
+[ -r "$HOME/.localrc" ] && [ -f "$HOME/.localrc" ] && . "$HOME/.localrc";
 
 # clear the terminal after the setup is over
 c

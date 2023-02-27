@@ -175,12 +175,10 @@ then
   if [ response_char = "y" ]
   then
     is_work_computer=false
-    # echo 'export COMPUTER_TYPE=personal' >> ~/.bashrc
-    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.bashrc
+    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.extra
   else
     is_work_computer=true
-    # echo 'export COMPUTER_TYPE=work' >> ~/.bashrc 
-    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.bashrc
+    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.extra
   fi
 
   echo "Please make sure to run source your profile after the install."
@@ -215,6 +213,7 @@ then
   install_apt_package "flameshot" # screenshots
   install_apt_package "kitty" # terminal
   install_apt_package "evince" # pdf editor and viewer
+  install_apt_package "rename" # regex rename files
 fi
 
 # cargo packages
@@ -306,6 +305,8 @@ cargo_install_package "stylua"
 # TODO: handle google_java_format install
 
 # setup config symlinks
+
+# TODO: swap over to using stow and use the files in the bash folder removing any other files 
 
 setup_header_text "Symlink setup:"
 

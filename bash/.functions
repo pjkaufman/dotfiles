@@ -5,6 +5,10 @@ prepend-path() {
   [ -d $1 ] && PATH="$1:$PATH"
 }
 
+reload() {
+  [ -d "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
+}
+
 function c() {
   clear && clear
 }

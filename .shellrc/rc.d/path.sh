@@ -5,10 +5,11 @@ prepend-path "/usr/bin"
 prepend-path "/usr/local/bin"
 prepend-path "$HOME/bin"
 prepend-path "$HOME/.local/bin"
-prepend-path "/usr/local/go/bin"
+# prepend-path "/usr/local/go/bin"
 prepend-path "$HOME/.cargo/bin"
 prepend-path "/sbin"
 prepend-path "/usr/sbin"
+prepend-path "$GOROOT/bin"
 
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755

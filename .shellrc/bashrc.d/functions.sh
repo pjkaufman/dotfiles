@@ -9,31 +9,18 @@ reload() {
   [ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile"
 }
 
-function c() {
+c() {
   clear && clear
 }
 
-function gh() {
+gh() {
   history | grep "$@"
 }
 
-function python() {
+python() {
   command python3 "$@"
 }
 
-function update() {
+update() {
   command topgrade
-}
-
-# tmux aliases
-function starttmux() {
-  source "$HOME/dotfiles/bin/starttmux"
-}
-
-function killsess() {
-  tmux kill-session -t "$@"
-}
-
-function tls() {
-  tmux ls
 }

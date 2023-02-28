@@ -175,10 +175,10 @@ then
   if [ response_char = "y" ]
   then
     is_work_computer=false
-    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.extra
+    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.local_extra
   else
     is_work_computer=true
-    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.extra
+    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.local_extra
   fi
 
   echo "Please make sure to run source your profile after the install."
@@ -240,7 +240,7 @@ handle_flatpak_installations $is_work_computer
 
 setup_header_text "gvm and nvm install:"
 
-check_if_command_exists_and_run_install_command_otherwise "gvm" "bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)"
+check_if_command_exists_and_run_install_command_otherwise "gvm" "curl -sSL https://github.com/soulteary/gvm/raw/master/binscripts/gvm-installer | bash"
 
 # nvm is special and loads its command via autocompletion and checking the created variable
 # is more reliable than checking if the method exists

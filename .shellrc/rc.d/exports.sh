@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Based on https://github.com/mathiasbynens/dotfiles/blob/master/.exports
 
 # Set the default editor to neovim

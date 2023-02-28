@@ -6,7 +6,7 @@ prepend-path() {
 }
 
 reload() {
-  [ -f "$HOME/.bash_profile" ] && . "$HOME/.bash_profile"
+  [ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile"
 }
 
 function c() {
@@ -22,12 +22,12 @@ function python() {
 }
 
 function update() {
-  topgrade
+  command topgrade
 }
 
 # tmux aliases
 function starttmux() {
-  . "$HOME/dotfiles/bin/starttmux"
+  source "$HOME/dotfiles/bin/starttmux"
 }
 
 function killsess() {

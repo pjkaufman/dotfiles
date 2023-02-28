@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Moving around
 alias ..='cd ..'
 alias ...='cd ../../'

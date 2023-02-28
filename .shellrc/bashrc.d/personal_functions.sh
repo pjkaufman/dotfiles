@@ -1,49 +1,55 @@
 #!/bin/bash
 
+# only add these functions if on a personal computer
+if [ ${COMPUTER_TYPE} = "personal" ]
+then
+  return
+fi
+
 # personal computer aliases
-function hibernate() {
+hibernate() {
   sudo systemctl hibernate
 }
 
 # allows for easy running of obsidian via terminal
-function obsidian() {
+obsidian() {
   flatpak run md.obsidian.Obsidian &
 }
 # allows for easy running of brave via terminal
-function brave() {
+brave() {
   flatpak run com.brave.Browser &
 }
 
 # allows for easy running of GnuCash via terminal
-function gnucash() {
+gnucash() {
   flatpak run org.gnucash.GnuCash &
 }
 
 # allows for easy running of Minecraft via terminal
-function minecraft() {
+minecraft() {
   flatpak run com.mojang.Minecraft &
 }
 
 # allows for easy running of Only Office via terminal
-function office() {
+office() {
   flatpak run org.onlyoffice.desktopeditors &
 }
 
 # allows for easy running of Sigil via terminal
-function sigil() {
+sigil() {
   flatpak run com.sigil_ebook.Sigil &
 }
 
 # allows for easy running of Calibre via terminal
-function calibre() {
+calibre() {
   flatpak run com.calibre_ebook.calibre &
 }
 
 # enable the use of brightness since it is locked by admin permissions by default and I need to modify it using user permission
-function enablebright() {
+enablebright() {
   sudo chmod a+wr /sys/class/backlight/amdgpu_bl0/brightness
 }
 
-function compressepub() {
-  . "$HOME/dotfiles/bin/compressepub"
+compressepub() {
+  source "$HOME/dotfiles/bin/compressepub"
 }

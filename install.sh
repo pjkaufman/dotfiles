@@ -202,13 +202,14 @@ for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${ap
 
 if ! $is_work_computer
 then
-  personal_apt_packages_to_install=("imgp" "pandoc" "flameshot" "kitty" "evince")
+  personal_apt_packages_to_install=(
+    "imgp" # image compression
+    "pandoc" # document conversion
+    "flameshot" # screenshots
+    "kitty" # terminal
+    "evince" # pdf editor and viewer
+  )
   for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done
-  # install_apt_package "imgp" # image compression
-  # install_apt_package "pandoc" # document conversion
-  # install_apt_package "flameshot" # screenshots
-  # install_apt_package "kitty" # terminal
-  # install_apt_package "evince" # pdf editor and viewer
 fi
 
 # cargo packages
@@ -217,8 +218,6 @@ setup_header_text "cargo packages:"
 
 cargo_packages_to_install=("topgrade" "cargo-update")
 for pkg in "${cargo_packages_to_install[@]}"; do cargo_install_package "$pkg"; done
-# cargo_install_package "topgrade"
-# cargo_install_package "cargo-update"
 
 # PPA additions
 
@@ -303,29 +302,22 @@ cargo_install_package "stylua"
 
 # setup config symlinks
 
-# TODO: swap over to using stow and use the files in the bash folder removing any other files 
-
 setup_header_text "Symlink setup:"
 
 ensure_folder_symlink_is_in_place "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
 
-
 declare -A file_symlink_info=( 
   ["$HOME/dotfiles/git/.gitconfig"]="$HOME/.gitconfig" 
-  ["$HOME/dotfiles/bash/.bash_profile"]="$HOME/.bash_profile" 
-  ["$HOME/dotfiles/bash/.exports"]="$HOME/.exports" 
-  ["$HOME/dotfiles/bash/.functions"]="$HOME/.functions"
-  ["$HOME/dotfiles/bash/.path"]="$HOME/.path"
-  ["$HOME/dotfiles/bash/.hushlogin"]="$HOME/.hushlogin"
-  ["$HOME/dotfiles/bash/aliases"]="$HOME/.bash_aliases"
+  ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile" 
+  ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
+  ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin"
   ["$HOME/dotfiles/topgrade/topgrade.toml"]="$HOME/.config/topgrade.toml"
 )
-for file in "${!file_symlink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${file_symlink_info[$file]}"; done
 
+for file in "${!file_symlink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${file_symlink_info[$file]}"; done
 
 if ! $is_work_computer
 then
-  ensure_file_symlink_is_in_place "$HOME/dotfiles/bash/.functions_personal" "$HOME/.functions_personal"
   ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
   ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"
 fi

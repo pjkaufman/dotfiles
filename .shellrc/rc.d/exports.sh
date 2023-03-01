@@ -27,3 +27,6 @@ export GOROOT=/home/peterk/.gvm/gos/go$GO_VERSION/
 
 # nvm 
 export NVM_DIR="$HOME/.nvm"
+
+# set SSH_AUTH_SOCK env var to a fixed value
+export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock

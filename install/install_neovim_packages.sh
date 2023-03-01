@@ -17,11 +17,13 @@ then
   )
 
   for pkg in "${!neovim_go_packages_to_install[@]}"; do go_install_package "$pkg" "${neovim_go_packages_to_install[$pkg]}"; done
-  # go_install_package "github.com/yoheimuta/protolint/cmd/protolint" "protolint"
-  # go_install_package "golang.org/x/tools/cmd/goimports" "golangci-lint"
 fi
 
-go_install_package "golang.org/x/tools/cmd/goimports" "goimports"
+declare -A neovim_common_go_packages_to_install=( 
+  ["golang.org/x/tools/cmd/goimports"]="goimports"
+  ["github.com/go-delve/delve/cmd/dlv"]="delve"
+)
+for pkg in "${!neovim_common_go_packages_to_install[@]}"; do go_install_package "$pkg" "${neovim_common_go_packages_to_install[$pkg]}"; done
 
 npm_install_package "eslint"
 

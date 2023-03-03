@@ -22,6 +22,12 @@ local dap_vt_status_ok, dap_vt = pcall(require, "nvim-dap-virtual-text")
 if not dap_vt_status_ok then
 	return
 end
+
+local dap_vscode_status_ok, dap_vscode = pcall(require, "dap-vscode-js")
+if not dap_vscode_status_ok then
+	return
+end
+
 -- dap_install.setup({})
 dap_go.setup({
 	-- Additional dap configurations can be added.
@@ -29,12 +35,56 @@ dap_go.setup({
 	-- represents a dap configuration. For more details do:
 	-- :help dap-configuration
 	dap_configurations = {
+		-- {
+		-- 	-- Must be "go" or it will be ignored by the plugin
+		-- 	type = "go",
+		-- 	name = "Attach remote",
+		-- 	mode = "remote",
+		-- 	request = "attach",
+		-- },
+		-- {
+		-- 	type = "go",
+		-- 	name = "Debug test",
+		-- 	request = "launch",
+		-- 	mode = "test",
+		-- 	program = ".",
+		-- },
+		-- {
+		-- 	type = "go",
+		-- 	name = "Debug test",
+		-- 	request = "launch",
+		-- 	mode = "test",
+		-- 	program = "./${relativeFileDirname}",
+		-- },
+		-- {
+		-- 	type = "go",
+		-- 	name = "Debug test",
+		-- 	request = "launch",
+		-- 	mode = "test",
+		-- 	program = function()
+		-- 		return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h")
+		-- 	end,
+		-- },
 		{
-			-- Must be "go" or it will be ignored by the plugin
 			type = "go",
-			name = "Attach remote",
-			mode = "remote",
-			request = "attach",
+			name = "Debug",
+			request = "launch",
+			program = "${file}",
+		},
+		{
+			type = "go",
+			name = "Debug test", -- configuration for debugging test files
+			request = "launch",
+			mode = "test",
+			program = "${file}",
+		},
+		-- works with go.mod packages and sub packages
+		{
+			type = "go",
+			name = "Debug test (go.mod)",
+			request = "launch",
+			mode = "test",
+			program = "./${relativeFileDirname}",
 		},
 	},
 	-- delve configurations
@@ -107,6 +157,44 @@ end
 
 dap.listeners.before.event_exited["dapui_config"] = function()
 	dapui.close()
+end
+
+dap_vscode.setup({
+	adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
+})
+
+for _, language in ipairs({ "typescript", "javascript" }) do
+	dap.configurations[language] = {
+		{
+			type = "pwa-node",
+			request = "launch",
+			name = "Launch file",
+			program = "${file}",
+			cwd = "${workspaceFolder}",
+		},
+		{
+			type = "pwa-node",
+			request = "attach",
+			name = "Attach",
+			processId = require("dap.utils").pick_process,
+			cwd = "${workspaceFolder}",
+		},
+		{
+			type = "pwa-node",
+			request = "launch",
+			name = "Debug Jest Tests",
+			-- trace = true, -- include debugger info
+			runtimeExecutable = "node",
+			runtimeArgs = {
+				"./node_modules/jest/bin/jest.js",
+				"--runInBand",
+			},
+			rootPath = "${workspaceFolder}",
+			cwd = "${workspaceFolder}",
+			console = "integratedTerminal",
+			internalConsoleOptions = "neverOpen",
+		},
+	}
 end
 
 dap.set_log_level("TRACE")

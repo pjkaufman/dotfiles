@@ -7,6 +7,7 @@ declare -A file_symlink_info=(
   ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile" 
   ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
   ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin"
+  ["$HOME/dotfiles/tmux/.tmux.conf"]="$HOME/.tmux.conf"
   ["$HOME/dotfiles/topgrade/topgrade.toml"]="$HOME/.config/topgrade.toml"
 )
 

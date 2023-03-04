@@ -41,11 +41,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# gvm setup if possible
-[[ -s "/home/peterk/.gvm/scripts/gvm" ]] && source "/home/peterk/.gvm/scripts/gvm"
-
-gvmforceuse $GO_VERSION
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -66,49 +61,8 @@ for option in autocd globstar; do
   shopt -s "$option" 2> /dev/null;
 done;
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\033[0;32m$(__git_ps1 " (%s)")\033[0m\$ '
-else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)")\$ '
-fi
-unset color_prompt force_color_prompt
-
 # start SSH for Github if it has not already started
 sshstart
-# eval $(ssh-agent -s)
 
 # set nvm version to use and export if it exists already
 if [ -d "$HOME/.nvm" ] ; then
@@ -116,6 +70,11 @@ if [ -d "$HOME/.nvm" ] ; then
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
   nvmforceuse $NVM_VERSION
 fi
+
+# gvm setup if possible
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+gvmforceuse $GO_VERSION
 
 # ~/.localrc can be used for other settings you don’t want to commit and it is loaded last.
 [ -r "$HOME/.localrc" ] && [ -f "$HOME/.localrc" ] && source "$HOME/.localrc";

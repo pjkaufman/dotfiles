@@ -210,7 +210,7 @@ bar {
 
 # initial workspace config setup
 exec_always feh --bg-fill $HOME/Pictures/Charles/CharlesOutside.jpg
-exec --no-startup-id i3-msg 'workspace 1; exec kitty starttmux'
+exec --no-startup-id i3-msg 'workspace 1; exec kitty $HOME/dotfiles/bin/starttmux'
 exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser &'
 exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/syncthing'
 exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/flatpak run md.obsidian.Obsidian &'

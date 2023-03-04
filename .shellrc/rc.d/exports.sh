@@ -30,3 +30,5 @@ export NVM_DIR="$HOME/.nvm"
 
 # set SSH_AUTH_SOCK env var to a fixed value
 export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
+
+export TERM=xterm-256color # needed to prevent an error on load

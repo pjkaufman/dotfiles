@@ -24,3 +24,7 @@ python() {
 update() {
   command topgrade
 }
+
+rn() {
+  rename 's/$1/$2/s' "$3"
+}

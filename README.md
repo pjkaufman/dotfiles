@@ -27,3 +27,4 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 - The clipboard does not seem to connect to the system clipboard properly
 - Running Go tests does not seem to work
 - Debugging using DAP does not seem to work for Go
+- golangci-lint does not seem to work for Go

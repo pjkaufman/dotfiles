@@ -19,3 +19,11 @@ This script and these configs allow me to install the base level of the environm
 The repo also acts as a secondary copy of my configs which allows me to backup my configs. If something were to happen to my computer, this allows for an easier setup for new environments.
 
 ## Dependencies
+
+## Known Issues
+
+### Neovim
+
+- The clipboard does not seem to connect to the system clipboard properly
+- Running Go tests does not seem to work
+- Debugging using DAP does not seem to work for Go

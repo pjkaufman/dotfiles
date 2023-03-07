@@ -23,16 +23,15 @@ local sources = {
 	formatting.gofmt,
 	formatting.goimports,
 	formatting.protolint.with({ extra_args = { "--fix" } }),
-  formatting.beautysh.with({
-        extra_args = function(params)
-          return params.options
-            and {
-              "-i",
-              vim.opt.tabstop,
-            }
-        end,
-      }),
-  -- diagnostics
+	formatting.beautysh.with({
+		extra_args = function(params)
+			return params.options and {
+				"-i",
+				vim.opt.tabstop,
+			}
+		end,
+	}),
+	-- diagnostics
 	diagnostics.flake8,
 	diagnostics.eslint.with({
 		method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
@@ -40,17 +39,18 @@ local sources = {
 	diagnostics.codespell,
 	-- diagnostics.golangci_lint,
 	--diagnostics.golangci_lint.with { extra_args = { "--config=.golangci.yaml" } },
-	diagnostics.golangci_lint.with({
-		args = {
-			"run",
-			"--enable-all",
-			"--disable exhaustivestruct",
-			"--out-format json",
-			"$DIRNAME",
-			"--path-prefix",
-			"$ROOT",
-		},
-	}),
+	diagnostics.golangci_lint.with({ extra_args = { "--config=${workspaceFolder}/.ci/.golangci.yml" } }),
+	-- diagnostics.golangci_lint.with({
+	-- 	args = {
+	-- 		"run",
+	-- 		"--enable-all",
+	-- 		"--disable exhaustivestruct",
+	-- 		"--out-format json",
+	-- 		"$DIRNAME",
+	-- 		"--path-prefix",
+	-- 		"$ROOT",
+	-- 	},
+	-- }),
 	--diagnostics.golangci_lint.with { { extra_args = { "--config", vim.fn.expand("~/mono/.ci/golangci.yml")} } },
 }
 

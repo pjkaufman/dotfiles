@@ -45,12 +45,10 @@ local function normal_keymap()
 		-- ["t"] = { "<cmd>ToggleTerm<CR>", "Terminal" },
 		["/"] = { "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", "Toggle Comment" },
 		["h"] = { "<cmd>nohlsearch<CR>", "Clear Highlights" },
-
 		l = {
 			name = "LSP",
 			f = { "<cmd>lua vim.lsp.buf.format{ async = true }<cr>", "Format" },
 		},
-
 		b = {
 			name = "Buffer",
 			c = { "<Cmd>BDelete this<Cr>", "Close Buffer" },
@@ -60,7 +58,6 @@ local function normal_keymap()
 			p = { "<Cmd>BufferLinePickClose<Cr>", "Pick & Close a Buffer" },
 			m = { "<Cmd>JABSOpen<Cr>", "Menu" },
 		},
-
 		d = {
 			name = "Debug",
 			b = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
@@ -74,7 +71,6 @@ local function normal_keymap()
 			q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
 			t = { "<cmd>lua require'dap-go'.debug_test()<cr>", "Go Test" },
 		},
-
 		f = {
 			name = "Find",
 			f = { ":Telescope find_files<CR>", "Files" },
@@ -83,7 +79,6 @@ local function normal_keymap()
 			b = { ":Telescope buffers<CR>", "Buffers" },
 			e = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
 		},
-
 		z = {
 			name = "System",
 			i = { "<cmd>PackerInstall<cr>", "Install" },
@@ -92,7 +87,6 @@ local function normal_keymap()
 			S = { "<cmd>PackerStatus<cr>", "Status" },
 			u = { "<cmd>PackerUpdate<cr>", "Update" },
 		},
-
 		g = {
 			name = "Git",
 			g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Toggle Lazy Git" },

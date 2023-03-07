@@ -75,3 +75,9 @@ configs
 upsert
 type
 Prepend
+linters
+lua
+treesitter
+cmp
+Autopairs
+popup

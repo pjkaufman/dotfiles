@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -A apt_packages_to_install=( ["git"]="git" ["tmux"]="tmux" ["grep"]="grep" ["curl"]="curl" ["btop"]="btop" ["python3"]="python3" ["pip3"]="python3-pip" ["rename"]="rename" ["cargo"]="cargo")
+declare -A apt_packages_to_install=( ["tmux"]="tmux" ["grep"]="grep" ["curl"]="curl" ["btop"]="btop" ["python3"]="python3" ["pip3"]="python3-pip" ["rename"]="rename" ["cargo"]="cargo")
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 

@@ -61,7 +61,7 @@ local function normal_keymap()
 		d = {
 			name = "Debug",
 			b = { "<cmd>lua require'dap'.toggle_breakpoint()<cr>", "Toggle Breakpoint" },
-			c = { "<cmd>lua require'dap'.continue()<cr>", "Continue" },
+			c = { "<cmd>lua require'dap'.continue()<cr>", "Continue or Show Test Options" },
 			i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
 			o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
 			O = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
@@ -69,7 +69,6 @@ local function normal_keymap()
 			l = { "<cmd>lua require'dap'.run_last()<cr>", "Run Last" },
 			u = { "<cmd>lua require'dapui'.toggle()<cr>", "Dap UI Toggle" },
 			q = { "<cmd>lua require'dap'.terminate()<cr>", "Quit" },
-			t = { "<cmd>lua require'dap-go'.debug_test()<cr>", "Go Test" },
 		},
 		f = {
 			name = "Find",

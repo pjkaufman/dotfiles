@@ -22,7 +22,7 @@ local sources = {
 	formatting.codespell,
 	formatting.gofmt,
 	formatting.goimports,
-	formatting.protolint.with({ extra_args = { "--fix" } }),
+	-- formatting.protolint.with({ extra_args = { "--fix" } }),
 	formatting.beautysh.with({
 		extra_args = function(params)
 			return params.options and {
@@ -39,7 +39,7 @@ local sources = {
 	diagnostics.codespell,
 	-- diagnostics.golangci_lint,
 	--diagnostics.golangci_lint.with { extra_args = { "--config=.golangci.yaml" } },
-	diagnostics.golangci_lint.with({ extra_args = { "--config=${workspaceFolder}/.ci/.golangci.yml" } }),
+	-- diagnostics.golangci_lint.with({ extra_args = { "--config=${workspaceFolder}/.ci/.golangci.yml" } }),
 	-- diagnostics.golangci_lint.with({
 	-- 	args = {
 	-- 		"run",

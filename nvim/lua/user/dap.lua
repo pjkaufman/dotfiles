@@ -29,75 +29,77 @@ if not dap_vscode_status_ok then
 end
 
 -- dap_install.setup({})
-dap_go.setup({
-	-- Additional dap configurations can be added.
-	-- dap_configurations accepts a list of tables where each entry
-	-- represents a dap configuration. For more details do:
-	-- :help dap-configuration
-	dap_configurations = {
-		-- {
-		-- 	-- Must be "go" or it will be ignored by the plugin
-		-- 	type = "go",
-		-- 	name = "Attach remote",
-		-- 	mode = "remote",
-		-- 	request = "attach",
-		-- },
-		-- {
-		-- 	type = "go",
-		-- 	name = "Debug test",
-		-- 	request = "launch",
-		-- 	mode = "test",
-		-- 	program = ".",
-		-- },
-		-- {
-		-- 	type = "go",
-		-- 	name = "Debug test",
-		-- 	request = "launch",
-		-- 	mode = "test",
-		-- 	program = "./${relativeFileDirname}",
-		-- },
-		-- {
-		-- 	type = "go",
-		-- 	name = "Debug test",
-		-- 	request = "launch",
-		-- 	mode = "test",
-		-- 	program = function()
-		-- 		return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h")
-		-- 	end,
-		-- },
-		{
-			type = "go",
-			name = "Debug",
-			request = "launch",
-			program = "${file}",
-		},
-		{
-			type = "go",
-			name = "Debug test", -- configuration for debugging test files
-			request = "launch",
-			mode = "test",
-			program = "${file}",
-		},
-		-- works with go.mod packages and sub packages
-		{
-			type = "go",
-			name = "Debug test (go.mod)",
-			request = "launch",
-			mode = "test",
-			program = "./${relativeFileDirname}",
-		},
-	},
-	-- delve configurations
-	delve = {
-		-- time to wait for delve to initialize the debug session.
-		-- default to 20 seconds
-		initialize_timeout_sec = 20,
-		-- a string that defines the port to start delve debugger.
-		-- default to string "${port}" which instructs nvim-dap
-		-- to start the process in a random available port
-		port = "${port}",
-	},
-})
+
+dap_go.setup()
+-- dap_go.setup({
+-- 	-- Additional dap configurations can be added.
+-- 	-- dap_configurations accepts a list of tables where each entry
+-- 	-- represents a dap configuration. For more details do:
+-- 	-- :help dap-configuration
+-- 	dap_configurations = {
+-- 		-- {
+-- 		-- 	-- Must be "go" or it will be ignored by the plugin
+-- 		-- 	type = "go",
+-- 		-- 	name = "Attach remote",
+-- 		-- 	mode = "remote",
+-- 		-- 	request = "attach",
+-- 		-- },
+-- 		-- {
+-- 		-- 	type = "go",
+-- 		-- 	name = "Debug test",
+-- 		-- 	request = "launch",
+-- 		-- 	mode = "test",
+-- 		-- 	program = ".",
+-- 		-- },
+-- 		-- {
+-- 		-- 	type = "go",
+-- 		-- 	name = "Debug test",
+-- 		-- 	request = "launch",
+-- 		-- 	mode = "test",
+-- 		-- 	program = "./${relativeFileDirname}",
+-- 		-- },
+-- 		-- {
+-- 		-- 	type = "go",
+-- 		-- 	name = "Debug test",
+-- 		-- 	request = "launch",
+-- 		-- 	mode = "test",
+-- 		-- 	program = function()
+-- 		-- 		return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h")
+-- 		-- 	end,
+-- 		-- },
+-- 		{
+-- 			type = "go",
+-- 			name = "Debug",
+-- 			request = "launch",
+-- 			program = "${file}",
+-- 		},
+-- 		{
+-- 			type = "go",
+-- 			name = "Debug test", -- configuration for debugging test files
+-- 			request = "launch",
+-- 			mode = "test",
+-- 			program = "${file}",
+-- 		},
+-- 		-- works with go.mod packages and sub packages
+-- 		{
+-- 			type = "go",
+-- 			name = "Debug test (go.mod)",
+-- 			request = "launch",
+-- 			mode = "test",
+-- 			program = "./${relativeFileDirname}",
+-- 		},
+-- 	},
+-- 	-- delve configurations
+-- 	delve = {
+-- 		-- time to wait for delve to initialize the debug session.
+-- 		-- default to 20 seconds
+-- 		initialize_timeout_sec = 20,
+-- 		-- a string that defines the port to start delve debugger.
+-- 		-- default to string "${port}" which instructs nvim-dap
+-- 		-- to start the process in a random available port
+-- 		port = "${port}",
+-- 	},
+-- })
 dap_vt.setup()
 
 -- dap_install.config("python", {})

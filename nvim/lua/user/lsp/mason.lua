@@ -31,6 +31,7 @@ require("mason-lspconfig").setup({
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_status_ok then
+	vim.notify("failed to load lspconfig plugin", vim.log.levels.ERROR)
 	return
 end
 

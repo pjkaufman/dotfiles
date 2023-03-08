@@ -1,10 +1,12 @@
 local status_ok, nvim_tree = pcall(require, "nvim-tree")
 if not status_ok then
+	vim.notify("failed to load nvim-tree plugin", vim.log.levels.ERROR)
 	return
 end
 
 local config_status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
 if not config_status_ok then
+	vim.notify("failed to load nvim-tree config", vim.log.levels.ERROR)
 	return
 end
 

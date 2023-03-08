@@ -1,10 +1,12 @@
 local dap_status_ok, dap = pcall(require, "dap")
 if not dap_status_ok then
+	vim.notify("failed to load dap plugin", vim.log.levels.ERROR)
 	return
 end
 
 local dap_ui_status_ok, dapui = pcall(require, "dapui")
 if not dap_ui_status_ok then
+	vim.notify("failed to load dapui plugin", vim.log.levels.ERROR)
 	return
 end
 
@@ -15,21 +17,25 @@ end
 
 local dap_go_status_ok, dap_go = pcall(require, "dap-go")
 if not dap_go_status_ok then
+	vim.notify("failed to load dap-go plugin", vim.log.levels.ERROR)
 	return
 end
 
 local dap_vt_status_ok, dap_vt = pcall(require, "nvim-dap-virtual-text")
 if not dap_vt_status_ok then
+	vim.notify("failed to load nvim-dap-virtual-text plugin", vim.log.levels.ERROR)
 	return
 end
 
 local dap_vscode_status_ok, dap_vscode = pcall(require, "dap-vscode-js")
 if not dap_vscode_status_ok then
+	vim.notify("failed to load dap-vscode-js plugin", vim.log.levels.ERROR)
 	return
 end
 
 -- dap_install.setup({})
 
+dap.set_log_level("TRACE")
 dap_go.setup()
 -- dap_go.setup({
 -- 	-- Additional dap configurations can be added.
@@ -198,5 +204,3 @@ for _, language in ipairs({ "typescript", "javascript" }) do
 		},
 	}
 end
-
-dap.set_log_level("TRACE")

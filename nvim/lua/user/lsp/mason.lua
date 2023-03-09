@@ -41,6 +41,17 @@ for _, server in pairs(servers) do
 	opts = {
 		on_attach = require("user.lsp.handlers").on_attach,
 		capabilities = require("user.lsp.handlers").capabilities,
+		root_dir = function(fname)
+			local util = require("lspconfig").util
+			return util.root_pattern(".git")(fname)
+				or util.root_pattern("tsconfig.base.json")(fname)
+				or util.root_pattern("package.json")(fname)
+				or util.root_pattern(".eslintrc.js")(fname)
+				or util.root_pattern(".eslintrc.json")(fname)
+				or util.root_pattern("tsconfig.json")(fname)
+				or util.root_pattern("go.mod")(fname)
+				or util.root_pattern("Makefile")(fname)
+		end,
 	}
 
 	server = vim.split(server, "@")[1]

@@ -37,75 +37,47 @@ end
 
 dap.set_log_level("TRACE")
 dap_go.setup()
--- dap_go.setup({
--- 	-- Additional dap configurations can be added.
--- 	-- dap_configurations accepts a list of tables where each entry
--- 	-- represents a dap configuration. For more details do:
--- 	-- :help dap-configuration
--- 	dap_configurations = {
--- 		-- {
--- 		-- 	-- Must be "go" or it will be ignored by the plugin
--- 		-- 	type = "go",
--- 		-- 	name = "Attach remote",
--- 		-- 	mode = "remote",
--- 		-- 	request = "attach",
--- 		-- },
--- 		-- {
--- 		-- 	type = "go",
--- 		-- 	name = "Debug test",
--- 		-- 	request = "launch",
--- 		-- 	mode = "test",
--- 		-- 	program = ".",
--- 		-- },
--- 		-- {
--- 		-- 	type = "go",
--- 		-- 	name = "Debug test",
--- 		-- 	request = "launch",
--- 		-- 	mode = "test",
--- 		-- 	program = "./${relativeFileDirname}",
--- 		-- },
--- 		-- {
--- 		-- 	type = "go",
--- 		-- 	name = "Debug test",
--- 		-- 	request = "launch",
--- 		-- 	mode = "test",
--- 		-- 	program = function()
--- 		-- 		return vim.fn.fnamemodify(vim.fn.bufname(), ":p:h")
--- 		-- 	end,
--- 		-- },
--- 		{
--- 			type = "go",
--- 			name = "Debug",
--- 			request = "launch",
--- 			program = "${file}",
--- 		},
--- 		{
--- 			type = "go",
--- 			name = "Debug test", -- configuration for debugging test files
--- 			request = "launch",
--- 			mode = "test",
--- 			program = "${file}",
--- 		},
--- 		-- works with go.mod packages and sub packages
--- 		{
--- 			type = "go",
--- 			name = "Debug test (go.mod)",
--- 			request = "launch",
--- 			mode = "test",
--- 			program = "./${relativeFileDirname}",
--- 		},
--- 	},
--- 	-- delve configurations
--- 	delve = {
--- 		-- time to wait for delve to initialize the debug session.
--- 		-- default to 20 seconds
--- 		initialize_timeout_sec = 20,
--- 		-- a string that defines the port to start delve debugger.
--- 		-- default to string "${port}" which instructs nvim-dap
--- 		-- to start the process in a random available port
--- 		port = "${port}",
--- 	},
--- })
+
+local function getCWDGolang(_path, _service_name)
+	local _, index_end = string.find(string.lower(_path), string.lower(_service_name))
+	if index_end == nil then
+		vim.notify(
+			string.format("failed to get Go cwd since '%s' not in current file path", _service_name),
+			vim.log.levels.ERROR
+		)
+
+		return _path
+	end
+
+	return string.sub(_path, 0, index_end)
+end
+
+table.insert(dap.configurations["go"], {
+	type = "go",
+	name = "Debug Microservice",
+	request = "launch",
+	program = function()
+		local service_name = vim.fn.input("Service Name: ")
+		local file_path = vim.api.nvim_buf_get_name(0)
+		local cwd = getCWDGolang(file_path, service_name)
+		if file_path == cwd then
+			return "${file}"
+		end
+
+		local executable_name = vim.fn.input("Executable Name: ")
+		local program_folder = string.format("%s/cmd/%s", cwd, executable_name)
+
+		return program_folder
+	end,
+	cwd = function()
+		local service_name = vim.fn.input("Service Name: ")
+		local file_path = vim.api.nvim_buf_get_name(0)
+		local cwd = getCWDGolang(file_path, service_name)
+
+		return cwd
+	end,
+})
+
 dap_vt.setup()
 
 -- dap_install.config("python", {})

@@ -42,7 +42,7 @@ local x_opts = {
 local function normal_keymap()
 	local keymap = {
 		["w"] = { "<cmd>update!<CR>", "Save" },
-		["q"] = { "<cmd>lua require('utils').quit()<CR>", "Quit" },
+		-- ["q"] = { "<cmd>lua require('utils').quit()<CR>", "Quit" },
 		-- ["t"] = { "<cmd>ToggleTerm<CR>", "Terminal" },
 		["/"] = { "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", "Toggle Comment" },
 		["h"] = { "<cmd>nohlsearch<CR>", "Clear Highlights" },
@@ -73,10 +73,12 @@ local function normal_keymap()
 		},
 		f = {
 			name = "Find",
-			f = { ":Telescope find_files<CR>", "Files" },
-			t = { ":Telescope live_grep<CR>", "Text" },
-			p = { ":Telescope projects<CR>", "Projects" },
-			b = { ":Telescope buffers<CR>", "Buffers" },
+			-- Make sure that the Nvim Tree is closed before we opene find files for telescope which lets finding files when none is currently open work instead of just closing neovim
+			-- from https://www.reddit.com/r/neovim/comments/v49jxi/dont_open_telescope_action_in_nvimtree_window/
+			f = { "<cmd>execute 'NvimTreeClose' | Telescope find_files<CR>", "Files" },
+			t = { "<cmd>Telescope live_grep<CR>", "Text" },
+			p = { "<cmd>Telescope projects<CR>", "Projects" },
+			b = { "<cmd>Telescope buffers<CR>", "Buffers" },
 			e = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
 		},
 		z = {

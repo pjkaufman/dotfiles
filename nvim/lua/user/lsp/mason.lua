@@ -50,7 +50,6 @@ for _, server in pairs(servers) do
 				or util.root_pattern(".eslintrc.json")(fname)
 				or util.root_pattern("tsconfig.json")(fname)
 				or util.root_pattern("go.mod")(fname)
-				or util.root_pattern("Makefile")(fname)
 		end,
 	}
 

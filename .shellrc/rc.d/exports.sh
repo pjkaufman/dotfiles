@@ -18,7 +18,7 @@ export LC_ALL='en_US.UTF-8';
 export LESS_TERMCAP_md="${yellow}";
 
 # nvm
-export NVM_VERSION=16.0
+export NVM_VERSION=18.0
 
 # Golang
 export GO_BINARY_BASE_URL=https://go.dev/dl

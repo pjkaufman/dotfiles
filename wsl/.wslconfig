@@ -1,0 +1,11 @@
+[wsl2]
+
+guiApplications=false # Turn off WSL2 gui apps
+
+memory=16GB # Limits VM memory in WSL2 to 16 GB
+ 
+processors=2 # Makes the WSL2 VM use two virtual processors
+ 
+localhostForwarding=true
+ 
+swap=512MB

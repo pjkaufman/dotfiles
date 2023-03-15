@@ -51,6 +51,9 @@ source ./install/install_gvm_and_nvm.sh
 # TODO: add logic for wkhtml to pdf
 # TODO: add logic around ssh agent for github
 
+setup_header_text "ssh setup:"
+source ./install/install_ssh.sh
+
 # i3 setup
 
 setup_header_text "i3 setup:"

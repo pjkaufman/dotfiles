@@ -1,0 +1,4 @@
+Host github.com
+ Hostname ssh.github.com
+ Port 22
+ IdentityFile ~/.ssh/id_ed25519

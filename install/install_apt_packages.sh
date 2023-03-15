@@ -1,6 +1,18 @@
 #!/bin/bash
 
-declare -A apt_packages_to_install=( ["tmux"]="tmux" ["grep"]="grep" ["ripgrep"]="rg" ["curl"]="curl" ["btop"]="btop" ["python3"]="python3" ["pip3"]="python3-pip" ["rename"]="rename" ["cargo"]="cargo")
+declare -A apt_packages_to_install=( 
+  ["tmux"]="tmux" 
+  ["grep"]="grep" 
+  ["ripgrep"]="rg" # better version of grep
+  ["curl"]="curl" 
+  ["btop"]="btop" # linux task manager
+  ["python3"]="python3"
+  ["pip3"]="python3-pip" # python 3 package installer
+  ["rename"]="rename" # easier renaming of files
+  ["cargo"]="cargo" # package manager for rust
+  ["ssh-keygen"]="openssh-client" # ssh client for github
+  ["rkhunter"]="rkhunter" # rootkit checker
+)
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 

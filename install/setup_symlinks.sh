@@ -9,6 +9,8 @@ declare -A file_symlink_info=(
   ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin"
   ["$HOME/dotfiles/tmux/.tmux.conf"]="$HOME/.tmux.conf"
   ["$HOME/dotfiles/topgrade/topgrade.toml"]="$HOME/.config/topgrade.toml"
+  ["$HOME/dotfiles/ssh/config"]="$HOME/.ssh/config"]
+  ["$HOME/dotfiles/rkhunter/rkhunter.conf"]="/etc/rkhunter.conf"]
 )
 
 for file in "${!file_symlink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${file_symlink_info[$file]}"; done

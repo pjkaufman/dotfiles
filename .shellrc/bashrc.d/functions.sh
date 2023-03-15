@@ -28,3 +28,8 @@ update() {
 rn() {
   rename 's/$1/$2/s' "$3"
 }
+
+# scan the computer for viruses and other issues
+scan() {
+  sudo rkhunter --check --sk --rwo
+}

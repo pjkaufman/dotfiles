@@ -1,14 +1,14 @@
 # Prepend new items to path (if directory exists)
 
-prepend-path "/bin"
-prepend-path "/usr/bin"
-prepend-path "/usr/local/bin"
-prepend-path "$HOME/bin"
-prepend-path "$HOME/.local/bin"
-prepend-path "$HOME/.cargo/bin"
-prepend-path "/sbin"
-prepend-path "/usr/sbin"
-prepend-path "$GOROOT/bin"
+prepend_path "/bin"
+prepend_path "/usr/bin"
+prepend_path "/usr/local/bin"
+prepend_path "$HOME/bin"
+prepend_path "$HOME/.local/bin"
+prepend_path "$HOME/.cargo/bin"
+prepend_path "/sbin"
+prepend_path "/usr/sbin"
+prepend_path "$GOROOT/bin"
 
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755

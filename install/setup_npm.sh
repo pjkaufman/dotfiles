@@ -1,7 +1,5 @@
 #!/bin/bash
 
-check_if_command_exists_and_run_install_command_otherwise "gvm" "curl -sSL https://github.com/soulteary/gvm/raw/master/binscripts/gvm-installer | bash"
-
 # nvm is special and loads its command via autocompletion and checking the created variable
 # is more reliable than checking if the method exists
 if [ -z ${NVM_DIR} ]

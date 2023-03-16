@@ -1,8 +1,17 @@
 #!/bin/bash
+
 # wsl aliases
 
-is_wsl=`uname -r | grep -i "Microsoft"`
-if [[ -z "$is_wsl" ]]; then
+is_wsl() {
+  local is_wsl=`uname -r | grep -i "Microsoft"`
+  if [[ -z "$is_wsl" ]]; then
+    return 0
+  fi
+
+  return 1
+}
+
+if [[ $(is_wsl) -eq 0 ]]; then
   return
 fi
 

@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # only try to install i3 packages if on a personal computer
-if [ ${COMPUTER_TYPE} = "work" ]
-then
+if is_work_computer ; then
   echo "skipping i3 setup"
   return
 fi
@@ -20,3 +19,5 @@ i3_packages_to_install=(
 for pkg in "${i3_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 
 pip_install_package "bumblebee-status" # status bar
+
+ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"

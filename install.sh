@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# pull in the package installation helper functions
-source ./install/package_install_functions.sh
-
-# pull in the symlink helper functions
-source ./install/symlink_functions.sh
+# make sure bash fails if any error happens
+set -e
 
 setup_header_text() {
   echo ""
@@ -14,60 +11,64 @@ setup_header_text() {
   echo ""
 }
 
+include_file() {
+  source "$HOME/dotfiles/$1"
+}
+
+# pull in the package installation helper functions
+include_file "install/package_install_functions.sh"
+# source "$HOME/dotfiles/install/package_install_functions.sh"
+
+# pull in the symlink helper functions
+include_file "install/symlink_functions.sh"
+# source "$HOME/install/symlink_functions.sh"
+
+# include computer type functions
+source "$HOME/dotfiles/.shellrc/bashrc.d/computer_type_functions.sh" 
+
 # actual setup
 
 echo "starting environment setup"
 
-# determine whether or not this env is work or personal
+install_script_section_text=(
+  "setup computer type" 
+  "setup bash and common packages"
+  "setup git"
+  "setup rust"
+  "setup go"
+  "setup npm"
+  "setup kitty"
+  "setup rkhunter"
+  "setup syncthing"
+  "setup flatpaks"
+  "setup i3"
+  "setup neovim"
+)
 
-setup_header_text "get computer type:"
-source ./install/computer_type_handler.sh
-
-# apt packages
-
-setup_header_text "apt packages:"
-source ./install/install_apt_packages.sh
-
-# cargo packages
-
-setup_header_text "cargo packages:"
-source ./install/install_cargo_packages.sh
-
-# PPA additions
-
-setup_header_text "PPA additions"
-source ./install/install_ppa_packages.sh
-
-# flatpak packages
-
-setup_header_text "Flatpak packages:"
-source ./install/flatpak_handler.sh
-
-# special package managers like nvm and gvm
-
-setup_header_text "gvm and nvm install:"
-source ./install/install_gvm_and_nvm.sh
+ declare -A install_script_sections_files=( 
+  ["setup computer type"]="install/setup_computer_type.sh" 
+  ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages.sh"
+  ["setup git"]="install/setup_git.sh"
+  ["setup rust"]="install/setup_rust.sh"
+  ["setup syncthing"]="install/setup_syncthing.sh"
+  ["setup flatpaks"]="install/setup_flatpak.sh"
+  ["setup go"]="install/setup_go.sh"
+  ["setup npm"]="install/setup_npm.sh"
+  ["setup kitty"]="install/setup_kitty.sh"
+  ["setup rkhunter"]="install/setup_rkhunter.sh"
+  ["setup i3"]="install/setup_i3.sh"
+  ["setup neovim"]="install/setup_neovim.sh"
+)
 
 # TODO: add logic for wkhtml to pdf
-# TODO: add logic around ssh agent for github
 
-setup_header_text "ssh setup:"
-source ./install/install_ssh.sh
+for i in "${!install_script_section_text[@]}"; do 
+  header="${install_script_section_text[$i]}"
+  setup_header_text "${header}:"
+  include_file "${install_script_sections_files[$header]}"
+done
 
-# i3 setup
-
-setup_header_text "i3 setup:"
-source ./install/install_i3_packages.sh
-
-# neovim setup
-
-setup_header_text "Neovim setup:"
-source ./install/install_neovim_packages.sh
-
-# setup config symlinks
-
-setup_header_text "Symlink setup:"
-source ./install/setup_symlinks.sh
+unset header 
 
 echo ""
 echo "environment setup complete"

@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # only try to add the flatpaks if on a personal computer
-if [ ${COMPUTER_TYPE} = "work" ]
-then
-  echo "Skipping flatpak installation"
+if is_work_computer; then
+  echo "skipping flatpak installation and setup"
   return
 fi
 
@@ -17,8 +16,7 @@ declare -A flatpak_packages_to_install=(
   ["Only Office"]="org.onlyoffice.desktopeditors"
 )
 
-if ! command -v flatpak &> /dev/null
-then
+if ! command -v flatpak &> /dev/null; then
   echo "Flatpak not installed. Please install it."
 else
   for pkg in "${!flatpak_packages_to_install[@]}"; do install_flatpak_package "$pkg" "${apt_packages_to_install[$pkg]}"; done

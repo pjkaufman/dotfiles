@@ -17,6 +17,23 @@ ensure_file_symlink_is_in_place() {
   ln -sf "$1" "$2"  
 }
 
+ensure_file_symlink_is_in_place_as_sudo() {
+  if [ -L $2 ] ; then
+    if [ -e $2 ] ; then
+      echo "'$2' is already symlinked"
+    else
+      echo "'$2' is a broken symlink"
+    fi
+  elif [ -e $2 ] ; then
+    echo "'$2' exists, but is not symlinked"
+    sudo mv "$2" "$2.bak"
+  else
+    echo "'$2' does not exist"
+  fi
+  
+  sudo ln -sf "$1" "$2"  
+}
+
 ensure_folder_symlink_is_in_place() {
   if [ -L $2 ] ; then
     if [ -d $2 ] ; then

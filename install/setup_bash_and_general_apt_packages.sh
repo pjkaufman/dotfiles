@@ -1,24 +1,31 @@
 #!/bin/bash
 
+# setup the bash and terminal related files 
+
+declare -A bash_related_file_sylink_info=( 
+  ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile"
+  ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
+  ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
+  ["$HOME/dotfiles/tmux/.tmux.conf"]="$HOME/.tmux.conf"
+)
+
+for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${bash_related_file_sylink_info[$file]}"; done
+
 declare -A apt_packages_to_install=( 
   ["tmux"]="tmux" 
   ["grep"]="grep" 
-  ["ripgrep"]="rg" # better version of grep
   ["curl"]="curl" 
+  ["rg"]="ripgrep" # better version of grep
   ["btop"]="btop" # linux task manager
   ["python3"]="python3"
   ["pip3"]="python3-pip" # python 3 package installer
   ["rename"]="rename" # easier renaming of files
-  ["cargo"]="cargo" # package manager for rust
-  ["ssh-keygen"]="openssh-client" # ssh client for github
-  ["rkhunter"]="rkhunter" # rootkit checker
 )
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 
 # only try to add the remaining packages if on a personal computer
-if [ ${COMPUTER_TYPE} = "work" ]
-then
+if is_work_computer; then
   return
 fi
 
@@ -26,7 +33,7 @@ personal_apt_packages_to_install=(
   "imgp" # image compression
   "pandoc" # document conversion
   "flameshot" # screenshots
-  "kitty" # terminal
   "evince" # pdf editor and viewer
 )
+
 for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done

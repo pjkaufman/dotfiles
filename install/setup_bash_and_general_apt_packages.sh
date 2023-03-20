@@ -31,7 +31,6 @@ fi
 
 personal_apt_packages_to_install=(
   "imgp" # image compression
-  "pandoc" # document conversion
   "flameshot" # screenshots
   "evince" # pdf editor and viewer
 )

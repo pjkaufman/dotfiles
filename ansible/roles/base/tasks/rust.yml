@@ -10,7 +10,7 @@
 
 - name: Install general use rust packages
   become: yes
-  community.general.cargo:
+  cargo:
     name:
       - topgrade # package that helps manage updating all package managers
       - cargo-update # package for updating rust

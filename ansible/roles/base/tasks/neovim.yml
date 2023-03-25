@@ -15,7 +15,7 @@
   become: yes
   apt:
     name: neovim 
-    state: latest
+    state: present
 
 - name: Get stats of the FS object
   stat:
@@ -24,7 +24,7 @@
 
 - name: Remove the config (only if it is a folder that does not point to the expected source folder)
   file: 
-    path: $HOME/.config/nvim/
+    path: $HOME/.config/nvim
     state: absent
   when: nc.stat.isdir is defined and nc.stat.isdir and (nc.stat.islnk == False or nc.stat.lnk_source != "$HOME/dotfiles/ansible/roles/base/files/neovim/")
 
@@ -32,10 +32,11 @@
   file:
     src: $HOME/dotfiles/ansible/roles/base/files/neovim/
     dest: $HOME/.config/nvim
+    state: link
 
 # null-ls lsp formatters and diagnostics 
 - name: Install pip packages for neovim
-  ansible.builtin.pip:
+  pip:
     name:
       - codespell
       - black
@@ -43,10 +44,17 @@
       - beautysh
     state: present
 
-- name: Install stylua
-  cargo:
-    name: stylua
-    state: present
+# TODO: figure out why this throws an err
+# - name: Install stylua
+#   become: yes
+#   cargo:
+#     name: stylua
+#     state: present
+#
+# - name: Install stylua
+#   cargo:
+#     name: stylua
+#     state: present
 
 - name: Install eslint node.js package globally.
   npm:
@@ -58,18 +66,19 @@
   register: dlv_status
   ignore_errors: yes
 
-- name: Install delve
-  shell: 'go install github.com/go-delve/delve/cmd/dlv' # dlv install for go debugging
-  when: dlv_status.stderr is defined or dlv_status.stderr != '' 
- 
-- name: Determine if goimports is installed 
-  command: 'goimports'
-  register: goimports_status
-  ignore_errors: yes
-
-- name: Install goimports
-  shell: 'go install golang.org/x/tools/cmd/goimports'
-  when: goimports_status.stderr is defined or goimports_status.stder != ''
+# TODO: fix the go logic so it does not error when trying to install values
+# - name: Install delve
+#   shell: 'go install github.com/go-delve/delve/cmd/dlv' # dlv install for go debugging
+#   when: dlv_status.stderr is defined or dlv_status.stderr != '' 
+#  
+# - name: Determine if goimports is installed 
+#   command: 'goimports'
+#   register: goimports_status
+#   ignore_errors: yes
+#
+# - name: Install goimports
+#   shell: 'go install golang.org/x/tools/cmd/goimports'
+#   when: goimports_status.stderr is defined or goimports_status.stder != ''
 # if is_work_computer; then
 #   declare -A neovim_go_packages_to_install=( 
 #     ["github.com/yoheimuta/protolint/cmd/protolint"]="protolint"

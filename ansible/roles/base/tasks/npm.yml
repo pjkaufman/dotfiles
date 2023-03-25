@@ -1,0 +1,10 @@
+
+---
+# file: roles/base/tasks/npm.yml
+
+- name: Download and install nvm
+  shell: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+  args:
+    creates: $NVM_DIR
+  tags:
+    - npm 

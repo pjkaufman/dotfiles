@@ -1,0 +1,30 @@
+
+---
+# file: roles/base/tasks/ssh.yml
+
+- name: Install open ssh server
+  become: yes
+  apt:
+    name: openssh-server
+    state: latest
+
+- name: Creates ssh directory
+  file:
+    path: $HOME/.ssh
+    owner: "{{ ansible_effective_user_id }}"
+    group: "{{ ansible_effective_user_id }}"
+    state: directory
+
+- name: Generate /etc/ssh/ RSA host key
+  command : ssh-keygen -t ed25519 -C "$(git config --global user.email)" -f $HOME/.ssh/id_ed25519` -N ""
+  args:
+    creates: $HOME/.ssh/id_ed25519
+
+- name: Setup ssh config
+  file:
+    src: $HOME/dotfiles/ansible/roles/base/files/ssh/config
+    dest: $HOME/.ssh/config
+    owner: "{{ ansible_effective_user_id }}"
+    group: "{{ ansible_effective_user_id }}"
+    mode: 0600
+    state: link

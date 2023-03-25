@@ -1,0 +1,10 @@
+
+---
+# file: roles/base/tasks/go.yml
+
+- name: Download and install gvm
+  shell: curl -sSL https://github.com/soulteary/gvm/raw/master/binscripts/gvm-installer | bash
+  args:
+    creates: $GVM_DIR
+  tags:
+    - go 

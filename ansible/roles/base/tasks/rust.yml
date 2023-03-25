@@ -1,0 +1,23 @@
+
+---
+# file: roles/base/tasks/rust.yml
+
+- name: Install cargo
+  become: yes
+  apt:
+    name: cargo 
+    state: present
+
+- name: Install general use rust packages
+  become: yes
+  community.general.cargo:
+    name:
+      - topgrade # package that helps manage updating all package managers
+      - cargo-update # package for updating rust
+    state: present
+
+- name: Setup topgrade config
+  file:
+    src: $HOME/dotfiles/ansible/roles/base/files/topgrade/topgrade.toml
+    dest: $HOME/.config/topgrade.toml
+    state: link

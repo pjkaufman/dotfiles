@@ -1,0 +1,16 @@
+
+---
+# file: roles/personal/tasks/wine.yml
+
+- name: Apt Install wine
+  become: yes
+  become_user: root
+  apt:
+    name: wine 
+    state: present
+
+- name: 
+  file:
+    src: ~/dotfiles/ansible/roles/base/files/tmux.conf
+    dest: ~/.tmux.conf
+    state: link

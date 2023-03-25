@@ -1,0 +1,28 @@
+
+---
+# file: roles/personal/tasks/i3.yml
+
+- name: Install i3 and other packates it uses 
+  become: yes
+  apt:
+    name: 
+      - i3 
+      - scrot # screenshots 
+      - light # brightness changes
+      - feh # background image
+      - i3lock # lockscreen setup
+      - i3status # status info
+      - pulseaudio-utils # pactl - sound changes
+      - dmenu # app selector
+    state: present
+
+- name: Install bumblebee-status
+  ansible.builtin.pip:
+    name: bumblebee-status # status bar
+    state: present
+
+- name: Setup i3 config
+  file:
+    src: $HOME/dotfiles/ansible/roles/personal/files/i3/config
+    dest: $HOME/.config/i3/config
+    state: link

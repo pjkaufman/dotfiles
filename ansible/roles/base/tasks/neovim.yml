@@ -1,0 +1,82 @@
+
+---
+# file: roles/base/tasks/neovim.yml
+
+- name: Add neovim PPA for latest security patches
+  apt_repository:
+    # codename was added based on the question found on StackOverflow here
+    # https://stackoverflow.com/questions/54283390/ansible-modules-not-working-for-adding-a-git-ppa-wgpg-error-no-pubkey-err
+    repo: 'deb https://ppa.launchpadcontent.net/neovim-ppa/unstable/ubuntu/ {{ ansible_lsb.codename }} main'
+    state: present
+    update_cache: True
+  become: yes
+
+- name: Install neovim
+  become: yes
+  apt:
+    name: neovim 
+    state: latest
+
+- name: Get stats of the FS object
+  stat:
+    path: $HOME/.config/nvim/
+  register: nc
+
+- name: Remove the config (only if it is a folder that does not point to the expected source folder)
+  file: 
+    path: $HOME/.config/nvim/
+    state: absent
+  when: nc.stat.isdir is defined and nc.stat.isdir and (nc.stat.islnk == False or nc.stat.lnk_source != "$HOME/dotfiles/ansible/roles/base/files/neovim/")
+
+- name: Setup neovim config
+  file:
+    src: $HOME/dotfiles/ansible/roles/base/files/neovim/
+    dest: $HOME/.config/nvim
+
+# null-ls lsp formatters and diagnostics 
+- name: Install pip packages for neovim
+  ansible.builtin.pip:
+    name:
+      - codespell
+      - black
+      - flake8
+      - beautysh
+    state: present
+
+- name: Install stylua
+  cargo:
+    name: stylua
+    state: present
+
+- name: Install eslint node.js package globally.
+  npm:
+    name: eslint
+    global: true
+
+- name: Determine if delve is installed 
+  command: 'dlv'
+  register: dlv_status
+  ignore_errors: yes
+
+- name: Install delve
+  shell: 'go install github.com/go-delve/delve/cmd/dlv' # dlv install for go debugging
+  when: dlv_status.stderr is defined or dlv_status.stderr != '' 
+ 
+- name: Determine if goimports is installed 
+  command: 'goimports'
+  register: goimports_status
+  ignore_errors: yes
+
+- name: Install goimports
+  shell: 'go install golang.org/x/tools/cmd/goimports'
+  when: goimports_status.stderr is defined or goimports_status.stder != ''
+# if is_work_computer; then
+#   declare -A neovim_go_packages_to_install=( 
+#     ["github.com/yoheimuta/protolint/cmd/protolint"]="protolint"
+#     ["golang.org/x/tools/cmd/goimports"]="golangci-lint"
+#   )
+#
+#   for pkg in "${!neovim_go_packages_to_install[@]}"; do go_install_package "$pkg" "${neovim_go_packages_to_install[$pkg]}"; done
+# fi
+
+# TODO: handle google_java_format install

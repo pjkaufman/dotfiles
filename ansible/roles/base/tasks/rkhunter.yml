@@ -1,0 +1,16 @@
+
+---
+# file: roles/base/tasks/rkhunter.yml
+
+- name: Install rkhunter 
+  become: yes
+  apt:
+    name: rkhunter
+    state: latest
+
+- name: Setup rkhunter config
+  become: true
+  file:
+    src: '{{dotfiles}}/ansible/roles/base/files/rkhunter/rkhunter.conf'
+    dest: /etc/rkhunter.conf
+    state: link

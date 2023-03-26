@@ -13,10 +13,11 @@ i3_packages_to_install=(
   "feh" # background image
   "i3lock" # lockscreen setup
   "i3status" # status info
-  "pactl" # sound changes
   "dmenu" # app selector
 )
 for pkg in "${i3_packages_to_install[@]}"; do install_apt_package "$pkg"; done
+
+install_apt_package "pactl" "pulseaudio-utils" # sound changes
 
 pip_install_package "bumblebee-status" # status bar
 

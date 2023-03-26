@@ -1,9 +1,0 @@
----
-# file: roles/personal/tasks/main.yml
-
-- include_tasks: apt-packages.yml
-- include_tasks: kitty.yml
-- include_tasks: syncthing.yml
-- include_tasks: flatpak.yml
-- include_tasks: i3.yml
-- include_tasks: wkhtmltopdf.yml

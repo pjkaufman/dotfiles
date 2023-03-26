@@ -1,5 +1,0 @@
-# $HOME/.bash_profile
-# start off by loading .bashrc
-if [ -f $HOME/.bashrc ]; then
-  source $HOME/.bashrc
-fi

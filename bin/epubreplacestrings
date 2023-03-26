@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import re
+
+def replace_strings(str):
+    str = re.sub("(\. ?){2}\.", "…", str)  # proper ellipses
+    str = re.sub("(?<!!)--(?!>)", "—", str)  # em dash
+    str = re.sub(
+        "(B|b)y the by", "$1y the way", str
+    )  # replace By the by with its proper English idiom
+
+    return str
+
+
+# textExample = """
+# This is some text where we are going to replace some text
+# . . .
+# . ..
+# ...
+# --
+

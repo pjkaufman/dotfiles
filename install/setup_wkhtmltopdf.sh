@@ -7,9 +7,19 @@ if is_work_computer; then
   return
 fi
 
-wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
-tar xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz 
-sudo mv wkhtmltox/bin/wkhtmlto* /usr/local/bin 
-sudo apt-get install -y openssl libssl-dev libxrender-dev libx11-dev libxext-dev libfontconfig1-dev libfreetype6-dev fontconfig
+if ! command -v wkhtmltopdf &> /dev/null
+then
+  wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
+  tar xvf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz 
+  sudo mv wkhtmltox/bin/wkhtmlto* $HOME/.local/bin 
+fi
 
+install_apt_package "openssl" 
+install_apt_package "libssl-dev" 
+install_apt_package "libxrender-dev"
+install_apt_package "libx11-dev" 
+install_apt_package "libxext-dev" 
+install_apt_package "libfontconfig1-dev"
+install_apt_package "libfreetype6-dev"
+install_apt_package "fontconfig"
 install_apt_package "pandoc" # document conversion

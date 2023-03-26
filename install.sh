@@ -43,6 +43,7 @@ install_script_section_text=(
   "setup flatpaks"
   "setup i3"
   "setup neovim"
+  "setup wkhtmltopdf"
 )
 
  declare -A install_script_sections_files=( 
@@ -58,6 +59,7 @@ install_script_section_text=(
   ["setup rkhunter"]="install/setup_rkhunter.sh"
   ["setup i3"]="install/setup_i3.sh"
   ["setup neovim"]="install/setup_neovim.sh"
+  ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
 )
 
 # TODO: add logic for wkhtml to pdf
@@ -69,6 +71,9 @@ for i in "${!install_script_section_text[@]}"; do
 done
 
 unset header 
+
+# remove any no longer needed packages
+sudo apt autoremove -y
 
 echo ""
 echo "environment setup complete"

@@ -58,3 +58,15 @@ class EpubStringReplaceTestCase(unittest.TestCase):
         output = replace_strings.replace_strings(input)
 
         assert output == expected_output
+
+    def testByTheByLowercase(self):
+        input = "by the by"
+        output = replace_strings.replace_strings(input)
+
+        assert output == "by the way"
+
+    def testByTheByUpercase(self):
+        input = "By the by"
+        output = replace_strings.replace_strings(input)
+
+        assert output == "By the way"

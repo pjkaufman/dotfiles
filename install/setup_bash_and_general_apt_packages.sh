@@ -2,12 +2,18 @@
 
 # setup the bash and terminal related files 
 
+tmux_dir="$HOME/.config/tmux"
 declare -A bash_related_file_sylink_info=( 
   ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile"
   ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
   ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
-  ["$HOME/dotfiles/tmux/.tmux.conf"]="$HOME/.tmux.conf"
+  ["$HOME/dotfiles/tmux/tmux.conf"]="$tmux_dir/tmux.conf"
 )
+
+tmux_dir="$HOME/.config/tmux"
+if [ ! -d "$HOME/.config/tmux" ]; then 
+  mkdir -p "$tmux_dir"
+fi
 
 for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${bash_related_file_sylink_info[$file]}"; done
 

@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+import re
+import sys
+
+
+# <item id="cover.xhtml" href="Text/cover.xhtml" media-type="application/xhtml+xml"/>
+def remove_ids_from_hrefs(text):
+    text = re.sub("(\. ?){2}\.", "…", text)  # proper ellipses
+    text = re.sub("(?<!!)--(?!>)", "—", text)  # em dash
+    text = re.sub(
+        r"(B|b)y the by", r"\1y the way", text
+    )  # replace By the by with its proper English idiom
+
+    return text
+
+
+if __name__ == "__main__":
+    if len(sys.argv) >= 2:
+        with open(sys.argv[1], "r+") as f:
+            text = f.read()
+            text = remove_ids_from_hrefs(text)
+            f.seek(0)
+            f.write(text)
+            f.truncate()

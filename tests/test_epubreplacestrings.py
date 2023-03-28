@@ -5,6 +5,7 @@ from importlib.util import spec_from_loader, module_from_spec
 import os.path
 import types
 import unittest
+from dataclasses import dataclass
 
 
 def import_from_source(name: str, file_path: str) -> types.ModuleType:
@@ -28,45 +29,59 @@ replace_strings: types.ModuleType = import_from_source("epubreplacestring", scri
 
 
 class EpubStringReplaceTestCase(unittest.TestCase):
-    def testHtmlCommentLeftAlone(self):
-        input = "<!--This is a comment. Comments are not displayed in the browser-->"
-        output = replace_strings.replace_strings(input)
+    def testRegexReplace(self):
+        @dataclass
+        class TestCase:
+            name: str
+            input: str
+            expected: str
 
-        assert output == input
+        testcases = [
+            TestCase(
+                name="make sure that html comments are left alone",
+                input="<!--this is a comment. comments are not displayed in the browser-->",
+                expected="<!--this is a comment. comments are not displayed in the browser-->",
+            ),
+            TestCase(
+                name="make sure that two en dashes are replaced with an em dash",
+                input="-- test --",
+                expected="— test —",
+            ),
+            TestCase(
+                name="make sure that html comments are left alone",
+                input="""
+                  ...
+                  . . .
+                  . .. 
+                  .. .
+                  .  . .
+                """,
+                expected="""
+                  …
+                  …
+                  … 
+                  …
+                  .  . .
+                """,
+            ),
+            TestCase(
+                name="make sure that a lowercase 'by the by' results in a lowercase 'by the way'",
+                input="by the by",
+                expected="by the way",
+            ),
+            TestCase(
+                name="make sure that an uppercase 'By the by' results in an uppercase 'By the way'",
+                input="By the by",
+                expected="By the way",
+            ),
+        ]
 
-    def testTwoEnDashesReplacedWithEmDash(self):
-        input = "-- test --"
-        output = replace_strings.replace_strings(input)
-
-        assert output == "— test —"
-
-    def testMulitplePeriodsConvertedToProperEllipsis(self):
-        input = """
-        ...
-        . . .
-        . .. 
-        .. .
-        .  . .
-        """
-        expected_output = """
-        …
-        …
-        … 
-        …
-        .  . .
-        """
-        output = replace_strings.replace_strings(input)
-
-        assert output == expected_output
-
-    def testByTheByLowercase(self):
-        input = "by the by"
-        output = replace_strings.replace_strings(input)
-
-        assert output == "by the way"
-
-    def testByTheByUpercase(self):
-        input = "By the by"
-        output = replace_strings.replace_strings(input)
-
-        assert output == "By the way"
+        for case in testcases:
+            actual = replace_strings.replace_strings(case.input)
+            self.assertEqual(
+                case.expected,
+                actual,
+                "failed test {} expected {}, actual {}".format(
+                    case.name, case.expected, actual
+                ),
+            )

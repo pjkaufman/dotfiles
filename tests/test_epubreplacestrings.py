@@ -29,6 +29,7 @@ replace_strings: types.ModuleType = import_from_source("epubreplacestring", scri
 
 
 class EpubStringReplaceTestCase(unittest.TestCase):
+    # testRegexReplace is based on https://lorenzopeppoloni.com/tabledriventestspy/
     def testRegexReplace(self):
         @dataclass
         class TestCase:

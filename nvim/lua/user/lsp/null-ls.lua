@@ -33,7 +33,10 @@ local sources = {
 		end,
 	}),
 	-- diagnostics
-	diagnostics.flake8,
+	-- diagnostics.flake8,
+	diagnostics.flake8.with({
+		extra_args = { "--max-line-length=150" },
+	}),
 	diagnostics.eslint.with({
 		method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
 	}),

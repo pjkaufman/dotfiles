@@ -6,6 +6,7 @@ import sys
 
 # <item id="cover.xhtml" href="Text/cover.xhtml" media-type="application/xhtml+xml"/>
 def remove_ids_from_hrefs(text):
+    # <item id="cover.xhtml" href="Text/cover.xhtml" media-type="application/xhtml+xml"/>
     text = re.sub("(\. ?){2}\.", "…", text)  # proper ellipses
     text = re.sub("(?<!!)--(?!>)", "—", text)  # em dash
     text = re.sub(

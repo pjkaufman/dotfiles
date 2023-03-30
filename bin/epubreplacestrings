@@ -4,6 +4,7 @@ import re
 import sys
 
 
+# <content src="titlepage.xhtml"/>
 def replace_strings(str):
     str = re.sub("(\. ?){2}\.", "…", str)  # proper ellipses
     str = re.sub("(?<!!)--(?!>)", "—", str)  # em dash

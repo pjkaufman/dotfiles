@@ -26,5 +26,8 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 
 - The clipboard does not seem to connect to the system clipboard properly
 - Running Go tests does not seem to work
-- Debugging using DAP does not seem to work for Go
 - golangci-lint does not seem to work for Go
+
+### Setting Up Calibre DeDRM
+
+First you will need to install Calibre and a compatible version of the DeDRM plugin. Make sure to install Kindle for PC version 1.17 via wine. You will also want to install a calibre version along with its compatible version of DeDRM into wine and then restart Calibre once the plugin is present. From there it should autoload the key and if not press the green plus sign and it should load the key. Once that is done, export the key and then import that key in the version of calibre on your non-wine portion. Then go ahead and import any books you would like from Kindle for PC. They should all be DRM free now.

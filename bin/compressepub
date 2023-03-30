@@ -12,7 +12,12 @@ for i in *.epub; do
     
     # check for jpg/jpeg and png images
     for j in **/*.{jpg,jpeg,png}; do
-        imgp -x 800x800 -e -O -q 40 -w -m "${j}"
+        [[ -f "${j}" ]] && imgp -x 800x800 -e -O -q 40 -w -m "${j}"
+    done
+
+    # go ahead and replace common strings to the desired format
+    for j in ./epub/OEBPS/Text/*.{html,xhtml,htm}; do
+        [[ -f "${j}" ]] && python3 "$HOME/dotfiles/bin/epubreplacestrings" "${j}"
     done
 
     # rezip the epub

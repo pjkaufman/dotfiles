@@ -30,3 +30,5 @@ export GOROOT=$HOME/.gvm/gos/go$GO_VERSION/
 export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
 
 export TERM=xterm-256color # needed to prevent an error on load
+
+export WINEPREFIX=$HOME/.wine/

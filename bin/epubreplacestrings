@@ -1,10 +1,13 @@
 #!/usr/bin/env python
+"""
+This file is meant to be used on the text based content files of an epub. This allows for the replacement of common stylistic
+changes and translation errors with the desired value making later book maintenance less of a hassle.
+"""
 
 import re
 import sys
 
 
-# <content src="titlepage.xhtml"/>
 def replace_strings(str):
     str = re.sub("(\. ?){2}\.", "…", str)  # proper ellipses
     str = re.sub("(?<!!)--(?!>)", "—", str)  # em dash

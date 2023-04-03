@@ -8,14 +8,17 @@ import re
 import sys
 
 
-def replace_strings(str):
-    str = re.sub("(\. ?){2}\.", "…", str)  # proper ellipses
-    str = re.sub("(?<!!)--(?!>)", "—", str)  # em dash
-    str = re.sub(
-        r"(B|b)y the by", r"\1y the way", str
+def replace_strings(text):
+    text = re.sub("(\. ?){2}\.", "…", text)  # proper ellipses
+    text = re.sub("(?<!!)--(?!>)", "—", text)  # em dash
+    text = re.sub(
+        r"(B|b)y the by", r"\1y the way", text
     )  # replace By the by with its proper English idiom
+    text = re.sub(
+        r"(S|s)neaked", r"\1nuck", text
+    )  # replace sneaked with snuck as it is more commonly used nowadays
 
-    return str
+    return text
 
 
 if __name__ == "__main__":

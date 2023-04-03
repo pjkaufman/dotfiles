@@ -75,6 +75,16 @@ class EpubStringReplaceTestCase(unittest.TestCase):
                 input="By the by",
                 expected="By the way",
             ),
+            TestCase(
+                name="make sure that an uppercase 'Sneaked' results in an uppercase 'Snuck'",
+                input="Sneaked",
+                expected="Snuck",
+            ),
+            TestCase(
+                name="make sure that a lowercase 'snuck' results in a lowercase 'snuck'",
+                input="On his way he sneaked out the door",
+                expected="On his way he snuck out the door",
+            ),
         ]
 
         for case in testcases:

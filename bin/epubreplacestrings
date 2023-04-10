@@ -6,20 +6,76 @@ changes and translation errors with the desired value making later book maintena
 
 import re
 import sys
+from dataclasses import dataclass
+from typing import Any, Callable, Union
 
+def out_of_the_blue_regex_handler(match):
+    group1 = match.group(1)
+    firstLetter = 'O'
+    if group1 == 'a':
+        firstLetter = 'o'
 
-def replace_strings(text):
-    # TODO: see about converting the logic here into a set of data classes that have the regex, rationale, and replacement string/function
-    text = re.sub("(\. ?){2}\.", "…", text)  # proper ellipses
-    text = re.sub("(?<!!)--(?!>)", "—", text)  # em dash
-    text = re.sub("(?<!~)~(?!~)", "!", text) # ~ to ! as ~ seems to be used in the place of ! though it could be used as another form of literary device.
-    text = re.sub(
-        r"(B|b)y the by", r"\1y the way", text
-    )  # replace By the by with its proper English idiom
-    text = re.sub(
-        r"(S|s)neaked", r"\1nuck", text
-    )  # replace sneaked with snuck as it is more commonly used nowadays
-    # TODO: take care of "a bolt out of the blue", "Little wonder" to "No wonder", and "~"
+    group3 = match.group(3)
+
+    return "{0}{1}".format(firstLetter, group3)
+
+def no_wonder_regex_handler(match):
+    group1 = match.group(1)
+    firstLetter = 'N'
+    if group1 == 'l':
+        firstLetter = 'n'
+
+    group2 = match.group(2)
+
+    return "{0}{1}".format(firstLetter + 'o', group2)
+
+@dataclass
+class replaceString:
+    search: str
+    replace: Union[str, Callable[[Any], str]]
+    rational: str
+
+regexesToReplace = (
+    replaceString(
+      search ="(\. ?){2}\.",
+      replace ="…",
+      rational ="Proper ellipses should be used where possible as it keeps things clean and consistent",
+    ),
+    replaceString(
+      search ="(?<!!)--(?!>)",
+      replace ="—",
+      rational ="Em dashes should be used where possible as it keeps things clean and consistent",
+    ),
+    replaceString(
+      search ="(?<!~)~(?!~)",
+      replace ="!",
+      rational ="Tildes should be replaced with an exclamation mark when they are by themselves as they seem interchangeable, though it could be another form of punctuation for drawing out the sound of the last letter used",
+    ),
+    replaceString(
+      search =r"(B|b)y the by",
+      replace =r"\1y the way",
+      rational ="'By the by' seems to be an improper translation of 'By the way', so we should auto-correct it to its proper English idiom",
+    ),
+    replaceString(
+      search =r"(A|a) bolt (o)(ut of the blue)",
+      replace = out_of_the_blue_regex_handler,
+      rational ="'a bolt out of the blue' seems to be an improper translation of 'out of the blue', so we should auto-correct it to its proper English idiom",
+    ),
+    replaceString(
+      search =r"(L|l)ittle( wonder)",
+      replace = no_wonder_regex_handler,
+      rational ="'little wonder' seems to be an improper translation of 'no wonder', so we should auto-correct it to its proper English idiom",
+    ),
+    replaceString(
+      search =r"(S|s)neaked",
+      replace =r"\1nuck",
+      rational ="Use snuck instead of sneaked as it is the more commonly used version of the word nowadays",
+    ),
+)
+
+def replace_strings(text: str):
+    for regexToReplace in regexesToReplace:
+        text = re.sub(regexToReplace.search, regexToReplace.replace, text)
 
     return text
 

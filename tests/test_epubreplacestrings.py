@@ -95,6 +95,26 @@ class EpubStringReplaceTestCase(unittest.TestCase):
                 input="~~ is completely ~~~ left alone",
                 expected="~~ is completely ~~~ left alone",
             ),
+            TestCase(
+                name="make sure that a lowercase 'a bolt out of the blue' is correctly converted to 'out of the blue",
+                input="a bolt out of the blue",
+                expected="out of the blue",
+            ),
+            TestCase(
+                name="make sure that an uppercase 'A bolt out of the blue' is correctly converted to 'Out of the blue",
+                input="A bolt out of the blue, a loud bang went off waking up people who had been sleeping soundly up until that point.",
+                expected="Out of the blue, a loud bang went off waking up people who had been sleeping soundly up until that point.",
+            ),
+            TestCase(
+                name="make sure that a lowercase 'little wonder' is correctly converted to 'no wonder",
+                input="little wonder your attempt failed",
+                expected="no wonder your attempt failed",
+            ),
+            TestCase(
+                name="make sure that an uppercase 'Little wonder' is correctly converted to 'No wonder",
+                input="Little wonder, you were outmatched from the start",
+                expected="No wonder, you were outmatched from the start",
+            ),
         ]
 
         for case in testcases:

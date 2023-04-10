@@ -9,14 +9,17 @@ import sys
 
 
 def replace_strings(text):
+    # TODO: see about converting the logic here into a set of data classes that have the regex, rationale, and replacement string/function
     text = re.sub("(\. ?){2}\.", "…", text)  # proper ellipses
     text = re.sub("(?<!!)--(?!>)", "—", text)  # em dash
+    text = re.sub("(?<!~)~(?!~)", "!", text) # ~ to ! as ~ seems to be used in the place of ! though it could be used as another form of literary device.
     text = re.sub(
         r"(B|b)y the by", r"\1y the way", text
     )  # replace By the by with its proper English idiom
     text = re.sub(
         r"(S|s)neaked", r"\1nuck", text
     )  # replace sneaked with snuck as it is more commonly used nowadays
+    # TODO: take care of "a bolt out of the blue", "Little wonder" to "No wonder", and "~"
 
     return text
 

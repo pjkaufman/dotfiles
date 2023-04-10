@@ -85,6 +85,16 @@ class EpubStringReplaceTestCase(unittest.TestCase):
                 input="On his way he sneaked out the door",
                 expected="On his way he snuck out the door",
             ),
+            TestCase(
+                name="make sure that single tilde is converted to an exclamation mark",
+                input="~wow isn't this a joy~",
+                expected="!wow isn't this a joy!",
+            ),
+            TestCase(
+                name="make sure that multiple tildes in a row are not converted to an exclamation mark",
+                input="~~ is completely ~~~ left alone",
+                expected="~~ is completely ~~~ left alone",
+            ),
         ]
 
         for case in testcases:

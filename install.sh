@@ -34,6 +34,7 @@ install_script_section_text=(
   "setup computer type" 
   "setup bash and common packages"
   "setup git"
+  "setup tmux"
   "setup rust"
   "setup go"
   "setup npm"
@@ -50,6 +51,7 @@ install_script_section_text=(
   ["setup computer type"]="install/setup_computer_type.sh" 
   ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages.sh"
   ["setup git"]="install/setup_git.sh"
+  ["setup tmux"]="install/setup_tmux.sh"
   ["setup rust"]="install/setup_rust.sh"
   ["setup syncthing"]="install/setup_syncthing.sh"
   ["setup flatpaks"]="install/setup_flatpak.sh"
@@ -61,8 +63,6 @@ install_script_section_text=(
   ["setup neovim"]="install/setup_neovim.sh"
   ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
 )
-
-# TODO: add logic for wkhtml to pdf
 
 for i in "${!install_script_section_text[@]}"; do 
   header="${install_script_section_text[$i]}"

@@ -22,3 +22,9 @@ install_apt_package "pactl" "pulseaudio-utils" # sound changes
 pip_install_package "bumblebee-status" # status bar
 
 ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/config"
+
+echo "Copying images"
+
+# make sure to overwrite the existing image if there is one since I cannot use symlinks
+cp -f $HOME/dotfiles/i3/Laminin.png $HOME/.config/i3/Laminin.png
+cp -f $HOME/dotfiles/i3/CharlesOutside.jpg $HOME/.config/i3/CharlesOutside.jpg

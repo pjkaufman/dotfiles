@@ -46,9 +46,9 @@ bindsym XF86MonBrightnessUp exec light -A 5
 bindsym XF86MonBrightnessDown exec light -U 5
 
 # Screen shots
-bindsym --release Print exec "scrot -m '/home/aquacat/Pictures/screenshots/%s_%H%M_%d.%m.%Y_$wx$h.png'"
-bindsym --release Shift+Print exec "scrot -s '/home/aquacat/Pictures/screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
-bindsym --release $mod+Shift+Print exec "scrot -u -d 4 '/home/aquacat/Pictures/screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
+bindsym --release Print exec "scrot -m '$HOME/Pictures/Screenshots/%s_%H%M_%d.%m.%Y_$wx$h.png'"
+bindsym --release Shift+Print exec "scrot -s '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
+bindsym --release $mod+Shift+Print exec "scrot -u -d 4 '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -193,7 +193,7 @@ mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock" {
   bindsym r exec systemctl reboot
   bindsym s exec systemctl shutdown
   bindsym h exec systemctl hibernate
-  bindsym x exec i3lock -i ~/Pictures/Laminin.png -p default -n
+  bindsym x exec i3lock -i $HOME/.config/i3/Laminin.png -p default -n
   bindsym Escape mode "default"
   bindsym Return mode "default"
 }
@@ -202,14 +202,14 @@ bindsym $mod+x mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock"
 
 bar {
         position top
-	status_command /home/aquacat/.local/bin/bumblebee-status \
+	status_command $HOME/.local/bin/bumblebee-status \
 		-m pasink brightness cpu disk memory battery-upower time traffic nic \
 		-p time.format='%H:%M' \
 		-t solarized
 }
 
 # initial workspace config setup
-exec_always feh --bg-fill $HOME/Pictures/Charles/CharlesOutside.jpg
+exec_always feh --bg-fill $HOME/.config/i3/CharlesOutside.jpg
 exec --no-startup-id i3-msg 'workspace 1; exec kitty $HOME/dotfiles/bin/starttmux'
 exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser &'
 exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/syncthing'

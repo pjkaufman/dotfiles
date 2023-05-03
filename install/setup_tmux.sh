@@ -3,7 +3,7 @@
 # setup tmux 
 
 tmux_dir="$HOME/.config/tmux"
-if [ ! -d "$HOME/.config/tmux" ]; then 
+if [ ! -d "$tmux_dir" ]; then 
   mkdir -p "$tmux_dir"
 fi
 
@@ -12,4 +12,7 @@ ensure_file_symlink_is_in_place "$HOME/dotfiles/tmux/tmux.conf" "$tmux_dir/tmux.
 install_apt_package "tmux"
 
 # install package manager for tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+tmux_plugin_dir="$HOME/.tmux/plugins/tpm"
+if [ ! -d "$tmux_plugin_dir" ]; then 
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi

@@ -42,6 +42,20 @@ install_flatpak_package() {
   fi
 }
 
+# install_apt_package_by_package_name_only makes sure that the provided package name
+# is installed and installs it if it is not
+# $1 is the name of the package to make sure to install
+install_apt_package_by_package_name_only() {
+  grep_output=`dpkg -s $1 | grep "installed"`
+  if [ -z grep_output ]
+  then
+      echo "installing $1"
+      sudo apt install -y "$1"
+  else
+    echo "$1 is already installed"
+  fi
+}
+
 # add_ppa_and_install_package adds the specified PPA if it does not exist already
 # $1 is the name of the package with a slash and the type of stability of the PPA (i.e. syncthing/stable)
 # $2 is the name of the package to install once the PPA has been added

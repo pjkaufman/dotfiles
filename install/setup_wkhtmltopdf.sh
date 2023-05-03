@@ -14,12 +14,12 @@ then
   sudo mv wkhtmltox/bin/wkhtmlto* $HOME/.local/bin 
 fi
 
-install_apt_package "openssl" 
-install_apt_package "libssl-dev" 
-install_apt_package "libxrender-dev"
-install_apt_package "libx11-dev" 
-install_apt_package "libxext-dev" 
-install_apt_package "libfontconfig1-dev"
-install_apt_package "libfreetype6-dev"
-install_apt_package "fontconfig"
-install_apt_package "pandoc" # document conversion
+install_apt_package_by_package_name_only "openssl" 
+install_apt_package_by_package_name_only "libssl-dev" 
+install_apt_package_by_package_name_only "libxrender-dev"
+install_apt_package_by_package_name_only "libx11-dev" 
+install_apt_package_by_package_name_only "libxext-dev" 
+install_apt_package_by_package_name_only "libfontconfig1-dev"
+install_apt_package_by_package_name_only "libfreetype6-dev"
+install_apt_package_by_package_name_only "fontconfig"
+install_apt_package  "pandoc" # document conversion

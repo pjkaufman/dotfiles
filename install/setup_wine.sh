@@ -28,3 +28,9 @@ if [ ! -f $cert_file ]; then
   sudo cp $HOME/dotfiles/wine/certificate $cert_file
   sudo update-ca-certificates
 fi
+
+expected_cert_file="/etc/ssl/certs/b204d74a.0"
+if [ ! -f $expected_cert_file ]; then
+  echo "Something is not right about the cert generation as file '$expected_cert_file' was not generated."
+  exit -1;
+fi

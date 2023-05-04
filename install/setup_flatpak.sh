@@ -26,6 +26,4 @@ else
   install_flatpak_package "Calibre" "com.calibre_ebook.calibre"
   install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
   install_flatpak_package "Only Office" "org.onlyoffice.desktopeditors"
-
-  # for pkg in "${!flatpak_packages_to_install[@]}"; do install_flatpak_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 fi

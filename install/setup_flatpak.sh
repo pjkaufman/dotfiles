@@ -27,3 +27,6 @@ else
   install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
   install_flatpak_package "Only Office" "org.onlyoffice.desktopeditors"
 fi
+
+# TODO: make sure only office is in dark mode by adding the following to the general section of ~/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf
+# UITheme2=theme-dark

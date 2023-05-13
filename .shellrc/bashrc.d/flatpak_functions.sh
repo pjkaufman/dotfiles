@@ -28,7 +28,10 @@ minecraft() {
 
 # allows for easy running of Only Office via terminal
 office() {
+  eson
   flatpak run org.onlyoffice.desktopeditors &
+  wait; esoff # freezes the current terminal until the previous command finishes and it will then turn Spanish characters off for the same of terminal
+  # typing
 }
 
 # allows for easy running of Sigil via terminal

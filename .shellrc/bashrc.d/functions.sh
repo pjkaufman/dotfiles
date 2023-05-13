@@ -29,6 +29,18 @@ rn() {
   rename 's/$1/$2/s' "$3"
 }
 
+# keyboard setup
+
+# set keyboard layout to English international to allow alt+character to have accented or Spanish characters
+eson(){
+  setxkbmap -layout us -variant intl
+}
+
+# set keyboard layout to regular English to make it easier to program and do other things from the cli
+esoff(){
+  setxkbmap -layout us
+}
+
 # scan the computer for viruses and other issues
 scan() {
   sudo rkhunter --check --sk --rwo

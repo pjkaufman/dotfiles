@@ -61,6 +61,10 @@ for option in autocd globstar; do
   shopt -s "$option" 2> /dev/null;
 done;
 
+# set keyboard layout to English international to allow alt+character to have accented or Spanish characters
+
+setxkbmap -layout us -variant intl
+
 # start SSH for Github if it has not already started
 sshstart
 

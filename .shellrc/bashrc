@@ -80,4 +80,4 @@ gvmforceuse $GO_VERSION
 [ -r "$HOME/.localrc" ] && [ -f "$HOME/.localrc" ] && source "$HOME/.localrc";
 
 # clear the terminal after the setup is over
-# c
+c

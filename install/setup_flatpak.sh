@@ -6,16 +6,6 @@ if is_work_computer; then
   return
 fi
 
-declare -A flatpak_packages_to_install=(
-  ["Brave Browser"]="com.brave.Browser"
-  ["Minecraft"]="com.mojang.Minecraft"
-  ["GnuCash"]="org.gnucash.GnuCash"
-  ["Sigil"]="com.sigil_ebook.Sigil"
-  ["Calibre"]="com.calibre_ebook.calibre"
-  ["Obsidian"]="md.obsidian.Obsidian"
-  ["Only Office"]="org.onlyoffice.desktopeditors"
-)
-
 if ! command -v flatpak &> /dev/null; then
   echo "Flatpak not installed. Please install it."
 else
@@ -28,5 +18,12 @@ else
   install_flatpak_package "Only Office" "org.onlyoffice.desktopeditors"
 fi
 
-# TODO: make sure only office is in dark mode by adding the following to the general section of ~/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf
-# UITheme2=theme-dark
+# Only Office Settings
+
+only_office_dark_theme_setting="UITheme2=theme-dark"
+only_office_settings_file="$HOME/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf"
+echo "$only_office_settings_file"
+if [ -z $(grep "$only_office_dark_theme_setting" "$only_office_settings_file") ]; then
+  echo "Adding dark theme setting for Only Office"
+  sed -i "s/\[General\]/\[General\]\n$only_office_dark_theme_setting/g" $only_office_settings_file
+fi

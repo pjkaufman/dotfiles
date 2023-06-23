@@ -79,12 +79,99 @@ def replace_strings(text: str):
 
     return text
 
+def replace_string_in_single_file(filePath: str):
+    with open(filePath, "r+") as f:
+        text = f.read()
+        text = replace_strings(text)
+        f.seek(0)
+        f.write(text)
+        f.truncate()
+        f.close()
+
+def parse_text_replacements(text: str):
+    replaceValueToReplacement = {}
+    lines = text.split('\n')
+
+    if len(lines) <= 2:
+        return replaceValueToReplacement
+
+    # remove the markdown table header and divider lines
+    lines.pop(0)
+    lines.pop(0)
+    
+    for line in lines:
+        lineParts = line.split('|')
+        if len(lineParts) == 1:
+            continue
+        elif len(lineParts) != 4:
+            print("Could not parse `" + line + "` because it does not have the proper amount of '|'s in it")
+            continue
+
+        replaceValueToReplacement[lineParts[1].strip()] = lineParts[2].strip()
+
+    return replaceValueToReplacement
+
+def replace_file_strings(text: str, findAllValuesToReplace: dict[str, str], numberOfHits: dict[str, int]):
+    for valueToReplace, replacementValue in findAllValuesToReplace.items():
+        hitsInText = text.count(valueToReplace)
+        if valueToReplace in numberOfHits:
+            numberOfHits[valueToReplace] += hitsInText
+        else:
+            numberOfHits[valueToReplace] = hitsInText
+
+        text = text.replace(valueToReplace, replacementValue)
+
+    return text
+
+def replace_text_in_files(files: list[str], replaceValueFile: str):
+  replacementValues = {}
+  numberOfHits = {}
+  with open(replaceValueFile, "r+") as f:
+          text = f.read()
+          text = replace_strings(text)
+          replacementValues = parse_text_replacements(text)
+          f.close()
+
+  if replacementValues == {}:
+      print ("no values were listed as needing replacing")
+      return
+
+  for file in files:
+      with open(file, "r+") as f:
+          text = f.read()
+          text = replace_strings(text)
+          text = replace_file_strings(text, replacementValues, numberOfHits)
+          f.seek(0)
+          f.write(text)
+          f.truncate()
+          f.close()
+  
+  for valueToReplace in replacementValues.keys():
+      if valueToReplace not in numberOfHits or numberOfHits[valueToReplace] == 0:
+          print("Did not find any replacements for `" + valueToReplace + "`")
+      else:
+          print("`" + valueToReplace + "` was replaced " + str(numberOfHits[valueToReplace]) + " time(s)")
+
+# handle the logic for deciding which method to call and the parsing of params if need be
+def main():
+  if len(sys.argv) >= 3:
+      mode = sys.argv[1]
+      match mode:
+        case 's':
+            replace_string_in_single_file(sys.argv[2])
+
+        case 'm':
+            if len(sys.argv) < 4:
+                print("Invalid number or params were provided. You must provide the following params:")
+                print("mode, list of file paths separated by a comma, and path to a markdown file that has a table in where each row is a value to find and what it should be replaced with")
+                return
+
+            replace_text_in_files(sys.argv[2].split(','), sys.argv[3])
+
+        case _:
+            print("Invalid mode provided. Please provide one of the following modes:")
+            print("s - run common text replacements against a single file")
+            print("m - run common text replacements and a list of replacements from a file against one or more files that are provided")
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2:
-        with open(sys.argv[1], "r+") as f:
-            text = f.read()
-            text = replace_strings(text)
-            f.seek(0)
-            f.write(text)
-            f.truncate()
+    main()

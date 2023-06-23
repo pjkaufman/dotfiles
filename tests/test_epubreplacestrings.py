@@ -25,7 +25,7 @@ script_path: str = os.path.abspath(
     )
 )
 
-replace_strings: types.ModuleType = import_from_source("epubreplacestring", script_path)
+epub_replace_string: types.ModuleType = import_from_source("epubreplacestring", script_path)
 
 
 class EpubStringReplaceTestCase(unittest.TestCase):
@@ -118,7 +118,46 @@ class EpubStringReplaceTestCase(unittest.TestCase):
         ]
 
         for case in testcases:
-            actual = replace_strings.replace_strings(case.input)
+            actual = epub_replace_string.replace_strings(case.input)
+            self.assertEqual(
+                case.expected,
+                actual,
+                "failed test {} expected {}, actual {}".format(
+                    case.name, case.expected, actual
+                ),
+            )
+
+    def testReplacementParser(self):
+        @dataclass
+        class TestCase:
+            name: str
+            input: str
+            expected: dict[str, int]
+
+        testcases = [
+            TestCase(
+                name="make sure that an empty table results in an empty dictionary",
+                input="""| Text to replace | Text replacement |
+                | ---- | ---- |
+                """,
+                expected={},
+            ),
+            TestCase(
+                name="make sure that a non-empty table results in the appropriate amount of entries being placed in a dictionary",
+                input="""| Text to replace | Text replacement |
+                | ---- | ---- |
+                | replace | with me |
+                | "I am quoted" | 'I am single quoted' |
+                """,
+                expected={
+                    'replace': 'with me',
+                    '\"I am quoted\"': '\'I am single quoted\'',
+                },
+            ),
+        ]
+
+        for case in testcases:
+            actual = epub_replace_string.parse_text_replacements(case.input)
             self.assertEqual(
                 case.expected,
                 actual,

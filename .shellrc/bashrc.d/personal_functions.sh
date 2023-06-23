@@ -20,3 +20,8 @@ enablebright() {
 compressepub() {
   source "$HOME/dotfiles/bin/compressepub"
 }
+
+# epubreplaceallstrings helps with replacing a bunch of strings in an epub file
+epubreplaceallstrings() {
+  source "$HOME/dotfiles/bin/epubreplaceallstrings"
+}

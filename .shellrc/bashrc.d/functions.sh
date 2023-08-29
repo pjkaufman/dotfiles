@@ -26,7 +26,12 @@ update() {
 }
 
 rn() {
-  rename 's/$1/$2/s' "$3"
+  if [[ -z $4 ]]; then
+    rename "s/$1/$2/" $3
+    return;
+  fi
+
+  rename -n "s/$1/$2/" $3
 }
 
 # keyboard setup

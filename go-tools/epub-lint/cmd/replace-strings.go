@@ -21,30 +21,31 @@ type ReplaceStringFunc struct {
 	Rational string
 }
 
+var regexEscapedPeriod = regexp.QuoteMeta(".")
 var commonReplaceStrings = []ReplaceString{
 	{
-		Search:   regexp.MustCompile(regexp.QuoteMeta("(. ?){2}.")),
+		Search:   regexp.MustCompile(fmt.Sprintf("(%[1]s ?){2}%[1]s", regexEscapedPeriod)),
 		Replace:  "…",
 		Rational: "Proper ellipses should be used where possible as it keeps things clean and consistent",
 	},
 	{
-		Search:   regexp.MustCompile("([^>])--([^>])"),
+		Search:   regexp.MustCompile("(^|[^!])--([^>]|$)"),
 		Replace:  "$1—$2",
 		Rational: "Em dashes should be used where possible as it keeps things clean and consistent",
 	},
 	{
-		Search:   regexp.MustCompile("([^~])~([^~])"),
+		Search:   regexp.MustCompile("(^|[^~])~([^~]|$)"),
 		Replace:  "$1!$2",
 		Rational: "Tildes should be replaced with an exclamation mark when they are by themselves as they seem interchangeable, though it could be another form of punctuation for drawing out the sound of the last letter used",
 	},
 	{
 		Search:   regexp.MustCompile("(B|b)y the by"),
-		Replace:  "$1y the way",
+		Replace:  "${1}y the way",
 		Rational: "'By the by' seems to be an improper translation of 'By the way', so we should auto-correct it to its proper English idiom",
 	},
 	{
 		Search:   regexp.MustCompile("(S|s)neaked"),
-		Replace:  "$1nuck",
+		Replace:  "${1}nuck",
 		Rational: "Use snuck instead of sneaked as it is the more commonly used version of the word nowadays",
 	},
 }

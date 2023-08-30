@@ -65,3 +65,32 @@ func GetFoldersInCurrentFolder(path string) []string {
 
 	return actualDirs
 }
+
+func ReadInFileContents(path string) string {
+	if strings.Trim(path, " ") == "" {
+		return ""
+	}
+
+	fileBytes, err := os.ReadFile(path)
+	if err != nil {
+		WriteError(fmt.Sprintf(`could not read in file contents for "%s": %s`, path, err))
+	}
+
+	return string(fileBytes)
+}
+
+func WriteFileContents(path, content string) {
+	if strings.Trim(path, " ") == "" {
+		return
+	}
+
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		WriteError(fmt.Sprintf(`could not read in existing file info to retain existing permission for "%s": %s`, path, err))
+	}
+
+	err = os.WriteFile(path, []byte(content), fileInfo.Mode())
+	if err != nil {
+		WriteError(fmt.Sprintf(`could not write to file "%s": %s`, path, err))
+	}
+}

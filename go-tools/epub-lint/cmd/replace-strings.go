@@ -90,7 +90,7 @@ var replaceStringsCmd = &cobra.Command{
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if strings.Trim(fileText, " ") == "" {
-			utils.WriteOut(fileText)
+			utils.WriteInfo(fileText)
 			return
 		}
 
@@ -106,9 +106,9 @@ var replaceStringsCmd = &cobra.Command{
 
 			for searchText, hits := range numHits {
 				if hits == 0 {
-					utils.WriteOut(fmt.Sprintf("Did not find any replacements for `%s`", searchText))
+					utils.WriteInfo(fmt.Sprintf("Did not find any replacements for `%s`", searchText))
 				} else {
-					utils.WriteOut(fmt.Sprintf("`%s` was replaced %d time(s)", searchText, hits))
+					utils.WriteInfo(fmt.Sprintf("`%s` was replaced %d time(s)", searchText, hits))
 				}
 			}
 		}
@@ -117,7 +117,7 @@ var replaceStringsCmd = &cobra.Command{
 			return
 		}
 
-		utils.WriteOut(newText)
+		utils.WriteInfo(newText)
 	},
 }
 

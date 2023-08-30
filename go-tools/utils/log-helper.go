@@ -1,22 +1,24 @@
 package utils
 
 import (
+	"fmt"
 	"os"
-	"strings"
+
+	"github.com/fatih/color"
 )
 
-func WriteError(errorMsg string) {
-	if !strings.HasSuffix(errorMsg, "\n") {
-		errorMsg += "\n"
-	}
+// type Logger interface {
+// }
 
-	os.Stderr.WriteString(errorMsg)
+func WriteError(errorMsg string) {
+	color.New(color.FgRed).Fprintln(os.Stderr, errorMsg)
+	os.Exit(-1)
 }
 
-func WriteOut(msg string) {
-	if !strings.HasSuffix(msg, "\n") {
-		msg += "\n"
-	}
+func WriteInfo(msg string) {
+	fmt.Fprintln(os.Stdout, msg)
+}
 
-	os.Stdout.WriteString(msg)
+func WriteWarn(msg string) {
+	color.New(color.FgYellow).Fprintln(os.Stdout, msg)
 }

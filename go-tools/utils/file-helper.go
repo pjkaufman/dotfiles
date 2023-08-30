@@ -1,44 +1,67 @@
 package utils
 
 import (
+	"fmt"
 	"os"
 	"strings"
 )
 
-func FileExists(path string) (bool, error) {
+func FileExists(path string) bool {
 	if strings.Trim(path, " ") == "" {
-		return false, nil
+		return false
 	}
 
 	_, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return false, nil
+			return false
 		}
 
-		return false, err
+		WriteError(fmt.Sprintf(`could not verify that "%s" exists: %s`, path, err))
 	}
 
-	return true, nil
+	return true
 }
 
-func FolderExists(path string) (bool, error) {
+func FolderExists(path string) bool {
 	if strings.Trim(path, " ") == "" {
-		return false, nil
+		return false
 	}
 
 	folderInfo, err := os.Stat(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return false, nil
+			return false
 		}
 
-		return false, err
+		WriteError(fmt.Sprintf(`could not verify that "%s" exists and is a directory: %s`, path, err))
 	}
 
 	if !folderInfo.IsDir() {
-		return false, nil
+		return false
 	}
 
-	return true, nil
+	return true
+}
+
+func GetFoldersInCurrentFolder(path string) []string {
+	if strings.Trim(path, " ") == "" {
+		return nil
+	}
+
+	dirs, err := os.ReadDir(path)
+	if err != nil {
+		WriteError(fmt.Sprintf(`could not get files/folders in "%s": %s`, path, err))
+	}
+
+	var actualDirs []string
+	for _, dir := range dirs {
+		if !dir.IsDir() {
+			continue
+		}
+
+		actualDirs = append(actualDirs, dir.Name())
+	}
+
+	return actualDirs
 }

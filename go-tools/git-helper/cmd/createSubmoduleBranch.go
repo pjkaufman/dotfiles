@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -9,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/pjkaufman/dotfiles/go-tools/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -37,7 +35,7 @@ var createSubmoduleBranchCmd = &cobra.Command{
 
 		branchName = strings.Trim(branchName, " ")
 		if branchName == "" {
-			os.Stderr.WriteString("branch-name must have a non-whitespace value\n")
+			utils.WriteError("branch-name must have a non-whitespace value")
 			return
 		}
 
@@ -45,12 +43,12 @@ var createSubmoduleBranchCmd = &cobra.Command{
 		var err error
 		repoPathExists, err = checkIfFolderExists(repoFolderPath)
 		if err != nil {
-			os.Stderr.WriteString("could not verify that repo-parent-path exists and is a directory: \"" + err.Error() + "\"\n")
+			utils.WriteError("could not verify that repo-parent-path exists and is a directory: \"" + err.Error() + "\"")
 			return
 		}
 
 		if !repoPathExists {
-			os.Stderr.WriteString("repo-parent-path must exist and be a directory\n")
+			utils.WriteError("repo-parent-path must exist and be a directory")
 			return
 		}
 

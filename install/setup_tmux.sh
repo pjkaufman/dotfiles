@@ -16,5 +16,5 @@ tmux_plugin_dir="$HOME/.tmux/plugins/tpm"
 if [ ! -d "$tmux_plugin_dir" ]; then 
   git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
   # install plugins right after tpm is installed
-  $HOME/.config/tmux/plugins/tpm/scripts/install_plugins.sh
+  $HOME/.tmux/plugins/tpm/scripts/install_plugins.sh
 fi

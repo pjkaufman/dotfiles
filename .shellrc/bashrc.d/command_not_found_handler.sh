@@ -14,5 +14,9 @@ command_not_found_handle()
     unzip -l "$1"
   elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
     tar -tf "$1"
+  else
+    # based on https://askubuntu.com/a/1464110
+    printf "%s: command not found\n" "$1" >&2
+    return 127
   fi
 }

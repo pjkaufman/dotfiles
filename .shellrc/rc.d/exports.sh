@@ -23,7 +23,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Golang
 export GO_BINARY_BASE_URL=https://go.dev/dl
-export GO_VERSION=1.19
+export GO_VERSION=1.21
 export GOROOT=$HOME/.gvm/gos/go$GO_VERSION/
 
 # set SSH_AUTH_SOCK env var to a fixed value

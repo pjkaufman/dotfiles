@@ -30,6 +30,9 @@ if [ -d $HOME/dotfiles/.shellrc/rc.d ]; then
   done
 fi
 
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).

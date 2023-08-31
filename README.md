@@ -11,6 +11,10 @@ If this is a personal computer and it does not contain flatpak, you will need to
 
 _Note that the expectation is that this repo will be in the home directory of the current user. If it is not, the installation may fail._
 
+### Tmux
+
+Once you start up tmux for the first time, make sure to enter `ctrl+a+I` to install the tmux plugins
+
 ## Rational
 
 It can be hard and time consuming to setup one's applications and environment across multiple computers.

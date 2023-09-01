@@ -77,65 +77,90 @@ var commonReplaceStringFuncs = []ReplaceStringFunc{
 	},
 }
 
-var filePath string
+var filePaths string
 var extraReplacesFilePath string
 
 // replaceStringsCmd represents the replaceStrings command
 var replaceStringsCmd = &cobra.Command{
-	Use:   "replaceStrings",
+	Use:   "replace-strings",
 	Short: "Replaces a common set of strings in a file",
 	Long: `Goes and replaces a common set of strings a file as well as any extra instances that are specified
 	
-	For example: epub-lint replaceStrings -f file-path -e extra-replace-file-path
+	For example: epub-lint replace-strings -f file-paths
+	will replace just the common strings from the provided file or file(s). 
+
+	epub-lint replace-strings -f file-paths -e extra-replace-file-path
+	will replace the common strings and the extra strings parsed out of the extra replace file 
+	from the provided file(s)
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		filePathExists := utils.FileExists(filePath)
-		if !filePathExists {
-			utils.WriteError("file-path must exist")
+		var files = strings.Split(filePaths, ",")
+		validateReplaceStringsFlags(files, extraReplacesFilePath)
+
+		var hasExtraStringsToReplace = strings.Trim(extraReplacesFilePath, " ") != ""
+		var extraTextReplacements = make(map[string]string)
+		var numHits = make(map[string]int)
+		if hasExtraStringsToReplace {
+			extraTextReplacements = ParseTextReplacements(utils.ReadInFileContents(extraReplacesFilePath))
 		}
 
-		fileText := utils.ReadInFileContents(filePath)
+		for _, filePath := range files {
+			fileText := utils.ReadInFileContents(filePath)
+			var newText = CommonStringReplace(fileText)
 
-		var newText = CommonStringReplace(filePath)
-		var numHits map[string]int
-
-		if strings.Trim(extraReplacesFilePath, " ") != "" {
-
-			extraReplacesFilePathExists := utils.FileExists(extraReplacesFilePath)
-			if !extraReplacesFilePathExists {
-				utils.WriteError("extra-replace-file-path must exist")
+			if hasExtraStringsToReplace {
+				newText = ExtraStringReplace(newText, extraTextReplacements, numHits)
 			}
 
-			extraReplacesText := utils.ReadInFileContents(filePath)
-
-			newText, numHits = ExtraStringReplace(newText, ParseTextReplacements(extraReplacesText))
-			if len(numHits) == 0 {
-				utils.WriteWarn("No values were listed as needing replacing")
+			if fileText == newText {
+				continue
 			}
 
-			for searchText, hits := range numHits {
-				if hits == 0 {
-					utils.WriteWarn(fmt.Sprintf("Did not find any replacements for `%s`", searchText))
-				} else {
-					utils.WriteInfo(fmt.Sprintf("`%s` was replaced %d time(s)", searchText, hits))
-				}
-			}
+			utils.WriteFileContents(filePath, newText)
 		}
 
-		if fileText == newText {
+		if !hasExtraStringsToReplace {
 			return
 		}
 
-		utils.WriteFileContents(filePath, newText)
+		if len(numHits) == 0 {
+			utils.WriteWarn("No values were listed as needing replacing")
+		}
+
+		for searchText, hits := range numHits {
+			if hits == 0 {
+				utils.WriteWarn(fmt.Sprintf("Did not find any replacements for `%s`", searchText))
+			} else {
+				utils.WriteInfo(fmt.Sprintf("`%s` was replaced %d time(s)", searchText, hits))
+			}
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(replaceStringsCmd)
 
-	replaceStringsCmd.Flags().StringVarP(&filePath, "file-path", "f", "", "the path to the file to replace strings in")
+	replaceStringsCmd.Flags().StringVarP(&filePaths, "file-paths", "f", "", "the list of files to update in a comma separated list")
 	replaceStringsCmd.Flags().StringVarP(&extraReplacesFilePath, "extra-replace-text", "e", "", "the path to the file with extra strings to replace")
-	replaceStringsCmd.MarkFlagRequired("file-path")
+	replaceStringsCmd.MarkFlagRequired("file-paths")
+}
+
+func validateReplaceStringsFlags(filePaths []string, extraReplaceStringsPath string) {
+	for _, filePath := range filePaths {
+		filePathExists := utils.FileExists(filePath)
+
+		if !filePathExists {
+			utils.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
+		}
+	}
+
+	if strings.Trim(extraReplacesFilePath, " ") != "" {
+		extraReplacesFilePathExists := utils.FileExists(extraReplacesFilePath)
+
+		if !extraReplacesFilePathExists {
+			utils.WriteError("extra-replace-file-path must exist")
+		}
+	}
 }
 
 func CommonStringReplace(text string) string {
@@ -152,15 +177,19 @@ func CommonStringReplace(text string) string {
 	return newText
 }
 
-func ExtraStringReplace(text string, extraFindAndReplaces map[string]string) (string, map[string]int) {
+func ExtraStringReplace(text string, extraFindAndReplaces map[string]string, numHits map[string]int) string {
 	var newText = text
-	var numHits = make(map[string]int, len(extraFindAndReplaces))
 	for search, replace := range extraFindAndReplaces {
-		numHits[search] = strings.Count(newText, search)
+		if hits, ok := numHits[search]; ok {
+			numHits[search] = hits + strings.Count(newText, search)
+		} else {
+			numHits[search] = strings.Count(newText, search)
+		}
+
 		newText = strings.ReplaceAll(newText, search, replace)
 	}
 
-	return text, numHits
+	return newText
 }
 
 func ParseTextReplacements(text string) map[string]string {

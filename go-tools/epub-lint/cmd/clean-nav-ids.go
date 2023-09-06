@@ -74,7 +74,7 @@ func removeHashTagsFromLinks(part string) string {
 		ExistingFileLinks[file] = 0
 	}
 
-	return strings.Replace(part, groups[0], groups[1]+file+groups[4], 0)
+	return strings.Replace(part, groups[0], groups[1]+file+groups[4], 1)
 }
 
 // def remove_id_if_exists_and_check_if_file_already_in_list(match):

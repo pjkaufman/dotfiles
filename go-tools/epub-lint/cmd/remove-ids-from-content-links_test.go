@@ -8,6 +8,64 @@ type RemoveIdsFromContentLinksTestCase struct {
 	ExpectedFileMap map[string]int
 }
 
+/* TOC sample 1
+<h1 class="toc-title">Contents</h1>
+<p class="toc-front" id="cover"><a href="../Text/cover.xhtml">Cover</a></p>
+<p class="toc-front" id="insert001"><a href="../Text/insert001.xhtml">Insert</a></p>
+<p class="toc-front" id="titlepage"><a href="../Text/titlepage.xhtml">Title Page</a></p>
+<p class="toc-front" id="toc-copyright"><a href="../Text/copyright.xhtml">Copyright</a></p>
+<p class="toc-chapter" id="toc-preface001"><a href="../Text/preface001.xhtml">Epigraph</a></p>
+<p class="toc-chapter1" id="toc-chapter001"><a href="../Text/chapter001.xhtml">Prologue: The King of Corpses</a></p>
+<p class="toc-chapter" id="toc-chapter004"><a href="../Text/chapter004.xhtml">Chapter 1: Melancholy of Monsters</a></p>
+<p class="toc-chapter" id="toc-chapter009"><a href="../Text/chapter009.xhtml">Chapter 2: Citadel of the Swans</a></p>
+<p class="toc-chapter" id="toc-chapter014"><a href="../Text/chapter014.xhtml">Chapter 3: Deaf to the Songbirds’ Lament</a></p>
+<p class="toc-chapter" id="toc-chapter021"><a href="../Text/chapter021.xhtml">Chapter 4: Ex Machina</a></p>
+<p class="toc-chapter" id="toc-chapter028"><a href="../Text/chapter028.xhtml">Epilogue: Flowers Bloom Not on Snowy Fields</a></p>
+<p class="toc-chapter1" id="toc-appendix001"><a href="../Text/appendix001.xhtml">Afterword</a></p>
+<p class="toc-chapter" id="newsletter1"><a href="../Text/newsletterSignup.xhtml">Yen Newsletter</a></p>
+*/
+
+/* TOC sample 2
+<navMap>
+  <navPoint id="navPoint-1" playOrder="1">
+    <navLabel>
+      <text>Prologue</text>
+    </navLabel>
+    <content src="Text/Body.xhtml"/>
+  </navPoint>
+  <navPoint id="navPoint-2" playOrder="2">
+    <navLabel>
+      <text>Chapter 1  MaslenitsaThe Sun Festival</text>
+    </navLabel>
+    <content src="Text/Body.xhtml#Chapter_1_E28093_MaslenitsaThe_Sun_Festival"/>
+  </navPoint>
+  <navPoint id="navPoint-3" playOrder="3">
+    <navLabel>
+      <text>Chapter 2  Homecoming</text>
+    </navLabel>
+    <content src="Text/Body.xhtml#Chapter_2_E28093_Homecoming"/>
+  </navPoint>
+  <navPoint id="navPoint-4" playOrder="4">
+    <navLabel>
+      <text>Chapter 3  Invaders</text>
+    </navLabel>
+    <content src="Text/Body.xhtml#Chapter_3_E28093_Invaders"/>
+  </navPoint>
+  <navPoint id="navPoint-5" playOrder="5">
+    <navLabel>
+      <text>Chapter 4  The ShervidIllusory Princess of the Hollow Shadow</text>
+    </navLabel>
+    <content src="Text/Body.xhtml#Chapter_4_E28093_The_ShervidIllusory_Princess_of_the_Hollow_Shadow"/>
+  </navPoint>
+  <navPoint id="navPoint-6" playOrder="6">
+    <navLabel>
+      <text>Translator's Notes and References</text>
+    </navLabel>
+    <content src="Text/Body.xhtml#Translator27s_Notes_and_References"/>
+  </navPoint>
+</navMap>
+*/
+
 // var RemoveIdsFromContentLinksTestCases = map[string]RemoveIdsFromContentLinksTestCase{
 // 	"make sure that html comments are left alone": {
 // 		Input:    "<!--this is a comment. comments are not displayed in the browser-->",

@@ -17,7 +17,7 @@ for i in *.epub; do
 
     # go ahead and replace common strings to the desired format
     for j in ./epub/OEBPS/Text/*.{html,xhtml,htm}; do
-        [[ -f "${j}" ]] && python3 "$HOME/dotfiles/bin/epubreplacestrings" s "${j}"
+        [[ -f "${j}" ]] && epub-lint replace-strings -f "${j}"
     done
 
     # rezip the epub
@@ -46,9 +46,9 @@ shopt -u globstar
 
 echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
 
-echo 'after:'
-find . -type f -name '*.epub' -exec du -ch {} + | grep total$
 echo 'before:'
-find . -type f -name '*.original' -exec du -ch {} + | grep total$ 
+find . -maxdepth 1 -type f -name '*.original' -exec du -ch {} + | grep total$
+echo 'after:'
+find . -maxdepth 1 -type f -name  '*.epub' -exec du -ch {} + | grep total$
 
 echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'

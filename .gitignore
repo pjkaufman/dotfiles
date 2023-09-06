@@ -4,3 +4,11 @@ nvim/plugin/packer_compiled.lua
 __pycache__/
 *.py[cod]
 *$py.class
+
+# churhc song converter unnecessary files
+churchsongconverter/*.docx
+churchsongconverter/*.csv
+churchsongconverter/stagingGround/*.md
+churchsongconverter/html/**/*.html
+churchsongconverter/html/*.md
+churchsongconverter/html/*.txt

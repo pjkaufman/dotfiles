@@ -13,6 +13,8 @@ var filePath string
 
 var contentElRegex = regexp.MustCompile("(<content.* src=[\"'])([^\"']*)([\"'][^>\n]*>)")
 var contentSrcAttributeRegex = regexp.MustCompile("(src=[\"'])([^\"'#]*)(#[^\"']+)?([\"'])")
+var listAnchorElRegex = regexp.MustCompile("(<li>[ \t\n\r]*<a.* href=[\"'])([^\"']*)([\"'][^>\n]*>)")
+var listAnchorHrefAttributeRegex = regexp.MustCompile("(href=[\"'])([^\"'#]*)(#[^\"']+)?([\"'])")
 var ExistingFileLinks map[string]int
 
 // cleanNavIdsCmd represents the cleanNavIds command
@@ -29,7 +31,11 @@ var cleanNavIdsCmd = &cobra.Command{
 		validateCleanNavIdsFlags(filePath)
 		fileText := utils.ReadInFileContents(filePath)
 
-		var newText = RemoveIdsFromContentLinks(fileText, filePath)
+		var newText = RemoveIdsFromContentLinks(fileText)
+		if len(ExistingFileLinks) == 0 {
+			newText = RemoveIdsFromListAnchorLinks(newText)
+		}
+
 		for file, instanceCount := range ExistingFileLinks {
 			if instanceCount == 0 {
 				continue
@@ -53,16 +59,40 @@ func init() {
 	cleanNavIdsCmd.MarkFlagRequired("file-path")
 }
 
-func RemoveIdsFromContentLinks(text, filePath string) string {
+func RemoveIdsFromContentLinks(text string) string {
 	ExistingFileLinks = make(map[string]int)
 
-	return contentElRegex.ReplaceAllStringFunc(text, removeHashTagsFromLinks)
+	return contentElRegex.ReplaceAllStringFunc(text, removeIdsFromSrcLinks)
 }
 
-func removeHashTagsFromLinks(part string) string {
+func removeIdsFromSrcLinks(part string) string {
 	var groups = contentSrcAttributeRegex.FindStringSubmatch(part)
 	if len(groups) != 5 {
-		fmt.Printf(`possible problem with content tag: \"%s\", %v`, part, groups)
+		utils.WriteWarn(fmt.Sprintf(`possible problem with content tag: \"%s\", %v`, part, groups))
+
+		return part
+	}
+
+	var file = groups[2]
+	if count, exists := ExistingFileLinks[file]; exists {
+		ExistingFileLinks[file] = count + 1
+	} else {
+		ExistingFileLinks[file] = 0
+	}
+
+	return strings.Replace(part, groups[0], groups[1]+file+groups[4], 1)
+}
+
+func RemoveIdsFromListAnchorLinks(text string) string {
+	ExistingFileLinks = make(map[string]int)
+
+	return listAnchorElRegex.ReplaceAllStringFunc(text, removeIdsFromHrefLinks)
+}
+
+func removeIdsFromHrefLinks(part string) string {
+	var groups = listAnchorHrefAttributeRegex.FindStringSubmatch(part)
+	if len(groups) != 5 {
+		utils.WriteWarn(fmt.Sprintf(`possible problem with list anchor tag tag: \"%s\", %v`, part, groups))
 
 		return part
 	}

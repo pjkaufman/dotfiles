@@ -1,12 +1,12 @@
 //go:build unit
 
-package cmd_test
+package linter_test
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/cmd"
+	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
 )
 
 type ExtraStringReplaceTestCase struct {
@@ -86,7 +86,7 @@ var ExtraStringReplaceTestCases = map[string]ExtraStringReplaceTestCase{
 func TestExtraStringReplace(t *testing.T) {
 	for name, args := range ExtraStringReplaceTestCases {
 		t.Run(name, func(t *testing.T) {
-			actual := cmd.ExtraStringReplace(args.InputText, args.InputFindsAndReplaces, args.InputHits)
+			actual := linter.ExtraStringReplace(args.InputText, args.InputFindsAndReplaces, args.InputHits)
 
 			if actual != args.ExpectedText {
 				t.Errorf("output text doesn't match: expected \"%s\", got \"%s\"", args.ExpectedText, actual)

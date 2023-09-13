@@ -1,12 +1,12 @@
 //go:build unit
 
-package cmd_test
+package linter_test
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/cmd"
+	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
 )
 
 type ParseTextReplacementsTestCase struct {
@@ -61,7 +61,7 @@ var ParseTextReplacementsTestCases = map[string]ParseTextReplacementsTestCase{
 func TestParseTextReplacements(t *testing.T) {
 	for name, args := range ParseTextReplacementsTestCases {
 		t.Run(name, func(t *testing.T) {
-			actual := cmd.ParseTextReplacements(args.Input)
+			actual := linter.ParseTextReplacements(args.Input)
 
 			if !stringMapsAreEqual(args.Expected, actual) {
 				t.Errorf("output map doesn't match: expected %v, got %v", args.Expected, actual)

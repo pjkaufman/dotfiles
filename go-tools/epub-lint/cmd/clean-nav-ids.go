@@ -55,7 +55,7 @@ var cleanNavIdsCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(cleanNavIdsCmd)
 
-	cleanNavIdsCmd.Flags().StringVarP(&filePaths, "file-path", "f", "", "the file to remove the ids from")
+	cleanNavIdsCmd.Flags().StringVarP(&filePath, "file-path", "f", "", "the file to remove the ids from")
 	cleanNavIdsCmd.MarkFlagRequired("file-path")
 }
 

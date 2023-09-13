@@ -1,11 +1,11 @@
 //go:build unit
 
-package cmd_test
+package linter_test
 
 import (
 	"testing"
 
-	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/cmd"
+	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
 )
 
 type CommonStringReplaceTestCase struct {
@@ -83,7 +83,7 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 func TestCommonStringReplace(t *testing.T) {
 	for name, args := range commonStringReplaceTestCases {
 		t.Run(name, func(t *testing.T) {
-			actual := cmd.CommonStringReplace(args.Input)
+			actual := linter.CommonStringReplace(args.Input)
 
 			if actual != args.Expected {
 				t.Errorf("output text doesn't match: expected %v, got %v", args.Expected, actual)

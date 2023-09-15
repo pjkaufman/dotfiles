@@ -42,15 +42,40 @@ var replaceStringsCmd = &cobra.Command{
 
 		if len(numHits) == 0 {
 			utils.WriteWarn("No values were listed as needing replacing")
+
+			return
 		}
 
+		var successfulReplaces []string
+		var failedReplaces []string
 		for searchText, hits := range numHits {
 			if hits == 0 {
-				utils.WriteWarn(fmt.Sprintf("Did not find any replacements for `%s`", searchText))
+				failedReplaces = append(failedReplaces, searchText)
 			} else {
-				utils.WriteInfo(fmt.Sprintf("`%s` was replaced %d time(s)", searchText, hits))
+				var timeText = "time"
+				if hits > 1 {
+					timeText += "s"
+				}
+
+				successfulReplaces = append(successfulReplaces, fmt.Sprintf("`%s` was replaced %d %s", searchText, hits, timeText))
 			}
 		}
+
+		utils.WriteInfo("Successful Replaces:")
+		for _, successfulReplace := range successfulReplaces {
+			utils.WriteInfo(successfulReplace)
+		}
+
+		if len(failedReplaces) == 0 {
+			return
+		}
+
+		utils.WriteInfo("")
+		utils.WriteWarn("Failed Replaces:")
+		for i, failedReplace := range failedReplaces {
+			utils.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
+		}
+		utils.WriteInfo("")
 	},
 }
 

@@ -16,8 +16,8 @@ for i in *.epub; do
     done
 
     # go ahead and replace common strings to the desired format
-    for j in ./epub/OEBPS/Text/*.{html,xhtml,htm}; do
-        [[ -f "${j}" ]] && epub-lint replace-strings -f "${j}"
+    for j in ./epub/**/*.{html,xhtml,htm}; do
+        [[ -f "${j}" ]] && epub-lint lint-file -f "${j}"
     done
 
     # rezip the epub

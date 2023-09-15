@@ -20,6 +20,12 @@ type ReplaceStringFunc struct {
 var regexEscapedPeriod = regexp.QuoteMeta(".")
 var commonReplaceStrings = []ReplaceString{
 	{
+		// [^\w\s] means any non-whitespace or alphanumeric values or an underscore
+		Search:   regexp.MustCompile(`(\b|[^\w\s])( ){2,}(\b|[^\w\s])`),
+		Replace:  "${1} ${3}",
+		Rational: "Replace multiple spaces in a row between words with a single space since this can cause issues with replace strings",
+	},
+	{
 		Search:   regexp.MustCompile(fmt.Sprintf("(%[1]s ?){2}%[1]s", regexEscapedPeriod)),
 		Replace:  "…",
 		Rational: "Proper ellipses should be used where possible as it keeps things clean and consistent",

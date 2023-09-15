@@ -35,7 +35,7 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 		  …
 		  … 
 		  …
-		  .  . .
+		  …
 		`,
 	},
 	"make sure that a lowercase 'by the by' results in a lowercase 'by the way'": {
@@ -77,6 +77,10 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 	"make sure that an uppercase 'Little wonder' is correctly converted to 'No wonder": {
 		Input:    "Little wonder, you were outmatched from the start",
 		Expected: "No wonder, you were outmatched from the start",
+	},
+	"make sure that words with 2 or more spaces between them have the multiple spaces cut down to 1": {
+		Input:    "This  is an    interestingly spaced   sentence.  See the multiple    blanks?",
+		Expected: "This is an interestingly spaced sentence. See the multiple blanks?",
 	},
 }
 

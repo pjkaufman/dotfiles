@@ -46,7 +46,7 @@ unzip -qq "${2}" -d epub
 
 # build list of files to check for string replacements in
 files=''
-for j in ./epub/OEBPS/Text/*.{html,xhtml,htm}; do
+for j in ./epub/**/*.{html,xhtml,htm}; do
     if [[ -f "${j}" ]]; then
         if [[ $files == "" ]]; then
             files="${j}"
@@ -56,7 +56,8 @@ for j in ./epub/OEBPS/Text/*.{html,xhtml,htm}; do
     fi
 done
 
-python3 "$HOME/dotfiles/bin/epubreplacestrings" m "$files" "${1}"
+epub-lint replace-strings -f "$files" -e "${1}"
+
 # rezip the epub
 cd epub
 zip -q -0 -X "../compress.epub" mimetype

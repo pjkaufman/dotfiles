@@ -27,6 +27,12 @@ var lintFileCmd = &cobra.Command{
 		fileText := utils.ReadInFileContents(filePath)
 		var newText = linter.EnsureEncodingIsPresent(fileText)
 		newText = linter.CommonStringReplace(newText)
+		newText, err := linter.RemoveIdsFromNav(newText)
+		if err != nil {
+			utils.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+		}
+
+		// TODO: handle lang="en" xml:lang="en" in html tag in non-opf files
 
 		if fileText == newText {
 			return

@@ -16,14 +16,19 @@ for i in *.epub; do
     done
 
     # go ahead and cleanup the ncx file(s) - there should really only be 1 of them
-    for j in ./epub/**/*.ncx; do
-        [[ -f "${j}" ]] && epub-lint clean-nav -f "${j}"
+    # for j in ./epub/**/*.ncx; do
+    #     [[ -f "${j}" ]] && epub-lint clean-nav -f "${j}"
+    # done
+
+    # go ahead and lint the epub using the opf file - there should really only be 1 of them
+    for j in ./epub/**/*.opf; do
+        [[ -f "${j}" ]] && epub-lint lint-epub -f "${j}"
     done
 
     # go ahead and replace common strings to the desired format
-    for j in ./epub/**/*.{html,xhtml,htm}; do
-        [[ -f "${j}" ]] && epub-lint lint-file -f "${j}"
-    done
+    # for j in ./epub/**/*.{html,xhtml,htm}; do
+    #     [[ -f "${j}" ]] && epub-lint lint-file -f "${j}"
+    # done
 
     # rezip the epub
     cd epub

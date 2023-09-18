@@ -10,6 +10,7 @@ import (
 )
 
 var filePath string
+var lang string
 
 // lintFileCmd represents the lintFile command
 var lintFileCmd = &cobra.Command{
@@ -32,7 +33,7 @@ var lintFileCmd = &cobra.Command{
 			utils.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 		}
 
-		// TODO: handle lang="en" xml:lang="en" in html tag in non-opf files
+		newText = linter.EnsureLanguageIsSet(newText, lang)
 
 		if fileText == newText {
 			return
@@ -46,6 +47,7 @@ func init() {
 	rootCmd.AddCommand(lintFileCmd)
 
 	lintFileCmd.Flags().StringVarP(&filePath, "file-path", "f", "", "the xhtml, htm, or html file to lint")
+	lintFileCmd.Flags().StringVarP(&lang, "lang", "l", "en", "the language to add to the xhtml, htm, or html file if not present")
 	lintFileCmd.MarkFlagRequired("file-path")
 }
 

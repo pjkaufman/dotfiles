@@ -116,13 +116,13 @@ var RemoveIdsFromNavTestCases = map[string]RemoveIdsFromNavTestCase{
 		expectedErr:  nil,
 	},
 	"make sure that a nav with list item anchor tag hrefs pointing to the same file throws an error": {
-		InputText: `<nav>
+		InputText: `<nav epub:type="toc">
   <ol class="none" epub:type="list">
     <li class="toc-front" id="cover"><a href="welcome.xhtml">Cover</a></li>
     <li class="toc-front" id="toc-welcome"><a href="welcome.xhtml">Welcome</a></li>
   </ol>
 </nav>`,
-		ExpectedText: `<nav>
+		ExpectedText: `<nav epub:type="toc">
   <ol class="none" epub:type="list">
     <li class="toc-front" id="cover"><a href="welcome.xhtml">Cover</a></li>
     <li class="toc-front" id="toc-welcome"><a href="welcome.xhtml">Welcome</a></li>
@@ -136,11 +136,26 @@ var RemoveIdsFromNavTestCases = map[string]RemoveIdsFromNavTestCase{
 		expectedErr:  nil,
 	},
 	"make sure no nav ending element results in an error being thrown": {
-		InputText:    "<navMap>",
-		ExpectedText: "<navMap>",
+		InputText:    "<nav epub:type=\"toc\">",
+		ExpectedText: "<nav epub:type=\"toc\">",
 		expectedErr:  linter.ErrNoEndOfNav,
 	},
 	"make sure that a nav with a list item anchor without an href for the anchor element throws an error": {
+		InputText: `<nav epub:type="toc">
+  <ol class="none" epub:type="list">
+    <li class="toc-front" id="cover"><a>Cover</a></li>
+    <li class="toc-front" id="toc-welcome"><a href="welcome.xhtml">Welcome</a></li>
+  </ol>
+</nav>`,
+		ExpectedText: `<nav epub:type="toc">
+  <ol class="none" epub:type="list">
+    <li class="toc-front" id="cover"><a>Cover</a></li>
+    <li class="toc-front" id="toc-welcome"><a href="welcome.xhtml">Welcome</a></li>
+  </ol>
+</nav>`,
+		expectedErr: fmt.Errorf("possible problem with list anchor tag href: []"),
+	},
+	"make sure that a nav without the epub type of toc is ignored": {
 		InputText: `<nav>
   <ol class="none" epub:type="list">
     <li class="toc-front" id="cover"><a>Cover</a></li>
@@ -153,7 +168,7 @@ var RemoveIdsFromNavTestCases = map[string]RemoveIdsFromNavTestCase{
     <li class="toc-front" id="toc-welcome"><a href="welcome.xhtml">Welcome</a></li>
   </ol>
 </nav>`,
-		expectedErr: fmt.Errorf("possible problem with list anchor tag href: []"),
+		expectedErr: nil,
 	},
 }
 

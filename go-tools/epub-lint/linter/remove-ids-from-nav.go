@@ -7,7 +7,7 @@ import (
 )
 
 var listAnchorHrefAttributeRegex = regexp.MustCompile("(href=[\"'])([^\"'#]*)(#[^\"']+)?([\"'])")
-var openingNavRegex = regexp.MustCompile("<nav[^>\n]*>")
+var openingNavRegex = regexp.MustCompile(`<nav[^>\n]*epub:type[ \t]*=["']toc["'][^>\n]*>`)
 var openingListItemRegex = regexp.MustCompile("<li[^>\n]*>")
 var ErrNoEndOfNav = fmt.Errorf("nav is incorrectly formatted since it has no closing nav element")
 
@@ -24,13 +24,14 @@ func RemoveIdsFromNav(text string) (string, error) {
 		return text, nil
 	}
 
-	var endOfNav = strings.Index(text, closingNavEl)
+	var startOfNavToEndOfText = text[startOfNav[0]:]
+	var endOfNav = strings.Index(startOfNavToEndOfText, closingNavEl)
 	if endOfNav < 0 {
 		return text, ErrNoEndOfNav
 	}
 
 	var existingFileLinks = make(map[string]int)
-	var originalNav = text[startOfNav[0]:endOfNav]
+	var originalNav = startOfNavToEndOfText[0:endOfNav]
 	var newNav = ""
 	var openingNavPoints = openingListItemRegex.FindAllStringIndex(originalNav, -1)
 	var startOfLastEl = len(originalNav)

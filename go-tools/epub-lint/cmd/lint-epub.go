@@ -38,7 +38,7 @@ var lintEpubCmd = &cobra.Command{
 
 		// fix up all xhtml files first
 		for file := range epubInfo.HtmlFiles {
-			var filePath = opfFolderString + "/" + file
+			var filePath = getFilePath(opfFolderString, file)
 			fileText := utils.ReadInFileContents(filePath)
 			var newText = linter.EnsureEncodingIsPresent(fileText)
 			newText = linter.CommonStringReplace(newText)
@@ -82,7 +82,7 @@ func validateLintEpubFlags(filePath string) {
 
 func validateFilesExist(opfFolder string, files map[string]struct{}) {
 	for file := range files {
-		var filePath = opfFolder + "/" + file
+		var filePath = getFilePath(opfFolder, file)
 
 		if !utils.FileExists(filePath) {
 			utils.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
@@ -95,7 +95,7 @@ func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 		return
 	}
 
-	var filePath = opfFolder + "/" + file
+	var filePath = getFilePath(opfFolder, file)
 	fileText := utils.ReadInFileContents(filePath)
 
 	newText, err := linter.CleanupNavMap(fileText)
@@ -117,7 +117,7 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 		return
 	}
 
-	var filePath = opfFolder + "/" + file
+	var filePath = getFilePath(opfFolder, file)
 	fileText := utils.ReadInFileContents(filePath)
 
 	newText, err := linter.RemoveIdsFromNav(fileText)
@@ -132,4 +132,8 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	}
 
 	utils.WriteFileContents(filePath, newText)
+}
+
+func getFilePath(opfFolder, file string) string {
+	return utils.JoinPath(opfFolder, file)
 }

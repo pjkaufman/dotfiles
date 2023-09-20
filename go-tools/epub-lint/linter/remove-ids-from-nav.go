@@ -53,6 +53,10 @@ func RemoveIdsFromNav(text string) (string, error) {
 }
 
 func removeIdFromListItemLink(listItem string, existingFiles map[string]int) (string, error) {
+	if !strings.Contains(listItem, "<a") {
+		return listItem, nil
+	}
+
 	var groups = listAnchorHrefAttributeRegex.FindStringSubmatch(listItem)
 	if len(groups) != 5 {
 		return listItem, fmt.Errorf(fmt.Sprintf(`possible problem with list anchor tag href: %v`, groups))

@@ -75,6 +75,10 @@ func GetFileFolder(filePath string) string {
 	return path.Join(filePath, "..")
 }
 
+func JoinPath(elements ...string) string {
+	return path.Join(elements...)
+}
+
 func ReadInFileContents(path string) string {
 	if strings.Trim(path, " ") == "" {
 		return ""

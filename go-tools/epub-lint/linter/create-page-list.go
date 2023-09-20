@@ -16,7 +16,7 @@ type PageIdInfo struct {
 	File   string
 }
 
-var validPageListAbbreviations = []string{"p", "pg", "page"}
+var validPageListAbbreviations = []string{"page", "pg", "p"}
 var validPageListIdsRegex = regexp.MustCompile(fmt.Sprintf(`id[ \t]*=["']((%s)\d+)["']`, strings.Join(validPageListAbbreviations, "|")))
 var validPageListAbbrevsRegex = regexp.MustCompile(strings.Join(validPageListAbbreviations, "|"))
 var navWithEpubPageList = regexp.MustCompile(`<nav[^\n>]*epub:type=["']page-list["'][^\n>]*>`)

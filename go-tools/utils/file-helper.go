@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"os"
+	"path"
 	"strings"
 )
 
@@ -64,6 +65,14 @@ func GetFoldersInCurrentFolder(path string) []string {
 	}
 
 	return actualDirs
+}
+
+func GetFileFolder(filePath string) string {
+	if strings.Trim(filePath, " ") == "" {
+		return ""
+	}
+
+	return path.Join(filePath, "..")
 }
 
 func ReadInFileContents(path string) string {

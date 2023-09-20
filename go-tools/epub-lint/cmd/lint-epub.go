@@ -30,20 +30,18 @@ var lintEpubCmd = &cobra.Command{
 			utils.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
 		}
 
-		validateFilesExist(epubInfo.HtmlFiles)
-		validateFilesExist(epubInfo.ImagesFiles)
-		validateFilesExist(epubInfo.OtherFiles)
+		var opfFolderString = utils.GetFileFolder(filePath)
+
+		validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
+		validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
+		validateFilesExist(opfFolderString, epubInfo.OtherFiles)
 
 		// fix up all xhtml files first
 		for file := range epubInfo.HtmlFiles {
-			var filePath = "./epub/" + file
+			var filePath = opfFolderString + "/" + file
 			fileText := utils.ReadInFileContents(filePath)
 			var newText = linter.EnsureEncodingIsPresent(fileText)
 			newText = linter.CommonStringReplace(newText)
-			newText, err := linter.RemoveIdsFromNav(newText)
-			if err != nil {
-				utils.WriteError(fmt.Sprintf("%s: %v", filePath, err))
-			}
 
 			// TODO: remove images links that do not exist in the manifest
 			// TODO: remove files that exist, but are not in the manifest
@@ -57,8 +55,8 @@ var lintEpubCmd = &cobra.Command{
 			utils.WriteFileContents(filePath, newText)
 		}
 
-		updateNavFile(epubInfo.NavFile, epubInfo.PageIds)
-		updateNcxFile(epubInfo.NcxFile, epubInfo.PageIds)
+		updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
+		updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
 
 		// TODO; cleanup TOC file's links
 	},
@@ -82,9 +80,9 @@ func validateLintEpubFlags(filePath string) {
 	}
 }
 
-func validateFilesExist(files map[string]struct{}) {
+func validateFilesExist(opfFolder string, files map[string]struct{}) {
 	for file := range files {
-		var filePath = "./epub/" + file
+		var filePath = opfFolder + "/" + file
 
 		if !utils.FileExists(filePath) {
 			utils.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
@@ -92,12 +90,12 @@ func validateFilesExist(files map[string]struct{}) {
 	}
 }
 
-func updateNcxFile(file string, pageIds []linter.PageIdInfo) {
+func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = "./epub/" + file
+	var filePath = opfFolder + "/" + file
 	fileText := utils.ReadInFileContents(filePath)
 
 	newText, err := linter.CleanupNavMap(fileText)
@@ -114,12 +112,12 @@ func updateNcxFile(file string, pageIds []linter.PageIdInfo) {
 	utils.WriteFileContents(filePath, newText)
 }
 
-func updateNavFile(file string, pageIds []linter.PageIdInfo) {
+func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = "./epub/" + file
+	var filePath = opfFolder + "/" + file
 	fileText := utils.ReadInFileContents(filePath)
 
 	newText, err := linter.RemoveIdsFromNav(fileText)

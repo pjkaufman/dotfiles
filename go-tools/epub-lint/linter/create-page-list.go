@@ -17,22 +17,8 @@ type PageIdInfo struct {
 }
 
 var validPageListAbbreviations = []string{"page", "pg", "p"}
-var validPageListIdsRegex = regexp.MustCompile(fmt.Sprintf(`id[ \t]*=["']((%s)\d+)["']`, strings.Join(validPageListAbbreviations, "|")))
 var validPageListAbbrevsRegex = regexp.MustCompile(strings.Join(validPageListAbbreviations, "|"))
 var navWithEpubPageList = regexp.MustCompile(`<nav[^\n>]*epub:type=["']page-list["'][^\n>]*>`)
-
-func GetPageIdsForFile(text, file string, pageIds []PageIdInfo) []PageIdInfo {
-	var validPageIds = validPageListIdsRegex.FindAllStringIndex(text, -1)
-	if len(validPageIds) == 0 {
-		return pageIds
-	}
-
-	for _, locs := range validPageIds {
-		pageIds = append(pageIds, parseIdToIdInfo(text[locs[0]:locs[1]], file))
-	}
-
-	return pageIds
-}
 
 func parseIdToIdInfo(id, file string) PageIdInfo {
 	var startOfId = strings.Index(id, "=")

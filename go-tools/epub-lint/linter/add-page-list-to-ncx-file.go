@@ -31,7 +31,7 @@ func createPageListForNcx(pageIds []PageIdInfo, startingPlayOrder int) string {
 		pageListEls.WriteString(fmt.Sprintf(`  <pageTarget id="page%[1]d" type="normal" value="%[1]d" playOrder="%d">`+"\n", pageId.Number, playOrder))
 		pageListEls.WriteString(fmt.Sprintf("    <navLabel><text>%d</text></navLabel>\n", pageId.Number))
 		pageListEls.WriteString(fmt.Sprintf(`    <content src="%s#%s"/>`+"\n", pageId.File, pageId.Id))
-		pageListEls.WriteString("</pageTarget>\n")
+		pageListEls.WriteString("  </pageTarget>\n")
 		playOrder++
 	}
 

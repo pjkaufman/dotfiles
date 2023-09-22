@@ -1,0 +1,49 @@
+#!/bin/sh
+echo 'running compression for each cbz in dir'
+
+shopt -s nocaseglob # ignore file name case
+shopt -s globstar # search globs in 0 or more subdirectories
+for i in *.cbz; do
+    echo 'starting cbz compressing for' ${i} '...'
+
+    rm -rf ./cbz #delete the folder if it already exists
+
+    unzip -qq "${i}" -d cbz
+    
+    # check for jpg/jpeg and png images
+    for j in **/*.{jpg,jpeg,png}; do
+        [[ -f "${j}" ]] && imgp -x 800x800 -e -O -q 40 -w -m "${j}"
+    done
+
+    # rezip the cbz
+    cd cbz
+    zip -q -0 -X "../compress.cbz" mimetype
+    zip -q -rDX9 "../compress.cbz" * -x mimetype
+    cd ..
+
+    echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+
+    # remove our work directory
+    rm -rf ./cbz
+
+    mv "${i}" "${i}.original"
+    mv compress.cbz "${i}"
+
+    du -h "${i}.original"
+    du -h "${i}"
+
+    echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+done
+
+# remove changes to bash search interpretation
+shopt -u nocaseglob
+shopt -u globstar
+
+echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+
+echo 'before:'
+find . -maxdepth 1 -type f -name '*.original' -exec du -ch {} + | grep total$
+echo 'after:'
+find . -maxdepth 1 -type f -name  '*.cbz' -exec du -ch {} + | grep total$
+
+echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'

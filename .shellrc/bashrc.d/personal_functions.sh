@@ -21,6 +21,16 @@ compressepub() {
   source "$HOME/dotfiles/bin/compressepub"
 }
 
+# convertcbrtocbz helps with converting cbrs to cbzs
+convertcbrtocbz() {
+  source "$HOME/dotfiles/bin/convertcbrtocbz"
+}
+
+# compresscbz helps with compressing cbzs so they take up less space
+compresscbz() {
+  source "$HOME/dotfiles/bin/compresscbz"
+}
+
 # epubreplaceallstrings helps with replacing a bunch of strings in an epub file
 epubreplaceallstrings() {
   source "$HOME/dotfiles/bin/epubreplaceallstrings"

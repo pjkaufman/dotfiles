@@ -82,6 +82,18 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 		Input:    "This  is an    interestingly spaced   sentence.  See the multiple    blanks?",
 		Expected: "This is an interestingly spaced sentence. See the multiple blanks?",
 	},
+	"make sure that smart double quotes are replaced with straight quotes": {
+		Input: `“Hey. How are you?”
+		“I am doing great!”`,
+		Expected: `"Hey. How are you?"
+		"I am doing great!"`,
+	},
+	"make sure that smart single quotes are replaced with straight quotes": {
+		Input: `‘Hey. How are you?’
+		‘I am doing great!’`,
+		Expected: `'Hey. How are you?'
+		'I am doing great!'`,
+	},
 }
 
 func TestCommonStringReplace(t *testing.T) {

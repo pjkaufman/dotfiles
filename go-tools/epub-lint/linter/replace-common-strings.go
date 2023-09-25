@@ -26,6 +26,16 @@ var commonReplaceStrings = []ReplaceString{
 		Rational: "Replace multiple spaces in a row between words with a single space since this can cause issues with replace strings",
 	},
 	{
+		Search:   regexp.MustCompile(`[“”]`),
+		Replace:  "\"",
+		Rational: "Replace smart double quotes with straight double quotes",
+	},
+	{
+		Search:   regexp.MustCompile(`[‘’]`),
+		Replace:  "'",
+		Rational: "Replace smart single quotes with straight single quotes",
+	},
+	{
 		Search:   regexp.MustCompile(fmt.Sprintf("(%[1]s ?){2}%[1]s", regexEscapedPeriod)),
 		Replace:  "…",
 		Rational: "Proper ellipses should be used where possible as it keeps things clean and consistent",

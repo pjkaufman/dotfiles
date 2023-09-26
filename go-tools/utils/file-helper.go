@@ -107,3 +107,19 @@ func WriteFileContents(path, content string) {
 		WriteError(fmt.Sprintf(`could not write to file "%s": %s`, path, err))
 	}
 }
+
+func MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string {
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		WriteError(fmt.Sprintf(`failed to read in folder "%s": %s`, dir, err))
+	}
+
+	var fileList []string
+	for _, f := range files {
+		if strings.HasSuffix(f.Name(), ext) {
+			fileList = append(fileList, f.Name())
+		}
+	}
+
+	return fileList
+}

@@ -12,6 +12,11 @@ import (
 // TODO: add a command for replacing context break logic like what is mentioned here https://www.accessiblepublishing.ca/common-epub-issues/#ContextBreaks
 // one for characters, page breaks, and images
 
+var (
+	filePath string
+	lang     string
+)
+
 // lintEpubCmd represents the lintEpub command
 var lintEpubCmd = &cobra.Command{
 	Use:   "lint-epub",

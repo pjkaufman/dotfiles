@@ -15,8 +15,10 @@ var extraReplacesFilePath string
 // replaceStringsCmd represents the replaceStrings command
 var replaceStringsCmd = &cobra.Command{
 	Use:   "replace-strings",
-	Short: "Replaces a common set of strings in a file",
-	Long: `Goes and replaces a common set of strings a file as well as any extra instances that are specified
+	Short: "Replaces a list of common strings and the extra strings specified in the extra file for the provide file(s)",
+	Long: `Goes and replaces a common set of strings in a file as well as any extra instances that are specified.
+	It will print out the successful extra replacements with the number of replacements made followed by warnings
+	for any extra strings that it tried to find and replace values for, but did not find any instances to replace.
 	
 	For example: epub-lint replace-strings -f file-paths -e extra-replace-file-path
 	will replace the common strings and the extra strings parsed out of the extra replace file 

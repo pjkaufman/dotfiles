@@ -2,11 +2,11 @@
 
 package cmd_test
 
-type RemoveIdsFromContentLinksTestCase struct {
-	InputText       string
-	ExpectedText    string
-	ExpectedFileMap map[string]int
-}
+// type RemoveIdsFromContentLinksTestCase struct {
+// 	InputText       string
+// 	ExpectedText    string
+// 	ExpectedFileMap map[string]int
+// }
 
 /* TOC sample 1
 <h1 class="toc-title">Contents</h1>

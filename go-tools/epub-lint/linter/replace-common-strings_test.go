@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	"github.com/stretchr/testify/assert"
 )
 
 type CommonStringReplaceTestCase struct {
@@ -94,6 +95,26 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 		Expected: `'Hey. How are you?'
 		'I am doing great!'`,
 	},
+	"make sure that simple missing oxford comma situations get handled properly": {
+		Input:    `Here is a situation where I run, skip and jump for a long time.`,
+		Expected: `Here is a situation where I run, skip, and jump for a long time.`,
+	},
+	"make sure that simple missing oxford comma situations where it is just the list on the line are handled properly": {
+		Input: `Here is a situation where I
+		run, walk, sleep, skip or jump
+		for a long time.`,
+		Expected: `Here is a situation where I
+		run, walk, sleep, skip, or jump
+		for a long time.`,
+	},
+	"make sure that complex scenarios missing the oxford comma are ignored": {
+		Input:    `Here is a situation where red and white, blue and green and white is the list`,
+		Expected: `Here is a situation where red and white, blue and green and white is the list`,
+	},
+	"make sure that complex scenarios missing the oxford comma with different conjunctions are ignored": {
+		Input:    `Here is a situation where red and white, blue and green or white is the list`,
+		Expected: `Here is a situation where red and white, blue and green or white is the list`,
+	},
 }
 
 func TestCommonStringReplace(t *testing.T) {
@@ -101,9 +122,7 @@ func TestCommonStringReplace(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			actual := linter.CommonStringReplace(args.Input)
 
-			if actual != args.Expected {
-				t.Errorf("output text doesn't match: expected %v, got %v", args.Expected, actual)
-			}
+			assert.Equal(t, args.Expected, actual)
 		})
 	}
 

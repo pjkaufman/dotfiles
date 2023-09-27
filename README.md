@@ -34,4 +34,19 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 
 ### Setting Up Calibre DeDRM
 
-First you will need to install Calibre and a compatible version of the DeDRM plugin. Make sure to install Kindle for PC version 1.17 via wine. You will also want to install a calibre version along with its compatible version of DeDRM into wine and then restart Calibre once the plugin is present. From there it should autoload the key and if not press the green plus sign and it should load the key. Once that is done, export the key and then import that key in the version of calibre on your non-wine portion. Then go ahead and import any books you would like from Kindle for PC. They should all be DRM free now.
+- Install Calibre
+- Install a compatible version of the DeDRM plugin
+- Install Kindle for PC version 1.17 via wine
+- Install Calibre in wine*
+- Install a compatible version of the DeDRM plugin in wine*
+- Restart Calibre in wine*
+  - The DeDRM plugin should autoload the key for DeDRM the books
+  - If it does not, press the green plus sign and it should load the key
+- Export the key
+- Import the key in the version of Caliber on your non-wine install
+- Load any books you want from Kindle for PC into Calibre
+- They should now be DRM free
+
+*: the wine version is needed for working with Kindle for PC in wine if your non-wine Calibre cannot detect the key for Kindle for PC 
+
+_Note: this method is only meant to be used for books you have bought. This is not meant to be something used on books you have not bought._

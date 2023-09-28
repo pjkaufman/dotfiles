@@ -4,7 +4,8 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -13,10 +14,14 @@ var undoCmd = &cobra.Command{
 	Use:   "undo",
 	Short: "Undoes the previous commit while still retaining it",
 	Run: func(cmd *cobra.Command, args []string) {
-		utils.MustRunCommand(gitProgramName, "failed to undo the last commit for the current repo", "reset", "--soft", "HEAD~1")
+		UndoCommit(commandhandler.NewCommandHandler(logger.NewLoggerHandler()))
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(undoCmd)
+}
+
+func UndoCommit(cm commandhandler.CommandManager) {
+	cm.MustRunCommand(gitProgramName, "failed to undo the last commit for the current repo", "reset", "--soft", "HEAD~1")
 }

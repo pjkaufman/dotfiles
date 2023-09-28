@@ -13,7 +13,7 @@ var undoCmd = &cobra.Command{
 	Use:   "undo",
 	Short: "Undoes the previous commit while still retaining it",
 	Run: func(cmd *cobra.Command, args []string) {
-		utils.MustRunCommand(gitProgramName, "failed to update the submodule for the current repo", " reset", "--soft", "HEAD~1")
+		utils.MustRunCommand(gitProgramName, "failed to undo the last commit for the current repo", "reset", "--soft", "HEAD~1")
 	},
 }
 

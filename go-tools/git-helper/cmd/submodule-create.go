@@ -2,11 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -19,6 +20,12 @@ var (
 	getCurrentBranchArgs = []string{"branch", "--show-current"}
 )
 
+const (
+	TicketArgEmpty         = "ticket-abbreviation must have a non-whitespace value"
+	BranchNameArgEmpty     = "branch-name must have a non-whitespace value"
+	RepoParentPathArgEmpty = "repo-parent-path must exist and be a directory"
+)
+
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
@@ -26,41 +33,12 @@ var createCmd = &cobra.Command{
 	Long: `Creates the specified branch in the provided submodule for all instances of the submodule in the provided folder so long as it is not already present.
 	
 	For example: git-tools submodule create -s Submodule -p ./repos/ -a ticket-abbreviation -b branch-name
-	This command would create a 
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ticketAbbreviation = strings.Trim(ticketAbbreviation, " ")
-		if ticketAbbreviation == "" {
-			os.Stderr.WriteString("ticket-abbreviation must have a non-whitespace value\n")
-		}
-
-		branchName = strings.Trim(branchName, " ")
-		if branchName == "" {
-			utils.WriteError("branch-name must have a non-whitespace value")
-		}
-
-		repoPathExists := utils.FolderExists(repoFolderPath)
-		if !repoPathExists {
-			utils.WriteError("repo-parent-path must exist and be a directory")
-		}
-
-		// fmt.Printf(`create -s "%s" -p "%s" -a "%s" -b "%s"`+"\n", submoduleName, repoFolderPath, ticketAbbreviation, branchName)
-
-		folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
-		// fmt.Println(folders)
-
-		var currentBranch string
-		for _, folder := range folders {
-			utils.MustChangeDirectoryTo(folder)
-
-			currentBranch = utils.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to get current branch for "%s"`, folder), getCurrentBranchArgs...)
-			if strings.Contains(currentBranch, ticketAbbreviation) {
-				continue
-			}
-
-			utils.WriteInfo(currentBranch + " does not contain " + ticketAbbreviation)
-			createSubmoduleUpdateBranch(folder, submoduleName)
-		}
+		var log = logger.NewLoggerHandler()
+		var cmdHanlder = commandhandler.NewCommandHandler(log)
+		var fileHandler = filehandler.NewFileHandler(log)
+		CreateSubmoduleBranches(log, cmdHanlder, fileHandler, ticketAbbreviation, branchName, repoFolderPath)
 	},
 }
 
@@ -77,16 +55,38 @@ func init() {
 	createCmd.MarkFlagRequired("branch-name")
 }
 
-func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
+func CreateSubmoduleBranches(l logger.Logger, cmdManager commandhandler.CommandManager, fileManager filehandler.FileManager, ticketAbbreviation, branchName, repoFolderPath string) {
+	validateSubmoduleCreate(l, fileManager, ticketAbbreviation, branchName)
+
+	// fmt.Printf(`create -s "%s" -p "%s" -a "%s" -b "%s"`+"\n", submoduleName, repoFolderPath, ticketAbbreviation, branchName)
+
+	folders := getListOfFoldersWithSubmodule(fileManager, repoFolderPath, submoduleName)
+	// fmt.Println(folders)
+
+	var currentBranch string
+	for _, folder := range folders {
+		cmdManager.MustChangeDirectoryTo(folder)
+
+		currentBranch = cmdManager.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to get current branch for "%s"`, folder), getCurrentBranchArgs...)
+		if strings.Contains(currentBranch, ticketAbbreviation) {
+			continue
+		}
+
+		l.WriteInfo(currentBranch + " does not contain " + ticketAbbreviation)
+		createSubmoduleUpdateBranch(l, cmdManager, folder, submoduleName)
+	}
+}
+
+func getListOfFoldersWithSubmodule(fileManager filehandler.FileManager, path, submoduleName string) []string {
 	var folders []string
-	for _, dir := range utils.GetFoldersInCurrentFolder(path) {
+	for _, dir := range fileManager.GetFoldersInCurrentFolder(path) {
 		var pathParts = []string{path, dir}
 		var folderPath = filepath.Join(pathParts...)
 		pathParts = append(pathParts, pathToSubmodule...)
 		pathParts = append(pathParts, submoduleName)
 		var submoduleFolderPath = filepath.Join(pathParts...)
 
-		var exists = utils.FolderExists(submoduleFolderPath)
+		var exists = fileManager.FolderExists(submoduleFolderPath)
 		if !exists {
 			continue
 		}
@@ -97,29 +97,59 @@ func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
 	return folders
 }
 
-func createSubmoduleUpdateBranch(folder, submodule string) {
-	utils.WriteInfo("Creating the DE branch for " + folder)
-	checkoutLatestFromMaster(folder)
+func createSubmoduleUpdateBranch(l logger.Logger, cmdManager commandhandler.CommandManager, folder, submodule string) {
+	l.WriteInfo("Creating the DE branch for " + folder)
+	checkoutLatestFromMaster(cmdManager, folder)
 
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", "-B", "vikings/"+ticketAbbreviation+"update-"+submodule)
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", "-B", "vikings/"+ticketAbbreviation+"update-"+submodule)
 
 	var submoduleDir = filepath.Join(append(pathToSubmodule, submodule)...)
-	utils.MustChangeDirectoryTo(filepath.Join(append(pathToSubmodule, submodule)...))
+	cmdManager.MustChangeDirectoryTo(filepath.Join(append(pathToSubmodule, submodule)...))
 
-	checkoutLatestFromMaster(submoduleDir)
+	checkoutLatestFromMaster(cmdManager, submoduleDir)
 
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout "%s" for "%s"`, branchName, folder), "checkout", branchName)
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout "%s" for "%s"`, branchName, folder), "checkout", branchName)
 
-	utils.MustChangeDirectoryTo(upADirectory)
+	cmdManager.MustChangeDirectoryTo(upADirectory)
 
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submodule, folder), "add", submodule)
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submodule)
-	pushOutput := utils.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submodule, folder), "add", submodule)
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submodule)
+	pushOutput := cmdManager.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 
+	/**
+		Enumerating objects: 11, done.
+	Counting objects: 100% (11/11), done.
+	Delta compression using up to 12 threads
+	Compressing objects: 100% (6/6), done.
+	Writing objects: 100% (6/6), 536 bytes | 0 bytes/s, done.
+	Total 6 (delta 5), reused 0 (delta 0), pack-reused 0
+	remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+	remote:
+	remote: Create a pull request for 'carbon/CENTRAL-10205-Businesses-Are-Not-Adults' on GitHub by visiting:
+	remote:      https://github.com/acst/Profiles-Service/pull/new/carbon/CENTRAL-10205-Businesses-Are-Not-Adults
+	remote:
+	To github.com:acst/Profiles-Service.git
+	 * [new branch]        carbon/CENTRAL-10205-Businesses-Are-Not-Adults -> carbon/CENTRAL-10205-Businesses-Are-Not-Adults
+	branch 'carbon/CENTRAL-10205-Businesses-Are-Not-Adults' set up to track 'origin/carbon/CENTRAL-10205-Businesses-Are-Not-Adults'.
+	*/
 	fmt.Println("TODO: handle the push output - " + pushOutput)
 }
 
-func checkoutLatestFromMaster(folder string) {
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout master for "%s"`, folder), "checkout", "master")
-	utils.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "pull")
+func checkoutLatestFromMaster(cmdManager commandhandler.CommandManager, folder string) {
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout master for "%s"`, folder), "checkout", "master")
+	cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "pull")
+}
+
+func validateSubmoduleCreate(l logger.Logger, fileManager filehandler.FileManager, ticketAbbreviation, branchName string) {
+	if strings.Trim(ticketAbbreviation, " ") == "" {
+		l.WriteError(TicketArgEmpty)
+	}
+
+	if strings.Trim(branchName, " ") == "" {
+		l.WriteError(BranchNameArgEmpty)
+	}
+
+	if !fileManager.FolderExists(repoFolderPath) {
+		l.WriteError(RepoParentPathArgEmpty)
+	}
 }

@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -26,44 +27,9 @@ var lintEpubCmd = &cobra.Command{
 	For example: epub-lint lint-epub -f opf-file-path
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		validateLintEpubFlags(filePath)
-
-		opfText := utils.ReadInFileContents(filePath)
-
-		epubInfo, err := linter.ParseOpfFile(opfText)
-		if err != nil {
-			utils.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
-		}
-
-		var opfFolderString = utils.GetFileFolder(filePath)
-
-		validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
-		validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
-		validateFilesExist(opfFolderString, epubInfo.OtherFiles)
-
-		// fix up all xhtml files first
-		for file := range epubInfo.HtmlFiles {
-			var filePath = getFilePath(opfFolderString, file)
-			fileText := utils.ReadInFileContents(filePath)
-			var newText = linter.EnsureEncodingIsPresent(fileText)
-			newText = linter.CommonStringReplace(newText)
-
-			// TODO: remove images links that do not exist in the manifest
-			// TODO: remove files that exist, but are not in the manifest
-			newText = linter.EnsureLanguageIsSet(newText, lang)
-			epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
-
-			if fileText == newText {
-				continue
-			}
-
-			utils.WriteFileContents(filePath, newText)
-		}
-
-		updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
-		updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
-
-		// TODO; cleanup TOC file's links
+		log := logger.NewLoggerHandler()
+		var fileHandler = filehandler.NewFileHandler(log)
+		EpubLint(log, fileHandler, filePath, lang)
 	},
 }
 
@@ -75,37 +41,78 @@ func init() {
 	lintEpubCmd.MarkFlagRequired("file-path")
 }
 
-func validateLintEpubFlags(filePath string) {
-	if !strings.HasSuffix(filePath, ".opf") {
-		utils.WriteError(fmt.Sprintf(`file-path: "%s" must be an opf file`, filePath))
+func EpubLint(l logger.Logger, fileManager filehandler.FileManager, filePath, lang string) {
+	validateLintEpubFlags(l, fileManager, filePath)
+
+	opfText := fileManager.ReadInFileContents(filePath)
+
+	epubInfo, err := linter.ParseOpfFile(opfText)
+	if err != nil {
+		l.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
 	}
 
-	if !utils.FileExists(filePath) {
-		utils.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
+	var opfFolderString = fileManager.GetFileFolder(filePath)
+
+	validateFilesExist(l, fileManager, opfFolderString, epubInfo.HtmlFiles)
+	validateFilesExist(l, fileManager, opfFolderString, epubInfo.ImagesFiles)
+	validateFilesExist(l, fileManager, opfFolderString, epubInfo.OtherFiles)
+
+	// fix up all xhtml files first
+	for file := range epubInfo.HtmlFiles {
+		var filePath = getFilePath(fileManager, opfFolderString, file)
+		fileText := fileManager.ReadInFileContents(filePath)
+		var newText = linter.EnsureEncodingIsPresent(fileText)
+		newText = linter.CommonStringReplace(newText)
+
+		// TODO: remove images links that do not exist in the manifest
+		// TODO: remove files that exist, but are not in the manifest
+		newText = linter.EnsureLanguageIsSet(newText, lang)
+		epubInfo.PageIds = linter.GetPageIdsForFile(l, newText, file, epubInfo.PageIds)
+
+		if fileText == newText {
+			continue
+		}
+
+		fileManager.WriteFileContents(filePath, newText)
+	}
+
+	updateNavFile(l, fileManager, opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
+	updateNcxFile(l, fileManager, opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
+
+	// TODO; cleanup TOC file's links
+}
+
+func validateLintEpubFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
+	if !strings.HasSuffix(filePath, ".opf") {
+		l.WriteError(fmt.Sprintf(`file-path: "%s" must be an opf file`, filePath))
+	}
+
+	if !fileManager.FileExists(filePath) {
+		l.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
 	}
 }
 
-func validateFilesExist(opfFolder string, files map[string]struct{}) {
+func validateFilesExist(l logger.Logger, fileManager filehandler.FileManager, opfFolder string, files map[string]struct{}) {
 	for file := range files {
-		var filePath = getFilePath(opfFolder, file)
+		var filePath = getFilePath(fileManager, opfFolder, file)
 
-		if !utils.FileExists(filePath) {
-			utils.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
+		if !fileManager.FileExists(filePath) {
+			l.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
 		}
 	}
 }
 
-func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNcxFile(l logger.Logger, fileManager filehandler.FileManager, opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = getFilePath(opfFolder, file)
-	fileText := utils.ReadInFileContents(filePath)
+	var filePath = getFilePath(fileManager, opfFolder, file)
+	fileText := fileManager.ReadInFileContents(filePath)
 
 	newText, err := linter.CleanupNavMap(fileText)
 	if err != nil {
-		utils.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+		l.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
 
 	newText = linter.AddPageListToNcxFile(newText, pageIds)
@@ -114,20 +121,20 @@ func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 		return
 	}
 
-	utils.WriteFileContents(filePath, newText)
+	fileManager.WriteFileContents(filePath, newText)
 }
 
-func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNavFile(l logger.Logger, fileManager filehandler.FileManager, opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = getFilePath(opfFolder, file)
-	fileText := utils.ReadInFileContents(filePath)
+	var filePath = getFilePath(fileManager, opfFolder, file)
+	fileText := fileManager.ReadInFileContents(filePath)
 
 	newText, err := linter.RemoveIdsFromNav(fileText)
 	if err != nil {
-		utils.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+		l.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
 
 	newText = linter.AddPageListToNavFile(newText, pageIds)
@@ -136,9 +143,9 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 		return
 	}
 
-	utils.WriteFileContents(filePath, newText)
+	fileManager.WriteFileContents(filePath, newText)
 }
 
-func getFilePath(opfFolder, file string) string {
-	return utils.JoinPath(opfFolder, file)
+func getFilePath(fileManager filehandler.FileManager, opfFolder, file string) string {
+	return fileManager.JoinPath(opfFolder, file)
 }

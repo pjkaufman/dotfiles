@@ -3,10 +3,11 @@
 package linter_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
+	"github.com/stretchr/testify/assert"
 )
 
 type ParseTextReplacementsTestCase struct {
@@ -61,31 +62,10 @@ var ParseTextReplacementsTestCases = map[string]ParseTextReplacementsTestCase{
 func TestParseTextReplacements(t *testing.T) {
 	for name, args := range ParseTextReplacementsTestCases {
 		t.Run(name, func(t *testing.T) {
-			actual := linter.ParseTextReplacements(args.Input)
+			log := logger.NewMockLoggerHandler()
+			actual := linter.ParseTextReplacements(log, args.Input)
 
-			if !stringMapsAreEqual(args.Expected, actual) {
-				t.Errorf("output map doesn't match: expected %v, got %v", args.Expected, actual)
-			}
+			assert.Equal(t, args.Expected, actual)
 		})
 	}
-}
-
-func stringMapsAreEqual(expected, actual map[string]string) bool {
-	if len(expected) != len(actual) {
-		return false
-	}
-
-	for key, value := range expected {
-		if value2, found := actual[key]; !found || value != value2 {
-			if !found {
-				fmt.Printf("expected value \"%s\" but did not find it", key)
-			} else {
-				fmt.Printf("expected value \"%s\" but got \"%s\"", value, value2)
-			}
-
-			return false
-		}
-	}
-
-	return true
 }

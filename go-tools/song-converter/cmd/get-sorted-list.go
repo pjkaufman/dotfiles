@@ -5,7 +5,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -20,17 +21,9 @@ var getSortedListCmd = &cobra.Command{
 	For example: song-converter get-sorted-list -f working-dir
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		validateGetSortedListFlags(stagingDir)
-
-		files := utils.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
-
-		sort.Strings(files)
-
-		for i, fileName := range files {
-			files[i] = utils.JoinPath(stagingDir, fileName)
-		}
-
-		utils.WriteInfo(strings.Join(files, "\n"))
+		var log = logger.NewLoggerHandler()
+		var fileHandler = filehandler.NewFileHandler(log)
+		SortMarkdownFileList(log, fileHandler, stagingDir)
 	},
 }
 
@@ -41,12 +34,26 @@ func init() {
 	getSortedListCmd.MarkFlagRequired("working-dir")
 }
 
-func validateGetSortedListFlags(stagingDir string) {
-	if strings.Trim(stagingDir, " ") == "" {
-		utils.WriteError("working-dir must have a non-whitespace value")
+func SortMarkdownFileList(l logger.Logger, fileManager filehandler.FileManager, stagingDir string) {
+	validateGetSortedListFlags(l, fileManager, stagingDir)
+
+	files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+
+	sort.Strings(files)
+
+	for i, fileName := range files {
+		files[i] = fileManager.JoinPath(stagingDir, fileName)
 	}
 
-	if !utils.FileExists(stagingDir) {
-		utils.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
+	l.WriteInfo(strings.Join(files, "\n"))
+}
+
+func validateGetSortedListFlags(l logger.Logger, fileManager filehandler.FileManager, stagingDir string) {
+	if strings.Trim(stagingDir, " ") == "" {
+		l.WriteError("working-dir must have a non-whitespace value")
+	}
+
+	if !fileManager.FileExists(stagingDir) {
+		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 	}
 }

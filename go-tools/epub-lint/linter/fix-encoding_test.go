@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	"github.com/stretchr/testify/assert"
 )
 
 type FixEncodingTestCase struct {
@@ -44,9 +45,7 @@ func TestFixEncoding(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			actual := linter.EnsureEncodingIsPresent(args.Input)
 
-			if actual != args.Expected {
-				t.Errorf("output text doesn't match: expected %v, got %v", args.Expected, actual)
-			}
+			assert.Equal(t, args.Expected, actual)
 		})
 	}
 }

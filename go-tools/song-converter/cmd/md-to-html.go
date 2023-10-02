@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +21,9 @@ var mdToHtmlCmd = &cobra.Command{
 	converts the Markdown file to an html file
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		validateMdToHtmlFlags(filePath)
+		var log = logger.NewLoggerHandler()
+		var fileHandler = filehandler.NewFileHandler(log)
+		validateMdToHtmlFlags(log, fileHandler, filePath)
 	},
 }
 
@@ -31,16 +34,16 @@ func init() {
 	mdToHtmlCmd.MarkFlagRequired("file-path")
 }
 
-func validateMdToHtmlFlags(filePath string) {
+func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
 	if strings.Trim(filePath, " ") == "" {
-		utils.WriteError("file-path must have a non-whitespace value")
+		l.WriteError("file-path must have a non-whitespace value")
 	}
 
 	if !strings.HasSuffix(filePath, ".md") {
-		utils.WriteError("file-path must be a markdown file")
+		l.WriteError("file-path must be a markdown file")
 	}
 
-	if !utils.FileExists(filePath) {
-		utils.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
+	if !fileManager.FileExists(filePath) {
+		l.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -228,7 +229,8 @@ var GetPageIdsForFileTestCases = map[string]GetPageIdsForFileTestCase{
 func TestGetPageIdsForFile(t *testing.T) {
 	for name, args := range GetPageIdsForFileTestCases {
 		t.Run(name, func(t *testing.T) {
-			actual := linter.GetPageIdsForFile(args.InputText, args.InputFileName, args.InputPageIds)
+			l := logger.NewMockLoggerHandler()
+			actual := linter.GetPageIdsForFile(l, args.InputText, args.InputFileName, args.InputPageIds)
 
 			assert.Equal(t, args.ExpectedFilePageIds, actual, "page ids should be equal")
 		})

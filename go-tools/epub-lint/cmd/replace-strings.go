@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
-	"github.com/pjkaufman/dotfiles/go-tools/utils"
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -25,59 +26,9 @@ var replaceStringsCmd = &cobra.Command{
 	from the provided file(s)
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var files = strings.Split(filePaths, ",")
-		validateReplaceStringsFlags(files, extraReplacesFilePath)
-
-		var numHits = make(map[string]int)
-		var extraTextReplacements = linter.ParseTextReplacements(utils.ReadInFileContents(extraReplacesFilePath))
-		for _, filePath := range files {
-			fileText := utils.ReadInFileContents(filePath)
-			var newText = linter.CommonStringReplace(fileText)
-			newText = linter.ExtraStringReplace(newText, extraTextReplacements, numHits)
-
-			if fileText == newText {
-				continue
-			}
-
-			utils.WriteFileContents(filePath, newText)
-		}
-
-		if len(numHits) == 0 {
-			utils.WriteWarn("No values were listed as needing replacing")
-
-			return
-		}
-
-		var successfulReplaces []string
-		var failedReplaces []string
-		for searchText, hits := range numHits {
-			if hits == 0 {
-				failedReplaces = append(failedReplaces, searchText)
-			} else {
-				var timeText = "time"
-				if hits > 1 {
-					timeText += "s"
-				}
-
-				successfulReplaces = append(successfulReplaces, fmt.Sprintf("`%s` was replaced %d %s", searchText, hits, timeText))
-			}
-		}
-
-		utils.WriteInfo("Successful Replaces:")
-		for _, successfulReplace := range successfulReplaces {
-			utils.WriteInfo(successfulReplace)
-		}
-
-		if len(failedReplaces) == 0 {
-			return
-		}
-
-		utils.WriteInfo("")
-		utils.WriteWarn("Failed Replaces:")
-		for i, failedReplace := range failedReplaces {
-			utils.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
-		}
-		utils.WriteInfo("")
+		var log = logger.NewLoggerHandler()
+		var fileHandler = filehandler.NewFileHandler(log)
+		ReplaceExtraStrings(log, fileHandler, filePaths, extraReplacesFilePath)
 	},
 }
 
@@ -90,21 +41,77 @@ func init() {
 	replaceStringsCmd.MarkFlagRequired("extra-replace-text")
 }
 
-func validateReplaceStringsFlags(filePaths []string, extraReplaceStringsPath string) {
+func ReplaceExtraStrings(l logger.Logger, fileManager filehandler.FileManager, filePaths, extraReplacesFilePath string) {
+	var files = strings.Split(filePaths, ",")
+	validateReplaceStringsFlags(l, fileManager, files, extraReplacesFilePath)
+
+	var numHits = make(map[string]int)
+	var extraTextReplacements = linter.ParseTextReplacements(l, fileManager.ReadInFileContents(extraReplacesFilePath))
+	for _, filePath := range files {
+		fileText := fileManager.ReadInFileContents(filePath)
+		var newText = linter.CommonStringReplace(fileText)
+		newText = linter.ExtraStringReplace(newText, extraTextReplacements, numHits)
+
+		if fileText == newText {
+			continue
+		}
+
+		fileManager.WriteFileContents(filePath, newText)
+	}
+
+	if len(numHits) == 0 {
+		l.WriteWarn("No values were listed as needing replacing")
+
+		return
+	}
+
+	var successfulReplaces []string
+	var failedReplaces []string
+	for searchText, hits := range numHits {
+		if hits == 0 {
+			failedReplaces = append(failedReplaces, searchText)
+		} else {
+			var timeText = "time"
+			if hits > 1 {
+				timeText += "s"
+			}
+
+			successfulReplaces = append(successfulReplaces, fmt.Sprintf("`%s` was replaced %d %s", searchText, hits, timeText))
+		}
+	}
+
+	l.WriteInfo("Successful Replaces:")
+	for _, successfulReplace := range successfulReplaces {
+		l.WriteInfo(successfulReplace)
+	}
+
+	if len(failedReplaces) == 0 {
+		return
+	}
+
+	l.WriteInfo("")
+	l.WriteWarn("Failed Replaces:")
+	for i, failedReplace := range failedReplaces {
+		l.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
+	}
+	l.WriteInfo("")
+}
+
+func validateReplaceStringsFlags(l logger.Logger, fileManager filehandler.FileManager, filePaths []string, extraReplaceStringsPath string) {
 	for _, filePath := range filePaths {
-		filePathExists := utils.FileExists(filePath)
+		filePathExists := fileManager.FileExists(filePath)
 
 		if !filePathExists {
-			utils.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
+			l.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
 		}
 	}
 
 	if strings.Trim(extraReplacesFilePath, " ") == "" {
-		utils.WriteError("extra-replace-file-path must have a non-whitespace value")
+		l.WriteError("extra-replace-file-path must have a non-whitespace value")
 	}
 
-	extraReplacesFilePathExists := utils.FileExists(extraReplacesFilePath)
+	extraReplacesFilePathExists := fileManager.FileExists(extraReplacesFilePath)
 	if !extraReplacesFilePathExists {
-		utils.WriteError("extra-replace-file-path must exist")
+		l.WriteError("extra-replace-file-path must exist")
 	}
 }

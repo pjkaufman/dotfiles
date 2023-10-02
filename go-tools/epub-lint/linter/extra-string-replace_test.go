@@ -3,10 +3,10 @@
 package linter_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	"github.com/stretchr/testify/assert"
 )
 
 type ExtraStringReplaceTestCase struct {
@@ -88,33 +88,8 @@ func TestExtraStringReplace(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			actual := linter.ExtraStringReplace(args.InputText, args.InputFindsAndReplaces, args.InputHits)
 
-			if actual != args.ExpectedText {
-				t.Errorf("output text doesn't match: expected \"%s\", got \"%s\"", args.ExpectedText, actual)
-			}
-
-			if !stringToIntMapsAreEqual(args.ExpectedHits, args.InputHits) {
-				t.Errorf("output map doesn't match: expected %v, got %v", args.ExpectedHits, args.InputHits)
-			}
+			assert.Equal(t, args.ExpectedText, actual, "output text doesn't match")
+			assert.Equal(t, args.ExpectedHits, args.InputHits, "output map doesn't match")
 		})
 	}
-}
-
-func stringToIntMapsAreEqual(expected, actual map[string]int) bool {
-	if len(expected) != len(actual) {
-		return false
-	}
-
-	for key, value := range expected {
-		if value2, found := actual[key]; !found || value != value2 {
-			if !found {
-				fmt.Printf("expected value \"%s\" but did not find it", key)
-			} else {
-				fmt.Printf("expected value \"%d\" but got \"%d\"", value, value2)
-			}
-
-			return false
-		}
-	}
-
-	return true
 }

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/adrg/frontmatter"
@@ -21,6 +22,9 @@ const (
 )
 
 var filePath string
+var otherTitleRegex = regexp.MustCompile(`^(<h1.*)\((.*)\)<(.*)`)
+
+//^(<h1.*)\((.*)\)<(.*)/\1<span class="other-title">\(\2\)<\/span><\3/
 
 type SongMetadata struct {
 	Melody         string `yaml:"melody"`
@@ -67,8 +71,9 @@ func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, filePath str
 
 	var metadataHtml = buildMetadataDiv(&metadata)
 	html := mdToHTML([]byte(mdContent))
+	html = otherTitleRegex.ReplaceAllString(html, `${1}<span class="other-title">(${2})</span><${3}`)
 
-	return fmt.Sprintf("%s\n%s", metadataHtml, html)
+	return fmt.Sprintf("<div class=\"keep-together\">\n%s\n%s</div>\n<br/>", metadataHtml, html)
 }
 
 func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
@@ -85,7 +90,7 @@ func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager,
 	}
 }
 
-func mdToHTML(md []byte) []byte {
+func mdToHTML(md []byte) string {
 	// create markdown parser with extensions
 	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
 	p := parser.NewWithExtensions(extensions)
@@ -102,7 +107,7 @@ func mdToHTML(md []byte) []byte {
 	opts := html.RendererOptions{Flags: htmlFlags}
 	renderer := html.NewRenderer(opts)
 
-	return markdown.Render(doc, renderer)
+	return string(markdown.Render(doc, renderer))
 }
 
 func buildMetadataDiv(metadata *SongMetadata) string {
@@ -197,7 +202,6 @@ func updateCountsIfMetatdataExists(value string, metadataElements, rowElements i
 
 /**
 fileName=$(basename "$f" .md)
-    yaml=$(parse_yaml "./stagingGround/$f")
     pandoc "./stagingGround/$f" -o "./html/build/$fileName.html"
 
     if [ -n "$yaml" ]; then

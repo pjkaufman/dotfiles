@@ -73,6 +73,9 @@ func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, filePath str
 	html := mdToHTML([]byte(mdContent))
 	html = otherTitleRegex.ReplaceAllString(html, `${1}<span class="other-title">(${2})</span><${3}`)
 
+	html = strings.ReplaceAll(html, "\u00a0\u00a0\n", "</p>\n<p>")
+	html = strings.ReplaceAll(html, "\\&", "&")
+
 	return fmt.Sprintf("<div class=\"keep-together\">\n%s\n%s</div>\n<br/>", metadataHtml, html)
 }
 
@@ -95,12 +98,6 @@ func mdToHTML(md []byte) string {
 	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
 	p := parser.NewWithExtensions(extensions)
 	doc := p.Parse(md)
-
-	// if printAst {
-	// 	fmt.Print("--- AST tree:\n")
-	// 	ast.Print(os.Stdout, doc)
-	// 	fmt.Print("\n")
-	// }
 
 	// create HTML renderer with extensions
 	htmlFlags := html.CommonFlags
@@ -153,7 +150,6 @@ func buildMetadataDiv(metadata *SongMetadata) string {
 	)
 
 	if row1 != 0 {
-		metadataHtml.WriteString("\n")
 		if row2 != 0 {
 			metadataHtml.WriteString("<div class=\"metadata row-padding\">")
 		} else {
@@ -212,8 +208,8 @@ fileName=$(basename "$f" .md)
     fi
 
     sed -i -r 's/^(<h1.*)\((.*)\)<(.*)/\1<span class="other-title">\(\2\)<\/span><\3/' "./html/build/$fileName.html"
-    sed -i "/<hr \/>/{N;d;}" "./html/build/$fileName.html"
-    sed -i "/''/d" "./html/build/$fileName.html"
+    sed -i "/<hr \/>/{N;d;}" "./html/build/$fileName.html" // TODO: need to account for this
+    sed -i "/''/d" "./html/build/$fileName.html" // TODO: need to account for this
     echo -e "<div class=\"keep-together\">\n$(cat "./html/build/$fileName.html")" > "./html/build/$fileName.html"
     echo -e "</div>\n<br/>" >> "./html/build/$fileName.html"
     echo -e "$(cat "./html/build/$fileName.html")" >> ./html/churchSongs.html

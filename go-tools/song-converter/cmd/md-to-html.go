@@ -74,8 +74,8 @@ func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, filePath str
 	// just in case we encounter this scenario where non-breaking space is encoded as its unicode value
 	html = strings.ReplaceAll(html, "\u00a0\u00a0\n", "<br>\n")
 	html = strings.ReplaceAll(html, "\\&", "&")
-	// html = strings.ReplaceAll(html, "\n\n", "\n")
 	html = strings.Replace(html, "</h1>\n", "</h1>\n"+metadataHtml, 1)
+	html = strings.ReplaceAll(html, "\n\n", "\n")
 
 	return fmt.Sprintf("<div class=\"keep-together\">\n%s</div>\n<br>", html)
 }

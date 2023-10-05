@@ -76,7 +76,6 @@ He is and ever more shall be.
 <div><div class="metadata"><div><div class="author">Chris Knauf</div></div><div><div class="key"><b>Key C</b></div></div><div><div class="location">(MS16) (B20)</div></div></div></div><br><br>
 <p>~ 1 ~ He is fairer than the lily of the valley, He is brighter than the morning star.<br>
 He is purer than the snow, fresher than the breeze, Lovelier by far than all of these.</p>
-
 <p>~ 2 ~ But He calms all the storms, and conquers the raging seas.<br>
 He is the high and lofty One who inhabits eternity,<br>
 Creator of the universe, and He&rsquo;s clothed with majesty.<br>
@@ -119,7 +118,6 @@ And He made me happy\*. Above it all, He\'s still the \*\*same\*\*.
 <div><div class="metadata"><div><div class="author">LaVerne & Edith Tripp</div></div><div><div class="key"><b>Key G</b></div></div><div><div class="location">(MS68) (B1)</div></div></div></div><br><br>
 <p>Above it all, There stands Jesus. Above it all, He&rsquo;s still my King. *He took my life,<br>
 And He made me happy*. Above it all, He&rsquo;s still the **same**.</p>
-
 <p>*This fleeting life is but a vapor*<br>
 **King**</p>
 </div>
@@ -158,7 +156,6 @@ We\'re walking together in Zion; And there are no limits in Him.
 <div><div class="metadata row-padding"><div><div class="author"><b>I. Amundson</b></div></div><div><div class="key">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="location">&nbsp;&nbsp;&nbsp;&nbsp;</div></div></div><div class="metadata"><div><div class="melody-75"><b>(tune The Kingdom of God is Not Meat and Drink)</b></div></div></div></div><br><br>
 <p>~ 1 ~ Behold the heavens are open; Behold the face of the King<br>
 We now have a new way of walking; We now have a new song to sing.</p>
-
 <p>~ 2 ~ Behold the heavens are open; Forever the veil has been rent;<br>
 We&rsquo;re walking together in Zion; And there are no limits in Him.</p>
 </div>
@@ -201,7 +198,6 @@ And Thy truth unto the clouds.
 <p>~ 1 ~ Be Thou exalted, oh God (x3) above the heavens.<br>
 Let Thy glory be above the whole earth.<br>
 (Repeat)</p>
-
 <p>~ 2 ~ I will praise Thee oh Lord among the people.<br>
 I will sing unto Thee among the nations.<br>
 For Thy mercy is great unto the heavens<br>

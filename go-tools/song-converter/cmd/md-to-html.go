@@ -31,6 +31,7 @@ type SongMetadata struct {
 	InChurch       string `yaml:"in-church"`
 	VerseReference string `yaml:"verse"`
 	BookLocation   string `yaml:"location"`
+	Copyright      string `yaml:"copyright"`
 }
 
 // mdToHtmlCmd represents the mdToHtml command

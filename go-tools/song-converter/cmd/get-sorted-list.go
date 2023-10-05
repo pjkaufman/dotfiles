@@ -18,7 +18,7 @@ var getSortedListCmd = &cobra.Command{
 	Short: "Gets an alphabetically sorted list of Markdown file names from the provided directory",
 	Long: `Gets the list of Markdown files in the working directory provided and sorts them alphabetically
 	
-	For example: song-converter get-sorted-list -f working-dir
+	For example: song-converter get-sorted-list -d working-dir
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()
@@ -53,7 +53,7 @@ func validateGetSortedListFlags(l logger.Logger, fileManager filehandler.FileMan
 		l.WriteError("working-dir must have a non-whitespace value")
 	}
 
-	if !fileManager.FileExists(stagingDir) {
+	if !fileManager.FolderExists(stagingDir) {
 		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 	}
 }

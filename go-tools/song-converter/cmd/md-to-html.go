@@ -18,13 +18,11 @@ const (
 	FilePathArgEmpty        = "file-path must have a non-whitespace value"
 	FilePathNotMarkdownFile = "file-path must be a markdown file"
 	emptyColumnContent      = "&nbsp;&nbsp;&nbsp;&nbsp;"
-	closeMetadata           = "</div><br/><br/>"
+	closeMetadata           = "</div><br><br>"
 )
 
 var filePath string
 var otherTitleRegex = regexp.MustCompile(`^(<h1.*)\((.*)\)<(.*)`)
-
-//^(<h1.*)\((.*)\)<(.*)/\1<span class="other-title">\(\2\)<\/span><\3/
 
 type SongMetadata struct {
 	Melody         string `yaml:"melody"`
@@ -73,10 +71,13 @@ func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, filePath str
 	html := mdToHTML([]byte(mdContent))
 	html = otherTitleRegex.ReplaceAllString(html, `${1}<span class="other-title">(${2})</span><${3}`)
 
-	html = strings.ReplaceAll(html, "\u00a0\u00a0\n", "</p>\n<p>")
+	// just in case we encounter this scenario where non-breaking space is encoded as its unicode value
+	html = strings.ReplaceAll(html, "\u00a0\u00a0\n", "<br>\n")
 	html = strings.ReplaceAll(html, "\\&", "&")
+	// html = strings.ReplaceAll(html, "\n\n", "\n")
+	html = strings.Replace(html, "</h1>\n", "</h1>\n"+metadataHtml, 1)
 
-	return fmt.Sprintf("<div class=\"keep-together\">\n%s\n%s</div>\n<br/>", metadataHtml, html)
+	return fmt.Sprintf("<div class=\"keep-together\">\n%s</div>\n<br>", html)
 }
 
 func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
@@ -130,11 +131,11 @@ func buildMetadataDiv(metadata *SongMetadata) string {
 	metadataHtml.WriteString("<div>")
 
 	var (
-		addRowEntry = func(value, class, nonEmptyValy string) {
+		addRowEntry = func(value, class, nonEmptyValue string) {
 			metadataHtml.WriteString(fmt.Sprintf("<div><div class=\"%s\">", class))
 
 			if strings.Trim(value, "") != "" {
-				metadataHtml.WriteString(value)
+				metadataHtml.WriteString(nonEmptyValue)
 			} else {
 				metadataHtml.WriteString(emptyColumnContent)
 			}
@@ -179,7 +180,7 @@ func buildMetadataDiv(metadata *SongMetadata) string {
 		addBoldRowEntry(metadata.Melody, "melody-75")
 	} else {
 		addBoldRowEntry(metadata.Melody, "melody")
-		addBoldRowEntry(metadata.VerseReference, "verse")
+		addRegularRowEntry(metadata.VerseReference, "verse")
 	}
 
 	metadataHtml.WriteString("</div>")
@@ -195,22 +196,3 @@ func updateCountsIfMetatdataExists(value string, metadataElements, rowElements i
 
 	return metadataElements + 1, rowElements + 1
 }
-
-/**
-fileName=$(basename "$f" .md)
-    pandoc "./stagingGround/$f" -o "./html/build/$fileName.html"
-
-    if [ -n "$yaml" ]; then
-      metadata=$(build_metadata_div $yaml)
-      sed -i "/<\/h1>/a ${metadata@Q}" "./html/build/$fileName.html"
-      sed -i "s/\$'</</" "./html/build/$fileName.html"
-      sed -i "s/>'/>/" "./html/build/$fileName.html"
-    fi
-
-    sed -i -r 's/^(<h1.*)\((.*)\)<(.*)/\1<span class="other-title">\(\2\)<\/span><\3/' "./html/build/$fileName.html"
-    sed -i "/<hr \/>/{N;d;}" "./html/build/$fileName.html" // TODO: need to account for this
-    sed -i "/''/d" "./html/build/$fileName.html" // TODO: need to account for this
-    echo -e "<div class=\"keep-together\">\n$(cat "./html/build/$fileName.html")" > "./html/build/$fileName.html"
-    echo -e "</div>\n<br/>" >> "./html/build/$fileName.html"
-    echo -e "$(cat "./html/build/$fileName.html")" >> ./html/churchSongs.html
-*/

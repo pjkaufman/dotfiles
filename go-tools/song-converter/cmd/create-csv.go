@@ -60,13 +60,15 @@ func CreateCsv(l logger.Logger, fileManager filehandler.FileManager, stagingDir,
 			l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
 		}
 
-		csvContents.WriteString(fileName + "|" + buildMetadataCsv(&metadata) + "\n")
+		csvContents.WriteString(strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n")
 	}
 
+	var outputCsv = csvContents.String()
+	outputCsv = strings.ReplaceAll(outputCsv, "&nbsp;", "")
 	if strings.Trim(outputFile, " ") != "" {
-		fileManager.WriteFileContents(outputFile, csvContents.String())
+		fileManager.WriteFileContents(outputFile, outputCsv)
 	} else {
-		l.WriteInfo(csvContents.String())
+		l.WriteInfo(outputCsv)
 	}
 }
 
@@ -90,5 +92,17 @@ func buildMetadataCsv(metadata *SongMetadata) string {
 		copyright = "Church"
 	}
 
-	return fmt.Sprintf("%s|%s|%s", metadata.BookLocation, metadata.Authors, copyright)
+	return fmt.Sprintf("%s|%s|%s", updateBookLocationInfo(metadata.BookLocation), metadata.Authors, copyright)
+}
+
+func updateBookLocationInfo(bookLocation string) string {
+	if bookLocation == "" {
+		return ""
+	}
+
+	var newBookLocation = strings.ReplaceAll(bookLocation, "B", "Blue Book page ")
+	newBookLocation = strings.ReplaceAll(newBookLocation, "R", "Red Book page ")
+	newBookLocation = strings.ReplaceAll(newBookLocation, "MS", "More Songs We Love page ")
+
+	return newBookLocation
 }

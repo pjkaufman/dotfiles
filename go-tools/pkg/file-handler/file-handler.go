@@ -1,7 +1,9 @@
 package filehandler
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path"
 	"strings"
@@ -120,12 +122,20 @@ func (fh *FileHandler) WriteFileContents(path, content string) {
 		return
 	}
 
+	var fileMode fs.FileMode
+
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		fh.logger.WriteError(fmt.Sprintf(`could not read in existing file info to retain existing permission for "%s": %s`, path, err))
+		if errors.Is(err, fs.ErrNotExist) {
+			fileMode = fs.ModePerm
+		} else {
+			fh.logger.WriteError(fmt.Sprintf(`could not read in existing file info to retain existing permission for "%s": %s`, path, err))
+		}
+	} else {
+		fileMode = fileInfo.Mode()
 	}
 
-	err = os.WriteFile(path, []byte(content), fileInfo.Mode())
+	err = os.WriteFile(path, []byte(content), fileMode)
 	if err != nil {
 		fh.logger.WriteError(fmt.Sprintf(`could not write to file "%s": %s`, path, err))
 	}

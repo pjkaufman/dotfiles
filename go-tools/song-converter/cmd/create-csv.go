@@ -19,7 +19,9 @@ var createCsvCmd = &cobra.Command{
 	Short: `Creates a "|" delimited csv file that includes metadata about songs like whether they are in the church or copyrighted`,
 	Long: `Gets the list of Markdown files in the working directory provided and sorts them alphabetically
 	
-	For example: song-converter create-csv -d working-dir
+	For example: song-converter create-csv -d working-dir -o churchSongs.csv
+	Iterates over all of the Markdown files in the specified directory and pulls out metadata
+	like the author, book location, and copyright info to put in the csv file specified.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()

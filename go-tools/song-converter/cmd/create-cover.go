@@ -10,6 +10,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	CoverPathArgEmpty  = "cover-file must have a non-whitespace value"
+	CoverPathNotMdFile = "cover-file must be an md file"
+)
+
 var coverOutputFile string
 var coverInputFilePath string
 
@@ -20,6 +25,7 @@ var createCoverCmd = &cobra.Command{
 	Long: `Takes in the cover file to make the html cover file
 	
 	For example: song-converter create-cover -f cover-file -o output-file
+	Converts the cover file from Markdown into html as the specified output file.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()
@@ -34,7 +40,6 @@ func init() {
 	createCoverCmd.Flags().StringVarP(&coverInputFilePath, "cover-file", "f", "", "the markdown cover file source")
 	createCoverCmd.Flags().StringVarP(&coverOutputFile, "output", "o", "", "the html file to write the output to")
 	createCoverCmd.MarkFlagRequired("cover-file")
-	createCoverCmd.MarkFlagRequired("styles-file")
 }
 
 func CreateCover(l logger.Logger, fileManager filehandler.FileManager, songsCoverFilePath, outputFile string) {
@@ -58,11 +63,11 @@ func CreateCover(l logger.Logger, fileManager filehandler.FileManager, songsCove
 
 func validateCreateCoverFlags(l logger.Logger, fileManager filehandler.FileManager, songsCoverFilePath string) {
 	if strings.Trim(songsCoverFilePath, " ") == "" {
-		l.WriteError("cover-file must have a non-whitespace value")
+		l.WriteError(CoverPathArgEmpty)
 	}
 
 	if !strings.HasSuffix(songsCoverFilePath, ".md") {
-		l.WriteError("cover-file must be an md file")
+		l.WriteError(CoverPathNotMdFile)
 	}
 
 	if !fileManager.FileExists(songsCoverFilePath) {

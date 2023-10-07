@@ -22,21 +22,6 @@ type ConvertMdToHtmlSongTestCase struct {
 
 // errors that get handled as errors are represented as panics
 var ConvertMdToHtmlSongTestCases = map[string]ConvertMdToHtmlSongTestCase{
-	// "make sure that an empty file path causes a validation error": {
-	// 	InputFilePath: "",
-	// 	ExpectedError: cmd.FilePathArgEmpty,
-	// 	ExpectPanic:   true,
-	// },
-	// "make sure that an non-markdown file path causes a validation error": {
-	// 	InputFilePath: "file.txt",
-	// 	ExpectedError: cmd.FilePathNotMarkdownFile,
-	// 	ExpectPanic:   true,
-	// },
-	// "make sure that the file path not existing causes a validation error": {
-	// 	InputFilePath: "file.md",
-	// 	ExpectedError: `file-path: "file.md" must exist`,
-	// 	ExpectPanic:   true,
-	// },
 	"make sure that the file path not existing causes an error": {
 		InputFilePath: "file.md",
 		ExpectedError: `could not read in file contents for "file.md": path not found`,

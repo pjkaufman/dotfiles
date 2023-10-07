@@ -95,26 +95,6 @@ var commonStringReplaceTestCases = map[string]CommonStringReplaceTestCase{
 		Expected: `'Hey. How are you?'
 		'I am doing great!'`,
 	},
-	// "make sure that simple missing oxford comma situations get handled properly": {
-	// 	Input:    `Here is a situation where I run, skip and jump for a long time.`,
-	// 	Expected: `Here is a situation where I run, skip, and jump for a long time.`,
-	// },
-	// "make sure that simple missing oxford comma situations where it is just the list on the line are handled properly": {
-	// 	Input: `Here is a situation where I
-	// 	run, walk, sleep, skip or jump
-	// 	for a long time.`,
-	// 	Expected: `Here is a situation where I
-	// 	run, walk, sleep, skip, or jump
-	// 	for a long time.`,
-	// },
-	// "make sure that complex scenarios missing the oxford comma are ignored": {
-	// 	Input:    `Here is a situation where red and white, blue and green and white is the list`,
-	// 	Expected: `Here is a situation where red and white, blue and green and white is the list`,
-	// },
-	// "make sure that complex scenarios missing the oxford comma with different conjunctions are ignored": {
-	// 	Input:    `Here is a situation where red and white, blue and green or white is the list`,
-	// 	Expected: `Here is a situation where red and white, blue and green or white is the list`,
-	// },
 }
 
 func TestCommonStringReplace(t *testing.T) {

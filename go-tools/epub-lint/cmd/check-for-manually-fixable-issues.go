@@ -19,17 +19,20 @@ var (
 	runOxfordCommas bool
 )
 
-// brokenLinesCmd represents the brokenLines command
-var brokenLinesCmd = &cobra.Command{
-	Use:   "broken-lines",
-	Short: "Replaces a list of common strings and the extra strings specified in the extra file for the provide file(s)",
-	Long: `Goes and replaces a common set of strings in a file as well as any extra instances that are specified.
-	It will print out the successful extra replacements with the number of replacements made followed by warnings
-	for any extra strings that it tried to find and replace values for, but did not find any instances to replace.
+// fixableCmd represents the fixable command
+var fixableCmd = &cobra.Command{
+	Use:   "fixable",
+	Short: "Runs the specified fixable actions that require manual input to determine what to do.",
+	Long: `Goes through all of the content files and runs the specified fixable actions on them asking
+	for user input on each value found that matches the potential fix criteria.
+	Potential things that can be fixed:
+	- Broken paragraph endings
+	- Section breaks being hardcoded instead of an hr
+	- Page breaks being hardcoded instead of an hr
+	- Oxford commas being missing before or's or and's
 	
-	For example: epub-lint replace-strings -f file-paths -e extra-replace-file-path
-	will replace the common strings and the extra strings parsed out of the extra replace file 
-	from the provided file(s)
+	For example: epub-lint fixable -f file-paths -c css-paths -a
+	Will attempt to go through all of the potentially fixable issues in the specified files.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()
@@ -39,16 +42,16 @@ var brokenLinesCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(brokenLinesCmd)
+	rootCmd.AddCommand(fixableCmd)
 
-	brokenLinesCmd.Flags().StringVarP(&filePaths, "file-paths", "f", "", "the list of files to update in a comma separated list")
-	brokenLinesCmd.Flags().StringVarP(&cssPaths, "css-paths", "c", "", "the list of css files which could be used for css additions")
-	brokenLinesCmd.Flags().BoolVarP(&runAll, "run-all", "a", false, "whether to run all of the fixable suggestions")
-	brokenLinesCmd.Flags().BoolVarP(&runBrokenLines, "run-broken-lines", "b", false, "whether to run the logic for getting broken line suggestions")
-	brokenLinesCmd.Flags().BoolVarP(&runSectionBreak, "run-section-breaks", "s", false, "whether to run the logic for getting section break suggestions (must be used with css-paths)")
-	brokenLinesCmd.Flags().BoolVarP(&runPageBreak, "run-page-breaks", "p", false, "whether to run the logic for getting page break suggestions (must be used with css-paths)")
-	brokenLinesCmd.Flags().BoolVarP(&runOxfordCommas, "run-oxford-commas", "o", false, "whether to run the logic for getting oxford comma suggestions")
-	brokenLinesCmd.MarkFlagRequired("file-paths")
+	fixableCmd.Flags().StringVarP(&filePaths, "file-paths", "f", "", "the list of files to update in a comma separated list")
+	fixableCmd.Flags().StringVarP(&cssPaths, "css-paths", "c", "", "the list of css files which could be used for css additions")
+	fixableCmd.Flags().BoolVarP(&runAll, "run-all", "a", false, "whether to run all of the fixable suggestions")
+	fixableCmd.Flags().BoolVarP(&runBrokenLines, "run-broken-lines", "b", false, "whether to run the logic for getting broken line suggestions")
+	fixableCmd.Flags().BoolVarP(&runSectionBreak, "run-section-breaks", "s", false, "whether to run the logic for getting section break suggestions (must be used with css-paths)")
+	fixableCmd.Flags().BoolVarP(&runPageBreak, "run-page-breaks", "p", false, "whether to run the logic for getting page break suggestions (must be used with css-paths)")
+	fixableCmd.Flags().BoolVarP(&runOxfordCommas, "run-oxford-commas", "o", false, "whether to run the logic for getting oxford comma suggestions")
+	fixableCmd.MarkFlagRequired("file-paths")
 }
 
 func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas bool) {

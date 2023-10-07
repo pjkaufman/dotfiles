@@ -10,16 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// TODO: add a command for replacing context break logic like what is mentioned here https://www.accessiblepublishing.ca/common-epub-issues/#ContextBreaks
-// one for characters, page breaks, and images
-/**
-Steps for replacing the character breaks:
-- Identify the symbol that indicates this
-- Find all lines that contain this symbol
-- Verify that it needs replacing (manual confirmation)
-- Append css to the proper css file
-*/
-
 var (
 	filePath string
 	lang     string

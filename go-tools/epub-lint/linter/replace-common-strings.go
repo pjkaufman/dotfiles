@@ -19,10 +19,6 @@ type ReplaceStringFunc struct {
 
 var (
 	regexEscapedPeriod = regexp.QuoteMeta(".")
-	// conjunctionRegex   = regexp.MustCompile(`\b(and|or)\b`)
-	// missing oxford comma regex based on https://stackoverflow.com/questions/30006666/capture-a-list-of-words-that-doesnt-contain-an-oxford-comma/30006707#30006707
-	// oxfordCommaRegex = regexp.MustCompile(`((^|.){1,5})(\w+)((,\s*\w+)+)(\s+)(and|or)(\s+\w+)((.|$){1,5})`)
-	// ((?:[\w'-]+,\s+)+(?:[\w'-]+\s){0,2}[\w'-]+)(\s+(?:and|or)\s+[\w'-]+)
 )
 
 var commonReplaceStrings = []ReplaceString{
@@ -94,19 +90,6 @@ var commonReplaceStringFuncs = []ReplaceStringFunc{
 		},
 		Rational: "'little wonder' seems to be an improper translation of 'no wonder', so we should auto-correct it to its proper English idiom",
 	},
-	// {
-	// 	Search: oxfordCommaRegex,
-	// 	Replace: func(match string) string {
-	// 		var groups = oxfordCommaRegex.FindStringSubmatch(match)
-	// 		var hasNoOxfordCommaIssueOrHasMultipleConjunctions = len(groups) == 0 || len(conjunctionRegex.FindAllStringIndex(match, -1)) > 1
-	// 		if hasNoOxfordCommaIssueOrHasMultipleConjunctions {
-	// 			return match
-	// 		}
-
-	// 		return groups[1] + groups[3] + groups[4] + "," + groups[6] + groups[7] + groups[8] + groups[9]
-	// 	},
-	// 	Rational: "The oxford comma helps reduce confusion when dealing with lists since it clarifies what is and is not a part of a list. This logic should handle simple scenarios that are 1 word lists instead of multiple conjunction lists and multiple word lists",
-	// },
 }
 
 func CommonStringReplace(text string) string {

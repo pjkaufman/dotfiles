@@ -60,7 +60,7 @@ for j in ./epub/**/*.css; do
 done
 
 # TODO: update the logic to do -a only when only 1 param passed in to this script
-epub-lint broken-lines -f "$files" -c "$cssFiles" -a 
+epub-lint fixable -f "$files" -c "$cssFiles" -a 
 
 # rezip the epub
 cd epub

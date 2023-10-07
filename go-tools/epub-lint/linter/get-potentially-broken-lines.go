@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var unendedParagraphRegex = regexp.MustCompile(`((^|\n)[ \t]*<p[^>]*>)([^\n]*[a-zA-z,\d]"?)( ?)(</p>\n)`)
+var unendedParagraphRegex = regexp.MustCompile(`((^|\n)[ \t]*<p[^>]*>)([^\n]*[a-zA-z,\d]["']?)( ?)(</p>\n)`)
 
 func GetPotentiallyBrokenLines(fileContent string) map[string]string {
 	var subMatches = unendedParagraphRegex.FindAllStringSubmatch(fileContent, -1)

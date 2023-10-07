@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/adrg/frontmatter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
+	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
 	"github.com/spf13/cobra"
 )
 
@@ -53,23 +53,14 @@ func CreateCsv(l logger.Logger, fileManager filehandler.FileManager, stagingDir,
 	for _, fileName := range files {
 		var filePath = fileManager.JoinPath(stagingDir, fileName)
 
-		contents := fileManager.ReadInFileContents(filePath)
-		var metadata SongMetadata
-		_, err := frontmatter.Parse(strings.NewReader(contents), &metadata)
-		if err != nil {
-			l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
-		}
-
-		csvContents.WriteString(strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n")
+		converter.ConvertMdToCsv(l, fileManager, fileName, filePath, csvContents)
 	}
 
 	var outputCsv = csvContents.String()
 	outputCsv = strings.ReplaceAll(outputCsv, "&nbsp;", "")
-	if strings.Trim(outputFile, " ") != "" {
-		fileManager.WriteFileContents(outputFile, outputCsv)
-	} else {
-		l.WriteInfo(outputCsv)
-	}
+	writeToFileOrStdOut(l, fileManager, outputCsv, outputFile)
+
+	l.WriteInfo("Finished converting Markdown files to csv")
 }
 
 func validateCreateCsvFlags(l logger.Logger, fileManager filehandler.FileManager, stagingDir string) {
@@ -80,29 +71,4 @@ func validateCreateCsvFlags(l logger.Logger, fileManager filehandler.FileManager
 	if !fileManager.FolderExists(stagingDir) {
 		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 	}
-}
-
-func buildMetadataCsv(metadata *SongMetadata) string {
-	if metadata == nil {
-		return "||"
-	}
-
-	var copyright = metadata.Copyright
-	if strings.EqualFold(metadata.InChurch, "Y") {
-		copyright = "Church"
-	}
-
-	return fmt.Sprintf("%s|%s|%s", updateBookLocationInfo(metadata.BookLocation), metadata.Authors, copyright)
-}
-
-func updateBookLocationInfo(bookLocation string) string {
-	if bookLocation == "" {
-		return ""
-	}
-
-	var newBookLocation = strings.ReplaceAll(bookLocation, "B", "Blue Book page ")
-	newBookLocation = strings.ReplaceAll(newBookLocation, "R", "Red Book page ")
-	newBookLocation = strings.ReplaceAll(newBookLocation, "MS", "More Songs We Love page ")
-
-	return newBookLocation
 }

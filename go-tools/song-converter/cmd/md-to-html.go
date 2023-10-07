@@ -2,37 +2,23 @@ package cmd
 
 import (
 	"fmt"
-	"regexp"
+	"sort"
 	"strings"
 
-	"github.com/adrg/frontmatter"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
-	"github.com/gomarkdown/markdown/parser"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
+	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
 	"github.com/spf13/cobra"
 )
 
 const (
 	FilePathArgEmpty        = "file-path must have a non-whitespace value"
 	FilePathNotMarkdownFile = "file-path must be a markdown file"
-	emptyColumnContent      = "&nbsp;&nbsp;&nbsp;&nbsp;"
-	closeMetadata           = "</div><br><br>"
 )
 
-var filePath string
-var otherTitleRegex = regexp.MustCompile(`^(<h1.*)\((.*)\)<(.*)`)
-
-type SongMetadata struct {
-	Melody         string `yaml:"melody"`
-	SongKey        string `yaml:"key"`
-	Authors        string `yaml:"authors"`
-	InChurch       string `yaml:"in-church"`
-	VerseReference string `yaml:"verse"`
-	BookLocation   string `yaml:"location"`
-	Copyright      string `yaml:"copyright"`
-}
+var stagingDir string
+var stylesFilePath string
+var bodyHtmlOutputFile string
 
 // mdToHtmlCmd represents the mdToHtml command
 var mdToHtmlCmd = &cobra.Command{
@@ -46,154 +32,63 @@ var mdToHtmlCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()
 		var fileHandler = filehandler.NewFileHandler(log)
-		MdToHtml(log, fileHandler, filePath)
+		MdToHtml(log, fileHandler, stagingDir, stylesFilePath, bodyHtmlOutputFile)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(mdToHtmlCmd)
 
-	mdToHtmlCmd.Flags().StringVarP(&filePath, "file-path", "f", "", "the Markdown file to convert to html")
-	mdToHtmlCmd.MarkFlagRequired("file-path")
+	mdToHtmlCmd.Flags().StringVarP(&stagingDir, "working-dir", "d", "", "the directory where the Markdown files are located")
+	mdToHtmlCmd.Flags().StringVarP(&stylesFilePath, "styles-file", "s", "", "the html styles file to start the cover with")
+	mdToHtmlCmd.Flags().StringVarP(&bodyHtmlOutputFile, "output", "o", "", "the html file to write the output to")
+	mdToHtmlCmd.MarkFlagRequired("styles-file")
+	mdToHtmlCmd.MarkFlagRequired("working-dir")
+	//-s styles-file
 }
 
-func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, filePath string) string {
-	validateMdToHtmlFlags(l, fileManager, filePath)
+func MdToHtml(l logger.Logger, fileManager filehandler.FileManager, stagingDir, stylesFilePath, outputFile string) {
+	validateMdToHtmlFlags(l, fileManager, stagingDir, stylesFilePath)
 
-	contents := fileManager.ReadInFileContents(filePath)
+	l.WriteInfo("Converting Markdown files to html")
 
-	var metadata SongMetadata
-	mdContent, err := frontmatter.Parse(strings.NewReader(contents), &metadata)
-	if err != nil {
-		l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
+	var styles = fileManager.ReadInFileContents(stylesFilePath)
+
+	var htmlFile = strings.Builder{}
+	htmlFile.WriteString(styles + "\n")
+
+	files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+	sort.Strings(files)
+
+	for _, fileName := range files {
+		var filePath = fileManager.JoinPath(stagingDir, fileName)
+
+		htmlFile.WriteString(converter.ConvertMdToHtmlSong(l, fileManager, filePath) + "\n")
 	}
 
-	var metadataHtml = buildMetadataDiv(&metadata)
-	html := mdToHTML([]byte(mdContent))
-	html = otherTitleRegex.ReplaceAllString(html, `${1}<span class="other-title">(${2})</span><${3}`)
+	writeToFileOrStdOut(l, fileManager, htmlFile.String(), outputFile)
 
-	// just in case we encounter this scenario where non-breaking space is encoded as its unicode value
-	html = strings.ReplaceAll(html, "\u00a0\u00a0\n", "<br>\n")
-	html = strings.ReplaceAll(html, "\\&", "&")
-	html = strings.Replace(html, "</h1>\n", "</h1>\n"+metadataHtml, 1)
-	html = strings.ReplaceAll(html, "\n\n", "\n")
-
-	return fmt.Sprintf("<div class=\"keep-together\">\n%s</div>\n<br>", html)
+	l.WriteInfo("Finished converting Markdown files to html")
 }
 
-func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
-	if strings.Trim(filePath, " ") == "" {
-		l.WriteError(FilePathArgEmpty)
+func validateMdToHtmlFlags(l logger.Logger, fileManager filehandler.FileManager, stagingDir, stylesFilePath string) {
+	if strings.Trim(stagingDir, " ") == "" {
+		l.WriteError("working-dir must have a non-whitespace value")
 	}
 
-	if !strings.HasSuffix(filePath, ".md") {
-		l.WriteError(FilePathNotMarkdownFile)
+	if !fileManager.FolderExists(stagingDir) {
+		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 	}
 
-	if !fileManager.FileExists(filePath) {
-		l.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
-	}
-}
-
-func mdToHTML(md []byte) string {
-	// create markdown parser with extensions
-	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
-	p := parser.NewWithExtensions(extensions)
-	doc := p.Parse(md)
-
-	// create HTML renderer with extensions
-	htmlFlags := html.CommonFlags
-	opts := html.RendererOptions{Flags: htmlFlags}
-	renderer := html.NewRenderer(opts)
-
-	return string(markdown.Render(doc, renderer))
-}
-
-func buildMetadataDiv(metadata *SongMetadata) string {
-	if metadata == nil {
-		return ""
+	if strings.Trim(stylesFilePath, " ") == "" {
+		l.WriteError("styles-file must have a non-whitespace value")
 	}
 
-	var metadataCount = 0
-	var row1 = 0
-	var row2 = 0
-
-	metadataCount, row2 = updateCountsIfMetatdataExists(metadata.Melody, metadataCount, row2)
-	metadataCount, row2 = updateCountsIfMetatdataExists(metadata.VerseReference, metadataCount, row2)
-	metadataCount, row1 = updateCountsIfMetatdataExists(metadata.Authors, metadataCount, row1)
-	metadataCount, row1 = updateCountsIfMetatdataExists(metadata.SongKey, metadataCount, row1)
-	metadataCount, row1 = updateCountsIfMetatdataExists(metadata.BookLocation, metadataCount, row1)
-
-	if metadataCount == 0 {
-		return ""
+	if !strings.HasSuffix(stylesFilePath, ".html") {
+		l.WriteError("styles-file must be an html file")
 	}
 
-	var metadataHtml = strings.Builder{}
-	metadataHtml.WriteString("<div>")
-
-	var (
-		addRowEntry = func(value, class, nonEmptyValue string) {
-			metadataHtml.WriteString(fmt.Sprintf("<div><div class=\"%s\">", class))
-
-			if strings.Trim(value, "") != "" {
-				metadataHtml.WriteString(nonEmptyValue)
-			} else {
-				metadataHtml.WriteString(emptyColumnContent)
-			}
-
-			metadataHtml.WriteString("</div></div>")
-		}
-		addBoldRowEntry = func(value, class string) {
-			addRowEntry(value, class, fmt.Sprintf("<b>%s</b>", value))
-		}
-		addRegularRowEntry = func(value, class string) {
-			addRowEntry(value, class, value)
-		}
-	)
-
-	if row1 != 0 {
-		if row2 != 0 {
-			metadataHtml.WriteString("<div class=\"metadata row-padding\">")
-		} else {
-			metadataHtml.WriteString("<div class=\"metadata\">")
-		}
-
-		if strings.EqualFold(metadata.InChurch, "Y") {
-			addBoldRowEntry(metadata.Authors, "author")
-		} else {
-			addRegularRowEntry(metadata.Authors, "author")
-		}
-
-		addBoldRowEntry(metadata.SongKey, "key")
-		addRegularRowEntry(metadata.BookLocation, "location")
-
-		metadataHtml.WriteString("</div>")
+	if !fileManager.FileExists(stylesFilePath) {
+		l.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
 	}
-
-	if row2 == 0 {
-		metadataHtml.WriteString(closeMetadata)
-
-		return metadataHtml.String()
-	}
-
-	metadataHtml.WriteString("<div class=\"metadata\">")
-	if row2 == 1 && metadata.Melody != "" {
-		addBoldRowEntry(metadata.Melody, "melody-75")
-	} else {
-		addBoldRowEntry(metadata.Melody, "melody")
-		addRegularRowEntry(metadata.VerseReference, "verse")
-	}
-
-	metadataHtml.WriteString("</div>")
-	metadataHtml.WriteString(closeMetadata)
-
-	return metadataHtml.String()
-}
-
-func updateCountsIfMetatdataExists(value string, metadataElements, rowElements int) (int, int) {
-	if (strings.Trim(value, "")) == "" {
-		return metadataElements, rowElements
-	}
-
-	return metadataElements + 1, rowElements + 1
 }

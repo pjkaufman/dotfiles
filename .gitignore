@@ -5,9 +5,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# churhc song converter unnecessary files
+# church song converter unnecessary files
 churchsongconverter/*.docx
 churchsongconverter/*.csv
+churchsongconverter/*.pdf
 churchsongconverter/stagingGround/*.md
 churchsongconverter/html/**/*.html
 churchsongconverter/html/*.md

@@ -1,17 +1,17 @@
 //go:build unit
 
-package cmd_test
+package converter_test
 
 import (
 	"testing"
 
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
-	"github.com/pjkaufman/dotfiles/go-tools/song-converter/cmd"
+	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
 	"github.com/stretchr/testify/assert"
 )
 
-type MdToHtmlTestCase struct {
+type ConvertMdToHtmlSongTestCase struct {
 	InputFilePath       string
 	ExistingFiles       map[string]struct{}
 	ExistingFolders     map[string]struct{}
@@ -24,22 +24,22 @@ type MdToHtmlTestCase struct {
 }
 
 // errors that get handled as errors are represented as panics
-var MdToHtmlTestCases = map[string]MdToHtmlTestCase{
-	"make sure that an empty file path causes a validation error": {
-		InputFilePath: "",
-		ExpectedError: cmd.FilePathArgEmpty,
-		ExpectPanic:   true,
-	},
-	"make sure that an non-markdown file path causes a validation error": {
-		InputFilePath: "file.txt",
-		ExpectedError: cmd.FilePathNotMarkdownFile,
-		ExpectPanic:   true,
-	},
-	"make sure that the file path not existing causes a validation error": {
-		InputFilePath: "file.md",
-		ExpectedError: `file-path: "file.md" must exist`,
-		ExpectPanic:   true,
-	},
+var ConvertMdToHtmlSongTestCases = map[string]ConvertMdToHtmlSongTestCase{
+	// "make sure that an empty file path causes a validation error": {
+	// 	InputFilePath: "",
+	// 	ExpectedError: cmd.FilePathArgEmpty,
+	// 	ExpectPanic:   true,
+	// },
+	// "make sure that an non-markdown file path causes a validation error": {
+	// 	InputFilePath: "file.txt",
+	// 	ExpectedError: cmd.FilePathNotMarkdownFile,
+	// 	ExpectPanic:   true,
+	// },
+	// "make sure that the file path not existing causes a validation error": {
+	// 	InputFilePath: "file.md",
+	// 	ExpectedError: `file-path: "file.md" must exist`,
+	// 	ExpectPanic:   true,
+	// },
 	"a valid file should properly get turned into html": {
 		InputFilePath: "file.md",
 		ExistingFiles: map[string]struct{}{
@@ -207,21 +207,21 @@ And Thy truth unto the clouds.</p>
 	},
 }
 
-func TestMdToHtml(t *testing.T) {
-	for name, args := range MdToHtmlTestCases {
+func TestConvertMdToHtmlSong(t *testing.T) {
+	for name, args := range ConvertMdToHtmlSongTestCases {
 		t.Run(name, func(t *testing.T) {
-			defer handleMdToHtmlPanic(t, args)
+			defer handleConvertMdToHtmlSongPanic(t, args)
 
 			var log = logger.NewMockLoggerHandler()
 			var fileHandler = filehandler.NewMockFileHandler(log, args.ExistingFiles, nil, nil, args.ExistingFileContent)
-			actual := cmd.MdToHtml(log, fileHandler, args.InputFilePath)
+			actual := converter.ConvertMdToHtmlSong(log, fileHandler, args.InputFilePath)
 
 			assert.Equal(t, args.ExpectedHtml, actual)
 		})
 	}
 }
 
-func handleMdToHtmlPanic(t *testing.T, args MdToHtmlTestCase) {
+func handleConvertMdToHtmlSongPanic(t *testing.T, args ConvertMdToHtmlSongTestCase) {
 	if r := recover(); r != nil {
 		assert.True(t, args.ExpectPanic, "an error was not expected")
 		assert.Equal(t, args.ExpectedError, r, "the error message did not match the expected error message")

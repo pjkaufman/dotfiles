@@ -2,7 +2,10 @@ package cmd
 
 import (
 	"os"
+	"strings"
 
+	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
@@ -22,4 +25,12 @@ func Execute() {
 }
 
 func init() {
+}
+
+func writeToFileOrStdOut(l logger.Logger, fileManager filehandler.FileManager, content, outputFile string) {
+	if strings.Trim(outputFile, " ") != "" {
+		fileManager.WriteFileContents(outputFile, content)
+	} else {
+		l.WriteInfo(content)
+	}
 }

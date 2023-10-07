@@ -2,7 +2,7 @@ package linter
 
 import "regexp"
 
-var letterEndingParagraphRegex = regexp.MustCompile(`(\n[^\n]*([a-zA-z]|,"?))( ?)(</p>\n)(<p[^>]*>)([^\n]*</p>)`)
+var letterEndingParagraphRegex = regexp.MustCompile(`(\n[^\n]*([a-zA-z,\d]"?))( ?)(</p>\n)([ \t]*<p[^>]*>)([^\n]*</p>)`)
 
 /*
 *

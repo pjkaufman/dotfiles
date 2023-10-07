@@ -9,7 +9,7 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-func ConvertMdToCsv(l logger.Logger, fileManager filehandler.FileManager, fileName, filePath string, csvContents strings.Builder) {
+func ConvertMdToCsv(l logger.Logger, fileManager filehandler.FileManager, fileName, filePath string) string {
 	contents := fileManager.ReadInFileContents(filePath)
 	var metadata SongMetadata
 	_, err := frontmatter.Parse(strings.NewReader(contents), &metadata)
@@ -17,7 +17,7 @@ func ConvertMdToCsv(l logger.Logger, fileManager filehandler.FileManager, fileNa
 		l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
 	}
 
-	csvContents.WriteString(strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n")
+	return strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n"
 }
 
 func buildMetadataCsv(metadata *SongMetadata) string {

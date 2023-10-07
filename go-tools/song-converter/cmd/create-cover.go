@@ -51,7 +51,6 @@ func CreateCover(l logger.Logger, fileManager filehandler.FileManager, songsCove
 	htmlFile.WriteString(coverHtml)
 
 	var htmlOutput = htmlFile.String()
-	htmlOutput = strings.ReplaceAll(htmlOutput, "\n\n", "\n")
 	writeToFileOrStdOut(l, fileManager, htmlOutput, outputFile)
 
 	l.WriteInfo("Finished creating html cover file")

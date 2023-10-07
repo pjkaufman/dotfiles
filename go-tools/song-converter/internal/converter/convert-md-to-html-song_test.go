@@ -14,10 +14,7 @@ import (
 type ConvertMdToHtmlSongTestCase struct {
 	InputFilePath       string
 	ExistingFiles       map[string]struct{}
-	ExistingFolders     map[string]struct{}
 	ExistingFileContent map[string]string
-	PathToFolders       map[string][]string
-	CmdErr              error
 	ExpectedError       string
 	ExpectPanic         bool
 	ExpectedHtml        string
@@ -40,6 +37,11 @@ var ConvertMdToHtmlSongTestCases = map[string]ConvertMdToHtmlSongTestCase{
 	// 	ExpectedError: `file-path: "file.md" must exist`,
 	// 	ExpectPanic:   true,
 	// },
+	"make sure that the file path not existing causes an error": {
+		InputFilePath: "file.md",
+		ExpectedError: `could not read in file contents for "file.md": path not found`,
+		ExpectPanic:   true,
+	},
 	"a valid file should properly get turned into html": {
 		InputFilePath: "file.md",
 		ExistingFiles: map[string]struct{}{

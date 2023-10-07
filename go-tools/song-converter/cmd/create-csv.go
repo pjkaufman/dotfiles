@@ -53,7 +53,7 @@ func CreateCsv(l logger.Logger, fileManager filehandler.FileManager, stagingDir,
 	for _, fileName := range files {
 		var filePath = fileManager.JoinPath(stagingDir, fileName)
 
-		converter.ConvertMdToCsv(l, fileManager, fileName, filePath, csvContents)
+		csvContents.WriteString(converter.ConvertMdToCsv(l, fileManager, fileName, filePath))
 	}
 
 	var outputCsv = csvContents.String()

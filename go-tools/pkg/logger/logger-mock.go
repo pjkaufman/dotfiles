@@ -22,3 +22,11 @@ func (lg LoggerHandlerMock) WriteInfo(msg string) {
 func (lg LoggerHandlerMock) WriteWarn(msg string) {
 	lg.WarnMsgs = append(lg.InfoMsgs, msg)
 }
+
+func (lg LoggerHandlerMock) GetInputString(prompt string) string {
+	return ""
+}
+
+func (lg LoggerHandlerMock) GetInputInt(prompt string) int {
+	return 0
+}

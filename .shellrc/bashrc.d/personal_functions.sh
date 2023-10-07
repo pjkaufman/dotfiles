@@ -35,3 +35,9 @@ compresscbz() {
 epubreplaceallstrings() {
   source "$HOME/dotfiles/bin/epubreplaceallstrings"
 }
+
+# epubcheckforbrokenlines helps find potentially broken lines in an epub file
+# that you can decide on whether to replace it or not
+epubcheckforbrokenlines() {
+  source "$HOME/dotfiles/bin/epubcheckforbrokenlines"
+}

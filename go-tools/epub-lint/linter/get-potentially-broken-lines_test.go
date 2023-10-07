@@ -45,6 +45,31 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1">"…The so-called Dione, it does not seem to be Saturn's companion 'Dione', but the goddess of Greek myths." </p>`,
 		},
 	},
+	"make sure that a file with paragraphs that end in a number get picked up as potentially needing a change": {
+		InputText: `<p class="calibre1">The Deputy Director showed interest in these words and encouraged him to continue. The Director of the Intelligence Department was absent at this meeting. The Deputy Director who was present was also a person not disclosed to the public. </p>
+		<p class="calibre1">"I think you all already know that the Yotsuba family, to which Shiba Tatsuya belongs, is in a cooperative relationship with the 1-0-1 </p>
+		<p class="calibre1">Battalion." </p>
+		<p class="calibre1">After Onda's words, those sitting at the table nodded. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1">"I think you all already know that the Yotsuba family, to which Shiba Tatsuya belongs, is in a cooperative relationship with the 1-0-1 </p>
+		<p class="calibre1">Battalion." </p>`: `
+		<p class="calibre1">"I think you all already know that the Yotsuba family, to which Shiba Tatsuya belongs, is in a cooperative relationship with the 1-0-1 Battalion." </p>`,
+		},
+	},
+	"make sure that a file with multiple paragraphs back to back thatpotentially are broken, get condensed down into 1 suggestions": {
+		InputText: `<p>Some content here.</p>
+		<p>Here is a list, </p>
+		<p>a set of todos,</p>
+		<p>and its own sentence. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p>Here is a list, </p>
+		<p>a set of todos,</p>
+		<p>and its own sentence. </p>`: `
+		<p>Here is a list, a set of todos, and its own sentence. </p>`,
+		},
+	},
 }
 
 func TestGetPotentiallyBrokenLines(t *testing.T) {

@@ -1,7 +1,6 @@
 package linter
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -27,12 +26,10 @@ func GetPotentiallyBrokenLines(fileContent string) map[string]string {
 		var nextLine = currentLine
 		for lineIsPotentiallyBroken := true; lineIsPotentiallyBroken; {
 			nextLine = getNextLine(fileContent, nextLine)
-			fmt.Println(nextLine)
 			originalString += nextLine
 
 			var nextLineGroups = unendedParagraphRegex.FindStringSubmatch(nextLine)
 			lineIsPotentiallyBroken = len(nextLineGroups) > 0
-			fmt.Println(lineIsPotentiallyBroken)
 			if lineIsPotentiallyBroken {
 				suggestedString += nextLineGroups[3] + " "
 			} else {

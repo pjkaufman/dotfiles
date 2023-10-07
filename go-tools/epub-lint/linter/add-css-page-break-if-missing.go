@@ -5,15 +5,19 @@ import (
 	"strings"
 )
 
-const hrBlankSpace = `hr.blankSpace {
+const HrBlankSpace = `hr.blankSpace {
 border:0;
 height:2em;
 }`
 
 func AddCssPageBreakIfMissing(fileContent string) string {
-	if strings.Contains(fileContent, hrBlankSpace) {
+	if strings.TrimSpace(fileContent) == "" {
+		return HrBlankSpace + "\n"
+	}
+
+	if strings.Contains(fileContent, HrBlankSpace) {
 		return fileContent
 	}
 
-	return fmt.Sprintf("%s\n%s", fileContent, hrBlankSpace)
+	return fmt.Sprintf("%s\n%s", fileContent, HrBlankSpace)
 }

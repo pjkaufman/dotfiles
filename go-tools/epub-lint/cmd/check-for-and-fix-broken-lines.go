@@ -77,7 +77,7 @@ func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, f
 		}
 
 		if runAll || runSectionBreak {
-			var contextBreakSuggestions = linter.GetPotentialContextBreaks(newText, contextBreak)
+			var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
 
 			var contextBreakUpdated bool
 			newText, contextBreakUpdated = promptAboutSuggestions(l, contextBreakSuggestions, newText)

@@ -4,9 +4,9 @@ import (
 	"regexp"
 )
 
-const pageBrakeEl = `<hr class="blankSpace" />`
+const PageBrakeEl = `<hr class="blankSpace" />`
 
-var emptyParagraphsOrDivs = regexp.MustCompile(`(\n<(p|div)[^\n>]*>)[ \t]*(</(p|div)>)`)
+var emptyParagraphsOrDivs = regexp.MustCompile(`(\n[ \t]*<(p|div)[^\n>]*>)[ \t]*(</(p|div)>)`)
 
 func GetPotentialPageBreaks(fileContent string) map[string]string {
 	var subMatches = emptyParagraphsOrDivs.FindAllStringSubmatch(fileContent, -1)
@@ -16,7 +16,7 @@ func GetPotentialPageBreaks(fileContent string) map[string]string {
 	}
 
 	for _, groups := range subMatches {
-		originalToSuggested[groups[0]] = "\n" + pageBrakeEl
+		originalToSuggested[groups[0]] = "\n" + PageBrakeEl
 	}
 
 	return originalToSuggested

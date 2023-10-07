@@ -6,10 +6,10 @@ import (
 	"strings"
 )
 
-const contextBreakEl = `<hr class="character" />`
+const SectionBreakEl = `<hr class="character" />`
 
-func GetPotentialContextBreaks(fileContent, sectionBreakIndicator string) map[string]string {
-	var contextBreakRegex = regexp.MustCompile(fmt.Sprintf(`(\n<p[^\n>]*>([^\n])*)%s(([^\n]*)</p>)`, sectionBreakIndicator))
+func GetPotentialSectionBreaks(fileContent, sectionBreakIndicator string) map[string]string {
+	var contextBreakRegex = regexp.MustCompile(fmt.Sprintf(`(\n[ \t]*<p[^\n>]*>([^\n])*)%s(([^\n]*)</p>)`, sectionBreakIndicator))
 
 	var subMatches = contextBreakRegex.FindAllStringSubmatch(fileContent, -1)
 	var originalToSuggested = make(map[string]string, len(subMatches))
@@ -18,9 +18,9 @@ func GetPotentialContextBreaks(fileContent, sectionBreakIndicator string) map[st
 	}
 
 	for _, groups := range subMatches {
-		var replaceValue = contextBreakEl
+		var replaceValue = "\n" + SectionBreakEl
 		if strings.TrimSpace(groups[2]) != "" || strings.TrimSpace(groups[4]) != "" {
-			replaceValue = groups[1] + contextBreakEl + groups[3]
+			replaceValue = groups[1] + SectionBreakEl + groups[3]
 		}
 
 		originalToSuggested[groups[0]] = replaceValue

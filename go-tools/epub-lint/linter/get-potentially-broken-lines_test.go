@@ -57,7 +57,7 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1">"I think you all already know that the Yotsuba family, to which Shiba Tatsuya belongs, is in a cooperative relationship with the 1-0-1 Battalion." </p>`,
 		},
 	},
-	"make sure that a file with multiple paragraphs back to back thatpotentially are broken, get condensed down into 1 suggestions": {
+	"make sure that a file with multiple paragraphs back to back that potentially are broken, get condensed down into 1 suggestions": {
 		InputText: `<p>Some content here.</p>
 		<p>Here is a list, </p>
 		<p>a set of todos,</p>
@@ -68,6 +68,19 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p>a set of todos,</p>
 		<p>and its own sentence. </p>`: `
 		<p>Here is a list, a set of todos, and its own sentence. </p>`,
+		},
+	},
+	"make sure that a file with a line with an odd number of double quotes gets a suggestion": {
+		InputText: `<p class="calibre1">Saeki and Kazama sighed at the same time. And they exchanged tense smiles. They thought it was funny how they seriously discussed the concepts, like the final boss and the hero. </p>
+		<p class="calibre1">"We will pass your opinion to the Intelligence Department through Major Onda. I don't know how much it will help… Thanks for the help. </p>
+		<p class="calibre1">Lieutenant-Colonel, you are free." </p>
+		<p class="calibre1">"Understood." </p>
+		<p class="calibre1">Kazama saluted Saeki and left her office. </p><hr class="character" />`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1">"We will pass your opinion to the Intelligence Department through Major Onda. I don't know how much it will help… Thanks for the help. </p>
+		<p class="calibre1">Lieutenant-Colonel, you are free." </p>`: `
+		<p class="calibre1">"We will pass your opinion to the Intelligence Department through Major Onda. I don't know how much it will help… Thanks for the help. Lieutenant-Colonel, you are free." </p>`,
 		},
 	},
 }

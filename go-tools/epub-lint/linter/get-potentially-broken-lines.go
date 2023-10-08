@@ -1,7 +1,6 @@
 package linter
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -99,7 +98,6 @@ func parseUnendedDoubleQuotes(fileContent string, parsedLines map[string]struct{
 		var i = 1
 		var nextLine = currentLine
 		for lineIsPotentiallyBroken := true; lineIsPotentiallyBroken; {
-			fmt.Println(i)
 			i += 1
 			nextLine = getNextLine(fileContent, nextLine)
 			addToParsedLines(parsedLines, nextLine)

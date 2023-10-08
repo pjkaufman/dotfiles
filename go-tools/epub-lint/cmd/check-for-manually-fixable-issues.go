@@ -138,15 +138,16 @@ func validateBrokenLinesFlags(l logger.Logger, fileManager filehandler.FileManag
 
 func promptAboutSuggestions(l logger.Logger, suggestions map[string]string, fileText string) (string, bool) {
 	var valueReplaced = false
+	var newText = fileText
 	for original, suggestion := range suggestions {
 		resp := l.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))
 		if strings.EqualFold(resp, "Y") {
-			fileText = strings.Replace(fileText, original, suggestion, 1)
+			newText = strings.Replace(newText, original, suggestion, 1)
 			valueReplaced = true
 		}
 	}
 
-	return fileText, valueReplaced
+	return newText, valueReplaced
 }
 
 func handleCssChanges(l logger.Logger, fileManager filehandler.FileManager, addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles []string, contextBreak string) {

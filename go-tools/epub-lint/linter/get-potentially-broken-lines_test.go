@@ -98,6 +98,19 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1">"Set: decreasing entropy • density control • phase transition • condensation • transformation of the form of energy • acceleration • sublimation: input! Perform a modification of the phenomenon! Magic 'Dry meteor'!" </p>`,
 		},
 	},
+	"make sure that we properly handle Mr. at the end of a sentence": {
+		InputText: `<p class="calibre1">Momoyama took out a white envelope from the drawer of the table and laid it on the table. </p>
+		<p class="calibre1">"Here is written the request "To make sure that Taurus Silver, Mr. </p>
+		<p class="calibre1">Tatsuya Shiba was able to take part in Project Dione." The National Security Agency of the USNA has come to the conclusion that you are Taurus Silver, and requests your participation in the project." </p>
+		<p class="calibre1">"Principle. I'm still a high school student at this school. I'm not going to interrupt my studies halfway." </p>
+		<p class="calibre1">Tatsuya didn't answer the question "Are you Taurus Silver?". He deliberately ignored this part, and fundamentally refused to participate in the project, or rather rejected it. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1">"Here is written the request "To make sure that Taurus Silver, Mr. </p>
+		<p class="calibre1">Tatsuya Shiba was able to take part in Project Dione." The National Security Agency of the USNA has come to the conclusion that you are Taurus Silver, and requests your participation in the project." </p>`: `
+		<p class="calibre1">"Here is written the request "To make sure that Taurus Silver, Mr. Tatsuya Shiba was able to take part in Project Dione." The National Security Agency of the USNA has come to the conclusion that you are Taurus Silver, and requests your participation in the project." </p>`,
+		},
+	},
 }
 
 func TestGetPotentiallyBrokenLines(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"regexp"
 )
 
-// // missing oxford comma regex based on https://stackoverflow.com/questions/30006666/capture-a-list-of-words-that-doesnt-contain-an-oxford-comma/30006707#30006707
+// missing oxford comma regex based on https://stackoverflow.com/questions/30006666/capture-a-list-of-words-that-doesnt-contain-an-oxford-comma/30006707#30006707
 var oxfordCommaRegex = regexp.MustCompile(`(\n[\t ]*<p[^\n>]*>[^\n]*)(\w+)((,\s*\w+)+)(\s+)(and|or)(\s+\w+)([^\n]*</p>)`)
 
 func GetPotentialMissingOxfordCommas(fileContent string) map[string]string {

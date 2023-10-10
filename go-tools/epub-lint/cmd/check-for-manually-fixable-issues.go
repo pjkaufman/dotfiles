@@ -17,6 +17,7 @@ var (
 	runSectionBreak bool
 	runPageBreak    bool
 	runOxfordCommas bool
+	runAlthoughBut  bool
 )
 
 // fixableCmd represents the fixable command
@@ -37,7 +38,7 @@ var fixableCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var log = logger.NewLoggerHandler()
 		var fileHandler = filehandler.NewFileHandler(log)
-		CheckForBrokenLines(log, fileHandler, filePaths, cssPaths, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas)
+		CheckForBrokenLines(log, fileHandler, filePaths, cssPaths, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
 	},
 }
 
@@ -51,13 +52,14 @@ func init() {
 	fixableCmd.Flags().BoolVarP(&runSectionBreak, "run-section-breaks", "s", false, "whether to run the logic for getting section break suggestions (must be used with css-paths)")
 	fixableCmd.Flags().BoolVarP(&runPageBreak, "run-page-breaks", "p", false, "whether to run the logic for getting page break suggestions (must be used with css-paths)")
 	fixableCmd.Flags().BoolVarP(&runOxfordCommas, "run-oxford-commas", "o", false, "whether to run the logic for getting oxford comma suggestions")
+	fixableCmd.Flags().BoolVarP(&runAlthoughBut, "run-although-but", "n", false, "whether to run the logic for getting although but suggestions")
 	fixableCmd.MarkFlagRequired("file-paths")
 }
 
-func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas bool) {
+func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
 	var files = strings.Split(filePaths, ",")
 	var cssFiles = strings.Split(cssPaths, ",")
-	validateBrokenLinesFlags(l, fileManager, files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas)
+	validateBrokenLinesFlags(l, fileManager, files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
 
 	var addCssSectionIfMissing bool = false
 	var addCssPageIfMissing bool = false
@@ -100,6 +102,11 @@ func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, f
 			newText, _ = promptAboutSuggestions(l, oxfordCommaSuggestions, newText)
 		}
 
+		if runAll || runAlthoughBut {
+			var oxfordCommaSuggestions = linter.GetPotentialAlthoughButInstances(newText)
+			newText, _ = promptAboutSuggestions(l, oxfordCommaSuggestions, newText)
+		}
+
 		if fileText == newText {
 			continue
 		}
@@ -110,9 +117,9 @@ func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, f
 	handleCssChanges(l, fileManager, addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
 }
 
-func validateBrokenLinesFlags(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas bool) {
-	if !runAll && !runBrokenLines && !runSectionBreak && !runPageBreak && !runOxfordCommas {
-		l.WriteError("either run-all, run-broken-lines, run-section-breaks, run-page-breaks, or run-oxford-commas must be specified")
+func validateBrokenLinesFlags(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
+	if !runAll && !runBrokenLines && !runSectionBreak && !runPageBreak && !runOxfordCommas && !runAlthoughBut {
+		l.WriteError("either run-all, run-broken-lines, run-section-breaks, run-page-breaks, run-oxford-commas, or run-although-but must be specified")
 	}
 
 	for _, filePath := range filePaths {

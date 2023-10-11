@@ -11,29 +11,8 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-type FileManager interface {
-	FileExists(path string) bool
-	FolderExists(path string) bool
-	GetFoldersInCurrentFolder(path string) []string
-	WriteFileContents(path, content string)
-	ReadInFileContents(path string) string
-	MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string
-	GetFileFolder(filePath string) string
-	JoinPath(elements ...string) string
-}
-
-type FileHandler struct {
-	logger logger.Logger
-}
-
-func NewFileHandler(logger logger.Logger) *FileHandler {
-	return &FileHandler{
-		logger: logger,
-	}
-}
-
-func (fh *FileHandler) FileExists(path string) bool {
-	if strings.Trim(path, " ") == "" {
+func FileExists(path string) bool {
+	if strings.TrimSpace(path) == "" {
 		return false
 	}
 
@@ -43,14 +22,14 @@ func (fh *FileHandler) FileExists(path string) bool {
 			return false
 		}
 
-		fh.logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists: %s`, path, err))
+		logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists: %s`, path, err))
 	}
 
 	return true
 }
 
-func (fh *FileHandler) FolderExists(path string) bool {
-	if strings.Trim(path, " ") == "" {
+func FolderExists(path string) bool {
+	if strings.TrimSpace(path) == "" {
 		return false
 	}
 
@@ -60,7 +39,7 @@ func (fh *FileHandler) FolderExists(path string) bool {
 			return false
 		}
 
-		fh.logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists and is a directory: %s`, path, err))
+		logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists and is a directory: %s`, path, err))
 	}
 
 	if !folderInfo.IsDir() {
@@ -70,14 +49,14 @@ func (fh *FileHandler) FolderExists(path string) bool {
 	return true
 }
 
-func (fh *FileHandler) GetFoldersInCurrentFolder(path string) []string {
-	if strings.Trim(path, " ") == "" {
+func GetFoldersInCurrentFolder(path string) []string {
+	if strings.TrimSpace(path) == "" {
 		return nil
 	}
 
 	dirs, err := os.ReadDir(path)
 	if err != nil {
-		fh.logger.WriteError(fmt.Sprintf(`could not get files/folders in "%s": %s`, path, err))
+		logger.WriteError(fmt.Sprintf(`could not get files/folders in "%s": %s`, path, err))
 	}
 
 	var actualDirs []string
@@ -92,33 +71,33 @@ func (fh *FileHandler) GetFoldersInCurrentFolder(path string) []string {
 	return actualDirs
 }
 
-func (fh *FileHandler) GetFileFolder(filePath string) string {
-	if strings.Trim(filePath, " ") == "" {
+func GetFileFolder(filePath string) string {
+	if strings.TrimSpace(filePath) == "" {
 		return ""
 	}
 
 	return path.Join(filePath, "..")
 }
 
-func (fh *FileHandler) JoinPath(elements ...string) string {
+func JoinPath(elements ...string) string {
 	return path.Join(elements...)
 }
 
-func (fh *FileHandler) ReadInFileContents(path string) string {
-	if strings.Trim(path, " ") == "" {
+func ReadInFileContents(path string) string {
+	if strings.TrimSpace(path) == "" {
 		return ""
 	}
 
 	fileBytes, err := os.ReadFile(path)
 	if err != nil {
-		fh.logger.WriteError(fmt.Sprintf(`could not read in file contents for "%s": %s`, path, err))
+		logger.WriteError(fmt.Sprintf(`could not read in file contents for "%s": %s`, path, err))
 	}
 
 	return string(fileBytes)
 }
 
-func (fh *FileHandler) WriteFileContents(path, content string) {
-	if strings.Trim(path, " ") == "" {
+func WriteFileContents(path, content string) {
+	if strings.TrimSpace(path) == "" {
 		return
 	}
 
@@ -129,7 +108,7 @@ func (fh *FileHandler) WriteFileContents(path, content string) {
 		if errors.Is(err, fs.ErrNotExist) {
 			fileMode = fs.ModePerm
 		} else {
-			fh.logger.WriteError(fmt.Sprintf(`could not read in existing file info to retain existing permission for "%s": %s`, path, err))
+			logger.WriteError(fmt.Sprintf(`could not read in existing file info to retain existing permission for "%s": %s`, path, err))
 		}
 	} else {
 		fileMode = fileInfo.Mode()
@@ -137,14 +116,14 @@ func (fh *FileHandler) WriteFileContents(path, content string) {
 
 	err = os.WriteFile(path, []byte(content), fileMode)
 	if err != nil {
-		fh.logger.WriteError(fmt.Sprintf(`could not write to file "%s": %s`, path, err))
+		logger.WriteError(fmt.Sprintf(`could not write to file "%s": %s`, path, err))
 	}
 }
 
-func (fh *FileHandler) MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string {
+func MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string {
 	files, err := os.ReadDir(dir)
 	if err != nil {
-		fh.logger.WriteError(fmt.Sprintf(`failed to read in folder "%s": %s`, dir, err))
+		logger.WriteError(fmt.Sprintf(`failed to read in folder "%s": %s`, dir, err))
 	}
 
 	var fileList []string

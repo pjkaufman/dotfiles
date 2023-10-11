@@ -27,10 +27,10 @@ func Execute() {
 func init() {
 }
 
-func writeToFileOrStdOut(l logger.Logger, fileManager filehandler.FileManager, content, outputFile string) {
-	if strings.Trim(outputFile, " ") != "" {
-		fileManager.WriteFileContents(outputFile, content)
+func writeToFileOrStdOut(content, outputFile string) {
+	if strings.TrimSpace(outputFile) != "" {
+		filehandler.WriteFileContents(outputFile, content)
 	} else {
-		l.WriteInfo(content)
+		logger.WriteInfo(content)
 	}
 }

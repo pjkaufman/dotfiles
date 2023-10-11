@@ -16,10 +16,7 @@ var updateCmd = &cobra.Command{
 	Use:   "update",
 	Short: "Updates the submodule branch to the specified branch name",
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var cmdHanlder = commandhandler.NewCommandHandler(log)
-		var fileHandler = filehandler.NewFileHandler(log)
-		UpdateSubmoduleBranches(log, cmdHanlder, fileHandler, ticketAbbreviation, branchName, repoFolderPath)
+		UpdateSubmoduleBranches(ticketAbbreviation, branchName, repoFolderPath)
 	},
 }
 
@@ -34,33 +31,31 @@ func init() {
 	updateCmd.MarkFlagRequired("branch-name")
 }
 
-func UpdateSubmoduleBranches(l logger.Logger, cmdManager commandhandler.CommandManager, fileManager filehandler.FileManager, ticketAbbreviation, branchName, repoFolderPath string) {
-	validateSubmoduleUpdate(l, fileManager, ticketAbbreviation, branchName)
+func UpdateSubmoduleBranches(ticketAbbreviation, branchName, repoFolderPath string) {
+	validateSubmoduleUpdate(ticketAbbreviation, branchName)
 
-	folders := getListOfFoldersWithSubmodule(fileManager, repoFolderPath, submoduleName)
+	folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
 	for _, folder := range folders {
 		var submoduleDir = filepath.Join(append(pathToSubmodule, submoduleName)...)
-		cmdManager.MustChangeDirectoryTo(submoduleDir)
-		checkoutLatestFromMaster(cmdManager, submoduleDir)
+		commandhandler.MustChangeDirectoryTo(submoduleDir)
+		checkoutLatestFromMaster(submoduleDir)
 
-		cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
+		commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
 
-		cmdManager.MustChangeDirectoryTo(upADirectory)
+		commandhandler.MustChangeDirectoryTo(upADirectory)
 
-		cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submoduleName, folder), "add", submoduleName)
-		cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submoduleName)
-		cmdManager.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
+		commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submoduleName, folder), "add", submoduleName)
+		commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submoduleName)
+		commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 	}
 }
 
-func validateSubmoduleUpdate(l logger.Logger, fileManager filehandler.FileManager, ticketAbbreviation, branchName string) {
-	if strings.Trim(branchName, " ") == "" {
-		l.WriteError("branch-name must have a non-whitespace value")
-		return
+func validateSubmoduleUpdate(ticketAbbreviation, branchName string) {
+	if strings.TrimSpace(branchName) == "" {
+		logger.WriteError("branch-name must have a non-whitespace value")
 	}
 
-	if !fileManager.FolderExists(repoFolderPath) {
-		l.WriteError("repo-parent-path must exist and be a directory")
-		return
+	if !filehandler.FolderExists(repoFolderPath) {
+		logger.WriteError("repo-parent-path must exist and be a directory")
 	}
 }

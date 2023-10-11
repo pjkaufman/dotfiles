@@ -24,9 +24,7 @@ var lintEpubCmd = &cobra.Command{
 	For example: epub-lint lint-epub -f opf-file-path
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log := logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		EpubLint(log, fileHandler, filePath, lang)
+		EpubLint(filePath, lang)
 	},
 }
 
@@ -38,78 +36,78 @@ func init() {
 	lintEpubCmd.MarkFlagRequired("file-path")
 }
 
-func EpubLint(l logger.Logger, fileManager filehandler.FileManager, filePath, lang string) {
-	validateLintEpubFlags(l, fileManager, filePath)
+func EpubLint(filePath, lang string) {
+	validateLintEpubFlags(filePath)
 
-	opfText := fileManager.ReadInFileContents(filePath)
+	opfText := filehandler.ReadInFileContents(filePath)
 
 	epubInfo, err := linter.ParseOpfFile(opfText)
 	if err != nil {
-		l.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
+		logger.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
 	}
 
-	var opfFolderString = fileManager.GetFileFolder(filePath)
+	var opfFolderString = filehandler.GetFileFolder(filePath)
 
-	validateFilesExist(l, fileManager, opfFolderString, epubInfo.HtmlFiles)
-	validateFilesExist(l, fileManager, opfFolderString, epubInfo.ImagesFiles)
-	validateFilesExist(l, fileManager, opfFolderString, epubInfo.OtherFiles)
+	validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
+	validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
+	validateFilesExist(opfFolderString, epubInfo.OtherFiles)
 
 	// fix up all xhtml files first
 	for file := range epubInfo.HtmlFiles {
-		var filePath = getFilePath(fileManager, opfFolderString, file)
-		fileText := fileManager.ReadInFileContents(filePath)
+		var filePath = getFilePath(opfFolderString, file)
+		fileText := filehandler.ReadInFileContents(filePath)
 		var newText = linter.EnsureEncodingIsPresent(fileText)
 		newText = linter.CommonStringReplace(newText)
 
 		// TODO: remove images links that do not exist in the manifest
 		// TODO: remove files that exist, but are not in the manifest
 		newText = linter.EnsureLanguageIsSet(newText, lang)
-		epubInfo.PageIds = linter.GetPageIdsForFile(l, newText, file, epubInfo.PageIds)
+		epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
 
 		if fileText == newText {
 			continue
 		}
 
-		fileManager.WriteFileContents(filePath, newText)
+		filehandler.WriteFileContents(filePath, newText)
 	}
 
-	updateNavFile(l, fileManager, opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
-	updateNcxFile(l, fileManager, opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
+	updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
+	updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
 
 	// TODO: cleanup TOC file's links
 }
 
-func validateLintEpubFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {
+func validateLintEpubFlags(filePath string) {
 	if !strings.HasSuffix(filePath, ".opf") {
-		l.WriteError(fmt.Sprintf(`file-path: "%s" must be an opf file`, filePath))
+		logger.WriteError(fmt.Sprintf(`file-path: "%s" must be an opf file`, filePath))
 	}
 
-	if !fileManager.FileExists(filePath) {
-		l.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
+	if !filehandler.FileExists(filePath) {
+		logger.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
 	}
 }
 
-func validateFilesExist(l logger.Logger, fileManager filehandler.FileManager, opfFolder string, files map[string]struct{}) {
+func validateFilesExist(opfFolder string, files map[string]struct{}) {
 	for file := range files {
-		var filePath = getFilePath(fileManager, opfFolder, file)
+		var filePath = getFilePath(opfFolder, file)
 
-		if !fileManager.FileExists(filePath) {
-			l.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
+		if !filehandler.FileExists(filePath) {
+			logger.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
 		}
 	}
 }
 
-func updateNcxFile(l logger.Logger, fileManager filehandler.FileManager, opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = getFilePath(fileManager, opfFolder, file)
-	fileText := fileManager.ReadInFileContents(filePath)
+	var filePath = getFilePath(opfFolder, file)
+	fileText := filehandler.ReadInFileContents(filePath)
 
 	newText, err := linter.CleanupNavMap(fileText)
 	if err != nil {
-		l.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
 
 	newText = linter.AddPageListToNcxFile(newText, pageIds)
@@ -118,20 +116,20 @@ func updateNcxFile(l logger.Logger, fileManager filehandler.FileManager, opfFold
 		return
 	}
 
-	fileManager.WriteFileContents(filePath, newText)
+	filehandler.WriteFileContents(filePath, newText)
 }
 
-func updateNavFile(l logger.Logger, fileManager filehandler.FileManager, opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if file == "" {
 		return
 	}
 
-	var filePath = getFilePath(fileManager, opfFolder, file)
-	fileText := fileManager.ReadInFileContents(filePath)
+	var filePath = getFilePath(opfFolder, file)
+	fileText := filehandler.ReadInFileContents(filePath)
 
 	newText, err := linter.RemoveIdsFromNav(fileText)
 	if err != nil {
-		l.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
 
 	newText = linter.AddPageListToNavFile(newText, pageIds)
@@ -140,9 +138,9 @@ func updateNavFile(l logger.Logger, fileManager filehandler.FileManager, opfFold
 		return
 	}
 
-	fileManager.WriteFileContents(filePath, newText)
+	filehandler.WriteFileContents(filePath, newText)
 }
 
-func getFilePath(fileManager filehandler.FileManager, opfFolder, file string) string {
-	return fileManager.JoinPath(opfFolder, file)
+func getFilePath(opfFolder, file string) string {
+	return filehandler.JoinPath(opfFolder, file)
 }

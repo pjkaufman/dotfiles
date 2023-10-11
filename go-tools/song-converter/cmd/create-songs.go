@@ -34,37 +34,34 @@ var CreateSongsCmd = &cobra.Command{
 	The contents will be written to songs.html.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var l = logger.NewLoggerHandler()
-		var fileManager = filehandler.NewFileHandler(l)
-
 		err := ValidateCreateSongsFlags(stagingDir, stylesFilePath)
 		if err != nil {
-			l.WriteError(err.Error())
+			logger.WriteError(err.Error())
 		}
 
-		if !fileManager.FolderExists(stagingDir) {
-			l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
+		if !filehandler.FolderExists(stagingDir) {
+			logger.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 		}
 
-		if !fileManager.FileExists(stylesFilePath) {
-			l.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
+		if !filehandler.FileExists(stylesFilePath) {
+			logger.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
 		}
 
-		l.WriteInfo("Converting Markdown files to html")
+		logger.WriteInfo("Converting Markdown files to html")
 
-		var styles = fileManager.ReadInFileContents(stylesFilePath)
+		var styles = filehandler.ReadInFileContents(stylesFilePath)
 
 		// var htmlFile = strings.Builder{}
 		// htmlFile.WriteString(styles + "\n")
 
-		files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+		files := filehandler.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
 		sort.Strings(files)
 
 		var mdInfo = make([]converter.MdFileInfo, len(files))
 
 		for i, fileName := range files {
-			var filePath = fileManager.JoinPath(stagingDir, fileName)
-			fileContents := fileManager.ReadInFileContents(filePath)
+			var filePath = filehandler.JoinPath(stagingDir, fileName)
+			fileContents := filehandler.ReadInFileContents(filePath)
 
 			mdInfo[i] = converter.MdFileInfo{
 				FilePath:     filePath,
@@ -81,12 +78,12 @@ var CreateSongsCmd = &cobra.Command{
 
 		htmlFile, err := converter.BuildHtmlBody(styles, mdInfo)
 		if err != nil {
-			l.WriteError(err.Error())
+			logger.WriteError(err.Error())
 		}
 
-		writeToFileOrStdOut(l, fileManager, htmlFile, outputFile)
+		writeToFileOrStdOut(htmlFile, outputFile)
 
-		l.WriteInfo("Finished converting Markdown files to html")
+		logger.WriteInfo("Finished converting Markdown files to html")
 	},
 }
 

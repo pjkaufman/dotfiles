@@ -7,7 +7,7 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-func ParseTextReplacements(l logger.Logger, text string) map[string]string {
+func ParseTextReplacements(text string) map[string]string {
 	replaceValueToReplacement := make(map[string]string)
 
 	var lines = strings.Split(text, "\n")
@@ -26,7 +26,7 @@ func ParseTextReplacements(l logger.Logger, text string) map[string]string {
 		if numParts == 1 {
 			continue
 		} else if numParts != 4 {
-			l.WriteError(fmt.Sprintf("Could not parse \"%s\" because it does not have the proper amount of \"|\"s in it", line))
+			logger.WriteError(fmt.Sprintf("Could not parse \"%s\" because it does not have the proper amount of \"|\"s in it", line))
 			continue
 		}
 

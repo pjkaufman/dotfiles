@@ -9,40 +9,26 @@ import (
 	"github.com/fatih/color"
 )
 
-type Logger interface {
-	WriteInfo(msg string)
-	WriteWarn(msg string)
-	WriteError(msg string)
-	GetInputString(prompt string) string
-	GetInputInt(prompt string) int
-}
-
-type LoggerHandler struct{}
-
-func NewLoggerHandler() *LoggerHandler {
-	return &LoggerHandler{}
-}
-
-func (lg LoggerHandler) WriteError(msg string) {
+func WriteError(msg string) {
 	color.New(color.FgRed).Fprintln(os.Stderr, msg)
 	os.Exit(-1)
 }
 
-func (lg LoggerHandler) WriteInfo(msg string) {
+func WriteInfo(msg string) {
 	fmt.Fprintln(os.Stdout, msg)
 }
 
-func (lg LoggerHandler) WriteWarn(msg string) {
+func WriteWarn(msg string) {
 	color.New(color.FgYellow).Fprintln(os.Stdout, msg)
 }
 
-func (lg LoggerHandler) GetInputString(prompt string) string {
+func GetInputString(prompt string) string {
 	fmt.Println(prompt)
 	// based on https://stackoverflow.com/a/20895629 since for some reason spaces were not read properly by fmt.Scanln
 	reader := bufio.NewReader(os.Stdin)
 	response, err := reader.ReadString('\n')
 	if err != nil {
-		lg.WriteError(fmt.Sprintf("failed to read in the string provided: %s", err))
+		WriteError(fmt.Sprintf("failed to read in the string provided: %s", err))
 	}
 
 	response = strings.TrimRight(response, "\n")
@@ -50,7 +36,7 @@ func (lg LoggerHandler) GetInputString(prompt string) string {
 	return response
 }
 
-func (lg LoggerHandler) GetInputInt(prompt string) int {
+func GetInputInt(prompt string) int {
 	fmt.Println(prompt)
 	var response int
 	fmt.Scanf("%d", &response)

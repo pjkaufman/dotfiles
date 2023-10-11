@@ -25,21 +25,18 @@ var createCsvCmd = &cobra.Command{
 	like the author, book location, and copyright info to put in the csv file specified.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var l = logger.NewLoggerHandler()
-		var fileManager = filehandler.NewFileHandler(l)
-
 		err := ValidateCreateCsvFlags(stagingDir)
 		if err != nil {
-			l.WriteError(err.Error())
+			logger.WriteError(err.Error())
 		}
 
-		if !fileManager.FolderExists(stagingDir) {
-			l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
+		if !filehandler.FolderExists(stagingDir) {
+			logger.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
 		}
 
-		l.WriteInfo("Converting Markdown files to csv")
+		logger.WriteInfo("Converting Markdown files to csv")
 
-		files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+		files := filehandler.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
 		sort.Strings(files)
 
 		var mdInfo = make([]converter.MdFileInfo, len(files))
@@ -48,8 +45,8 @@ var createCsvCmd = &cobra.Command{
 		// csvContents.WriteString("Song|Location|Author|Copyright\n")
 
 		for i, fileName := range files {
-			var filePath = fileManager.JoinPath(stagingDir, fileName)
-			var contents = fileManager.ReadInFileContents(filePath)
+			var filePath = filehandler.JoinPath(stagingDir, fileName)
+			var contents = filehandler.ReadInFileContents(filePath)
 
 			mdInfo[i] = converter.MdFileInfo{
 				FilePath:     filePath,
@@ -67,12 +64,12 @@ var createCsvCmd = &cobra.Command{
 
 		csvFile, err := converter.BuildCsv(mdInfo)
 		if err != nil {
-			l.WriteError(err.Error())
+			logger.WriteError(err.Error())
 		}
 
-		writeToFileOrStdOut(l, fileManager, csvFile, outputFile)
+		writeToFileOrStdOut(csvFile, outputFile)
 
-		l.WriteInfo("Finished converting Markdown files to csv")
+		logger.WriteInfo("Finished converting Markdown files to csv")
 	},
 }
 

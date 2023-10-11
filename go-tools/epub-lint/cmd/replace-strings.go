@@ -26,9 +26,7 @@ var replaceStringsCmd = &cobra.Command{
 	from the provided file(s)
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		ReplaceExtraStrings(log, fileHandler, filePaths, extraReplacesFilePath)
+		ReplaceExtraStrings(filePaths, extraReplacesFilePath)
 	},
 }
 
@@ -41,14 +39,14 @@ func init() {
 	replaceStringsCmd.MarkFlagRequired("extra-replace-text")
 }
 
-func ReplaceExtraStrings(l logger.Logger, fileManager filehandler.FileManager, filePaths, extraReplacesFilePath string) {
+func ReplaceExtraStrings(filePaths, extraReplacesFilePath string) {
 	var files = strings.Split(filePaths, ",")
-	validateReplaceStringsFlags(l, fileManager, files, extraReplacesFilePath)
+	validateReplaceStringsFlags(files, extraReplacesFilePath)
 
 	var numHits = make(map[string]int)
-	var extraTextReplacements = linter.ParseTextReplacements(l, fileManager.ReadInFileContents(extraReplacesFilePath))
+	var extraTextReplacements = linter.ParseTextReplacements(filehandler.ReadInFileContents(extraReplacesFilePath))
 	for _, filePath := range files {
-		fileText := fileManager.ReadInFileContents(filePath)
+		fileText := filehandler.ReadInFileContents(filePath)
 		var newText = linter.CommonStringReplace(fileText)
 		newText = linter.ExtraStringReplace(newText, extraTextReplacements, numHits)
 
@@ -56,11 +54,11 @@ func ReplaceExtraStrings(l logger.Logger, fileManager filehandler.FileManager, f
 			continue
 		}
 
-		fileManager.WriteFileContents(filePath, newText)
+		filehandler.WriteFileContents(filePath, newText)
 	}
 
 	if len(numHits) == 0 {
-		l.WriteWarn("No values were listed as needing replacing")
+		logger.WriteWarn("No values were listed as needing replacing")
 
 		return
 	}
@@ -80,38 +78,38 @@ func ReplaceExtraStrings(l logger.Logger, fileManager filehandler.FileManager, f
 		}
 	}
 
-	l.WriteInfo("Successful Replaces:")
+	logger.WriteInfo("Successful Replaces:")
 	for _, successfulReplace := range successfulReplaces {
-		l.WriteInfo(successfulReplace)
+		logger.WriteInfo(successfulReplace)
 	}
 
 	if len(failedReplaces) == 0 {
 		return
 	}
 
-	l.WriteInfo("")
-	l.WriteWarn("Failed Replaces:")
+	logger.WriteInfo("")
+	logger.WriteWarn("Failed Replaces:")
 	for i, failedReplace := range failedReplaces {
-		l.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
+		logger.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
 	}
-	l.WriteInfo("")
+	logger.WriteInfo("")
 }
 
-func validateReplaceStringsFlags(l logger.Logger, fileManager filehandler.FileManager, filePaths []string, extraReplaceStringsPath string) {
+func validateReplaceStringsFlags(filePaths []string, extraReplaceStringsPath string) {
 	for _, filePath := range filePaths {
-		filePathExists := fileManager.FileExists(filePath)
+		filePathExists := filehandler.FileExists(filePath)
 
 		if !filePathExists {
-			l.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
+			logger.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
 		}
 	}
 
-	if strings.Trim(extraReplacesFilePath, " ") == "" {
-		l.WriteError("extra-replace-file-path must have a non-whitespace value")
+	if strings.TrimSpace(extraReplacesFilePath) == "" {
+		logger.WriteError("extra-replace-file-path must have a non-whitespace value")
 	}
 
-	extraReplacesFilePathExists := fileManager.FileExists(extraReplacesFilePath)
+	extraReplacesFilePathExists := filehandler.FileExists(extraReplacesFilePath)
 	if !extraReplacesFilePathExists {
-		l.WriteError("extra-replace-file-path must exist")
+		logger.WriteError("extra-replace-file-path must exist")
 	}
 }

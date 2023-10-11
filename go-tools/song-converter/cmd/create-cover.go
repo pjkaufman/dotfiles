@@ -29,26 +29,23 @@ var createCoverCmd = &cobra.Command{
 	Converts the cover file from Markdown into html as the specified output file.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var l = logger.NewLoggerHandler()
-		var fileManager = filehandler.NewFileHandler(l)
-
 		err := ValidateCreateCoverFlags(coverInputFilePath)
 		if err != nil {
-			l.WriteError(err.Error())
+			logger.WriteError(err.Error())
 		}
 
-		if !fileManager.FileExists(coverInputFilePath) {
-			l.WriteError(fmt.Sprintf(`cover-file: "%s" must exist`, coverInputFilePath))
+		if !filehandler.FileExists(coverInputFilePath) {
+			logger.WriteError(fmt.Sprintf(`cover-file: "%s" must exist`, coverInputFilePath))
 		}
 
-		l.WriteInfo("Converting files to html cover")
+		logger.WriteInfo("Converting files to html cover")
 
-		var coverMd = fileManager.ReadInFileContents(coverInputFilePath)
+		var coverMd = filehandler.ReadInFileContents(coverInputFilePath)
 		htmlFile := converter.BuildHtmlCover(coverMd)
 
-		writeToFileOrStdOut(l, fileManager, htmlFile, coverOutputFile)
+		writeToFileOrStdOut(htmlFile, coverOutputFile)
 
-		l.WriteInfo("Finished creating html cover file")
+		logger.WriteInfo("Finished creating html cover file")
 	},
 }
 

@@ -36,9 +36,7 @@ var fixableCmd = &cobra.Command{
 	Will attempt to go through all of the potentially fixable issues in the specified files.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		CheckForBrokenLines(log, fileHandler, filePaths, cssPaths, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
+		CheckForBrokenLines(filePaths, cssPaths, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
 	},
 }
 
@@ -56,36 +54,36 @@ func init() {
 	fixableCmd.MarkFlagRequired("file-paths")
 }
 
-func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
+func CheckForBrokenLines(filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
 	var files = strings.Split(filePaths, ",")
 	var cssFiles = strings.Split(cssPaths, ",")
-	validateBrokenLinesFlags(l, fileManager, files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
+	validateBrokenLinesFlags(files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
 
 	var addCssSectionIfMissing bool = false
 	var addCssPageIfMissing bool = false
 	var contextBreak string
 	if runAll || runSectionBreak {
-		contextBreak = l.GetInputString("What is the section break for the epub?:")
+		contextBreak = logger.GetInputString("What is the section break for the epub?:")
 
-		if strings.Trim(contextBreak, " ") == "" {
-			l.WriteError("Please provide a non-whitespace section break")
+		if strings.TrimSpace(contextBreak) == "" {
+			logger.WriteError("Please provide a non-whitespace section break")
 		}
 	}
 
 	for _, filePath := range files {
-		fileText := fileManager.ReadInFileContents(filePath)
+		fileText := filehandler.ReadInFileContents(filePath)
 
 		var newText = fileText
 		if runAll || runBrokenLines {
 			var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
-			newText, _ = promptAboutSuggestions(l, brokenLineFixSuggestions, newText)
+			newText, _ = promptAboutSuggestions(brokenLineFixSuggestions, newText)
 		}
 
 		if runAll || runSectionBreak {
 			var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
 
 			var contextBreakUpdated bool
-			newText, contextBreakUpdated = promptAboutSuggestions(l, contextBreakSuggestions, newText)
+			newText, contextBreakUpdated = promptAboutSuggestions(contextBreakSuggestions, newText)
 			addCssSectionIfMissing = addCssSectionIfMissing || contextBreakUpdated
 		}
 
@@ -93,61 +91,61 @@ func CheckForBrokenLines(l logger.Logger, fileManager filehandler.FileManager, f
 			var pageBreakSuggestions = linter.GetPotentialPageBreaks(newText)
 
 			var pageBreakUpdated bool
-			newText, pageBreakUpdated = promptAboutSuggestions(l, pageBreakSuggestions, newText)
+			newText, pageBreakUpdated = promptAboutSuggestions(pageBreakSuggestions, newText)
 			addCssPageIfMissing = addCssPageIfMissing || pageBreakUpdated
 		}
 
 		if runAll || runOxfordCommas {
 			var oxfordCommaSuggestions = linter.GetPotentialMissingOxfordCommas(newText)
-			newText, _ = promptAboutSuggestions(l, oxfordCommaSuggestions, newText)
+			newText, _ = promptAboutSuggestions(oxfordCommaSuggestions, newText)
 		}
 
 		if runAll || runAlthoughBut {
-			var oxfordCommaSuggestions = linter.GetPotentialAlthoughButInstances(newText)
-			newText, _ = promptAboutSuggestions(l, oxfordCommaSuggestions, newText)
+			var althoughButSuggestions = linter.GetPotentialAlthoughButInstances(newText)
+			newText, _ = promptAboutSuggestions(althoughButSuggestions, newText)
 		}
 
 		if fileText == newText {
 			continue
 		}
 
-		fileManager.WriteFileContents(filePath, newText)
+		filehandler.WriteFileContents(filePath, newText)
 	}
 
-	handleCssChanges(l, fileManager, addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
+	handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
 }
 
-func validateBrokenLinesFlags(l logger.Logger, fileManager filehandler.FileManager, filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
+func validateBrokenLinesFlags(filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
 	if !runAll && !runBrokenLines && !runSectionBreak && !runPageBreak && !runOxfordCommas && !runAlthoughBut {
-		l.WriteError("either run-all, run-broken-lines, run-section-breaks, run-page-breaks, run-oxford-commas, or run-although-but must be specified")
+		logger.WriteError("either run-all, run-broken-lines, run-section-breaks, run-page-breaks, run-oxford-commas, or run-although-but must be specified")
 	}
 
 	for _, filePath := range filePaths {
-		filePathExists := fileManager.FileExists(filePath)
+		filePathExists := filehandler.FileExists(filePath)
 
 		if !filePathExists {
-			l.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
+			logger.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
 		}
 	}
 
 	for _, cssPath := range cssPaths {
-		filePathExists := fileManager.FileExists(cssPath)
+		filePathExists := filehandler.FileExists(cssPath)
 
 		if !filePathExists {
-			l.WriteError(fmt.Sprintf(`css-paths: "%s" must exist`, cssPath))
+			logger.WriteError(fmt.Sprintf(`css-paths: "%s" must exist`, cssPath))
 		}
 	}
 
 	if (runAll || runSectionBreak || runPageBreak) && (len(cssPaths) == 0 || len(cssPaths) == 1 && strings.Trim(cssPaths[0], " ") == "") {
-		l.WriteError(`css-paths: must have a value when including handling section or page breaks`)
+		logger.WriteError(`css-paths: must have a value when including handling section or page breaks`)
 	}
 }
 
-func promptAboutSuggestions(l logger.Logger, suggestions map[string]string, fileText string) (string, bool) {
+func promptAboutSuggestions(suggestions map[string]string, fileText string) (string, bool) {
 	var valueReplaced = false
 	var newText = fileText
 	for original, suggestion := range suggestions {
-		resp := l.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))
+		resp := logger.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))
 		if strings.EqualFold(resp, "Y") {
 			newText = strings.Replace(newText, original, suggestion, 1)
 			valueReplaced = true
@@ -157,7 +155,7 @@ func promptAboutSuggestions(l logger.Logger, suggestions map[string]string, file
 	return newText, valueReplaced
 }
 
-func handleCssChanges(l logger.Logger, fileManager filehandler.FileManager, addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles []string, contextBreak string) {
+func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles []string, contextBreak string) {
 	if !addCssSectionIfMissing && !addCssPageIfMissing {
 		return
 	}
@@ -167,13 +165,13 @@ func handleCssChanges(l logger.Logger, fileManager filehandler.FileManager, addC
 		cssSelectionPrompt += fmt.Sprintf("%d. %s\n", i, file)
 	}
 
-	var selectedCssFileIndex = l.GetInputInt(cssSelectionPrompt)
+	var selectedCssFileIndex = logger.GetInputInt(cssSelectionPrompt)
 	if selectedCssFileIndex < 0 || selectedCssFileIndex >= len(cssFiles) {
-		l.WriteError(fmt.Sprintf("Please select a valid css file value instead of \"%d\".", selectedCssFileIndex))
+		logger.WriteError(fmt.Sprintf("Please select a valid css file value instead of \"%d\".", selectedCssFileIndex))
 	}
 
 	var cssFile = cssFiles[selectedCssFileIndex]
-	var css = fileManager.ReadInFileContents(cssFile)
+	var css = filehandler.ReadInFileContents(cssFile)
 	var newCssText = css
 
 	if addCssSectionIfMissing {
@@ -185,6 +183,6 @@ func handleCssChanges(l logger.Logger, fileManager filehandler.FileManager, addC
 	}
 
 	if newCssText != css {
-		fileManager.WriteFileContents(cssFile, newCssText)
+		filehandler.WriteFileContents(cssFile, newCssText)
 	}
 }

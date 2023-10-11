@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
-	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -62,8 +61,7 @@ var ParseTextReplacementsTestCases = map[string]ParseTextReplacementsTestCase{
 func TestParseTextReplacements(t *testing.T) {
 	for name, args := range ParseTextReplacementsTestCases {
 		t.Run(name, func(t *testing.T) {
-			log := logger.NewMockLoggerHandler()
-			actual := linter.ParseTextReplacements(log, args.Input)
+			actual := linter.ParseTextReplacements(args.Input)
 
 			assert.Equal(t, args.Expected, actual)
 		})

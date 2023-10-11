@@ -5,35 +5,21 @@ package converter_test
 import (
 	"testing"
 
-	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
-	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
 	"github.com/stretchr/testify/assert"
 )
 
 type ConvertMdToHtmlCoverTestCase struct {
-	InputFilePath       string
-	ExistingFiles       map[string]struct{}
-	ExistingFileContent map[string]string
-	ExpectedError       string
-	ExpectPanic         bool
-	ExpectedHtml        string
+	InputStylesContent string
+	InputCoverMd       string
+	ExpectedHtml       string
 }
 
-// errors that get handled as errors are represented as panics
+// TODO: handle styles addition
 var ConvertMdToHtmlCoverTestCases = map[string]ConvertMdToHtmlCoverTestCase{
-	"make sure that the file path not existing causes an error": {
-		InputFilePath: "file.md",
-		ExpectedError: `could not read in file contents for "file.md": path not found`,
-		ExpectPanic:   true,
-	},
-	"a valid file should properly get turned into html": {
-		InputFilePath: "file.md",
-		ExistingFiles: map[string]struct{}{
-			"file.md": {},
-		},
-		ExistingFileContent: map[string]string{
-			"file.md": `# Church Songs - E Version
+	"a valid file should properly get turned into html with no style content": {
+		InputStylesContent: "",
+		InputCoverMd: `# Church Songs - E Version
 
 <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
 
@@ -59,9 +45,6 @@ ZW= Zelma Wanagas
 non returns*
 
 *\*Punctuation alters the alphabetical order*`,
-		},
-		ExpectedError: "",
-		ExpectPanic:   false,
 		ExpectedHtml: `<div style="text-align: center">
 <h1 id="church-songs-e-version">Church Songs - E Version</h1>
 <p><br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/></p>
@@ -88,20 +71,9 @@ non returns</em></p>
 func TestConvertMdToHtmlCover(t *testing.T) {
 	for name, args := range ConvertMdToHtmlCoverTestCases {
 		t.Run(name, func(t *testing.T) {
-			defer handleConvertMdToHtmlCoverPanic(t, args)
-
-			var log = logger.NewMockLoggerHandler()
-			var fileHandler = filehandler.NewMockFileHandler(log, args.ExistingFiles, nil, nil, args.ExistingFileContent)
-			actual := converter.ConvertMdToHtmlCover(log, fileHandler, args.InputFilePath)
+			actual := converter.BuildHtmlCover(args.InputStylesContent, args.InputCoverMd)
 
 			assert.Equal(t, args.ExpectedHtml, actual)
 		})
-	}
-}
-
-func handleConvertMdToHtmlCoverPanic(t *testing.T, args ConvertMdToHtmlCoverTestCase) {
-	if r := recover(); r != nil {
-		assert.True(t, args.ExpectPanic, "an error was not expected")
-		assert.Equal(t, args.ExpectedError, r, "the error message did not match the expected error message")
 	}
 }

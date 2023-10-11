@@ -5,19 +5,16 @@ import (
 	"strings"
 
 	"github.com/adrg/frontmatter"
-	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
-	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-func ConvertMdToCsv(l logger.Logger, fileManager filehandler.FileManager, fileName, filePath string) string {
-	contents := fileManager.ReadInFileContents(filePath)
+func ConvertMdToCsv(fileName, filePath, fileContents string) (string, error) {
 	var metadata SongMetadata
-	_, err := frontmatter.Parse(strings.NewReader(contents), &metadata)
+	_, err := frontmatter.Parse(strings.NewReader(fileContents), &metadata)
 	if err != nil {
-		l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
+		return "", fmt.Errorf(`there was an error getting the frontmatter for file '%s': %w`, filePath, err)
 	}
 
-	return strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n"
+	return strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n", nil
 }
 
 func buildMetadataCsv(metadata *SongMetadata) string {

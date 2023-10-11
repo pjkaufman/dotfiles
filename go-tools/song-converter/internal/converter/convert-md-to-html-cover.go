@@ -3,16 +3,16 @@ package converter
 import (
 	"fmt"
 	"strings"
-
-	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
-	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-func ConvertMdToHtmlCover(l logger.Logger, fileManager filehandler.FileManager, filePath string) string {
-	contents := fileManager.ReadInFileContents(filePath)
-	html := mdToHTML([]byte(contents))
+func BuildHtmlCover(stylesHtml, coverMd string) string {
+	var html = strings.Builder{}
+	html.WriteString(stylesHtml)
 
-	var output = fmt.Sprintf("<div style=\"text-align: center\">\n%s</div>\n", html)
+	coverHtml := mdToHTML([]byte(coverMd))
+	coverHtml = fmt.Sprintf("<div style=\"text-align: center\">\n%s</div>\n", coverHtml)
+	coverHtml = strings.ReplaceAll(coverHtml, "\n\n", "\n")
+	html.WriteString(coverHtml)
 
-	return strings.ReplaceAll(output, "\n\n", "\n")
+	return html.String()
 }

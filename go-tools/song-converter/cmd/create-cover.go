@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -28,9 +29,28 @@ var createCoverCmd = &cobra.Command{
 	Converts the cover file from Markdown into html as the specified output file.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		CreateCover(log, fileHandler, coverInputFilePath, coverOutputFile)
+		var l = logger.NewLoggerHandler()
+		var fileManager = filehandler.NewFileHandler(l)
+
+		err := ValidateCreateCoverFlags(coverInputFilePath)
+		if err != nil {
+			l.WriteError(err.Error())
+		}
+
+		if !fileManager.FileExists(coverInputFilePath) {
+			l.WriteError(fmt.Sprintf(`cover-file: "%s" must exist`, coverInputFilePath))
+		}
+
+		l.WriteInfo("Converting files to html cover")
+
+		var styles = fileManager.ReadInFileContents(stylesFilePath)
+		var coverMd = fileManager.ReadInFileContents(coverInputFilePath)
+		htmlFile := converter.BuildHtmlCover(styles, coverMd)
+
+		writeToFileOrStdOut(l, fileManager, htmlFile, coverOutputFile)
+
+		l.WriteInfo("Finished creating html cover file")
+
 	},
 }
 
@@ -42,35 +62,14 @@ func init() {
 	createCoverCmd.MarkFlagRequired("cover-file")
 }
 
-func CreateCover(l logger.Logger, fileManager filehandler.FileManager, songsCoverFilePath, outputFile string) {
-	validateCreateCoverFlags(l, fileManager, songsCoverFilePath)
-
-	l.WriteInfo("Converting files to html cover")
-
-	var htmlFile = strings.Builder{}
-
-	var styles = fileManager.ReadInFileContents(stylesFilePath)
-	htmlFile.WriteString(styles)
-
-	var coverHtml = converter.ConvertMdToHtmlCover(l, fileManager, songsCoverFilePath)
-	htmlFile.WriteString(coverHtml)
-
-	var htmlOutput = htmlFile.String()
-	writeToFileOrStdOut(l, fileManager, htmlOutput, outputFile)
-
-	l.WriteInfo("Finished creating html cover file")
-}
-
-func validateCreateCoverFlags(l logger.Logger, fileManager filehandler.FileManager, songsCoverFilePath string) {
+func ValidateCreateCoverFlags(songsCoverFilePath string) error {
 	if strings.Trim(songsCoverFilePath, " ") == "" {
-		l.WriteError(CoverPathArgEmpty)
+		return errors.New(CoverPathArgEmpty)
 	}
 
 	if !strings.HasSuffix(songsCoverFilePath, ".md") {
-		l.WriteError(CoverPathNotMdFile)
+		return errors.New(CoverPathNotMdFile)
 	}
 
-	if !fileManager.FileExists(songsCoverFilePath) {
-		l.WriteError(fmt.Sprintf(`cover-file: "%s" must exist`, songsCoverFilePath))
-	}
+	return nil
 }

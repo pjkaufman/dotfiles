@@ -76,7 +76,7 @@ func EpubLint(l logger.Logger, fileManager filehandler.FileManager, filePath, la
 	updateNavFile(l, fileManager, opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
 	updateNcxFile(l, fileManager, opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
 
-	// TODO; cleanup TOC file's links
+	// TODO: cleanup TOC file's links
 }
 
 func validateLintEpubFlags(l logger.Logger, fileManager filehandler.FileManager, filePath string) {

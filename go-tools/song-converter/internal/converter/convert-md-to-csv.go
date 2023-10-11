@@ -3,15 +3,13 @@ package converter
 import (
 	"fmt"
 	"strings"
-
-	"github.com/adrg/frontmatter"
 )
 
 func ConvertMdToCsv(fileName, filePath, fileContents string) (string, error) {
 	var metadata SongMetadata
-	_, err := frontmatter.Parse(strings.NewReader(fileContents), &metadata)
+	_, err := parseFrontmatter(filePath, fileContents, &metadata)
 	if err != nil {
-		return "", fmt.Errorf(`there was an error getting the frontmatter for file '%s': %w`, filePath, err)
+		return "", err
 	}
 
 	return strings.Replace(fileName, ".md", "", 1) + "|" + buildMetadataCsv(&metadata) + "\n", nil

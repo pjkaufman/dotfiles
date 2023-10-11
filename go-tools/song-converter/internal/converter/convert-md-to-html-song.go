@@ -9,8 +9,6 @@ import (
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gomarkdown/markdown/parser"
-	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
-	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 type SongMetadata struct {
@@ -30,13 +28,11 @@ const (
 
 var otherTitleRegex = regexp.MustCompile(`^(<h1.*)\((.*)\)<(.*)`)
 
-func ConvertMdToHtmlSong(l logger.Logger, fileManager filehandler.FileManager, filePath string) string {
-	contents := fileManager.ReadInFileContents(filePath)
-
+func ConvertMdToHtmlSong(filePath, fileContents string) (string, error) {
 	var metadata SongMetadata
-	mdContent, err := frontmatter.Parse(strings.NewReader(contents), &metadata)
+	mdContent, err := parseFrontmatter(filePath, fileContents, &metadata)
 	if err != nil {
-		l.WriteError(fmt.Sprintf(`There was an error getting the frontmatter for file '%s': %s`, filePath, err))
+		return "", err
 	}
 
 	var metadataHtml = buildMetadataDiv(&metadata)
@@ -49,7 +45,7 @@ func ConvertMdToHtmlSong(l logger.Logger, fileManager filehandler.FileManager, f
 	html = strings.Replace(html, "</h1>\n", "</h1>\n"+metadataHtml, 1)
 	html = strings.ReplaceAll(html, "\n\n", "\n")
 
-	return fmt.Sprintf("<div class=\"keep-together\">\n%s</div>\n<br>", html)
+	return fmt.Sprintf("<div class=\"keep-together\">\n%s</div>\n<br>", html), nil
 }
 
 func mdToHTML(md []byte) string {
@@ -153,4 +149,13 @@ func updateCountsIfMetatdataExists(value string, metadataElements, rowElements i
 	}
 
 	return metadataElements + 1, rowElements + 1
+}
+
+func parseFrontmatter(filePath, fileContents string, metadata *SongMetadata) (string, error) {
+	restOfContent, err := frontmatter.Parse(strings.NewReader(fileContents), metadata)
+	if err != nil {
+		return "", fmt.Errorf(`there was an error getting the frontmatter for file '%s': %w`, filePath, err)
+	}
+
+	return string(restOfContent), nil
 }

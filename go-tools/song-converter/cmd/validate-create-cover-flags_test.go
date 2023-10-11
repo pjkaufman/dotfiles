@@ -14,7 +14,6 @@ type ValidateCreateCoverFlagsTestCase struct {
 	ExpectedError  string
 }
 
-// errors that get handled as errors are represented as panics
 var ValidateCreateCoverFlagsTestCases = map[string]ValidateCreateCoverFlagsTestCase{
 	"make sure that an empty cover path causes a validation error": {
 		InputCoverPath: "",
@@ -23,6 +22,10 @@ var ValidateCreateCoverFlagsTestCases = map[string]ValidateCreateCoverFlagsTestC
 	"make sure that an non-md styles path causes a validation error": {
 		InputCoverPath: "cover.txt",
 		ExpectedError:  cmd.CoverPathNotMdFile,
+	},
+	"make sure that the cover path that is an md file passes validation": {
+		InputCoverPath: "cover.md",
+		ExpectedError:  "",
 	},
 }
 

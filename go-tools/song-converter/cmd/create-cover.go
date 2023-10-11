@@ -43,14 +43,12 @@ var createCoverCmd = &cobra.Command{
 
 		l.WriteInfo("Converting files to html cover")
 
-		var styles = fileManager.ReadInFileContents(stylesFilePath)
 		var coverMd = fileManager.ReadInFileContents(coverInputFilePath)
-		htmlFile := converter.BuildHtmlCover(styles, coverMd)
+		htmlFile := converter.BuildHtmlCover(coverMd)
 
 		writeToFileOrStdOut(l, fileManager, htmlFile, coverOutputFile)
 
 		l.WriteInfo("Finished creating html cover file")
-
 	},
 }
 
@@ -63,7 +61,7 @@ func init() {
 }
 
 func ValidateCreateCoverFlags(songsCoverFilePath string) error {
-	if strings.Trim(songsCoverFilePath, " ") == "" {
+	if strings.TrimSpace(songsCoverFilePath) == "" {
 		return errors.New(CoverPathArgEmpty)
 	}
 

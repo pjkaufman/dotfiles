@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -24,9 +25,54 @@ var createCsvCmd = &cobra.Command{
 	like the author, book location, and copyright info to put in the csv file specified.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		CreateCsv(log, fileHandler, stagingDir, outputFile)
+		var l = logger.NewLoggerHandler()
+		var fileManager = filehandler.NewFileHandler(l)
+
+		err := ValidateCreateCsvFlags(stagingDir)
+		if err != nil {
+			l.WriteError(err.Error())
+		}
+
+		if !fileManager.FolderExists(stagingDir) {
+			l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
+		}
+
+		l.WriteInfo("Converting Markdown files to csv")
+
+		files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+		sort.Strings(files)
+
+		var mdInfo = make([]converter.MdFileInfo, len(files))
+
+		// var csvContents = strings.Builder{}
+		// csvContents.WriteString("Song|Location|Author|Copyright\n")
+
+		for i, fileName := range files {
+			var filePath = fileManager.JoinPath(stagingDir, fileName)
+			var contents = fileManager.ReadInFileContents(filePath)
+
+			mdInfo[i] = converter.MdFileInfo{
+				FilePath:     filePath,
+				FileName:     fileName,
+				FileContents: contents,
+			}
+
+			// csvString, err := converter.ConvertMdToCsv(fileName, filePath, contents)
+			// if err != nil {
+			// 	l.WriteError(err.Error())
+			// }
+
+			// csvContents.WriteString(csvString)
+		}
+
+		csvFile, err := converter.BuildCsv(mdInfo)
+		if err != nil {
+			l.WriteError(err.Error())
+		}
+
+		writeToFileOrStdOut(l, fileManager, csvFile, outputFile)
+
+		l.WriteInfo("Finished converting Markdown files to csv")
 	},
 }
 
@@ -38,43 +84,10 @@ func init() {
 	createCsvCmd.MarkFlagRequired("working-dir")
 }
 
-func CreateCsv(l logger.Logger, fileManager filehandler.FileManager, stagingDir, outputFile string) {
-	validateCreateCsvFlags(l, fileManager, stagingDir)
-
-	l.WriteInfo("Converting Markdown files to csv")
-
-	files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
-
-	sort.Strings(files)
-
-	var csvContents = strings.Builder{}
-	csvContents.WriteString("Song|Location|Author|Copyright\n")
-
-	for _, fileName := range files {
-		var filePath = fileManager.JoinPath(stagingDir, fileName)
-		var contents = fileManager.ReadInFileContents(filePath)
-
-		csvString, err := converter.ConvertMdToCsv(fileName, filePath, contents)
-		if err != nil {
-			l.WriteError(err.Error())
-		}
-
-		csvContents.WriteString(csvString)
+func ValidateCreateCsvFlags(stagingDir string) error {
+	if strings.TrimSpace(stagingDir) == "" {
+		return errors.New(StagingDirArgEmpty)
 	}
 
-	var outputCsv = csvContents.String()
-	outputCsv = strings.ReplaceAll(outputCsv, "&nbsp;", "")
-	writeToFileOrStdOut(l, fileManager, outputCsv, outputFile)
-
-	l.WriteInfo("Finished converting Markdown files to csv")
-}
-
-func validateCreateCsvFlags(l logger.Logger, fileManager filehandler.FileManager, stagingDir string) {
-	if strings.Trim(stagingDir, " ") == "" {
-		l.WriteError("working-dir must have a non-whitespace value")
-	}
-
-	if !fileManager.FolderExists(stagingDir) {
-		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
-	}
+	return nil
 }

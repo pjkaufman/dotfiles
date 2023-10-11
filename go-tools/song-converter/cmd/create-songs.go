@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -33,9 +34,59 @@ var CreateSongsCmd = &cobra.Command{
 	The contents will be written to songs.html.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var log = logger.NewLoggerHandler()
-		var fileHandler = filehandler.NewFileHandler(log)
-		CreateSongs(log, fileHandler, stagingDir, stylesFilePath, bodyHtmlOutputFile)
+		var l = logger.NewLoggerHandler()
+		var fileManager = filehandler.NewFileHandler(l)
+
+		err := ValidateCreateSongsFlags(stagingDir, stylesFilePath)
+		if err != nil {
+			l.WriteError(err.Error())
+		}
+
+		if !fileManager.FolderExists(stagingDir) {
+			l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
+		}
+
+		if !fileManager.FileExists(stylesFilePath) {
+			l.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
+		}
+
+		l.WriteInfo("Converting Markdown files to html")
+
+		var styles = fileManager.ReadInFileContents(stylesFilePath)
+
+		// var htmlFile = strings.Builder{}
+		// htmlFile.WriteString(styles + "\n")
+
+		files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
+		sort.Strings(files)
+
+		var mdInfo = make([]converter.MdFileInfo, len(files))
+
+		for i, fileName := range files {
+			var filePath = fileManager.JoinPath(stagingDir, fileName)
+			fileContents := fileManager.ReadInFileContents(filePath)
+
+			mdInfo[i] = converter.MdFileInfo{
+				FilePath:     filePath,
+				FileName:     fileName,
+				FileContents: fileContents,
+			}
+			// html, err := converter.ConvertMdToHtmlSong(filePath, fileContents)
+			// if err != nil {
+			// 	l.WriteError(err.Error())
+			// }
+
+			// htmlFile.WriteString(html + "\n")
+		}
+
+		htmlFile, err := converter.BuildHtmlBody(styles, mdInfo)
+		if err != nil {
+			l.WriteError(err.Error())
+		}
+
+		writeToFileOrStdOut(l, fileManager, htmlFile, outputFile)
+
+		l.WriteInfo("Finished converting Markdown files to html")
 	},
 }
 
@@ -49,48 +100,18 @@ func init() {
 	CreateSongsCmd.MarkFlagRequired("working-dir")
 }
 
-func CreateSongs(l logger.Logger, fileManager filehandler.FileManager, stagingDir, stylesFilePath, outputFile string) {
-	validateCreateSongsFlags(l, fileManager, stagingDir, stylesFilePath)
-
-	l.WriteInfo("Converting Markdown files to html")
-
-	var styles = fileManager.ReadInFileContents(stylesFilePath)
-
-	var htmlFile = strings.Builder{}
-	htmlFile.WriteString(styles + "\n")
-
-	files := fileManager.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
-	sort.Strings(files)
-
-	for _, fileName := range files {
-		var filePath = fileManager.JoinPath(stagingDir, fileName)
-
-		htmlFile.WriteString(converter.ConvertMdToHtmlSong(l, fileManager, filePath) + "\n")
+func ValidateCreateSongsFlags(stagingDir, stylesFilePath string) error {
+	if strings.TrimSpace(stagingDir) == "" {
+		return errors.New(StagingDirArgEmpty)
 	}
 
-	writeToFileOrStdOut(l, fileManager, htmlFile.String(), outputFile)
-
-	l.WriteInfo("Finished converting Markdown files to html")
-}
-
-func validateCreateSongsFlags(l logger.Logger, fileManager filehandler.FileManager, stagingDir, stylesFilePath string) {
-	if strings.Trim(stagingDir, " ") == "" {
-		l.WriteError(StagingDirArgEmpty)
-	}
-
-	if !fileManager.FolderExists(stagingDir) {
-		l.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
-	}
-
-	if strings.Trim(stylesFilePath, " ") == "" {
-		l.WriteError(StylesPathArgEmpty)
+	if strings.TrimSpace(stylesFilePath) == "" {
+		return errors.New(StylesPathArgEmpty)
 	}
 
 	if !strings.HasSuffix(stylesFilePath, ".html") {
-		l.WriteError(StylesPathNotHtmlFile)
+		return errors.New(StylesPathNotHtmlFile)
 	}
 
-	if !fileManager.FileExists(stylesFilePath) {
-		l.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
-	}
+	return nil
 }

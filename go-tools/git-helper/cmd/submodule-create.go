@@ -54,6 +54,7 @@ var createCmd = &cobra.Command{
 		// fmt.Println(folders)
 
 		var currentBranch string
+		var prLinks []string
 		for _, folder := range folders {
 			commandhandler.MustChangeDirectoryTo(folder)
 
@@ -63,7 +64,13 @@ var createCmd = &cobra.Command{
 			}
 
 			logger.WriteInfo(currentBranch + " does not contain " + ticketAbbreviation)
-			createSubmoduleUpdateBranch(folder, submoduleName)
+
+			prLinks = append(prLinks, createSubmoduleUpdateBranch(folder, submoduleName))
+		}
+
+		logger.WriteInfo("PR Links:")
+		for _, link := range prLinks {
+			logger.WriteInfo("- " + link)
 		}
 	},
 }
@@ -101,7 +108,7 @@ func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
 	return folders
 }
 
-func createSubmoduleUpdateBranch(folder, submodule string) {
+func createSubmoduleUpdateBranch(folder, submodule string) string {
 	logger.WriteInfo("Creating the DE branch for " + folder)
 	checkoutLatestFromMaster(folder)
 
@@ -120,7 +127,7 @@ func createSubmoduleUpdateBranch(folder, submodule string) {
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submodule)
 	pushOutput := commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 
-	fmt.Println("TODO: handle the push output - " + pushOutput)
+	return GetPullRequestLink(pushOutput)
 }
 
 func checkoutLatestFromMaster(folder string) {

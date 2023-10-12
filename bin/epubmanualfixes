@@ -9,7 +9,7 @@ fi
 source "$HOME/dotfiles/bin/validatepathandextension"
 
 # validate the file paths and extensions before proceeding with text replacement
-if ! validat_path_and_extension $1 'epub' 'epub'; then
+if ! validate_path_and_extension $1 'epub' 'epub'; then
   return
 fi
 

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+TRUE=0
+FALSE=1
+
+validate_path_and_extension() {
+    if [ ! -f "$1" ]; then
+        echo "$1 is not a valid path please try again with a valid path to a $2 file."
+        return $FALSE;
+    fi
+
+    ext="${1##*.}"
+    if [[ ! $ext == "$3" ]]; then
+        echo "$1 does not end in '$3' and thus is not usable as a $2 file for this script."
+        return $FALSE;
+    fi
+
+    return $TRUE;
+}

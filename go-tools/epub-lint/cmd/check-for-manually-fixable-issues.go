@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -20,6 +21,11 @@ var (
 	runAlthoughBut  bool
 )
 
+const (
+	OneRunBoolArgMustBeEnabled   = "either run-all, run-broken-lines, run-section-breaks, run-page-breaks, run-oxford-commas, or run-although-but must be specified"
+	CssPathsEmptyWhenArgIsNeeded = "css-paths must have a value when including handling section or page breaks"
+)
+
 // fixableCmd represents the fixable command
 var fixableCmd = &cobra.Command{
 	Use:   "fixable",
@@ -31,12 +37,81 @@ var fixableCmd = &cobra.Command{
 	- Section breaks being hardcoded instead of an hr
 	- Page breaks being hardcoded instead of an hr
 	- Oxford commas being missing before or's or and's
+	- Possible instances of sentences that have although ..., but in them
 	
 	For example: epub-lint fixable -f file-paths -c css-paths -a
 	Will attempt to go through all of the potentially fixable issues in the specified files.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		CheckForBrokenLines(filePaths, cssPaths, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
+		var files = strings.Split(filePaths, ",")
+		var cssFiles = strings.Split(cssPaths, ",")
+		err := ValidateManuallyFixableFlags(files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
+		if err != nil {
+			logger.WriteError(err.Error())
+		}
+
+		for _, filePath := range files {
+			filehandler.FileMustExist(filePath, "file-paths")
+		}
+
+		for _, cssPath := range cssFiles {
+			filehandler.FileMustExist(cssPath, "css-paths")
+		}
+
+		var addCssSectionIfMissing bool = false
+		var addCssPageIfMissing bool = false
+		var contextBreak string
+		if runAll || runSectionBreak {
+			contextBreak = logger.GetInputString("What is the section break for the epub?:")
+
+			if strings.TrimSpace(contextBreak) == "" {
+				logger.WriteError("Please provide a non-whitespace section break")
+			}
+		}
+
+		for _, filePath := range files {
+			fileText := filehandler.ReadInFileContents(filePath)
+
+			var newText = fileText
+			if runAll || runBrokenLines {
+				var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
+				newText, _ = promptAboutSuggestions(brokenLineFixSuggestions, newText)
+			}
+
+			if runAll || runSectionBreak {
+				var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
+
+				var contextBreakUpdated bool
+				newText, contextBreakUpdated = promptAboutSuggestions(contextBreakSuggestions, newText)
+				addCssSectionIfMissing = addCssSectionIfMissing || contextBreakUpdated
+			}
+
+			if runAll || runPageBreak {
+				var pageBreakSuggestions = linter.GetPotentialPageBreaks(newText)
+
+				var pageBreakUpdated bool
+				newText, pageBreakUpdated = promptAboutSuggestions(pageBreakSuggestions, newText)
+				addCssPageIfMissing = addCssPageIfMissing || pageBreakUpdated
+			}
+
+			if runAll || runOxfordCommas {
+				var oxfordCommaSuggestions = linter.GetPotentialMissingOxfordCommas(newText)
+				newText, _ = promptAboutSuggestions(oxfordCommaSuggestions, newText)
+			}
+
+			if runAll || runAlthoughBut {
+				var althoughButSuggestions = linter.GetPotentialAlthoughButInstances(newText)
+				newText, _ = promptAboutSuggestions(althoughButSuggestions, newText)
+			}
+
+			if fileText == newText {
+				continue
+			}
+
+			filehandler.WriteFileContents(filePath, newText)
+		}
+
+		handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
 	},
 }
 
@@ -54,91 +129,20 @@ func init() {
 	fixableCmd.MarkFlagRequired("file-paths")
 }
 
-func CheckForBrokenLines(filePaths, cssPaths string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
-	var files = strings.Split(filePaths, ",")
-	var cssFiles = strings.Split(cssPaths, ",")
-	validateBrokenLinesFlags(files, cssFiles, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
-
-	var addCssSectionIfMissing bool = false
-	var addCssPageIfMissing bool = false
-	var contextBreak string
-	if runAll || runSectionBreak {
-		contextBreak = logger.GetInputString("What is the section break for the epub?:")
-
-		if strings.TrimSpace(contextBreak) == "" {
-			logger.WriteError("Please provide a non-whitespace section break")
-		}
-	}
-
-	for _, filePath := range files {
-		fileText := filehandler.ReadInFileContents(filePath)
-
-		var newText = fileText
-		if runAll || runBrokenLines {
-			var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
-			newText, _ = promptAboutSuggestions(brokenLineFixSuggestions, newText)
-		}
-
-		if runAll || runSectionBreak {
-			var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
-
-			var contextBreakUpdated bool
-			newText, contextBreakUpdated = promptAboutSuggestions(contextBreakSuggestions, newText)
-			addCssSectionIfMissing = addCssSectionIfMissing || contextBreakUpdated
-		}
-
-		if runAll || runPageBreak {
-			var pageBreakSuggestions = linter.GetPotentialPageBreaks(newText)
-
-			var pageBreakUpdated bool
-			newText, pageBreakUpdated = promptAboutSuggestions(pageBreakSuggestions, newText)
-			addCssPageIfMissing = addCssPageIfMissing || pageBreakUpdated
-		}
-
-		if runAll || runOxfordCommas {
-			var oxfordCommaSuggestions = linter.GetPotentialMissingOxfordCommas(newText)
-			newText, _ = promptAboutSuggestions(oxfordCommaSuggestions, newText)
-		}
-
-		if runAll || runAlthoughBut {
-			var althoughButSuggestions = linter.GetPotentialAlthoughButInstances(newText)
-			newText, _ = promptAboutSuggestions(althoughButSuggestions, newText)
-		}
-
-		if fileText == newText {
-			continue
-		}
-
-		filehandler.WriteFileContents(filePath, newText)
-	}
-
-	handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
-}
-
-func validateBrokenLinesFlags(filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) {
+func ValidateManuallyFixableFlags(filePaths, cssPaths []string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) error {
 	if !runAll && !runBrokenLines && !runSectionBreak && !runPageBreak && !runOxfordCommas && !runAlthoughBut {
-		logger.WriteError("either run-all, run-broken-lines, run-section-breaks, run-page-breaks, run-oxford-commas, or run-although-but must be specified")
+		return errors.New(OneRunBoolArgMustBeEnabled)
 	}
 
-	for _, filePath := range filePaths {
-		filePathExists := filehandler.FileExists(filePath)
-
-		if !filePathExists {
-			logger.WriteError(fmt.Sprintf(`file-paths: "%s" must exist`, filePath))
-		}
+	if len(filePaths) == 0 || (len(filePaths) == 1 && strings.TrimSpace(filePaths[0]) == "") {
+		return errors.New(FilePathsArgEmpty)
 	}
 
-	for _, cssPath := range cssPaths {
-		filePathExists := filehandler.FileExists(cssPath)
-
-		if !filePathExists {
-			logger.WriteError(fmt.Sprintf(`css-paths: "%s" must exist`, cssPath))
-		}
+	if (runAll || runSectionBreak || runPageBreak) && (len(cssPaths) == 0 || (len(cssPaths) == 1 && strings.TrimSpace(cssPaths[0]) == "")) {
+		return errors.New(CssPathsEmptyWhenArgIsNeeded)
 	}
 
-	if (runAll || runSectionBreak || runPageBreak) && (len(cssPaths) == 0 || len(cssPaths) == 1 && strings.Trim(cssPaths[0], " ") == "") {
-		logger.WriteError(`css-paths: must have a value when including handling section or page breaks`)
-	}
+	return nil
 }
 
 func promptAboutSuggestions(suggestions map[string]string, fileText string) (string, bool) {

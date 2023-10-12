@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 	"strings"
 
@@ -30,9 +29,7 @@ var createCsvCmd = &cobra.Command{
 			logger.WriteError(err.Error())
 		}
 
-		if !filehandler.FolderExists(stagingDir) {
-			logger.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
-		}
+		filehandler.FolderMustExist(stagingDir, "working-dir")
 
 		logger.WriteInfo("Converting Markdown files to csv")
 
@@ -40,9 +37,6 @@ var createCsvCmd = &cobra.Command{
 		sort.Strings(files)
 
 		var mdInfo = make([]converter.MdFileInfo, len(files))
-
-		// var csvContents = strings.Builder{}
-		// csvContents.WriteString("Song|Location|Author|Copyright\n")
 
 		for i, fileName := range files {
 			var filePath = filehandler.JoinPath(stagingDir, fileName)
@@ -53,13 +47,6 @@ var createCsvCmd = &cobra.Command{
 				FileName:     fileName,
 				FileContents: contents,
 			}
-
-			// csvString, err := converter.ConvertMdToCsv(fileName, filePath, contents)
-			// if err != nil {
-			// 	l.WriteError(err.Error())
-			// }
-
-			// csvContents.WriteString(csvString)
 		}
 
 		csvFile, err := converter.BuildCsv(mdInfo)

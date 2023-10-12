@@ -28,6 +28,7 @@ const (
 	TicketArgEmpty         = "ticket-abbreviation must have a non-whitespace value"
 	BranchNameArgEmpty     = "branch-name must have a non-whitespace value"
 	RepoParentPathArgEmpty = "repo-parent-path must have a non-whitespace value"
+	SubmoduleNameArgEmpty  = "submodule must have a non-whitespace value"
 )
 
 // createCmd represents the create command
@@ -39,14 +40,12 @@ var createCmd = &cobra.Command{
 	For example: git-tools submodule create -s Submodule -p ./repos/ -a ticket-abbreviation -b branch-name
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath)
+		err := ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
-		if !filehandler.FolderExists(repoFolderPath) {
-			logger.WriteError(`repo-parent-path: "%s" must exist`)
-		}
+		filehandler.FolderMustExist(repoFolderPath, "repo-parent-path")
 
 		// fmt.Printf(`create -s "%s" -p "%s" -a "%s" -b "%s"`+"\n", submoduleName, repoFolderPath, ticketAbbreviation, branchName)
 
@@ -135,7 +134,7 @@ func checkoutLatestFromMaster(folder string) {
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "pull")
 }
 
-func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath string) error {
+func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName string) error {
 	if strings.TrimSpace(ticketAbbreviation) == "" {
 		return errors.New(TicketArgEmpty)
 	}
@@ -146,6 +145,10 @@ func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath stri
 
 	if strings.TrimSpace(repoFolderPath) == "" {
 		return errors.New(RepoParentPathArgEmpty)
+	}
+
+	if strings.TrimSpace(submoduleName) == "" {
+		return errors.New(SubmoduleNameArgEmpty)
 	}
 
 	return nil

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"sort"
 	"strings"
 
@@ -39,20 +38,12 @@ var CreateSongsCmd = &cobra.Command{
 			logger.WriteError(err.Error())
 		}
 
-		if !filehandler.FolderExists(stagingDir) {
-			logger.WriteError(fmt.Sprintf(`working-dir: "%s" must exist`, stagingDir))
-		}
-
-		if !filehandler.FileExists(stylesFilePath) {
-			logger.WriteError(fmt.Sprintf(`styles-file: "%s" must exist`, stylesFilePath))
-		}
+		filehandler.FolderMustExist(stagingDir, "working-dir")
+		filehandler.FileMustExist(stylesFilePath, "styles-file")
 
 		logger.WriteInfo("Converting Markdown files to html")
 
 		var styles = filehandler.ReadInFileContents(stylesFilePath)
-
-		// var htmlFile = strings.Builder{}
-		// htmlFile.WriteString(styles + "\n")
 
 		files := filehandler.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
 		sort.Strings(files)
@@ -68,12 +59,6 @@ var CreateSongsCmd = &cobra.Command{
 				FileName:     fileName,
 				FileContents: fileContents,
 			}
-			// html, err := converter.ConvertMdToHtmlSong(filePath, fileContents)
-			// if err != nil {
-			// 	l.WriteError(err.Error())
-			// }
-
-			// htmlFile.WriteString(html + "\n")
 		}
 
 		htmlFile, err := converter.BuildHtmlBody(styles, mdInfo)

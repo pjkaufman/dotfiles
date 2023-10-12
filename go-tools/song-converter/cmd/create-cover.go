@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
@@ -34,9 +33,7 @@ var createCoverCmd = &cobra.Command{
 			logger.WriteError(err.Error())
 		}
 
-		if !filehandler.FileExists(coverInputFilePath) {
-			logger.WriteError(fmt.Sprintf(`cover-file: "%s" must exist`, coverInputFilePath))
-		}
+		filehandler.FileMustExist(coverInputFilePath, "cover-file")
 
 		logger.WriteInfo("Converting files to html cover")
 

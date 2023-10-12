@@ -28,6 +28,21 @@ func FileExists(path string) bool {
 	return true
 }
 
+func FileMustExist(path, name string) {
+	if strings.TrimSpace(path) == "" {
+		logger.WriteError(fmt.Sprintf("%s must have a non-whitespace value", name))
+	}
+
+	_, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			logger.WriteError(fmt.Sprintf("%s: \"%s\" must exist", name, path))
+		}
+
+		logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists: %s`, path, err))
+	}
+}
+
 func FolderExists(path string) bool {
 	if strings.TrimSpace(path) == "" {
 		return false
@@ -47,6 +62,25 @@ func FolderExists(path string) bool {
 	}
 
 	return true
+}
+
+func FolderMustExist(path, name string) {
+	if strings.TrimSpace(path) == "" {
+		logger.WriteError(fmt.Sprintf("%s must have a non-whitespace value", name))
+	}
+
+	folderInfo, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			logger.WriteError(fmt.Sprintf("%s: \"%s\" must exist", name, path))
+		}
+
+		logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists and is a directory: %s`, path, err))
+	}
+
+	if !folderInfo.IsDir() {
+		logger.WriteError(fmt.Sprintf("%s: \"%s\" must be a folder", name, path))
+	}
 }
 
 func GetFoldersInCurrentFolder(path string) []string {

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -15,6 +16,12 @@ var (
 	lang     string
 )
 
+const (
+	FilePathArgEmpty  = "file-path must have a non-whitespace value"
+	FilePathArgNonOpf = "file-path must be an opf file"
+	LangArgEmpty      = "lang must have a non-whitespace value"
+)
+
 // lintEpubCmd represents the lintEpub command
 var lintEpubCmd = &cobra.Command{
 	Use:   "lint-epub",
@@ -24,7 +31,49 @@ var lintEpubCmd = &cobra.Command{
 	For example: epub-lint lint-epub -f opf-file-path
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		EpubLint(filePath, lang)
+		err := ValidateLintEpubFlags(filePath, lang)
+		if err != nil {
+			logger.WriteError(err.Error())
+		}
+
+		filehandler.FileMustExist(filePath, "file-path")
+
+		opfText := filehandler.ReadInFileContents(filePath)
+
+		epubInfo, err := linter.ParseOpfFile(opfText)
+		if err != nil {
+			logger.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
+		}
+
+		var opfFolderString = filehandler.GetFileFolder(filePath)
+
+		validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
+		validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
+		validateFilesExist(opfFolderString, epubInfo.OtherFiles)
+
+		// fix up all xhtml files first
+		for file := range epubInfo.HtmlFiles {
+			var filePath = getFilePath(opfFolderString, file)
+			fileText := filehandler.ReadInFileContents(filePath)
+			var newText = linter.EnsureEncodingIsPresent(fileText)
+			newText = linter.CommonStringReplace(newText)
+
+			// TODO: remove images links that do not exist in the manifest
+			// TODO: remove files that exist, but are not in the manifest
+			newText = linter.EnsureLanguageIsSet(newText, lang)
+			epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
+
+			if fileText == newText {
+				continue
+			}
+
+			filehandler.WriteFileContents(filePath, newText)
+		}
+
+		updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
+		updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
+
+		// TODO: cleanup TOC file's links
 	},
 }
 
@@ -36,55 +85,20 @@ func init() {
 	lintEpubCmd.MarkFlagRequired("file-path")
 }
 
-func EpubLint(filePath, lang string) {
-	validateLintEpubFlags(filePath)
-
-	opfText := filehandler.ReadInFileContents(filePath)
-
-	epubInfo, err := linter.ParseOpfFile(opfText)
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
+func ValidateLintEpubFlags(filePath, lang string) error {
+	if strings.TrimSpace(filePath) == "" {
+		return errors.New(FilePathArgEmpty)
 	}
 
-	var opfFolderString = filehandler.GetFileFolder(filePath)
-
-	validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
-	validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
-	validateFilesExist(opfFolderString, epubInfo.OtherFiles)
-
-	// fix up all xhtml files first
-	for file := range epubInfo.HtmlFiles {
-		var filePath = getFilePath(opfFolderString, file)
-		fileText := filehandler.ReadInFileContents(filePath)
-		var newText = linter.EnsureEncodingIsPresent(fileText)
-		newText = linter.CommonStringReplace(newText)
-
-		// TODO: remove images links that do not exist in the manifest
-		// TODO: remove files that exist, but are not in the manifest
-		newText = linter.EnsureLanguageIsSet(newText, lang)
-		epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
-
-		if fileText == newText {
-			continue
-		}
-
-		filehandler.WriteFileContents(filePath, newText)
-	}
-
-	updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
-	updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
-
-	// TODO: cleanup TOC file's links
-}
-
-func validateLintEpubFlags(filePath string) {
 	if !strings.HasSuffix(filePath, ".opf") {
-		logger.WriteError(fmt.Sprintf(`file-path: "%s" must be an opf file`, filePath))
+		return errors.New(FilePathArgNonOpf)
 	}
 
-	if !filehandler.FileExists(filePath) {
-		logger.WriteError(fmt.Sprintf(`file-path: "%s" must exist`, filePath))
+	if strings.TrimSpace(lang) == "" {
+		return errors.New(LangArgEmpty)
 	}
+
+	return nil
 }
 
 func validateFilesExist(opfFolder string, files map[string]struct{}) {

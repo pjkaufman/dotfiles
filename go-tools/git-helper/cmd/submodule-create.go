@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
@@ -20,6 +21,8 @@ var (
 	pathToSubmodule      = []string{"src", "modules"}
 	getCurrentBranchArgs = []string{"branch", "--show-current"}
 )
+
+var prLinkRegex = regexp.MustCompile(`https:[^\n]*`)
 
 const (
 	TicketArgEmpty         = "ticket-abbreviation must have a non-whitespace value"
@@ -117,22 +120,6 @@ func createSubmoduleUpdateBranch(folder, submodule string) {
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submodule)
 	pushOutput := commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 
-	/**
-		Enumerating objects: 11, done.
-	Counting objects: 100% (11/11), done.
-	Delta compression using up to 12 threads
-	Compressing objects: 100% (6/6), done.
-	Writing objects: 100% (6/6), 536 bytes | 0 bytes/s, done.
-	Total 6 (delta 5), reused 0 (delta 0), pack-reused 0
-	remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
-	remote:
-	remote: Create a pull request for 'carbon/CENTRAL-10205-Businesses-Are-Not-Adults' on GitHub by visiting:
-	remote:      https://github.com/acst/Profiles-Service/pull/new/carbon/CENTRAL-10205-Businesses-Are-Not-Adults
-	remote:
-	To github.com:acst/Profiles-Service.git
-	 * [new branch]        carbon/CENTRAL-10205-Businesses-Are-Not-Adults -> carbon/CENTRAL-10205-Businesses-Are-Not-Adults
-	branch 'carbon/CENTRAL-10205-Businesses-Are-Not-Adults' set up to track 'origin/carbon/CENTRAL-10205-Businesses-Are-Not-Adults'.
-	*/
 	fmt.Println("TODO: handle the push output - " + pushOutput)
 }
 
@@ -155,4 +142,13 @@ func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath stri
 	}
 
 	return nil
+}
+
+func GetPullRequestLink(pushOutput string) string {
+	var matches = prLinkRegex.FindAllString(pushOutput, 1)
+	if len(matches) == 0 {
+		return ""
+	}
+
+	return matches[0]
 }

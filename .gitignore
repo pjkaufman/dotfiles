@@ -10,6 +10,8 @@ churchsongconverter/*.docx
 churchsongconverter/*.csv
 churchsongconverter/*.pdf
 churchsongconverter/stagingGround/*.md
-churchsongconverter/html/**/*.html
+churchsongconverter/html/*.html
 churchsongconverter/html/*.md
 churchsongconverter/html/*.txt
+
+!churchsongconverter/html/styles.html

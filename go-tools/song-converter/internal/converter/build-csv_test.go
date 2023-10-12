@@ -15,7 +15,6 @@ type BuildCsvTestCase struct {
 	ExpectedCsv string
 }
 
-// TODO: add one that has the non-breaking space hardcoded in the YAML
 var BuildCsvTestCases = map[string]BuildCsvTestCase{
 	"no files provided should just result in the heading line plus a new line character": {
 		ExpectedCsv: converter.CsvHeading,
@@ -26,6 +25,11 @@ var BuildCsvTestCases = map[string]BuildCsvTestCase{
 				FilePath:     "A Glorious Church.md",
 				FileName:     "A Glorious Church.md",
 				FileContents: AGloriousChurchFileMd,
+			},
+			{
+				FilePath:     "A Hymn Of Praise.md",
+				FileName:     "A Hymn Of Praise.md",
+				FileContents: AHymnOfPraiseFileMd,
 			},
 			{
 				FilePath:     "Bless This House.md",
@@ -53,7 +57,7 @@ var BuildCsvTestCases = map[string]BuildCsvTestCase{
 				FileContents: HeIsLordFileMd,
 			},
 		},
-		ExpectedCsv: fmt.Sprintf("%s%s%s%s%s%s%s", converter.CsvHeading, AGloriousChurchFileCsv, BlessThisHouseFileCsv, BiggerThanAllOfMyProblemsFileCsv, FillMySoulWithThySpiritFileCsv, FlowThowRiverFileCsv, HeIsLordFileCsv),
+		ExpectedCsv: fmt.Sprintf("%s%s%s%s%s%s%s%s", converter.CsvHeading, AGloriousChurchFileCsv, AHymnOfPraiseFileCsvCleaned, BlessThisHouseFileCsv, BiggerThanAllOfMyProblemsFileCsv, FillMySoulWithThySpiritFileCsv, FlowThowRiverFileCsv, HeIsLordFileCsv),
 	},
 }
 

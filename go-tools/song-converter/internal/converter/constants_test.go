@@ -3,6 +3,67 @@
 package converter_test
 
 const (
+	stylesFileHtml = `<style>
+    .keep-together { 
+        page-break-inside: avoid; 
+    }
+
+    .metadata {
+        width: 100%;
+        display: block;
+        font-size: small;
+    }
+
+    .row-padding {
+        padding-bottom: 30px;
+    }
+
+    .melody {
+        width: 50%;
+        float: left;
+    }
+
+    .melody-75 {
+        width: 75%;
+        float: left;
+    }
+
+    .verse {
+        width: 50%;
+        float: left;
+    }
+
+    .author {
+        width: 50%;
+        float: left;
+        text-align: right;
+    }
+
+    .key {
+        width: 25%;
+        float: left;
+        text-align: right;
+    }
+
+    .location {
+        width: 25%;
+        float: left;
+        text-align: right;
+    }
+
+    .other-title {
+        font-size: medium;
+    }
+
+    p {
+        line-height: 1.5;
+        padding-bottom: 5px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+</style>`
 	coverFileMd = `# Church Songs - E Version
 
 <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
@@ -324,4 +385,29 @@ For Thy mercy is great unto the heavens<br>
 And Thy truth unto the clouds.</p>
 </div>
 <br>`
+	AHymnOfPraiseFileMd = `---
+melody: 
+key: Key C
+authors: From Hyden&nbsp;&nbsp;&nbsp;&nbsp;F.T.P.
+in-church: Y
+verse: 
+location: R4
+copyright: 
+type: song
+tags: 🎵
+---
+
+# A Hymn Of Praise
+
+\~ 1 \~ A hymn of praise I sing unto Thee,  
+My gracious Redeemer, my wonderful Lord.  
+Thy perfect salvation, thy wonderful Love,  
+Let all the creation sing praise unto Thee.
+
+\~ 2 \~ In the beginning Thy word spoke as life;  
+Unto creation, the work of Thy hands.  
+Heaven rejoiceth, the morning stars sang;  
+A hymn of creation and praise unto Thee.
+`
+	AHymnOfPraiseFileCsvCleaned = "A Hymn Of Praise|Red Book page 4|From Hyden F.T.P.|Church\n"
 )

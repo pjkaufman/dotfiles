@@ -81,7 +81,7 @@ var CreateSongsCmd = &cobra.Command{
 			logger.WriteError(err.Error())
 		}
 
-		writeToFileOrStdOut(htmlFile, outputFile)
+		writeToFileOrStdOut(htmlFile, bodyHtmlOutputFile)
 
 		logger.WriteInfo("Finished converting Markdown files to html")
 	},

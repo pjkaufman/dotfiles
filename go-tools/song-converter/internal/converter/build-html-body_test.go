@@ -16,7 +16,6 @@ type BuildHtmlBodyTestCase struct {
 	ExpectedHtml    string
 }
 
-// TODO: add one that has styles and regular content
 var BuildHtmlBodyTestCases = map[string]BuildHtmlBodyTestCase{
 	"no files provided along with no styles should just result in a blank line": {
 		InputStylesHtml: "",
@@ -43,6 +42,28 @@ var BuildHtmlBodyTestCases = map[string]BuildHtmlBodyTestCase{
 			},
 		},
 		ExpectedHtml: fmt.Sprintf("\n%s\n%s\n%s\n%s\n", AboveItAllFileHtml, BeThouExaltedFileHtml, BeholdTheHeavensFileHtml, HeIsFileHtml),
+	},
+	"multiple files with styles should be the styles with a new line character followed by each song with a new line character after it": {
+		InputStylesHtml: stylesFileHtml,
+		InputMdInfo: []converter.MdFileInfo{
+			{
+				FilePath:     "Above It All (There Stands Jesus).md",
+				FileContents: AboveItAllFileMd,
+			},
+			{
+				FilePath:     "Be Thou Exalted.md",
+				FileContents: BeThouExaltedFileMd,
+			},
+			{
+				FilePath:     "Behold The Heavens.md",
+				FileContents: BeholdTheHeavensFileMd,
+			},
+			{
+				FilePath:     "He Is.md",
+				FileContents: HeIsFileMd,
+			},
+		},
+		ExpectedHtml: fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n", stylesFileHtml, AboveItAllFileHtml, BeThouExaltedFileHtml, BeholdTheHeavensFileHtml, HeIsFileHtml),
 	},
 }
 

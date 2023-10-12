@@ -17,5 +17,5 @@ func BuildCsv(mdInfo []MdFileInfo) (string, error) {
 		csvContents.WriteString(csvString)
 	}
 
-	return strings.ReplaceAll(csvContents.String(), "&nbsp;", ""), nil
+	return strings.ReplaceAll(csvContents.String(), "&nbsp;&nbsp;&nbsp;&nbsp;", " "), nil
 }

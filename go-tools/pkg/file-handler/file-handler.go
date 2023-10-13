@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -168,4 +169,33 @@ func MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string {
 	}
 
 	return fileList
+}
+
+// based on https://stackoverflow.com/a/67629473
+func MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ext string) []string {
+	var a []string
+	err := filepath.WalkDir(dir, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+
+		if strings.HasSuffix(d.Name(), ext) {
+			a = append(a, s)
+		}
+
+		return nil
+	})
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("failed to walk dir \"%s\": %s", dir, err))
+	}
+
+	return a
+}
+
+func MustRename(src, dest string) {
+	err := os.Rename(src, dest)
+
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("failed to rename \"%s\" to \"%s\": %s", src, dest, err))
+	}
 }

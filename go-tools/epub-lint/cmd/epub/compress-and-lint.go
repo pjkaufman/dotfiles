@@ -36,47 +36,39 @@ var compressAndLintCmd = &cobra.Command{
 			logger.WriteError(err.Error())
 		}
 
+		logger.WriteInfo("Starting compression and linting for each epub\n")
+
 		epubs := filehandler.MustGetAllFilesWithExtInASpecificFolder(lintDir, ".epub")
-		logger.WriteInfo(strings.Join(epubs, "\n"))
-		var epub = epubs[0]
-		var src = filehandler.JoinPath(lintDir, epub)
-		var dest = filehandler.JoinPath(lintDir, "epub")
 
-		filehandler.UnzipRunOperationAndRezip(src, dest, func() {
-			opfFolder, epubInfo := getEpubInfo(dest, epub)
+		var totalBeforeFileSize, totalAfterFileSize float64
+		for _, epub := range epubs {
+			logger.WriteInfo(fmt.Sprintf("starting epub compressing for %s...", epub))
 
-			validateFilesExist(opfFolder, epubInfo.HtmlFiles)
-			validateFilesExist(opfFolder, epubInfo.ImagesFiles)
-			validateFilesExist(opfFolder, epubInfo.OtherFiles)
+			LintEpub(lintDir, epub, runCompressImages)
 
-			// fix up all xhtml files first
-			for file := range epubInfo.HtmlFiles {
-				var filePath = getFilePath(opfFolder, file)
-				fileText := filehandler.ReadInFileContents(filePath)
-				var newText = linter.EnsureEncodingIsPresent(fileText)
-				newText = linter.CommonStringReplace(newText)
+			var originalFile = epub + ".original"
+			var newKbSize = filehandler.MustGetFileSize(epub)
+			var oldKbSize = filehandler.MustGetFileSize(originalFile)
 
-				// TODO: remove images links that do not exist in the manifest
-				newText = linter.EnsureLanguageIsSet(newText, lang)
-				epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
+			logger.WriteInfo("\n" + cliLineSeparator)
+			logger.WriteInfo("Before:")
+			logger.WriteInfo(fmt.Sprintf("%s %s", originalFile, kbSizeToString(oldKbSize)))
+			logger.WriteInfo("After:")
+			logger.WriteInfo(fmt.Sprintf("%s %s", epub, kbSizeToString(newKbSize)))
+			logger.WriteInfo(cliLineSeparator + "\n")
 
-				if fileText == newText {
-					continue
-				}
+			totalBeforeFileSize += oldKbSize
+			totalAfterFileSize += newKbSize
+		}
 
-				filehandler.WriteFileContents(filePath, newText)
-			}
+		logger.WriteInfo("\n" + cliLineSeparator)
+		logger.WriteInfo("Before:")
+		logger.WriteInfo(kbSizeToString(totalBeforeFileSize))
+		logger.WriteInfo("After:")
+		logger.WriteInfo(kbSizeToString(totalAfterFileSize))
+		logger.WriteInfo(cliLineSeparator + "\n")
 
-			updateNavFile(opfFolder, epubInfo.NavFile, epubInfo.PageIds)
-			updateNcxFile(opfFolder, epubInfo.NcxFile, epubInfo.PageIds)
-			//TODO: get all files in the repo and prompt the user whether they want to delete them
-
-			if runCompressImages {
-				compressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
-			}
-
-			// TODO: cleanup TOC file's links
-		})
+		logger.WriteInfo("Finished compression and linting")
 	},
 }
 
@@ -86,6 +78,49 @@ func init() {
 	compressAndLintCmd.Flags().StringVarP(&lintDir, "directory", "d", ".", "the location to run the epub lint logic")
 	compressAndLintCmd.Flags().StringVarP(&lang, "lang", "l", "en", "the language to add to the xhtml, htm, or html files if the lang is not already specified")
 	compressAndLintCmd.Flags().BoolVarP(&runCompressImages, "compress-images", "i", false, "whether or not to also compress images which requires imgp to be installed")
+}
+
+func LintEpub(lintDir, epub string, runCompressImages bool) {
+	var src = filehandler.JoinPath(lintDir, epub)
+	var dest = filehandler.JoinPath(lintDir, "epub")
+
+	filehandler.UnzipRunOperationAndRezip(src, dest, func() {
+		opfFolder, epubInfo := getEpubInfo(dest, epub)
+
+		validateFilesExist(opfFolder, epubInfo.HtmlFiles)
+		validateFilesExist(opfFolder, epubInfo.ImagesFiles)
+		validateFilesExist(opfFolder, epubInfo.OtherFiles)
+
+		// fix up all xhtml files first
+		for file := range epubInfo.HtmlFiles {
+			var filePath = getFilePath(opfFolder, file)
+			fileText := filehandler.ReadInFileContents(filePath)
+			var newText = linter.EnsureEncodingIsPresent(fileText)
+			newText = linter.CommonStringReplace(newText)
+
+			// TODO: remove images links that do not exist in the manifest
+			newText = linter.EnsureLanguageIsSet(newText, lang)
+			epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
+
+			if fileText == newText {
+				continue
+			}
+
+			filehandler.WriteFileContents(filePath, newText)
+		}
+
+		updateNavFile(opfFolder, epubInfo.NavFile, epubInfo.PageIds)
+		updateNcxFile(opfFolder, epubInfo.NcxFile, epubInfo.PageIds)
+		//TODO: get all files in the repo and prompt the user whether they want to delete them
+
+		if runCompressImages {
+			compressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
+		}
+
+		// TODO: cleanup TOC file's links
+	})
+
+	// TODO: print out the size of all of the before and after
 }
 
 func ValidateCompressAndLintFlags(lintDir, lang string) error {
@@ -146,4 +181,17 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 
 func getFilePath(opfFolder, file string) string {
 	return filehandler.JoinPath(opfFolder, file)
+}
+
+var kilobytesInAMegabyte float64 = 1024
+var kilobytesInAGigabyte float64 = 1000000
+
+func kbSizeToString(size float64) string {
+	if size > kilobytesInAGigabyte {
+		return fmt.Sprintf("%.2f GB", size/kilobytesInAGigabyte)
+	} else if size > kilobytesInAMegabyte {
+		return fmt.Sprintf("%.2f MB", size/kilobytesInAMegabyte)
+	}
+
+	return fmt.Sprintf("%.2f KB", size)
 }

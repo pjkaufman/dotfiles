@@ -89,8 +89,7 @@ var replaceStringsCmd = &cobra.Command{
 			return
 		}
 
-		logger.WriteInfo("")
-		logger.WriteWarn("Failed Replaces:")
+		logger.WriteWarn("\nFailed Replaces:")
 		for i, failedReplace := range failedReplaces {
 			logger.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
 		}

@@ -139,6 +139,8 @@ func init() {
 	fixableCmd.Flags().BoolVarP(&runPageBreak, "run-page-breaks", "p", false, "whether to run the logic for getting page break suggestions (must be used with css-paths)")
 	fixableCmd.Flags().BoolVarP(&runOxfordCommas, "run-oxford-commas", "o", false, "whether to run the logic for getting oxford comma suggestions")
 	fixableCmd.Flags().BoolVarP(&runAlthoughBut, "run-although-but", "n", false, "whether to run the logic for getting although but suggestions")
+	fixableCmd.Flags().StringVarP(&epubFile, "epub-file", "f", "", "the epub file to find manually fixable issues in")
+	fixableCmd.MarkFlagRequired("epub-file")
 }
 
 func ValidateManuallyFixableFlags(epubPath string, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut bool) error {
@@ -162,10 +164,9 @@ func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]stri
 		return newText, valueReplaced
 	}
 
-	logger.WriteInfo("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
+	logger.WriteInfo(cliLineSeparator)
 	logger.WriteInfo(suggestionsTitle + ":")
-	logger.WriteInfo("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-")
-	logger.WriteInfo("")
+	logger.WriteInfo(cliLineSeparator + "\n")
 
 	for original, suggestion := range suggestions {
 		resp := logger.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))

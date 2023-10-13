@@ -10,7 +10,6 @@ import (
 
 func MustGetCommandOutput(programName, errorMsg string, args ...string) string {
 	cmd := exec.Command(programName, args...)
-	fmt.Println(cmd.String())
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.WriteError(fmt.Sprintf(`%s: %s`, errorMsg, err))

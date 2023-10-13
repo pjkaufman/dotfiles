@@ -93,8 +93,7 @@ replacements.md is expected to be in the following format:
 				return
 			}
 
-			logger.WriteInfo("")
-			logger.WriteWarn("Failed Replaces:")
+			logger.WriteWarn("\nFailed Replaces:")
 			for i, failedReplace := range failedReplaces {
 				logger.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
 			}
@@ -108,6 +107,7 @@ func init() {
 	EpubCmd.AddCommand(replaceStringsCmd)
 
 	replaceStringsCmd.Flags().StringVarP(&extraReplacesFilePath, "extra-replace-file", "e", "", "the path to the file with extra strings to replace")
+	replaceStringsCmd.Flags().StringVarP(&epubFile, "epub-file", "f", "", "the epub file to replace strings in in")
 	replaceStringsCmd.MarkFlagRequired("extra-replace-file")
 	replaceStringsCmd.MarkFlagRequired("epub-file")
 }

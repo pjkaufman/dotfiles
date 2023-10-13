@@ -12,6 +12,8 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
+const bytesInAKiloByte float64 = 1024
+
 func FileExists(path string) bool {
 	if strings.TrimSpace(path) == "" {
 		return false
@@ -198,4 +200,21 @@ func MustRename(src, dest string) {
 	if err != nil {
 		logger.WriteError(fmt.Sprintf("failed to rename \"%s\" to \"%s\": %s", src, dest, err))
 	}
+}
+
+func MustGetFileSize(path string) float64 {
+	if strings.TrimSpace(path) == "" {
+		logger.WriteError("to get a file's size it must have a non-empty path")
+	}
+
+	f, err := os.Stat(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			logger.WriteError(fmt.Sprintf(`"%s" does not exist so the the file size cannot be retrieved`, path))
+		}
+
+		logger.WriteError(fmt.Sprintf(`could not verify that "%s" exists to check its size: %s`, path, err))
+	}
+
+	return float64(f.Size()) / bytesInAKiloByte
 }

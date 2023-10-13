@@ -78,7 +78,7 @@ var lintEpubCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(lintEpubCmd)
+	RootCmd.AddCommand(lintEpubCmd)
 
 	lintEpubCmd.Flags().StringVarP(&filePath, "file-path", "f", "", "the opf file of the epub to lint")
 	lintEpubCmd.Flags().StringVarP(&lang, "lang", "l", "en", "the language to add to the xhtml, htm, or html files if the lang is not already specified")

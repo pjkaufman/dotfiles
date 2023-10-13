@@ -255,10 +255,12 @@ var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 				"index-175_2.jpg": {},
 				"index-192_2.jpg": {},
 			},
-			OtherFiles: map[string]struct{}{
+			CssFiles: map[string]struct{}{
 				"page_styles.css": {},
 				"stylesheet.css":  {},
-				"toc.ncx":         {},
+			},
+			OtherFiles: map[string]struct{}{
+				"toc.ncx": {},
 			},
 			TocFile: "",
 			NavFile: "",
@@ -313,9 +315,11 @@ var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 				"Images/INTERIORIMAGES_7.jpg": {},
 				"Images/sevenseaslogo.jpg":    {},
 			},
-			OtherFiles: map[string]struct{}{
+			CssFiles: map[string]struct{}{
 				"Styles/styles.css": {},
-				"toc.ncx":           {},
+			},
+			OtherFiles: map[string]struct{}{
+				"toc.ncx": {},
 			},
 			TocFile: "Text/TableOfContents.html",
 			NavFile: "nav.xhtml",

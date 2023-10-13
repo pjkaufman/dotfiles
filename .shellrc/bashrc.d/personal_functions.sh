@@ -39,6 +39,9 @@ epubreplaceallstrings() {
 }
 
 # epubmanualfixes helps go through manually fixable epub issues
+# the first param is expected to be an epub file
 epubmanualfixes() {
-  source "$HOME/dotfiles/bin/epubmanualfixes"
+  # TODO: see about swapping the logic to check the param count and based on the param
+  # count either take in all params provided as is or just take in the epub value
+  epub-lint epub replace-strings -f "$1" -a
 }

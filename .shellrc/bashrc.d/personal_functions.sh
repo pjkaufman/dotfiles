@@ -32,8 +32,10 @@ compresscbz() {
 }
 
 # epubreplaceallstrings helps with replacing a bunch of strings in an epub file
+# the first param is expected to be an epub file
+# the second param is expected to be a Markdown file
 epubreplaceallstrings() {
-  source "$HOME/dotfiles/bin/epubreplaceallstrings"
+  epub-lint epub replace-strings -f "$1" -e "$2"
 }
 
 # epubmanualfixes helps go through manually fixable epub issues

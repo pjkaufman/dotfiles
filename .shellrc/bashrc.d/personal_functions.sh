@@ -18,7 +18,7 @@ enablebright() {
 
 # compressepub helps with compressing epubs so they take up less space
 compressepub() {
-  source "$HOME/dotfiles/bin/compressepub"
+  ebook-lint epub compress-and-lint -i
 }
 
 # convertcbrtocbz helps with converting cbrs to cbzs
@@ -35,7 +35,7 @@ compresscbz() {
 # the first param is expected to be an epub file
 # the second param is expected to be a Markdown file
 epubreplaceallstrings() {
-  epub-lint epub replace-strings -f "$1" -e "$2"
+  ebook-lint epub replace-strings -f "$1" -e "$2"
 }
 
 # epubmanualfixes helps go through manually fixable epub issues
@@ -43,5 +43,5 @@ epubreplaceallstrings() {
 epubmanualfixes() {
   # TODO: see about swapping the logic to check the param count and based on the param
   # count either take in all params provided as is or just take in the epub value
-  epub-lint epub replace-strings -f "$1" -a
+  ebook-lint epub replace-strings -f "$1" -a
 }

@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
-	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -22,11 +21,6 @@ const (
 	LintDirArgEmpty = "directory must have a non-whitespace value"
 	LangArgEmpty    = "lang must have a non-whitespace value"
 )
-
-const imgComperssionProgramName = "imgp"
-
-var compressionParams = []string{"-x", "800x800", "-e", "-O", "-q", "40", "-m", "-d", "-w"}
-var compressableImageExts = []string{"png", "jpg", "jpeg"}
 
 // compressAndLintCmd represents the compressAndLint command
 var compressAndLintCmd = &cobra.Command{
@@ -48,7 +42,7 @@ var compressAndLintCmd = &cobra.Command{
 		var src = filehandler.JoinPath(lintDir, epub)
 		var dest = filehandler.JoinPath(lintDir, "epub")
 
-		err = filehandler.UnzipRunOperationAndRezip(src, dest, func() {
+		filehandler.UnzipRunOperationAndRezip(src, dest, func() {
 			opfFolder, epubInfo := getEpubInfo(dest, epub)
 
 			validateFilesExist(opfFolder, epubInfo.HtmlFiles)
@@ -83,9 +77,6 @@ var compressAndLintCmd = &cobra.Command{
 
 			// TODO: cleanup TOC file's links
 		})
-		if err != nil {
-			logger.WriteError(err.Error())
-		}
 	},
 }
 
@@ -107,31 +98,6 @@ func ValidateCompressAndLintFlags(lintDir, lang string) error {
 	}
 
 	return nil
-}
-
-func compressImages(destFolder, opfFolder string, images map[string]struct{}) {
-	for imagePath := range images {
-		if !isCompressableImage(imagePath) {
-			continue
-		}
-
-		var params = fmt.Sprintf("%s %s %s", imgComperssionProgramName, strings.Join(compressionParams, " "), filehandler.JoinPath(opfFolder, imagePath))
-		fmt.Println(commandhandler.MustGetCommandOutput("bash", fmt.Sprintf(`failed to compress "%s"`, imagePath), []string{"-c", params}...))
-
-		// TODO: see if I can figure out why the following does not work
-		// var params = append(compressionParams, "\""+filehandler.JoinPath(opfFolder, imagePath)+"\"")
-		// fmt.Println(commandhandler.MustGetCommandOutput(imgComperssionProgramName, fmt.Sprintf(`failed to compress "%s"`, imagePath), params...))
-	}
-}
-
-func isCompressableImage(imagePath string) bool {
-	for _, ext := range compressableImageExts {
-		if strings.HasSuffix(strings.ToLower(imagePath), ext) {
-			return true
-		}
-	}
-
-	return false
 }
 
 func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {

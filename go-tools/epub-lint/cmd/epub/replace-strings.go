@@ -11,12 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var epubFile string
 var extraReplacesFilePath string
 
 const (
-	EpubPathArgEmpty           = "epub-file must have a non-whitespace value"
-	EpubPathArgNonEpub         = "epub-file must be an Epub file"
 	ExtraStringReplaceArgNonMd = "extra-replace-file must be a Markdown file"
 	ExtraStringReplaceArgEmpty = "extra-replace-file must have a non-whitespace value"
 )
@@ -25,24 +22,18 @@ const (
 var replaceStringsCmd = &cobra.Command{
 	Use:   "replace-strings",
 	Short: "Replaces a list of common strings and the extra strings for all content/xhtml files in the provided epub",
-	Long: `Uses the provided epub and extra replace Markdown file to replace a common set of strings and any extra
-	instances specified in the extra file replace. After all replacements are made, the original epub will be moved
-	to a .original file and the new file will take the place of the old file. It will also print out the successful
-	extra replacements with the number 	of replacements made followed by warnings for any extra strings that it tried
-	to find and replace values for, but did not find any instances to replace.
-	Note: it only replaces strings in content/xhtml files listed in the opf file.
+	Long: `Uses the provided epub and extra replace Markdown file to replace a common set of strings and any extra instances specified in the extra file replace. After all replacements are made, the original epub will be moved to a .original file and the new file will take the place of the old file. It will also print out the successful extra replacements with the number of replacements made followed by warnings for any extra strings that it tried to find and replace values for, but did not find any instances to replace.
+Note: it only replaces strings in content/xhtml files listed in the opf file.
 
-	For example: epub-lint epub replace-strings -f test.epub -e replacements.md
-	will replace the common strings and the extra strings parsed out of replacements.md
-	in content/xhtml files located in test.epub. The original test.epub will be moved to test.epub.original and
-	test.epub will have the updated files.
+For example: epub-lint epub replace-strings -f test.epub -e replacements.md
+will replace the common strings and the extra strings parsed out of replacements.md in content/xhtml files located in test.epub. The original test.epub will be moved to test.epub.original and test.epub will have the updated files.
 
-	replacements.md is expected to be in the following format:
-    | Text to replace | Text to replace with |
-    | --------------- | -------------------- |
-    | I am typo | I the correct value |
-	...
-	| I am another issue to correct | the correction |
+replacements.md is expected to be in the following format:
+| Text to replace | Text to replace with |
+| --------------- | -------------------- |
+| I am typo | I the correct value |
+...
+| I am another issue to correct | the correction |
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateReplaceStringsFlags(epubFile, extraReplacesFilePath)
@@ -60,7 +51,7 @@ var replaceStringsCmd = &cobra.Command{
 
 		var epubFolder = filehandler.GetFileFolder(epubFile)
 		var dest = filehandler.JoinPath(epubFolder, "epub")
-		err = filehandler.UnzipRunOperationAndRezip(epubFile, dest, func() {
+		filehandler.UnzipRunOperationAndRezip(epubFile, dest, func() {
 			opfFolder, epubInfo := getEpubInfo(dest, epubFile)
 			validateFilesExist(opfFolder, epubInfo.HtmlFiles)
 
@@ -108,9 +99,6 @@ var replaceStringsCmd = &cobra.Command{
 				logger.WriteWarn(fmt.Sprintf("%d. %s", i+1, failedReplace))
 			}
 		})
-		if err != nil {
-			logger.WriteError(err.Error())
-		}
 
 		logger.WriteInfo("\nFinished epub string replacement...")
 	},
@@ -119,19 +107,15 @@ var replaceStringsCmd = &cobra.Command{
 func init() {
 	EpubCmd.AddCommand(replaceStringsCmd)
 
-	replaceStringsCmd.Flags().StringVarP(&epubFile, "epub-file", "f", "", "the epub file to do the string replacements in")
 	replaceStringsCmd.Flags().StringVarP(&extraReplacesFilePath, "extra-replace-file", "e", "", "the path to the file with extra strings to replace")
-	replaceStringsCmd.MarkFlagRequired("epub-file")
 	replaceStringsCmd.MarkFlagRequired("extra-replace-file")
+	replaceStringsCmd.MarkFlagRequired("epub-file")
 }
 
 func ValidateReplaceStringsFlags(epubPath, extraReplaceStringsPath string) error {
-	if strings.TrimSpace(epubPath) == "" {
-		return errors.New(EpubPathArgEmpty)
-	}
-
-	if !strings.HasSuffix(epubPath, ".epub") {
-		return errors.New(EpubPathArgNonEpub)
+	err := validateCommonEpubFlags(epubPath)
+	if err != nil {
+		return err
 	}
 
 	if strings.TrimSpace(extraReplaceStringsPath) == "" {

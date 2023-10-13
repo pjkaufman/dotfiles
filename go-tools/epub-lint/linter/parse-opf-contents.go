@@ -9,6 +9,7 @@ import (
 type EpubInfo struct {
 	HtmlFiles   map[string]struct{}
 	ImagesFiles map[string]struct{}
+	CssFiles    map[string]struct{}
 	OtherFiles  map[string]struct{}
 	PageIds     []PageIdInfo
 	NcxFile     string
@@ -36,6 +37,7 @@ func ParseOpfFile(text string) (EpubInfo, error) {
 		HtmlFiles:   make(map[string]struct{}),
 		ImagesFiles: make(map[string]struct{}),
 		OtherFiles:  make(map[string]struct{}),
+		CssFiles:    make(map[string]struct{}),
 		PageIds:     []PageIdInfo{},
 	}
 	var version, err = getVersion(text)
@@ -106,6 +108,8 @@ func (ei *EpubInfo) parseManifest(text string) error {
 			ei.HtmlFiles[filePath] = struct{}{}
 		} else if strings.Contains(mediaType, "image") {
 			ei.ImagesFiles[filePath] = struct{}{}
+		} else if strings.Contains(mediaType, "css") {
+			ei.CssFiles[filePath] = struct{}{}
 		} else {
 			if strings.HasSuffix(filePath, ".ncx") {
 				ei.NcxFile = filePath

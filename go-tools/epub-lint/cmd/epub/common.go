@@ -2,11 +2,18 @@ package epub
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
+	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
+
+const imgComperssionProgramName = "imgp"
+
+var compressionParams = []string{"-x", "800x800", "-e", "-O", "-q", "40", "-m", "-d", "-w"}
+var compressableImageExts = []string{"png", "jpg", "jpeg"}
 
 func getEpubInfo(dir, epubName string) (string, linter.EpubInfo) {
 	opfFiles := filehandler.MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ".opf")
@@ -35,4 +42,29 @@ func validateFilesExist(opfFolder string, files map[string]struct{}) {
 			logger.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
 		}
 	}
+}
+
+func compressImages(destFolder, opfFolder string, images map[string]struct{}) {
+	for imagePath := range images {
+		if !isCompressableImage(imagePath) {
+			continue
+		}
+
+		var params = fmt.Sprintf("%s %s %s", imgComperssionProgramName, strings.Join(compressionParams, " "), filehandler.JoinPath(opfFolder, imagePath))
+		fmt.Println(commandhandler.MustGetCommandOutput("bash", fmt.Sprintf(`failed to compress "%s"`, imagePath), []string{"-c", params}...))
+
+		// TODO: see if I can figure out why the following does not work
+		// var params = append(compressionParams, "\""+filehandler.JoinPath(opfFolder, imagePath)+"\"")
+		// fmt.Println(commandhandler.MustGetCommandOutput(imgComperssionProgramName, fmt.Sprintf(`failed to compress "%s"`, imagePath), params...))
+	}
+}
+
+func isCompressableImage(imagePath string) bool {
+	for _, ext := range compressableImageExts {
+		if strings.HasSuffix(strings.ToLower(imagePath), ext) {
+			return true
+		}
+	}
+
+	return false
 }

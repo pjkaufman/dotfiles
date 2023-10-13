@@ -18,7 +18,7 @@ const tempZip = "compress.zip"
 // then it goes ahead an unzips the contents into the destination directory
 // once that is done it runs the operation func on the destination folder
 // lastly it rezips the folder back to compress.zip
-func UnzipRunOperationAndRezip(src, dest string, operation func()) error {
+func UnzipRunOperationAndRezip(src, dest string, operation func()) {
 	var err error
 	if FolderExists(dest) {
 		err = os.RemoveAll(dest)
@@ -47,8 +47,6 @@ func UnzipRunOperationAndRezip(src, dest string, operation func()) error {
 
 	MustRename(src, src+".original")
 	MustRename(tempZip, src)
-
-	return nil
 }
 
 // Unzip is based on https://stackoverflow.com/a/24792688

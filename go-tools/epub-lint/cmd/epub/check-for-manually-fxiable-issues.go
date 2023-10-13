@@ -123,7 +123,7 @@ var fixableCmd = &cobra.Command{
 				filehandler.WriteFileContents(filePath, newText)
 			}
 
-			handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing, cssFiles, contextBreak)
+			handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing, opfFolder, cssFiles, contextBreak)
 		})
 
 		logger.WriteInfo("\nFinished showing manually fixable issues...")
@@ -168,7 +168,7 @@ func promptAboutSuggestions(suggestions map[string]string, fileText string) (str
 	return newText, valueReplaced
 }
 
-func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles []string, contextBreak string) {
+func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, opfFolder string, cssFiles []string, contextBreak string) {
 	if !addCssSectionIfMissing && !addCssPageIfMissing {
 		return
 	}
@@ -184,7 +184,8 @@ func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles
 	}
 
 	var cssFile = cssFiles[selectedCssFileIndex]
-	var css = filehandler.ReadInFileContents(cssFile)
+	var cssFilePath = filehandler.JoinPath(opfFolder, cssFile)
+	var css = filehandler.ReadInFileContents(cssFilePath)
 	var newCssText = css
 
 	if addCssSectionIfMissing {
@@ -196,6 +197,6 @@ func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, cssFiles
 	}
 
 	if newCssText != css {
-		filehandler.WriteFileContents(cssFile, newCssText)
+		filehandler.WriteFileContents(cssFilePath, newCssText)
 	}
 }

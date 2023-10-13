@@ -28,7 +28,7 @@ var compressAndLintCmd = &cobra.Command{
 	Short: "Takes the opf file of an epub and uses that to lint the files within it",
 	Long: `Goes and replaces a common set of strings a file as well as any extra instances that are specified
 	
-	For example: epub-lint compress-and-lint
+	For example: epub-lint epub compress-and-lint
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCompressAndLintFlags(lintDir, lang)

@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/epub-lint/linter"
-	archivehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/archive-handler"
 	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -20,9 +19,8 @@ var (
 )
 
 const (
-	FilePathArgEmpty  = "file-path must have a non-whitespace value"
-	FilePathArgNonOpf = "file-path must be an opf file"
-	LangArgEmpty      = "lang must have a non-whitespace value"
+	LintDirArgEmpty = "directory must have a non-whitespace value"
+	LangArgEmpty    = "lang must have a non-whitespace value"
 )
 
 const imgComperssionProgramName = "imgp"
@@ -39,10 +37,10 @@ var compressAndLintCmd = &cobra.Command{
 	For example: epub-lint compress-and-lint
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// err := ValidateCompressAndLintFlags(lang)
-		// if err != nil {
-		// 	logger.WriteError(err.Error())
-		// }
+		err := ValidateCompressAndLintFlags(lintDir, lang)
+		if err != nil {
+			logger.WriteError(err.Error())
+		}
 
 		epubs := filehandler.MustGetAllFilesWithExtInASpecificFolder(lintDir, ".epub")
 		logger.WriteInfo(strings.Join(epubs, "\n"))
@@ -50,37 +48,21 @@ var compressAndLintCmd = &cobra.Command{
 		var src = filehandler.JoinPath(lintDir, epub)
 		var dest = filehandler.JoinPath(lintDir, "epub")
 
-		err := archivehandler.UnzipRezipAndRunOperation(src, dest, func() error {
-			logger.WriteInfo("Success?")
+		err = filehandler.UnzipRunOperationAndRezip(src, dest, func() {
+			opfFolder, epubInfo := getEpubInfo(dest, epub)
 
-			opfFiles := filehandler.MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dest, ".opf")
-			if len(opfFiles) < 1 {
-				logger.WriteError("did not find opf file...")
-			}
-
-			var filePath = opfFiles[0]
-			opfText := filehandler.ReadInFileContents(filePath)
-
-			epubInfo, err := linter.ParseOpfFile(opfText)
-			if err != nil {
-				logger.WriteError(fmt.Sprintf("Failed to parse \"%s\": %s", filePath, err))
-			}
-
-			var opfFolderString = filehandler.GetFileFolder(filePath)
-
-			validateFilesExist(opfFolderString, epubInfo.HtmlFiles)
-			validateFilesExist(opfFolderString, epubInfo.ImagesFiles)
-			validateFilesExist(opfFolderString, epubInfo.OtherFiles)
+			validateFilesExist(opfFolder, epubInfo.HtmlFiles)
+			validateFilesExist(opfFolder, epubInfo.ImagesFiles)
+			validateFilesExist(opfFolder, epubInfo.OtherFiles)
 
 			// fix up all xhtml files first
 			for file := range epubInfo.HtmlFiles {
-				var filePath = getFilePath(opfFolderString, file)
+				var filePath = getFilePath(opfFolder, file)
 				fileText := filehandler.ReadInFileContents(filePath)
 				var newText = linter.EnsureEncodingIsPresent(fileText)
 				newText = linter.CommonStringReplace(newText)
 
 				// TODO: remove images links that do not exist in the manifest
-				// TODO: remove files that exist, but are not in the manifest
 				newText = linter.EnsureLanguageIsSet(newText, lang)
 				epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
 
@@ -91,16 +73,15 @@ var compressAndLintCmd = &cobra.Command{
 				filehandler.WriteFileContents(filePath, newText)
 			}
 
-			updateNavFile(opfFolderString, epubInfo.NavFile, epubInfo.PageIds)
-			updateNcxFile(opfFolderString, epubInfo.NcxFile, epubInfo.PageIds)
+			updateNavFile(opfFolder, epubInfo.NavFile, epubInfo.PageIds)
+			updateNcxFile(opfFolder, epubInfo.NcxFile, epubInfo.PageIds)
 			//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 			if runCompressImages {
-				compressImages(lintDir, opfFolderString, epubInfo.ImagesFiles)
+				compressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
 			}
 
 			// TODO: cleanup TOC file's links
-			return nil
 		})
 		if err != nil {
 			logger.WriteError(err.Error())
@@ -109,14 +90,18 @@ var compressAndLintCmd = &cobra.Command{
 }
 
 func init() {
-	epubCmd.AddCommand(compressAndLintCmd)
+	EpubCmd.AddCommand(compressAndLintCmd)
 
 	compressAndLintCmd.Flags().StringVarP(&lintDir, "directory", "d", ".", "the location to run the epub lint logic")
 	compressAndLintCmd.Flags().StringVarP(&lang, "lang", "l", "en", "the language to add to the xhtml, htm, or html files if the lang is not already specified")
 	compressAndLintCmd.Flags().BoolVarP(&runCompressImages, "compress-images", "i", false, "whether or not to also compress images which requires imgp to be installed")
 }
 
-func ValidateCompressAndLintFlags(lang string) error {
+func ValidateCompressAndLintFlags(lintDir, lang string) error {
+	if strings.TrimSpace(lintDir) == "" {
+		return errors.New(LintDirArgEmpty)
+	}
+
 	if strings.TrimSpace(lang) == "" {
 		return errors.New(LangArgEmpty)
 	}
@@ -147,16 +132,6 @@ func isCompressableImage(imagePath string) bool {
 	}
 
 	return false
-}
-
-func validateFilesExist(opfFolder string, files map[string]struct{}) {
-	for file := range files {
-		var filePath = getFilePath(opfFolder, file)
-
-		if !filehandler.FileExists(filePath) {
-			logger.WriteError(fmt.Sprintf(`file from manifest not found: "%s" must exist`, filePath))
-		}
-	}
 }
 
 func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {

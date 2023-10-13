@@ -116,7 +116,7 @@ var fixableCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(fixableCmd)
+	rootCmd.AddCommand(fixableCmd)
 
 	fixableCmd.Flags().StringVarP(&filePaths, "file-paths", "f", "", "the list of files to update in a comma separated list")
 	fixableCmd.Flags().StringVarP(&cssPaths, "css-paths", "c", "", "the list of css files which could be used for css additions")

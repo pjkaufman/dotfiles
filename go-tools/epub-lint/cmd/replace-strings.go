@@ -99,7 +99,7 @@ var replaceStringsCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(replaceStringsCmd)
+	rootCmd.AddCommand(replaceStringsCmd)
 
 	replaceStringsCmd.Flags().StringVarP(&filePaths, "file-paths", "f", "", "the list of files to update in a comma separated list")
 	replaceStringsCmd.Flags().StringVarP(&extraReplacesFilePath, "extra-replace-file-path", "e", "", "the path to the file with extra strings to replace")

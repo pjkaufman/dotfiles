@@ -1,4 +1,4 @@
-package utils
+package filehandler
 
 import (
 	"archive/zip"
@@ -9,19 +9,18 @@ import (
 	"path/filepath"
 	"strings"
 
-	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 const tempZip = "compress.zip"
 
-// UnzipRezipAndRunOperation starts by deleting the destination directory if it exists,
+// UnzipRunOperationAndRezip starts by deleting the destination directory if it exists,
 // then it goes ahead an unzips the contents into the destination directory
 // once that is done it runs the operation func on the destination folder
 // lastly it rezips the folder back to compress.zip
-func UnzipRezipAndRunOperation(src, dest string, operation func() error) error {
+func UnzipRunOperationAndRezip(src, dest string, operation func()) error {
 	var err error
-	if filehandler.FolderExists(dest) {
+	if FolderExists(dest) {
 		err = os.RemoveAll(dest)
 
 		if err != nil {
@@ -34,10 +33,7 @@ func UnzipRezipAndRunOperation(src, dest string, operation func() error) error {
 		logger.WriteError(fmt.Sprintf("failed to unzip \"%s\": %s", src, err))
 	}
 
-	err = operation()
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("failed to run the operation on the unzipped source \"%s\": %s", src, err))
-	}
+	operation()
 
 	err = Rezip(dest, tempZip)
 	if err != nil {
@@ -49,8 +45,8 @@ func UnzipRezipAndRunOperation(src, dest string, operation func() error) error {
 		logger.WriteError(fmt.Sprintf("failed to cleanup the destination directory \"%s\": %s", dest, err))
 	}
 
-	filehandler.MustRename(src, src+".original")
-	filehandler.MustRename(tempZip, src)
+	MustRename(src, src+".original")
+	MustRename(tempZip, src)
 
 	return nil
 }
@@ -91,9 +87,17 @@ func Unzip(src, dest string) error {
 		}
 
 		if f.FileInfo().IsDir() {
-			os.MkdirAll(path, folderPerms)
+			err = os.MkdirAll(path, folderPerms)
+
+			if err != nil {
+				return err
+			}
 		} else {
-			os.MkdirAll(filepath.Dir(path), folderPerms)
+			err = os.MkdirAll(filepath.Dir(path), folderPerms)
+			if err != nil {
+				return err
+			}
+
 			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 			if err != nil {
 				return err
@@ -109,11 +113,13 @@ func Unzip(src, dest string) error {
 				return err
 			}
 		}
+
 		return nil
 	}
 
 	for _, f := range r.File {
 		err := extractAndWriteFile(f)
+
 		if err != nil {
 			return err
 		}
@@ -150,11 +156,9 @@ func Rezip(src, dest string) error {
 		}
 		defer file.Close()
 
-		// Ensure that `path` is not absolute; it should not start with "/".
-		// This snippet happens to work because I don't use
-		// absolute paths, but ensure your real-world code
-		// transforms path into a zip-root relative path.
-		f, err := w.Create(path)
+		// need a zip relative path to avoid creating extra directories inside of the zip
+		var zipRelativePath = strings.Replace(path, src+string(os.PathSeparator), "", 1)
+		f, err := w.Create(zipRelativePath)
 		if err != nil {
 			return err
 		}

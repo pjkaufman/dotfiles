@@ -9,7 +9,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "epub-book",
+	Use:   "ebook-lint",
 	Short: "A set of functions that are helpful for linting epubs",
 }
 

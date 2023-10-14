@@ -1,7 +1,7 @@
 
 .PHONY: test install cover
 
-completionFile = /tmp/completion
+completionFile = ~/.bash_completion
 
 test:
 	go test ~/dotfiles/go-tools/... -tags "unit"

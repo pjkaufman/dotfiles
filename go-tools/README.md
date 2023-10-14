@@ -5,5 +5,6 @@ be able to.
 
 ## Tools
 
-- Epub Linter is a tool that can be used to format an epub file
+- Ebook Linter is a tool that can be used to format an ebook file
 - Git Helper is a tool that can be used to simplify some git commands or actions that I normally forget
+- Song Converter is a tool for dealing with converting Markdown files of songs into their HTML equivalents that can then be converted into a PDF

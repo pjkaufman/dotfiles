@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+set -e
+
+# based on the steps listed at https://blog.tastytea.de/posts/syncthing-on-pocketbook/
+
+# make sure that the pocket book is plugged in
+pocketbookPath="/media/$USER/PB632"
+
+if [ ! -d "$pocketbookPath" ]; then
+  echo "Make sure that the Pocket Book is plugged in before trying to update it's syncthing version"
+  exit 1
+fi
+
+# curl the latest 32-bit arm installation and then narrow that down to just the https URL according to https://stackoverflow.com/a/16502803 
+downloadLink=$(curl -s https://syncthing.net/downloads/ | grep linux-arm- | grep -Eo 'https://[^ >"]+' | head -1)
+
+echo "Downloading \"$downloadLink\""
+
+# get the folder name which is the name of the version
+syncthingFolder=$(echo "$downloadLink" | grep -Eo 'syncthing-linux-arm.*')
+syncthingFolder=$(basename $syncthingFolder .tar.gz)
+
+if [ -z $syncthingFolder ]; then 
+  echo For some reason the syncthing folder was empty, so it is not safe to proceed with the script.
+  echo Please debug the script to find out what is going on.
+  exit 1
+fi
+
+syncthingFile=syncthing.tar.gz
+fileToExtractPath=$syncthingFolder/syncthing
+
+# download the tar.gz file from syncthing
+curl -L "$downloadLink" -o $syncthingFile
+
+# extract the syncthing binary only
+tar -zxvf $syncthingFile $fileToExtractPath
+
+syncthingBinaryPath=$syncthingFolder/syncthing
+
+# replace the binary
+cp $syncthingBinaryPath $pocketbookPath/applications/syncthing/syncthing
+
+# cleanup files and folders
+rm $syncthingFile
+rm $syncthingBinaryPath
+rmdir $syncthingFolder
+
+echo Finished installing updated Syncthing version

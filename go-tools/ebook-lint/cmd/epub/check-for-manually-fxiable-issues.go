@@ -67,6 +67,24 @@ var fixableCmd = &cobra.Command{
 				if strings.TrimSpace(contextBreak) == "" {
 					logger.WriteError("Please provide a non-whitespace section break")
 				}
+
+				/**
+				TODO: handle the scenario where the section break is an image
+
+				Image Context Breaks
+				To use an image:
+
+				In the CSS:
+				hr.image {
+				display:block;
+				background: transparent url("images/sectionBreakImage.png") no-repeat center;
+				height:2em;
+				border:0;
+				}
+
+				In the HTML:
+				<hr class="image" />
+				**/
 			}
 
 			var cssFiles = make([]string, len(epubInfo.CssFiles))

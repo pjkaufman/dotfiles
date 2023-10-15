@@ -1,8 +1,6 @@
 
 .PHONY: test install cover
 
-completionFile = ~/.bash_completion
-
 test:
 	go test ~/dotfiles/go-tools/... -tags "unit"
 
@@ -16,6 +14,8 @@ install:
 	go build -o ~/.local/bin/git-helper ./git-helper/main.go
 	go build -o ~/.local/bin/song-converter ./song-converter/main.go
 	
-	ebook-lint completion bash > $(completionFile)
-	git-helper completion bash >> $(completionFile)
-	song-converter completion bash >> $(completionFile)
+	mkdir -p ${BASH_COMPLETION_USER_DIR}
+
+	ebook-lint completion bash > ${BASH_COMPLETION_USER_FILE}
+	git-helper completion bash >> ${BASH_COMPLETION_USER_FILE}
+	song-converter completion bash >> ${BASH_COMPLETION_USER_FILE}

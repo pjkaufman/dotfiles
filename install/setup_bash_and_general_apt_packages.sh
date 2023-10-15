@@ -5,6 +5,7 @@
 declare -A bash_related_file_sylink_info=( 
   ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile"
   ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
+  ["$HOME/dotfiles/.shellrc/inputrc"]="$HOME/.inputrc" 
   ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
 )
 

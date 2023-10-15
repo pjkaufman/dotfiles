@@ -45,7 +45,7 @@ install_script_section_text=(
   "setup i3"
   "setup neovim"
   "setup wkhtmltopdf"
-  "setup wine"
+  # "setup wine"
 )
 
  declare -A install_script_sections_files=( 
@@ -63,7 +63,7 @@ install_script_section_text=(
   ["setup i3"]="install/setup_i3.sh"
   ["setup neovim"]="install/setup_neovim.sh"
   ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
-  ["setup wine"]="install/setup_wine.sh"
+  # ["setup wine"]="install/setup_wine.sh"
 )
 
 for i in "${!install_script_section_text[@]}"; do 

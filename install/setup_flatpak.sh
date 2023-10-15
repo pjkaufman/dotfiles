@@ -25,6 +25,7 @@ setup_gnucash_settings() {
 # Sigil Settings
 setup_sigil_settings() {
   ensure_file_symlink_is_in_place "$HOME/dotfiles/sigil/qt_styles.qss"  "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/qt_styles.qss"
+  ensure_folder_symlink_is_in_place "$HOME/dotfiles/sigil/user-dictionaries" "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/user_dictionaries"
 }
 
 if ! command -v flatpak &> /dev/null; then

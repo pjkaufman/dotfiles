@@ -38,10 +38,9 @@ personal_apt_packages_to_install=(
 for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 
 # gtk-3.0
-
 gtk_config_dir="$HOME/.config/gtk-3.0"
 if [ ! -d "$gtk_config_dir" ]; then
-  mkdir "$gtk_config_dir"
+  mkdir -p "$gtk_config_dir"
 fi
 
 ensure_file_symlink_is_in_place "$HOME/dotfiles/gtk-3.0/settings.ini" "$gtk_config_dir/settings.ini"

@@ -50,3 +50,6 @@ export BASH_COMPLETION_USER_FILE="$BASH_COMPLETION_USER_DIR"/bash_completion
 
 # get cargo to install under xdg folders
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
+
+# make sure that less history is under xdg folders
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history

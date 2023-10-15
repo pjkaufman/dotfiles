@@ -71,13 +71,13 @@ sshstart
 if [ -d "$HOME/.nvm" ] ; then
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  nvmforceuse $NVM_VERSION
+  # nvmforceuse $NVM_VERSION
 fi
 
 # gvm setup if possible
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
-gvmforceuse $GO_VERSION
+# gvmforceuse $GO_VERSION
 
 # ~/.localrc can be used for other settings you don’t want to commit and it is loaded last.
 [ -r "$HOME/.localrc" ] && [ -f "$HOME/.localrc" ] && source "$HOME/.localrc";

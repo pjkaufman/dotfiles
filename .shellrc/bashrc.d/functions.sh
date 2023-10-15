@@ -50,3 +50,8 @@ esoff(){
 scan() {
   sudo rkhunter --check --sk --rwo
 }
+
+# print out a human readable path
+path() {
+  source "$HOME/dotfiles/bin/path.sh"
+}

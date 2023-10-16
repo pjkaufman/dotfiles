@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ensure_file_symlink_is_in_place() {
   if [ -L $2 ] ; then

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # make sure bash fails if any error happens
 set -e
@@ -17,11 +17,9 @@ include_file() {
 
 # pull in the package installation helper functions
 include_file "install/package_install_functions.sh"
-# source "$HOME/dotfiles/install/package_install_functions.sh"
 
 # pull in the symlink helper functions
 include_file "install/symlink_functions.sh"
-# source "$HOME/install/symlink_functions.sh"
 
 # include computer type functions
 source "$HOME/dotfiles/.shellrc/bashrc.d/computer_type_functions.sh" 

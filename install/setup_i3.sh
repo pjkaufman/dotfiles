@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # only try to install i3 packages if on a personal computer
 if is_work_computer ; then

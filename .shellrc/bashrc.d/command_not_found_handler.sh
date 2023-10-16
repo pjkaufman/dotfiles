@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#!/bin/bash
+#!/usr/bin/env bash
 
 command_not_found_handle()
 {

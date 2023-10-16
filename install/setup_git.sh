@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # based loosely on https://github.com/miguelgfierro/scripts/blob/main/git_configure.sh
 
@@ -7,7 +7,9 @@ add_ppa_and_install_package "git-core/ppa" "git"
 # ssh client for github
 install_apt_package "ssh-keygen" "openssh-server"
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/git/.gitconfig" "$HOME/.gitconfig" 
+mkdir -p "$XDG_CONFIG_HOME/git"
+
+ensure_file_symlink_is_in_place "$HOME/dotfiles/git/config" "$XDG_CONFIG_HOME/git/config" 
 
 # setup the ssh values for github
 

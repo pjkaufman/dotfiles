@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # nvm is special and loads its command via autocompletion and checking the created variable
 # is more reliable than checking if the method exists

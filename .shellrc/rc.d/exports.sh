@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Based on https://github.com/mathiasbynens/dotfiles/blob/master/.exports
 
 # XDG vars
@@ -29,12 +29,12 @@ export LESS_TERMCAP_md="${yellow}";
 
 # nvm
 export NVM_VERSION=18.0
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="$XDG_DATA_HOME"/nvm
 
 # Golang
 export GO_BINARY_BASE_URL=https://go.dev/dl
 export GO_VERSION=1.21
-export GOROOT=$HOME/.gvm/gos/go$GO_VERSION/
+export GOROOT=$HOME/.gvm/gos/go$GO_VERSION.0/
 
 # set SSH_AUTH_SOCK env var to a fixed value
 export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
@@ -53,3 +53,9 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 
 # make sure that less history is under xdg folders
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+
+# make sure input rc is properly set to a value in under the xdg folders
+export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+
+# sets the place where scripts should send their downloads
+export DOWNLOADS="$HOME"/downloads

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 add_ppa_and_install_package "neovim-ppa/unstable" "neovim"
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 echo 'running compression for each cbz in dir'
 
 shopt -s nocaseglob # ignore file name case

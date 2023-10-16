@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # flatpak aliases
 
 # only add these functions if on a personal computer

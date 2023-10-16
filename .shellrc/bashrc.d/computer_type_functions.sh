@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # return 0 or 1 based on https://unix.stackexchange.com/a/348132
 

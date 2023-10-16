@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 echo 'running converter for each cbr in dir'
 
 shopt -s nocaseglob # ignore file name case

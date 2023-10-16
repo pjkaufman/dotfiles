@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # only try to add the flatpaks if on a personal computer
 if is_work_computer; then

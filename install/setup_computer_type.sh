@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # prepend_text_to_file takes the specified text and adds it to the start of the file specified
 # $1 is the text to add to the start of the file

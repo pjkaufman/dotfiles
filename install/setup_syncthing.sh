@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # only try to install remaining PPA packages if on a personal computer
 if is_work_computer; then

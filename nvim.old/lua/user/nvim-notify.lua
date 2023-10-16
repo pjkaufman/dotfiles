@@ -1,4 +1,3 @@
--- Sets up the notify settings for the notification modal that will be used for showing info, warnings, and errors in the config
 local notify = require("notify")
 notify.setup({
 	---@usage Animation style one of { "fade", "slide", "fade_in_slide_out", "static" }

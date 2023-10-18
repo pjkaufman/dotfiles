@@ -111,6 +111,19 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1">"Here is written the request "To make sure that Taurus Silver, Mr. Tatsuya Shiba was able to take part in Project Dione." The National Security Agency of the USNA has come to the conclusion that you are Taurus Silver, and requests your participation in the project." </p>`,
 		},
 	},
+	"make sure that we properly handle % at the end of a sentence": {
+		InputText: `<p class="calibre1">On Monday, when Raymond Clark in the form of "the first Sage" performed on TV, the population's interest in Taurus Silver rose sharply. But the next day the interest began to fade away, and today, on Wednesday, it has ceased to be a topic of discussion among ordinary people. </p>
+		<p class="calibre1"><a id="p57"></a>There are no people in the world of magic who do not know the famous Taurus Silver. However, those who can use magic make up only one thousandth of the adult population. But this does not mean that 99.99% </p>
+		<p class="calibre1">of people live without magic, because some people are related to magic in the role of engineers, managers, politicians, soldiers, and other civil servants, even without the ability to use magic in practice. </p>
+		<p class="calibre1">In recent years, even people who are engaged in magic began to appear, while speaking of the Anti-magician movement. </p>
+		<p class="calibre1">Quite a few citizens indirectly benefit from the use of magic for public order, national defense and disaster response. However, most people still live without a direct relationship to magic. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1"><a id="p57"></a>There are no people in the world of magic who do not know the famous Taurus Silver. However, those who can use magic make up only one thousandth of the adult population. But this does not mean that 99.99% </p>
+		<p class="calibre1">of people live without magic, because some people are related to magic in the role of engineers, managers, politicians, soldiers, and other civil servants, even without the ability to use magic in practice. </p>`: `
+		<p class="calibre1"><a id="p57"></a>There are no people in the world of magic who do not know the famous Taurus Silver. However, those who can use magic make up only one thousandth of the adult population. But this does not mean that 99.99% of people live without magic, because some people are related to magic in the role of engineers, managers, politicians, soldiers, and other civil servants, even without the ability to use magic in practice. </p>`,
+		},
+	},
 }
 
 func TestGetPotentiallyBrokenLines(t *testing.T) {

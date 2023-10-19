@@ -25,9 +25,20 @@ var updateCmd = &cobra.Command{
 		filehandler.FolderMustExist(repoFolderPath, "repo-parent-path")
 
 		folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
+		var currentBranch string
 		for _, folder := range folders {
-			var submoduleDir = filepath.Join(append(pathToSubmodule, submoduleName)...)
+			var pathParts = append([]string{folder}, append(pathToSubmodule, submoduleName)...)
+			var submoduleDir = filepath.Join(pathParts...)
 			commandhandler.MustChangeDirectoryTo(submoduleDir)
+
+			currentBranch = commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to get current branch for "%s"`, folder), getCurrentBranchArgs...)
+			if strings.Contains(currentBranch, branchName) {
+				logger.WriteInfo(fmt.Sprintf(`Skipping "%s" since it already has "%s" as its branch`, submoduleDir, branchName))
+				continue
+			}
+
+			logger.WriteInfo(fmt.Sprintf(`Updating "%s"'s branch to "%s"`, submoduleDir, branchName))
+
 			checkoutLatestFromMaster(submoduleDir)
 
 			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
@@ -35,7 +46,7 @@ var updateCmd = &cobra.Command{
 			commandhandler.MustChangeDirectoryTo(upADirectory)
 
 			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submoduleName, folder), "add", submoduleName)
-			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submoduleName)
+			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", fmt.Sprintf(`"Updated %s"`, submoduleName))
 			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 		}
 	},

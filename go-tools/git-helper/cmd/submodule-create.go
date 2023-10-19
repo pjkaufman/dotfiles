@@ -129,7 +129,7 @@ func createSubmoduleUpdateBranch(folder, submodule, branchPrefix string) string 
 	commandhandler.MustChangeDirectoryTo(upADirectory)
 
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to stage changes to "%s" for "%s"`, submodule, folder), "add", submodule)
-	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", "Updated "+submodule)
+	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to commit changes for "%s"`, folder), "commit", "-m", fmt.Sprintf(`"Updated %s"`, submodule))
 	pushOutput := commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to push changes for "%s"`, folder), "push")
 
 	return GetPullRequestLink(pushOutput)

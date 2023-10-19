@@ -105,14 +105,14 @@ var fixableCmd = &cobra.Command{
 				var newText = fileText
 				if runAll || runBrokenLines {
 					var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
-					newText, _ = promptAboutSuggestions("Potential Broken Lines", brokenLineFixSuggestions, newText)
+					newText, _ = promptAboutSuggestions("Potential Broken Lines", brokenLineFixSuggestions, newText, false)
 				}
 
 				if runAll || runSectionBreak {
 					var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
 
 					var contextBreakUpdated bool
-					newText, contextBreakUpdated = promptAboutSuggestions("Potential Section Breaks", contextBreakSuggestions, newText)
+					newText, contextBreakUpdated = promptAboutSuggestions("Potential Section Breaks", contextBreakSuggestions, newText, true)
 					addCssSectionIfMissing = addCssSectionIfMissing || contextBreakUpdated
 				}
 
@@ -120,18 +120,18 @@ var fixableCmd = &cobra.Command{
 					var pageBreakSuggestions = linter.GetPotentialPageBreaks(newText)
 
 					var pageBreakUpdated bool
-					newText, pageBreakUpdated = promptAboutSuggestions("Potential Page Breaks", pageBreakSuggestions, newText)
+					newText, pageBreakUpdated = promptAboutSuggestions("Potential Page Breaks", pageBreakSuggestions, newText, true)
 					addCssPageIfMissing = addCssPageIfMissing || pageBreakUpdated
 				}
 
 				if runAll || runOxfordCommas {
 					var oxfordCommaSuggestions = linter.GetPotentialMissingOxfordCommas(newText)
-					newText, _ = promptAboutSuggestions("Potential Missing Oxford Commas", oxfordCommaSuggestions, newText)
+					newText, _ = promptAboutSuggestions("Potential Missing Oxford Commas", oxfordCommaSuggestions, newText, false)
 				}
 
 				if runAll || runAlthoughBut {
 					var althoughButSuggestions = linter.GetPotentialAlthoughButInstances(newText)
-					newText, _ = promptAboutSuggestions("Potential Although But Instances", althoughButSuggestions, newText)
+					newText, _ = promptAboutSuggestions("Potential Although But Instances", althoughButSuggestions, newText, false)
 				}
 
 				if fileText == newText {
@@ -174,12 +174,20 @@ func ValidateManuallyFixableFlags(epubPath string, runAll, runBrokenLines, runSe
 	return nil
 }
 
-func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]string, fileText string) (string, bool) {
+func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]string, fileText string, replaceAllInstances bool) (string, bool) {
 	var valueReplaced = false
 	var newText = fileText
 
 	if len(suggestions) == 0 {
 		return newText, valueReplaced
+	}
+
+	// replace count was added to make sure that if we have a case where the original and suggested value
+	// may exist more than once in a file we want to go ahead and replace all instances of the original
+	// with the suggested
+	var replaceCount = 1
+	if replaceAllInstances {
+		replaceCount = -1
 	}
 
 	logger.WriteInfo(cliLineSeparator)
@@ -189,7 +197,7 @@ func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]stri
 	for original, suggestion := range suggestions {
 		resp := logger.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))
 		if strings.EqualFold(resp, "Y") {
-			newText = strings.Replace(newText, original, suggestion, 1)
+			newText = strings.Replace(newText, original, suggestion, replaceCount)
 			valueReplaced = true
 		}
 

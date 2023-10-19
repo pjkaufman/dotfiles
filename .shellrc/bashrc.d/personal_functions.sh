@@ -43,5 +43,5 @@ epubreplaceallstrings() {
 epubmanualfixes() {
   # TODO: see about swapping the logic to check the param count and based on the param
   # count either take in all params provided as is or just take in the epub value
-  ebook-lint epub replace-strings -f "$1" -a
+  ebook-lint epub fixable -f "$1" -a
 }

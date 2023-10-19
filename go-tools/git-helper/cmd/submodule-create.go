@@ -18,6 +18,7 @@ var (
 	repoFolderPath       string
 	ticketAbbreviation   string
 	branchName           string
+	branchPrefix         string
 	pathToSubmodule      = []string{"src", "modules"}
 	getCurrentBranchArgs = []string{"branch", "--show-current"}
 )
@@ -29,6 +30,7 @@ const (
 	BranchNameArgEmpty     = "branch-name must have a non-whitespace value"
 	RepoParentPathArgEmpty = "repo-parent-path must have a non-whitespace value"
 	SubmoduleNameArgEmpty  = "submodule must have a non-whitespace value"
+	BranchPrefixArgEmpty   = "branch-prefix must have a non-whitespace value"
 )
 
 // createCmd represents the create command
@@ -37,20 +39,18 @@ var createCmd = &cobra.Command{
 	Short: "Creates the branch in the specified submodule if it does not already exist",
 	Long: `Creates the specified branch in the provided submodule for all instances of the submodule in the provided folder so long as it is not already present.
 	
-	For example: git-tools submodule create -s Submodule -p ./repos/ -a ticket-abbreviation -b branch-name
+	For example: git-tools submodule create -s Submodule -d ./repos/ -a abbrev -b fix-bug -p fix
+	will go ahead and look at all git repos in the folder repos with the submodule called Submodule and check if that repo currently has "abbrev" in the current branch name. If it does not, it will create a branch with the submodule branch set to "fix-bug" and push those changes up on the regular repo with a branch name of fix/abbrev-update-Submodule.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName)
+		err := ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName, branchPrefix)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
 		filehandler.FolderMustExist(repoFolderPath, "repo-parent-path")
 
-		// fmt.Printf(`create -s "%s" -p "%s" -a "%s" -b "%s"`+"\n", submoduleName, repoFolderPath, ticketAbbreviation, branchName)
-
 		folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
-		// fmt.Println(folders)
 
 		var currentBranch string
 		var prLinks []string
@@ -62,14 +62,18 @@ var createCmd = &cobra.Command{
 				continue
 			}
 
-			logger.WriteInfo(currentBranch + " does not contain " + ticketAbbreviation)
+			currentBranch = strings.TrimSpace(currentBranch)
+			logger.WriteInfo(fmt.Sprintf(`"%s" does not contain "%s"`, currentBranch, ticketAbbreviation))
 
-			prLinks = append(prLinks, createSubmoduleUpdateBranch(folder, submoduleName))
+			prLinks = append(prLinks, createSubmoduleUpdateBranch(folder, submoduleName, branchPrefix))
 		}
 
-		logger.WriteInfo("PR Links:")
-		for _, link := range prLinks {
-			logger.WriteInfo("- " + link)
+		if len(prLinks) != 0 {
+			logger.WriteInfo("\nPR Links:")
+
+			for _, link := range prLinks {
+				logger.WriteInfo("- " + link)
+			}
 		}
 	},
 }
@@ -78,13 +82,15 @@ func init() {
 	submoduleCmd.AddCommand(createCmd)
 
 	createCmd.Flags().StringVarP(&submoduleName, "submodule", "s", "", "the name of the submodule to operate on")
-	createCmd.Flags().StringVarP(&repoFolderPath, "repo-parent-path", "p", "", "the path to the parent folder of the repos to operate on")
+	createCmd.Flags().StringVarP(&repoFolderPath, "repo-parent-path", "d", "", "the path to the parent folder of the repos to operate on")
 	createCmd.Flags().StringVarP(&ticketAbbreviation, "ticket-abbreviation", "a", "", "the ticket abbreviation to use to determine whether we should update a repo and to help determine the name for submodule branch")
 	createCmd.Flags().StringVarP(&branchName, "branch-name", "b", "", "the submodule branch name to checkout and use")
+	createCmd.Flags().StringVarP(&branchPrefix, "branch-prefix", "p", "", "the branch prefix to use for the created branch names")
 	createCmd.MarkFlagRequired("submodule")
 	createCmd.MarkFlagRequired("repo-parent-path")
 	createCmd.MarkFlagRequired("ticket-abbreviation")
 	createCmd.MarkFlagRequired("branch-name")
+	createCmd.MarkFlagRequired("branch-prefix")
 }
 
 func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
@@ -107,11 +113,11 @@ func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
 	return folders
 }
 
-func createSubmoduleUpdateBranch(folder, submodule string) string {
+func createSubmoduleUpdateBranch(folder, submodule, branchPrefix string) string {
 	logger.WriteInfo("Creating the DE branch for " + folder)
 	checkoutLatestFromMaster(folder)
 
-	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", "-B", "vikings/"+ticketAbbreviation+"update-"+submodule)
+	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", "-B", branchPrefix+"/"+ticketAbbreviation+"-update-"+submodule)
 
 	var submoduleDir = filepath.Join(append(pathToSubmodule, submodule)...)
 	commandhandler.MustChangeDirectoryTo(filepath.Join(append(pathToSubmodule, submodule)...))
@@ -134,7 +140,7 @@ func checkoutLatestFromMaster(folder string) {
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "pull")
 }
 
-func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName string) error {
+func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName, branchPrefix string) error {
 	if strings.TrimSpace(ticketAbbreviation) == "" {
 		return errors.New(TicketArgEmpty)
 	}
@@ -149,6 +155,10 @@ func ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, sub
 
 	if strings.TrimSpace(submoduleName) == "" {
 		return errors.New(SubmoduleNameArgEmpty)
+	}
+
+	if strings.TrimSpace(branchPrefix) == "" {
+		return errors.New(BranchPrefixArgEmpty)
 	}
 
 	return nil

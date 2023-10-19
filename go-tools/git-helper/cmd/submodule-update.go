@@ -45,7 +45,7 @@ func init() {
 	submoduleCmd.AddCommand(updateCmd)
 
 	updateCmd.Flags().StringVarP(&submoduleName, "submodule", "s", "", "the name of the submodule to operate on")
-	updateCmd.Flags().StringVarP(&repoFolderPath, "repo-parent-path", "p", "", "the path to the parent folder of the repos to operate on")
+	updateCmd.Flags().StringVarP(&repoFolderPath, "repo-parent-path", "d", "", "the path to the parent folder of the repos to operate on")
 	updateCmd.Flags().StringVarP(&branchName, "branch-name", "b", "", "the submodule branch name to checkout and use")
 	updateCmd.MarkFlagRequired("submodule")
 	updateCmd.MarkFlagRequired("repo-parent-path")

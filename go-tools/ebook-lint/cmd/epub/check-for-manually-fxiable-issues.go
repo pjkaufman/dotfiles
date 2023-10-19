@@ -18,6 +18,7 @@ var (
 	runPageBreak    bool
 	runOxfordCommas bool
 	runAlthoughBut  bool
+	runThoughts     bool
 )
 
 const (
@@ -134,6 +135,11 @@ var fixableCmd = &cobra.Command{
 					newText, _ = promptAboutSuggestions("Potential Although But Instances", althoughButSuggestions, newText, false)
 				}
 
+				if runAll || runThoughts {
+					var thoughtSuggestions = linter.GetPotentialThoughtInstances(newText)
+					newText, _ = promptAboutSuggestions("Potential Thought Instances", thoughtSuggestions, newText, false)
+				}
+
 				if fileText == newText {
 					continue
 				}
@@ -157,6 +163,7 @@ func init() {
 	fixableCmd.Flags().BoolVarP(&runPageBreak, "run-page-breaks", "p", false, "whether to run the logic for getting page break suggestions (must be used with css-paths)")
 	fixableCmd.Flags().BoolVarP(&runOxfordCommas, "run-oxford-commas", "o", false, "whether to run the logic for getting oxford comma suggestions")
 	fixableCmd.Flags().BoolVarP(&runAlthoughBut, "run-although-but", "n", false, "whether to run the logic for getting although but suggestions")
+	fixableCmd.Flags().BoolVarP(&runThoughts, "run-thoughts", "t", false, "whether to run the logic for getting thought suggestions (words in parentheses may be instances of a person's thoughts) suggestions")
 	fixableCmd.Flags().StringVarP(&epubFile, "epub-file", "f", "", "the epub file to find manually fixable issues in")
 	fixableCmd.MarkFlagRequired("epub-file")
 }

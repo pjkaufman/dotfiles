@@ -10,12 +10,14 @@ cover:
 	go test -cover ./... -tags "unit"
 
 install:
-	go build -o ~/.local/bin/ebook-lint ./ebook-lint/main.go
-	go build -o ~/.local/bin/git-helper ./git-helper/main.go
-	go build -o ~/.local/bin/song-converter ./song-converter/main.go
+	@echo "Building go tools"
+	@go build -o ~/.local/bin/ebook-lint ./ebook-lint/main.go
+	@go build -o ~/.local/bin/git-helper ./git-helper/main.go
+	@go build -o ~/.local/bin/song-converter ./song-converter/main.go
 	
-	mkdir -p ${BASH_COMPLETION_USER_DIR}
+	@mkdir -p ${BASH_COMPLETION_USER_DIR}
 
-	ebook-lint completion bash > ${BASH_COMPLETION_USER_FILE}
-	git-helper completion bash >> ${BASH_COMPLETION_USER_FILE}
-	song-converter completion bash >> ${BASH_COMPLETION_USER_FILE}
+	@echo "Generating the bash completion for the tools"
+	@ebook-lint completion bash > ${BASH_COMPLETION_USER_FILE}
+	@git-helper completion bash >> ${BASH_COMPLETION_USER_FILE}
+	@song-converter completion bash >> ${BASH_COMPLETION_USER_FILE}

@@ -19,7 +19,7 @@ const (
 var epubFile string
 
 func getEpubInfo(dir, epubName string) (string, linter.EpubInfo) {
-	opfFiles := filehandler.MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ".opf")
+	opfFiles := filehandler.MustGetAllFilesWithExtsInASpecificFolderAndSubFolders(dir, ".opf")
 	if len(opfFiles) < 1 {
 		logger.WriteError(fmt.Sprintf("did not find opf file for \"%s\"", epubName))
 	}

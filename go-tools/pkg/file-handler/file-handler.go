@@ -174,14 +174,19 @@ func MustGetAllFilesWithExtInASpecificFolder(dir, ext string) []string {
 }
 
 // based on https://stackoverflow.com/a/67629473
-func MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ext string) []string {
+func MustGetAllFilesWithExtsInASpecificFolderAndSubFolders(dir string, exts ...string) []string {
 	var a []string
 	err := filepath.WalkDir(dir, func(s string, d fs.DirEntry, e error) error {
 		if e != nil {
 			return e
 		}
 
-		if strings.HasSuffix(d.Name(), ext) {
+		var name = strings.ToLower(d.Name())
+		if len(exts) == 1 {
+			if strings.HasSuffix(name, exts[0]) {
+				a = append(a, s)
+			}
+		} else if fileHasOneOfExts(name, exts) {
 			a = append(a, s)
 		}
 
@@ -192,6 +197,16 @@ func MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ext string) []str
 	}
 
 	return a
+}
+
+func fileHasOneOfExts(fileName string, exts []string) bool {
+	for _, ext := range exts {
+		if strings.HasSuffix(fileName, ext) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func MustRename(src, dest string) {

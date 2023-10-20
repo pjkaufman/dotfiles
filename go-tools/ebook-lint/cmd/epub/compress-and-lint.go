@@ -6,8 +6,9 @@ import (
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
-	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/images"
+	filesize "github.com/pjkaufman/dotfiles/go-tools/ebook-lint/file-size"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
+	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -66,24 +67,13 @@ var compressAndLintCmd = &cobra.Command{
 			var newKbSize = filehandler.MustGetFileSize(epub)
 			var oldKbSize = filehandler.MustGetFileSize(originalFile)
 
-			logger.WriteInfo("\n" + cliLineSeparator)
-			logger.WriteInfo("Before:")
-			logger.WriteInfo(fmt.Sprintf("%s %s", originalFile, kbSizeToString(oldKbSize)))
-			logger.WriteInfo("After:")
-			logger.WriteInfo(fmt.Sprintf("%s %s", epub, kbSizeToString(newKbSize)))
-			logger.WriteInfo(cliLineSeparator + "\n")
+			logger.WriteInfo(filesize.FileSizeSummary(originalFile, epub, oldKbSize, newKbSize))
 
 			totalBeforeFileSize += oldKbSize
 			totalAfterFileSize += newKbSize
 		}
 
-		logger.WriteInfo("\n" + cliLineSeparator)
-		logger.WriteInfo("Before:")
-		logger.WriteInfo(kbSizeToString(totalBeforeFileSize))
-		logger.WriteInfo("After:")
-		logger.WriteInfo(kbSizeToString(totalAfterFileSize))
-		logger.WriteInfo(cliLineSeparator + "\n")
-
+		logger.WriteInfo(filesize.FilesSizeSummary(totalBeforeFileSize, totalAfterFileSize))
 		logger.WriteInfo("Finished compression and linting")
 	},
 }
@@ -130,7 +120,7 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 		//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 		if runCompressImages {
-			images.CompressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
+			commandhandler.CompressRelativeImages(opfFolder, epubInfo.ImagesFiles)
 		}
 
 		// TODO: cleanup TOC file's links
@@ -231,17 +221,4 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 
 func getFilePath(opfFolder, file string) string {
 	return filehandler.JoinPath(opfFolder, file)
-}
-
-var kilobytesInAMegabyte float64 = 1024
-var kilobytesInAGigabyte float64 = 1000000
-
-func kbSizeToString(size float64) string {
-	if size > kilobytesInAGigabyte {
-		return fmt.Sprintf("%.2f GB", size/kilobytesInAGigabyte)
-	} else if size > kilobytesInAMegabyte {
-		return fmt.Sprintf("%.2f MB", size/kilobytesInAMegabyte)
-	}
-
-	return fmt.Sprintf("%.2f KB", size)
 }

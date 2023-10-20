@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
@@ -22,11 +23,12 @@ var coverInputFilePath string
 var createCoverCmd = &cobra.Command{
 	Use:   "create-cover",
 	Short: "Takes in the cover file path and creates the html cover file",
-	Long: `Takes in the cover file to make the html cover file
+	Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
+	song-converter create-cover -f cover-file.md -o output-file.html
 	
-	For example: song-converter create-cover -f cover-file -o output-file
-	Converts the cover file from Markdown into html as the specified output file.
-	`,
+	To write the output of converting the cover file to std out:
+	song-converter create-cover -f cover-file.md
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCreateCoverFlags(coverInputFilePath)
 		if err != nil {
@@ -35,14 +37,19 @@ var createCoverCmd = &cobra.Command{
 
 		filehandler.FileMustExist(coverInputFilePath, "cover-file")
 
-		logger.WriteInfo("Converting files to html cover")
+		var isWritingToFile = strings.TrimSpace(coverOutputFile) == ""
+		if isWritingToFile {
+			logger.WriteInfo("Converting files to html cover")
+		}
 
 		var coverMd = filehandler.ReadInFileContents(coverInputFilePath)
 		htmlFile := converter.BuildHtmlCover(coverMd)
 
 		writeToFileOrStdOut(htmlFile, coverOutputFile)
 
-		logger.WriteInfo("Finished creating html cover file")
+		if isWritingToFile {
+			logger.WriteInfo("Finished creating html cover file")
+		}
 	},
 }
 

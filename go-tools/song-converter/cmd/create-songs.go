@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
@@ -25,13 +26,19 @@ var bodyHtmlOutputFile string
 var CreateSongsCmd = &cobra.Command{
 	Use:   "create-songs",
 	Short: "Converts all Markdown files in the specified folder into html in alphabetical order and starts that file with the styles provided",
-	Long: `Takes in all of the Markdown files in the specified folder and converts them all to html in alphabetical order.
-	The styles file provided will be the start of the generated html.
-	
-	For example: song-converter create-songs -d working-dir -s styles.html -o songs.html
-	Converts the Markdown files in working-dir into html in alphabetical order with styles.html's contents starting the generated html.
-	The contents will be written to songs.html.
-	`,
+	Example: heredoc.Doc(`To write the output of converting the files in the specified folder to html to a file:
+	song-converter create-songs -d working-dir -s styles.html -o songs.html
+
+	To write the output of converting the files in the specified folder to html to std out:
+	song-converter create-songs -d working-dir -s styles.html
+	`),
+	Long: heredoc.Doc(`How it works:
+	- Reads in all of the files in the specified folder
+	- Sorts the files alphabetically
+	- Adds the styles to the start of the html
+	- Converts each file into html
+	- Writes the content to the specified source
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCreateSongsFlags(stagingDir, stylesFilePath)
 		if err != nil {
@@ -41,7 +48,10 @@ var CreateSongsCmd = &cobra.Command{
 		filehandler.FolderMustExist(stagingDir, "working-dir")
 		filehandler.FileMustExist(stylesFilePath, "styles-file")
 
-		logger.WriteInfo("Converting Markdown files to html")
+		var isWritingToFile = strings.TrimSpace(coverOutputFile) == ""
+		if isWritingToFile {
+			logger.WriteInfo("Converting Markdown files to html")
+		}
 
 		var styles = filehandler.ReadInFileContents(stylesFilePath)
 
@@ -68,7 +78,9 @@ var CreateSongsCmd = &cobra.Command{
 
 		writeToFileOrStdOut(htmlFile, bodyHtmlOutputFile)
 
-		logger.WriteInfo("Finished converting Markdown files to html")
+		if isWritingToFile {
+			logger.WriteInfo("Finished converting Markdown files to html")
+		}
 	},
 }
 

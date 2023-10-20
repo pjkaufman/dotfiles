@@ -7,6 +7,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -37,11 +38,10 @@ const (
 var createCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Creates the branch in the specified submodule if it does not already exist",
-	Long: `Creates the specified branch in the provided submodule for all instances of the submodule in the provided folder so long as it is not already present.
-	
-	For example: git-tools submodule create -s Submodule -d ./repos/ -a abbrev -b fix-bug -p fix
-	will go ahead and look at all git repos in the folder repos with the submodule called Submodule and check if that repo currently has "abbrev" in the current branch name. If it does not, it will create a branch with the submodule branch set to "fix-bug" and push those changes up on the regular repo with a branch name of fix/abbrev-update-Submodule.
-	`,
+	Example: heredoc.Doc(`git-tools submodule create -s Submodule -d ./repos/ -a abbrev -b fix-bug -p fix
+	will go ahead and look at all git repos in the folder repos with the submodule called Submodule and check if that repo currently has "abbrev" in the current branch name.
+	If it does not, it will create a branch with the submodule branch set to "fix-bug" and push those changes up on the regular repo with a branch name of fix/abbrev-update-Submodule.`),
+	Long: `Creates the specified branch in the provided submodule for all instances of the submodule in the provided folder so long as it is not already present.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateSubmoduleCreate(ticketAbbreviation, branchName, repoFolderPath, submoduleName, branchPrefix)
 		if err != nil {

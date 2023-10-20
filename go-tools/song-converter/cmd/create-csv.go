@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/pjkaufman/dotfiles/go-tools/song-converter/internal/converter"
@@ -17,12 +18,18 @@ var outputFile string
 var createCsvCmd = &cobra.Command{
 	Use:   "create-csv",
 	Short: `Creates a "|" delimited csv file that includes metadata about songs like whether they are in the church or copyrighted`,
-	Long: `Gets the list of Markdown files in the working directory provided and sorts them alphabetically
-	
-	For example: song-converter create-csv -d working-dir -o churchSongs.csv
-	Iterates over all of the Markdown files in the specified directory and pulls out metadata
-	like the author, book location, and copyright info to put in the csv file specified.
-	`,
+	Example: heredoc.Doc(`To write the output of converting the files in the specified folder into a csv format to a file:
+	song-converter create-csv -d working-dir -o churchSongs.csv
+
+	To write the output of converting the files in the specified folder into a csv format to std out:
+	song-converter create-csv -d working-dir
+	`),
+	Long: heredoc.Doc(`How it works:
+	- Reads in all of the files in the specified folder.
+	- Sorts the files alphabetically
+	- Converts each file into a CSV row
+	- Writes the content to the specified source
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCreateCsvFlags(stagingDir)
 		if err != nil {
@@ -31,7 +38,10 @@ var createCsvCmd = &cobra.Command{
 
 		filehandler.FolderMustExist(stagingDir, "working-dir")
 
-		logger.WriteInfo("Converting Markdown files to csv")
+		var isWritingToFile = strings.TrimSpace(coverOutputFile) == ""
+		if isWritingToFile {
+			logger.WriteInfo("Converting Markdown files to csv")
+		}
 
 		files := filehandler.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
 		sort.Strings(files)
@@ -56,7 +66,9 @@ var createCsvCmd = &cobra.Command{
 
 		writeToFileOrStdOut(csvFile, outputFile)
 
-		logger.WriteInfo("Finished converting Markdown files to csv")
+		if isWritingToFile {
+			logger.WriteInfo("Finished converting Markdown files to csv")
+		}
 	},
 }
 

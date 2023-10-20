@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -30,7 +31,34 @@ const (
 var fixableCmd = &cobra.Command{
 	Use:   "fixable",
 	Short: "Runs the specified fixable actions that require manual input to determine what to do.",
-	Long: `Goes through all of the content files and runs the specified fixable actions on them asking
+	Example: heredoc.Doc(`To run all of the possible potential fixes:
+	ebook-lint epub fixable -f test.epub -a
+	Note: this will require a css file to already exist in the epub
+	
+	To just fix broken paragraph endings:
+	ebook-lint epub fixable -f test.epub -b
+
+	To just update section breaks:
+	ebook-lint epub fixable -f test.epub -s
+	Note: this will require a css file to already exist in the epub
+
+	To just update page breaks:
+	ebook-lint epub fixable -f test.epub -p
+	Note: this will require a css file to already exist in the epub
+
+	To just fix missing oxford commas:
+	ebook-lint epub fixable -f test.epub -o
+
+	To just fix although but instances:
+	ebook-lint epub fixable -f test.epub -n
+
+	To just fix instances of thoughts in parentheses:
+	ebook-lint epub fixable -f test.epub -t
+
+	To run a combination of options:
+	ebook-lint epub fixable -f test.epub -otn
+	`),
+	Long: heredoc.Doc(`Goes through all of the content files and runs the specified fixable actions on them asking
 	for user input on each value found that matches the potential fix criteria.
 	Potential things that can be fixed:
 	- Broken paragraph endings
@@ -38,10 +66,8 @@ var fixableCmd = &cobra.Command{
 	- Page breaks being hardcoded instead of an hr
 	- Oxford commas being missing before or's or and's
 	- Possible instances of sentences that have although ..., but in them
-	
-	For example: ebook-lint epub fixable -f file-paths -c css-paths -a
-	Will attempt to go through all of the potentially fixable issues in the specified files.
-	`,
+	- Possible instances of thoughts that are in parentheses
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateManuallyFixableFlags(epubFile, runAll, runBrokenLines, runSectionBreak, runPageBreak, runOxfordCommas, runAlthoughBut)
 		if err != nil {

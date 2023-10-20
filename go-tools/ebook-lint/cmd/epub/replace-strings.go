@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -22,19 +23,20 @@ const (
 var replaceStringsCmd = &cobra.Command{
 	Use:   "replace-strings",
 	Short: "Replaces a list of common strings and the extra strings for all content/xhtml files in the provided epub",
-	Long: `Uses the provided epub and extra replace Markdown file to replace a common set of strings and any extra instances specified in the extra file replace. After all replacements are made, the original epub will be moved to a .original file and the new file will take the place of the old file. It will also print out the successful extra replacements with the number of replacements made followed by warnings for any extra strings that it tried to find and replace values for, but did not find any instances to replace.
-Note: it only replaces strings in content/xhtml files listed in the opf file.
+	Long: heredoc.Doc(`Uses the provided epub and extra replace Markdown file to replace a common set of strings and any extra instances specified in the extra file replace. After all replacements are made, the original epub will be moved to a .original file and the new file will take the place of the old file. It will also print out the successful extra replacements with the number of replacements made followed by warnings for any extra strings that it tried to find and replace values for, but did not find any instances to replace.
+		Note: it only replaces strings in content/xhtml files listed in the opf file.`),
+	Example: heredoc.Doc(`
+		ebook-lint epub replace-strings -f test.epub -e replacements.md
+		will replace the common strings and extra strings parsed out of replacements.md in content/xhtml files located in test.epub.
+		The original test.epub will be moved to test.epub.original and test.epub will have the updated files.
 
-For example: ebook-lint epub replace-strings -f test.epub -e replacements.md
-will replace the common strings and the extra strings parsed out of replacements.md in content/xhtml files located in test.epub. The original test.epub will be moved to test.epub.original and test.epub will have the updated files.
-
-replacements.md is expected to be in the following format:
-| Text to replace | Text to replace with |
-| --------------- | -------------------- |
-| I am typo | I the correct value |
-...
-| I am another issue to correct | the correction |
-	`,
+		replacements.md is expected to be in the following format:
+		| Text to replace | Text to replace with |
+		| --------------- | -------------------- |
+		| I am typo | I the correct value |
+		...
+		| I am another issue to correct | the correction |
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateReplaceStringsFlags(epubFile, extraReplacesFilePath)
 		if err != nil {
@@ -110,6 +112,7 @@ func init() {
 	replaceStringsCmd.Flags().StringVarP(&epubFile, "epub-file", "f", "", "the epub file to replace strings in in")
 	replaceStringsCmd.MarkFlagRequired("extra-replace-file")
 	replaceStringsCmd.MarkFlagRequired("epub-file")
+
 }
 
 func ValidateReplaceStringsFlags(epubPath, extraReplaceStringsPath string) error {

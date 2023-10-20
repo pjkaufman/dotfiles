@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -26,20 +27,24 @@ const (
 var compressAndLintCmd = &cobra.Command{
 	Use:   "compress-and-lint",
 	Short: "Compresses and lints all of the epub files in the specified directory even compressing images using imgp if that option is specified.",
-	Long: `Gets all of the .epub files in the specified directory.
-Then it lints each epub separately making sure to compress the images if specified.
-Some of the things that the linting includes:
-- Replacing a list of common strings
-- Removing links from the nav and/or the ncx file
-- Adds absolute page numbers if present in file's ids
-- Adds language encoding specified if it is not present already (default is "en")
-- Sets encoding on content files to utf-8 to prevent errors in some readers
+	Example: heredoc.Doc(`To compress images and make general modifications to all epubs in a folder:
+	ebook-lint epub compress-and-lint -d folder -i
 	
-For example: ebook-lint epub compress-and-lint -d folder -i
-will get all .epub files located in folder making sure to lint them and compress
-any images listed in the opf file. It will print a summary of the before and after
-sizes of the epubs for each file and then again at the very end of the run.
-	`,
+	To compress images and make general modifications to all epubs in the current directory:
+	ebook-lint epub compress-and-lint -i
+
+	To just make general modifications to all epubs in the current directory:
+	ebook-lint epub compress-and-lint
+	`),
+	Long: heredoc.Doc(`Gets all of the .epub files in the specified directory.
+	Then it lints each epub separately making sure to compress the images if specified.
+	Some of the things that the linting includes:
+	- Replacing a list of common strings
+	- Removing links from the nav and/or the ncx file
+	- Adds absolute page numbers if present in file's ids
+	- Adds language encoding specified if it is not present already (default is "en")
+	- Sets encoding on content files to utf-8 to prevent errors in some readers
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCompressAndLintFlags(lintDir, lang)
 		if err != nil {
@@ -165,8 +170,6 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 		</html>
 		*/
 	})
-
-	// TODO: print out the size of all of the before and after
 }
 
 func ValidateCompressAndLintFlags(lintDir, lang string) error {

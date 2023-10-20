@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
-	commandhandler "github.com/pjkaufman/dotfiles/go-tools/pkg/command-handler"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
@@ -14,14 +13,10 @@ import (
 const (
 	EpubPathArgEmpty   = "epub-file must have a non-whitespace value"
 	EpubPathArgNonEpub = "epub-file must be an Epub file"
-
-	imgComperssionProgramName = "imgp"
-	cliLineSeparator          = "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
+	cliLineSeparator   = "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"
 )
 
 var epubFile string
-var compressionParams = []string{"-x", "800x800", "-e", "-O", "-q", "40", "-m", "-d", "-w"}
-var compressableImageExts = []string{"png", "jpg", "jpeg"}
 
 func getEpubInfo(dir, epubName string) (string, linter.EpubInfo) {
 	opfFiles := filehandler.MustGetAllFilesWithExtInASpecificFolderAndSubFolders(dir, ".opf")
@@ -64,27 +59,27 @@ func validateCommonEpubFlags(epubPath string) error {
 	return nil
 }
 
-func compressImages(destFolder, opfFolder string, images map[string]struct{}) {
-	for imagePath := range images {
-		if !isCompressableImage(imagePath) {
-			continue
-		}
+// func compressImages(destFolder, opfFolder string, images map[string]struct{}) {
+// 	for imagePath := range images {
+// 		if !isCompressableImage(imagePath) {
+// 			continue
+// 		}
 
-		var params = fmt.Sprintf("%s %s %s", imgComperssionProgramName, strings.Join(compressionParams, " "), filehandler.JoinPath(opfFolder, imagePath))
-		commandhandler.MustRunCommand("bash", fmt.Sprintf(`failed to compress "%s"`, imagePath), []string{"-c", params}...)
+// 		var params = fmt.Sprintf("%s %s %s", imgComperssionProgramName, strings.Join(compressionParams, " "), filehandler.JoinPath(opfFolder, imagePath))
+// 		commandhandler.MustRunCommand("bash", fmt.Sprintf(`failed to compress "%s"`, imagePath), []string{"-c", params}...)
 
-		// TODO: see if I can figure out why the following does not work
-		// var params = append(compressionParams, "\""+filehandler.JoinPath(opfFolder, imagePath)+"\"")
-		// fmt.Println(commandhandler.MustGetCommandOutput(imgComperssionProgramName, fmt.Sprintf(`failed to compress "%s"`, imagePath), params...))
-	}
-}
+// 		// TODO: see if I can figure out why the following does not work
+// 		// var params = append(compressionParams, "\""+filehandler.JoinPath(opfFolder, imagePath)+"\"")
+// 		// fmt.Println(commandhandler.MustGetCommandOutput(imgComperssionProgramName, fmt.Sprintf(`failed to compress "%s"`, imagePath), params...))
+// 	}
+// }
 
-func isCompressableImage(imagePath string) bool {
-	for _, ext := range compressableImageExts {
-		if strings.HasSuffix(strings.ToLower(imagePath), ext) {
-			return true
-		}
-	}
+// func isCompressableImage(imagePath string) bool {
+// 	for _, ext := range compressableImageExts {
+// 		if strings.HasSuffix(strings.ToLower(imagePath), ext) {
+// 			return true
+// 		}
+// 	}
 
-	return false
-}
+// 	return false
+// }

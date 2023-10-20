@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
+	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/images"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -129,7 +130,7 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 		//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 		if runCompressImages {
-			compressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
+			images.CompressImages(lintDir, opfFolder, epubInfo.ImagesFiles)
 		}
 
 		// TODO: cleanup TOC file's links

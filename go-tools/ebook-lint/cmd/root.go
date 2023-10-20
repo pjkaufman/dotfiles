@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/cmd/cbz"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/cmd/epub"
 	"github.com/spf13/cobra"
 )
@@ -10,7 +11,7 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "ebook-lint",
-	Short: "A set of functions that are helpful for linting epubs",
+	Short: "A set of functions that are helpful for linting ebooks",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -24,4 +25,5 @@ func Execute() {
 
 func init() {
 	rootCmd.AddCommand(epub.EpubCmd)
+	rootCmd.AddCommand(cbz.CbzCmd)
 }

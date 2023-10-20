@@ -23,7 +23,7 @@ compressepub() {
 
 # convertcbrtocbz helps with converting cbrs to cbzs
 convertcbrtocbz() {
-  source "$HOME/dotfiles/bin/convertcbrtocbz"
+  ebook-lint cbr to-cbz $@
 }
 
 # compresscbz helps with compressing cbzs so they take up less space

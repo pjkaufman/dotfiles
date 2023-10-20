@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/cmd/cbr"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/cmd/cbz"
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/cmd/epub"
 	"github.com/spf13/cobra"
@@ -26,4 +27,5 @@ func Execute() {
 func init() {
 	rootCmd.AddCommand(epub.EpubCmd)
 	rootCmd.AddCommand(cbz.CbzCmd)
+	rootCmd.AddCommand(cbr.CbrCmd)
 }

@@ -17,19 +17,18 @@ const (
 	DirArgEmpty = "directory must have a non-whitespace value"
 )
 
-// cbrToCbzCmd represents the cbzToCbr command
+// cbrToCbzCmd represents the toCbz command
 var cbrToCbzCmd = &cobra.Command{
 	Use:   "to-cbz",
-	Short: "Compresses all of the png and jpeg files in the cbz files in the specified directory.",
-	Example: heredoc.Doc(`To compress images in all cbzs in a folder:
-	ebook-lint cbz cbr-to-cbz -d folder
+	Short: "Converts all of the cbr files to cbz files in the specified directory.",
+	Example: heredoc.Doc(`To convert all cbrs to cbzs in a folder:
+	ebook-lint cbr to-cbz -d folder
 	
-	To compress images in all cbzs in the current directory:
-	ebook-lint cbz cbr-to-cbz -d folder
+	To convert all cbrs to cbzs in the current directory:
+	ebook-lint cbr to-cbz 
 	`),
-	Long: "Gets all of the .cbz files in the specified directory and cbzToCbres pngs and jpegs.",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateCbzToCbrFlags(dir)
+		err := ValidateToCbrFlags(dir)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
@@ -50,10 +49,10 @@ var cbrToCbzCmd = &cobra.Command{
 func init() {
 	CbrCmd.AddCommand(cbrToCbzCmd)
 
-	cbrToCbzCmd.Flags().StringVarP(&dir, "directory", "d", ".", "the location to run the cbz image cbzToCbrion in")
+	cbrToCbzCmd.Flags().StringVarP(&dir, "directory", "d", ".", "the folder where all cbr files should be converted to cbz files")
 }
 
-func ValidateCbzToCbrFlags(dir string) error {
+func ValidateToCbrFlags(dir string) error {
 	if strings.TrimSpace(dir) == "" {
 		return errors.New(DirArgEmpty)
 	}

@@ -25,21 +25,20 @@ const (
 // compressCmd represents the compress command
 var compressCmd = &cobra.Command{
 	Use:   "compress",
-	Short: "Compresses all of the png and jpeg files in the cbz files in the specified directory.",
+	Short: "Compresses all of the png and jpeg files in the cbz files in the specified directory",
 	Example: heredoc.Doc(`To compress images in all cbzs in a folder:
 	ebook-lint cbz compress -d folder
 	
 	To compress images in all cbzs in the current directory:
-	ebook-lint cbz compress -d folder
+	ebook-lint cbz compress
 	`),
-	Long: "Gets all of the .cbz files in the specified directory and compresses pngs and jpegs.",
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateCompressFlags(dir)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
-		logger.WriteInfo("Starting compression and linting for each epub\n")
+		logger.WriteInfo("Started compressing all cbzs\n")
 
 		cbzs := filehandler.MustGetAllFilesWithExtInASpecificFolder(dir, ".cbz")
 
@@ -62,7 +61,7 @@ var compressCmd = &cobra.Command{
 
 		logger.WriteInfo(filesize.FilesSizeSummary(totalBeforeFileSize, totalAfterFileSize))
 
-		logger.WriteInfo("Finished compression and linting")
+		logger.WriteInfo("Finished compressing all cbzs")
 	},
 }
 

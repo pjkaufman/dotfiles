@@ -28,7 +28,7 @@ convertcbrtocbz() {
 
 # compresscbz helps with compressing cbzs so they take up less space
 compresscbz() {
-  source "$HOME/dotfiles/bin/compresscbz"
+  ebook-lint cbz compress $@
 }
 
 # epubreplaceallstrings helps with replacing a bunch of strings in an epub file

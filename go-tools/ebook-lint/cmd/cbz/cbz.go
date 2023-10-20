@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// CbzCmd represents the epub command
+// CbzCmd represents the cbz command
 var CbzCmd = &cobra.Command{
 	Use:   "cbz",
 	Short: "Deals with cbz related commands",

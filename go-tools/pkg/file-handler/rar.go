@@ -1,54 +1,41 @@
 package filehandler
 
 import (
-	"context"
 	"fmt"
 	"os"
+	"strings"
 
-	archiver "github.com/mholt/archiver/v4"
+	archiver "github.com/mholt/archiver/v3"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 func ConvertRarToCbz(src string) {
-	format := archiver.Rar{}
+	var err error
 
-	var fileList = []archiver.File{}
-	handler := func(ctx context.Context, f archiver.File) error {
-		fmt.Println(f)
-		fileList = append(fileList, f)
+	var srcDir = GetFileFolder(src)
+	var tempFolder = JoinPath(srcDir, "cbz")
+	if FolderExists(tempFolder) {
+		err = os.RemoveAll(tempFolder)
 
-		return nil
+		if err != nil {
+			logger.WriteError(fmt.Sprintf("failed to delete the destination directory \"%s\": %s", tempFolder, err))
+		}
 	}
 
-	cbrFile, err := os.Open(src)
+	rar := archiver.NewRar()
+	err = rar.Unarchive(src, "cbz")
 	if err != nil {
-		logger.WriteError(fmt.Sprintf(`failed to read in cbr file "%s": %s`, src, err))
+		logger.WriteError(fmt.Sprintf(`failed to unarchive "%s": %s`, src, err))
 	}
 
-	err = format.Extract(context.Background(), cbrFile, nil, handler)
+	var dest = strings.Replace(src, ".cbr", ".cbz", 1)
+	err = Rezip(tempFolder, dest)
 	if err != nil {
-		logger.WriteError(fmt.Sprintf(`failed to extract data from cbr file "%s": %s`, src, err))
+		logger.WriteError(fmt.Sprintf(`failed to zip "%s" to "%s": %s`, tempFolder, dest, err))
 	}
 
-	createCbz(fileList)
-
-	logger.WriteError("TODO: implement the rest")
-}
-
-func createCbz(fileList []archiver.File) {
-	var cbzName = "example.cbz"
-	out, err := os.Create(cbzName)
+	err = os.RemoveAll(tempFolder)
 	if err != nil {
-		logger.WriteError(fmt.Sprintf(`failed to create "%s": %s`, cbzName, err))
-	}
-	defer out.Close()
-
-	format := archiver.CompressedArchive{
-		Archival: archiver.Zip{},
-	}
-
-	err = format.Archive(context.Background(), out, fileList)
-	if err != nil {
-		logger.WriteError(fmt.Sprintf(`failed to write contents to "%s": %s`, cbzName, err))
+		logger.WriteError(fmt.Sprintf("failed to delete the destination directory \"%s\": %s", tempFolder, err))
 	}
 }

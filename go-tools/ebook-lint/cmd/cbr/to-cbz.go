@@ -1,4 +1,4 @@
-package cbz
+package cbr
 
 import (
 	"errors"
@@ -11,9 +11,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// cbzToCbrCmd represents the cbzToCbr command
-var cbzToCbrCmd = &cobra.Command{
-	Use:   "cbr-to-cbz",
+var dir string
+
+const (
+	DirArgEmpty = "directory must have a non-whitespace value"
+)
+
+// cbrToCbzCmd represents the cbzToCbr command
+var cbrToCbzCmd = &cobra.Command{
+	Use:   "to-cbz",
 	Short: "Compresses all of the png and jpeg files in the cbz files in the specified directory.",
 	Example: heredoc.Doc(`To compress images in all cbzs in a folder:
 	ebook-lint cbz cbr-to-cbz -d folder
@@ -23,14 +29,14 @@ var cbzToCbrCmd = &cobra.Command{
 	`),
 	Long: "Gets all of the .cbz files in the specified directory and cbzToCbres pngs and jpegs.",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateCbzToCbrFlags(lintDir)
+		err := ValidateCbzToCbrFlags(dir)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
 		logger.WriteInfo("Starting converting cbr files to cbz files\n")
 
-		cbrs := filehandler.MustGetAllFilesWithExtInASpecificFolder(lintDir, ".cbr")
+		cbrs := filehandler.MustGetAllFilesWithExtInASpecificFolder(dir, ".cbr")
 		for _, cbr := range cbrs {
 			logger.WriteInfo(fmt.Sprintf("starting to convert %s to a cbz file...", cbr))
 
@@ -42,14 +48,14 @@ var cbzToCbrCmd = &cobra.Command{
 }
 
 func init() {
-	CbzCmd.AddCommand(cbzToCbrCmd)
+	CbrCmd.AddCommand(cbrToCbzCmd)
 
-	cbzToCbrCmd.Flags().StringVarP(&lintDir, "directory", "d", ".", "the location to run the cbz image cbzToCbrion in")
+	cbrToCbzCmd.Flags().StringVarP(&dir, "directory", "d", ".", "the location to run the cbz image cbzToCbrion in")
 }
 
-func ValidateCbzToCbrFlags(lintDir string) error {
-	if strings.TrimSpace(lintDir) == "" {
-		return errors.New(LintDirArgEmpty)
+func ValidateCbzToCbrFlags(dir string) error {
+	if strings.TrimSpace(dir) == "" {
+		return errors.New(DirArgEmpty)
 	}
 
 	return nil

@@ -12,7 +12,10 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-const tempZip = "compress.zip"
+const (
+	tempZip                 = "compress.zip"
+	folderPerms fs.FileMode = 0755
+)
 
 // UnzipRunOperationAndRezip starts by deleting the destination directory if it exists,
 // then it goes ahead an unzips the contents into the destination directory

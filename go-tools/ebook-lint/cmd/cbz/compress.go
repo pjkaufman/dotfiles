@@ -14,12 +14,12 @@ import (
 )
 
 var (
-	lintDir string
+	dir     string
 	verbose bool
 )
 
 const (
-	LintDirArgEmpty = "directory must have a non-whitespace value"
+	DirArgEmpty = "directory must have a non-whitespace value"
 )
 
 // compressCmd represents the compress command
@@ -34,25 +34,25 @@ var compressCmd = &cobra.Command{
 	`),
 	Long: "Gets all of the .cbz files in the specified directory and compresses pngs and jpegs.",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateCompressFlags(lintDir)
+		err := ValidateCompressFlags(dir)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
 		logger.WriteInfo("Starting compression and linting for each epub\n")
 
-		cbzs := filehandler.MustGetAllFilesWithExtInASpecificFolder(lintDir, ".cbz")
+		cbzs := filehandler.MustGetAllFilesWithExtInASpecificFolder(dir, ".cbz")
 
 		var totalBeforeFileSize, totalAfterFileSize float64
 		for _, cbz := range cbzs {
 			logger.WriteInfo(fmt.Sprintf("starting cbz compression for %s...", cbz))
 
-			compressCbz(lintDir, cbz)
+			compressCbz(dir, cbz)
 
 			var originalFile = cbz + ".original"
 
-			var newKbSize = filehandler.MustGetFileSize(filehandler.JoinPath(lintDir, cbz))
-			var oldKbSize = filehandler.MustGetFileSize(filehandler.JoinPath(lintDir, originalFile))
+			var newKbSize = filehandler.MustGetFileSize(filehandler.JoinPath(dir, cbz))
+			var oldKbSize = filehandler.MustGetFileSize(filehandler.JoinPath(dir, originalFile))
 
 			logger.WriteInfo(filesize.FileSizeSummary(originalFile, cbz, oldKbSize, newKbSize))
 
@@ -69,7 +69,7 @@ var compressCmd = &cobra.Command{
 func init() {
 	CbzCmd.AddCommand(compressCmd)
 
-	compressCmd.Flags().StringVarP(&lintDir, "directory", "d", ".", "the location to run the cbz image compression in")
+	compressCmd.Flags().StringVarP(&dir, "directory", "d", ".", "the location to run the cbz image compression in")
 	compressCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "whether or not to show extra information about the image compression")
 }
 
@@ -90,9 +90,9 @@ func compressCbz(lintDir, cbz string) {
 	})
 }
 
-func ValidateCompressFlags(lintDir string) error {
-	if strings.TrimSpace(lintDir) == "" {
-		return errors.New(LintDirArgEmpty)
+func ValidateCompressFlags(dir string) error {
+	if strings.TrimSpace(dir) == "" {
+		return errors.New(DirArgEmpty)
 	}
 
 	return nil

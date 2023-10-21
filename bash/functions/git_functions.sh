@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-undo() {
+function undo() {
   git-helper undo
 }
 
-resetDE() {
+function resetDE() {
   git-helper submodule reset
 }

@@ -8,26 +8,27 @@ then
 fi
 
 # allows for easy running of obsidian via terminal
-obsidian() {
+function obsidian() {
   flatpak run md.obsidian.Obsidian &
 }
+
 # allows for easy running of brave via terminal
-brave() {
+function brave() {
   flatpak run com.brave.Browser &
 }
 
 # allows for easy running of GnuCash via terminal
-gnucash() {
+function gnucash() {
   flatpak run org.gnucash.GnuCash &
 }
 
 # allows for easy running of Minecraft via terminal
-minecraft() {
+function minecraft() {
   flatpak run com.mojang.Minecraft &
 }
 
 # allows for easy running of Only Office via terminal
-office() {
+function office() {
   eson
   flatpak run org.onlyoffice.desktopeditors &
   wait; esoff # freezes the current terminal until the previous command finishes and it will then turn Spanish characters off for the same of terminal
@@ -35,11 +36,11 @@ office() {
 }
 
 # allows for easy running of Sigil via terminal
-sigil() {
+function sigil() {
   flatpak run com.sigil_ebook.Sigil &
 }
 
 # allows for easy running of Calibre via terminal
-calibre() {
+function calibre() {
   flatpak run com.calibre_ebook.calibre &
 }

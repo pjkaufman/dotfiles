@@ -2,8 +2,8 @@
 
 # wsl aliases
 
-is_wsl() {
-  local is_wsl=`uname -r | grep -i "Microsoft"`
+function is_wsl() {
+  local is_wsl=$(uname -r | grep -i "Microsoft")
   if [[ -z "$is_wsl" ]]; then
     return 0
   fi

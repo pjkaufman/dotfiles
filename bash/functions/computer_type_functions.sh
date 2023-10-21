@@ -5,7 +5,7 @@
 TRUE=0
 FALSE=1
 
-is_work_computer() {
+function is_work_computer() {
   if [ ${COMPUTER_TYPE} = "work" ]; then
     return $TRUE
   fi
@@ -13,7 +13,7 @@ is_work_computer() {
   return $FALSE
 }
 
-is_personal_computer() {
+function is_personal_computer() {
   if [ ${COMPUTER_TYPE} = "work" ]; then
     return $FALSE
   fi

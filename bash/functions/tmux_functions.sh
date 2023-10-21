@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 # tmux aliases
 
-starttmux() {
-  source "$HOME/dotfiles/bin/starttmux"
-}
-
-killsess() {
+function killsess() {
   tmux kill-session -t "$@"
 }
 
-tls() {
+function tls() {
   tmux ls
 }

@@ -22,7 +22,7 @@ include_file "install/package_install_functions.sh"
 include_file "install/symlink_functions.sh"
 
 # include computer type functions
-source "$HOME/dotfiles/.shellrc/bashrc.d/computer_type_functions.sh" 
+source "$HOME/dotfiles/bash/functions/computer_type_functions.sh" 
 
 # actual setup
 

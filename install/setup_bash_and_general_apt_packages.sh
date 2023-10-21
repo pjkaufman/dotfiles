@@ -3,9 +3,8 @@
 # setup the bash and terminal related files 
 
 declare -A bash_related_file_sylink_info=( 
-  ["$HOME/dotfiles/.shellrc/bash_profile"]="$HOME/.bash_profile"
-  ["$HOME/dotfiles/.shellrc/bashrc"]="$HOME/.bashrc" 
-  ["$HOME/dotfiles/.shellrc/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
+  ["$HOME/dotfiles/bash/bashrc"]="$HOME/.bashrc" 
+  ["$HOME/dotfiles/bash/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
 )
 
 for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${bash_related_file_sylink_info[$file]}"; done
@@ -23,9 +22,9 @@ declare -A apt_packages_to_install=(
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 
 # source exports so later on we have all of our env variables ready to go
-source "$HOME/dotfiles/.shellrc/rc.d/exports.sh"
+source "$HOME/.bashrc"
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/.shellrc/inputrc" "$INPUTRC" 
+ensure_file_symlink_is_in_place "$HOME/bash/inputrc" "$INPUTRC" 
 
 # only try to add the remaining packages if on a personal computer
 if is_work_computer; then

@@ -3,7 +3,7 @@
 # ssh functions
 
 # sshstart starts ssh if it has not already been started
-sshstart() {
+function sshstart() {
   # test whether $SSH_AUTH_SOCK is valid
   ssh-add -l 2>/dev/null >/dev/null
 

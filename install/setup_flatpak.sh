@@ -7,7 +7,7 @@ if is_work_computer; then
 fi
 
 # Only Office Settings
-setup_only_office_settings() {
+function setup_only_office_settings() {
   only_office_dark_theme_setting="UITheme2=theme-dark"
   only_office_settings_file="$HOME/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf"
   if ! grep -q "$only_office_dark_theme_setting" "$only_office_settings_file" ; then
@@ -17,14 +17,32 @@ setup_only_office_settings() {
 }
 
 # GnuCash Settings 
-setup_gnucash_settings() {
+function setup_gnucash_settings() {
   ensure_file_symlink_is_in_place "$HOME/dotfiles/gtk-3.0/settings.ini" "$HOME/.var/app/org.gnucash.GnuCash/config/gtk-3.0/settings.ini"
 }
 
 # Sigil Settings
-setup_sigil_settings() {
-  ensure_file_symlink_is_in_place "$HOME/dotfiles/sigil/qt_styles.qss"  "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/qt_styles.qss"
+function setup_sigil_settings() {
+  ensure_file_symlink_is_in_place "$HOME/dotfiles/sigil/qt_styles.qss" "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/qt_styles.qss"
   ensure_folder_symlink_is_in_place "$HOME/dotfiles/sigil/user-dictionaries" "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/user_dictionaries"
+}
+
+# Obsidian Settings
+function setup_obsidian_settings() {
+  # based on https://forum.obsidian.md/t/meta-post-linux-tips-tricks-solutions-to-common-problems/6291/17
+  desktop_folder="$HOME/.local/share/applications"
+  desktop_file=obsidian.desktop
+  obsidian_desktop="$desktop_folder/$desktop_file"
+
+
+  if [ ! -s "$desktop_folder/obsidian.desktop" ]; then
+    ensure_file_symlink_is_in_place "$HOME/dotfiles/obsidian/$desktop_file" "$obsidian_desktop"
+  fi
+
+  if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then {
+    xdg-mime default "$desktop_file" x-scheme-handler/obsidian
+    update-desktop-database
+  }
 }
 
 if ! command -v flatpak &> /dev/null; then
@@ -43,3 +61,4 @@ fi
 setup_only_office_settings
 setup_gnucash_settings
 setup_sigil_settings
+setup_obsidian_settings

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Obsidian
+Comment=Markdown Notetaking App
+GenericName=Text Editor
+Type=Application
+Exec=flatpak run md.obsidian.Obsidian %U
+Icon=obsidian
+StartupWMClass=obsidian
+MimeType=x-scheme-handler/obsidian;

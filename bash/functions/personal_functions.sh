@@ -22,12 +22,12 @@ function compressepub() {
 
 # convertcbrtocbz helps with converting cbrs to cbzs
 function convertcbrtocbz() {
-  ebook-lint cbr to-cbz $@
+  ebook-lint cbr to-cbz "$@"
 }
 
 # compresscbz helps with compressing cbzs so they take up less space
 function compresscbz() {
-  ebook-lint cbz compress $@
+  ebook-lint cbz compress "$@"
 }
 
 # epubreplaceallstrings helps with replacing a bunch of strings in an epub file

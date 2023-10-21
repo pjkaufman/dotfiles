@@ -17,7 +17,7 @@ fi
 
 # ---------------------- local utility functions ---------------------
 
-# _have() { type "$1" &>/dev/null; }
+_have() { type "$1" &>/dev/null; }
 _source_if() { [[ -r "$1" ]] && source "$1"; }
 
 # ----------------------- environment variables ----------------------
@@ -128,8 +128,6 @@ esac
 if [ -x /usr/bin/dircolors ]; then
     test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -138,12 +136,12 @@ fi
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+      # We have color support; assume it's compliant with Ecma-48
+      # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+      # a case would tend to support setf rather than setaf.)
+      color_prompt=yes
     else
-	color_prompt=
+      color_prompt=
     fi
 fi
 
@@ -248,11 +246,11 @@ _source_if "$HOME/.local_rc"
 # -------------------- run common setup functions --------------------
 
 # set nvm version to use and export if it exists already
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# gvm setup if possible
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+_source_if "$NVM_DIR/nvm.sh" # This loads nvm
+_have nvm && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+_source_if "$HOME/.gvm/scripts/gvm" # gvm setup if possible
 
 sshstart # start SSH for Github if it has not already started
 

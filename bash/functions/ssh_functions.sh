@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# ssh functions
-
 # sshstart starts ssh if it has not already been started
 function sshstart() {
   # test whether $SSH_AUTH_SOCK is valid

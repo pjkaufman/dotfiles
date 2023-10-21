@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# based on https://github.com/rwxrob/dot/blob/ff6ceefbd36db895b70c4b1625f465d3bab594d1/scripts/duck
+
+url="https://lite.duckduckgo.com/lite?kd=-1&kp=-1&q=$(urlencode "$*")" # 🦆
+
+exec w3m "$url"

@@ -14,7 +14,7 @@ install_apt_package "tmux"
 # install package manager for tmux
 tmux_plugin_dir="$HOME/.local/share/tmux/plugins/tpm"
 if [ ! -d "$tmux_plugin_dir" ]; then 
-  git clone https://github.com/tmux-plugins/tpm $tmux_plugin_dir
+  git clone https://github.com/tmux-plugins/tpm "$tmux_plugin_dir"
   # install plugins right after tpm is installed
-  $tmux_plugin_dir/scripts/install_plugins.sh
+  "$tmux_plugin_dir/scripts/install_plugins.sh"
 fi

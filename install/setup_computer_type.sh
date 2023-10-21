@@ -14,9 +14,9 @@ prepend_text_to_file() {
 
 if [ -z "${COMPUTER_TYPE}" ]
 then
-  read -p 'Is this a personal computer? [y]es or [n]o: ' response_char
+  read -rp 'Is this a personal computer? [y]es or [n]o: ' response_char
 
-  if [ response_char = "y" ]
+  if [ "$response_char" = "y" ]
   then
     prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.local_extra
     export COMPUTER_TYPE=personal

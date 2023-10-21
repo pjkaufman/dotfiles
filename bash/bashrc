@@ -35,9 +35,6 @@ export EDITOR="nvim"
 export LANG='en_US.UTF-8';
 export LC_ALL='en_US.UTF-8';
 
-# Highlight section titles in manual pages.
-export LESS_TERMCAP_md="${yellow}";
-
 # nvm
 export NVM_VERSION=18.0
 export NVM_DIR="$XDG_DATA_HOME"/nvm
@@ -74,7 +71,7 @@ export SCRIPTS="$DOTFILES/bin"
 
 # Add to path
 prepend_path() {
-  [ -d $1 ] && PATH="$1:$PATH"
+  [ -d "$1" ] && PATH="$1:$PATH"
 }
 
 # Prepend new items to path (if directory exists)
@@ -93,7 +90,7 @@ prepend_path "$SCRIPTS"
 # Remove duplicates (preserving prepended items)
 # Source: http://unix.stackexchange.com/a/40755
 
-PATH=$(echo -n $PATH | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":":",$0)}}')
+PATH=$(echo -n "$PATH" | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":":",$0)}}')
 
 # Wrap up
 
@@ -129,7 +126,7 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -177,6 +174,10 @@ export HISTCONTROL='ignoreboth';
 alias dot='cd $DOTFILES'
 alias chmox='chmod +x'
 
+# seaching
+alias '?'=duck
+alias '??'=google
+
 # moving around
 alias ..='cd ..'
 alias ...='cd ../../'
@@ -189,12 +190,12 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # make it so that wget can work without needing to write its config to the home dir
-alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 # load all files from dotfiles/bash/functions directory
 if [ -d "$DOTFILES/bash/functions" ]; then
-  for file in $DOTFILES/bash/functions/*.sh; do
-    source $file
+  for file in "$DOTFILES/bash/functions"/*.sh; do
+    source "$file"
   done
 fi
 

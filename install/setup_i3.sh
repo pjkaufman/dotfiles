@@ -26,5 +26,5 @@ ensure_file_symlink_is_in_place "$HOME/dotfiles/i3/config" "$HOME/.config/i3/con
 echo "Copying images"
 
 # make sure to overwrite the existing image if there is one since I cannot use symlinks
-cp -f $HOME/dotfiles/i3/Laminin.png $HOME/.config/i3/Laminin.png
-cp -f $HOME/dotfiles/i3/CharlesOutside.jpg $HOME/.config/i3/CharlesOutside.jpg
+cp -f "$HOME/dotfiles/i3/Laminin.png" "$HOME/.config/i3/Laminin.png"
+cp -f "$HOME/dotfiles/i3/CharlesOutside.jpg" "$HOME/.config/i3/CharlesOutside.jpg"

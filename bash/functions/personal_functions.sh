@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # only add these functions if on a personal computer
-if [ ${COMPUTER_TYPE} = "work" ]
-then
+if is_work_computer ; then
   return
 fi
 

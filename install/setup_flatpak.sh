@@ -10,10 +10,9 @@ fi
 setup_only_office_settings() {
   only_office_dark_theme_setting="UITheme2=theme-dark"
   only_office_settings_file="$HOME/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf"
-  
-  if [ -z $(grep "$only_office_dark_theme_setting" "$only_office_settings_file") ]; then
+  if ! grep -q "$only_office_dark_theme_setting" "$only_office_settings_file" ; then
     echo "Adding dark theme setting for Only Office"
-    sed -i "s/\[General\]/\[General\]\n$only_office_dark_theme_setting/g" $only_office_settings_file
+    sed -i "s/\[General\]/\[General\]\n$only_office_dark_theme_setting/g" "$only_office_settings_file"
   fi
 }
 

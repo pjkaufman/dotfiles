@@ -6,7 +6,7 @@ TRUE=0
 FALSE=1
 
 function is_work_computer() {
-  if [ ${COMPUTER_TYPE} = "work" ]; then
+  if [ "$COMPUTER_TYPE" = "work" ]; then
     return $TRUE
   fi
 
@@ -14,7 +14,7 @@ function is_work_computer() {
 }
 
 function is_personal_computer() {
-  if [ ${COMPUTER_TYPE} = "work" ]; then
+  if [ "$COMPUTER_TYPE" = "work" ]; then
     return $FALSE
   fi
 

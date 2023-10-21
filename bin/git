@@ -3,11 +3,11 @@
 # This script allows for running the proper version of git even if running a git command on a Windows git repo from a WSL terminal
 # see https://www.reddit.com/r/bashonubuntuonwindows/comments/evs4hr/do_you_like_using_wsl2_but_hate_how_slow_git_runs/
 
-is_wsl=`uname -r | grep -i "Microsoft"`
-on_c_drive= `pwd -P | grep /c/ > /dev/null`
+on_c_drive=$(pwd -P | grep /c/ > /dev/null)
+is_wsl=$(uname -r | grep -i "Microsoft")
 
-if [ "$is_wsl" && "$on_c_drive" ]; then
-	exec git.exe "$@"
+if [ "$is_wsl" ] && [ "$on_c_drive" ]; then
+	exec git.exe "$@" # may need to tinker with this later
 else
 	exec /usr/bin/git "$@"
 fi

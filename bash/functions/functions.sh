@@ -1,31 +1,26 @@
 #!/usr/bin/env bash
 
-# Add to path
-prepend_path() {
-  [ -d $1 ] && PATH="$1:$PATH"
+function reload() {
+  [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
 }
 
-reload() {
-  [ -f "$HOME/.bash_profile" ] && source "$HOME/.bash_profile"
-}
-
-c() {
+function c() {
   clear && clear
 }
 
-gh() {
+function gh() {
   history | grep "$@"
 }
 
-python() {
+function python() {
   command python3 "$@"
 }
 
-update() {
+function update() {
   command topgrade
 }
 
-rn() {
+function rn() {
   if [[ -z $4 ]]; then
     rename "s/$1/$2/" $3
     return;
@@ -37,21 +32,16 @@ rn() {
 # keyboard setup
 
 # set keyboard layout to English international to allow alt+character to have accented or Spanish characters
-eson(){
+function eson(){
   setxkbmap -layout us -variant intl
 }
 
 # set keyboard layout to regular English to make it easier to program and do other things from the cli
-esoff(){
+function esoff(){
   setxkbmap -layout us
 }
 
 # scan the computer for viruses and other issues
-scan() {
+function scan() {
   sudo rkhunter --check --sk --rwo
-}
-
-# print out a human readable path
-path() {
-  source "$HOME/dotfiles/bin/path.sh"
 }

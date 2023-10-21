@@ -1,0 +1,258 @@
+#!/usr/bin/env bash
+
+# $HOME/.bashrc
+#
+# this file is sourced by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output. So make sure this doesn't display
+# anything or bad things will happen !
+
+# test for an interactive shell. There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+  # shell is non-interactive. be done now!
+  return
+fi
+
+# ---------------------- local utility functions ---------------------
+
+_have() { type "$1" &>/dev/null; }
+_source_if() { [[ -r "$1" ]] && source "$1"; }
+
+# ----------------------- environment variables ----------------------
+
+# XDG vars
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
+
+# Set the default editor to neovim
+export EDITOR="nvim"
+
+# Prefer US English and use UTF-8.
+export LANG='en_US.UTF-8';
+export LC_ALL='en_US.UTF-8';
+
+# Highlight section titles in manual pages.
+export LESS_TERMCAP_md="${yellow}";
+
+# nvm
+export NVM_VERSION=18.0
+export NVM_DIR="$XDG_DATA_HOME"/nvm
+
+# Golang
+export GO_BINARY_BASE_URL=https://go.dev/dl
+export GO_VERSION=1.21
+export GOROOT=$HOME/.gvm/gos/go$GO_VERSION.0/
+
+# set SSH_AUTH_SOCK env var to a fixed value
+export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
+
+export TERM=xterm-256color # needed to prevent an error on load
+
+# wine will get placed in the xdg config
+export WINEPREFIX="$XDG_CONFIG_HOME"/wine/
+
+# get cargo to install under xdg folders
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+
+# make sure that less history is under xdg folders
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+
+# make sure input rc is properly set to a value in under the xdg folders
+export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+
+# sets the place where scripts should send their downloads
+export DOWNLOADS="$HOME"/Downloads
+
+export DOTFILES="$HOME/dotfiles"
+export SCRIPTS="$DOTFILES/bin"
+
+# ------------------------------- path -------------------------------
+
+# Add to path
+prepend_path() {
+  [ -d $1 ] && PATH="$1:$PATH"
+}
+
+# Prepend new items to path (if directory exists)
+
+prepend_path "/bin"
+prepend_path "/usr/bin"
+prepend_path "/usr/local/bin"
+prepend_path "$HOME/bin"
+prepend_path "$HOME/.local/bin"
+prepend_path "$CARGO_HOME/bin"
+prepend_path "/sbin"
+prepend_path "/usr/sbin"
+prepend_path "$GOROOT/bin"
+prepend_path "$SCRIPTS"
+
+# Remove duplicates (preserving prepended items)
+# Source: http://unix.stackexchange.com/a/40755
+
+PATH=$(echo -n $PATH | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":":",$0)}}')
+
+# Wrap up
+
+export PATH
+
+# ------------------------ bash shell options ------------------------
+
+# shopt is for BASHOPTS, set is for SHELLOPTS
+
+shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s nocaseglob; # Case-insensitive globbing (used in pathname expansion)
+shopt -s histappend; # Append to the Bash history file, rather than overwriting it
+shopt -s cdspell; # Autocorrect typos in path names when using `cd`
+
+# Enable some Bash 4 features when possible:
+# * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
+# * Recursive globbing, e.g. `echo **/*.txt`
+for option in autocd globstar; do
+  shopt -s "$option" 2> /dev/null;
+done;
+
+# --------------------------- smart prompt ---------------------------
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+else
+  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)")\$ '
+fi
+unset color_prompt force_color_prompt
+
+
+# ------------------------------ history -----------------------------
+
+# Increase Bash history size. Allow 32³ entries; the default is 500.
+export HISTSIZE='32768';
+export HISTFILESIZE="${HISTSIZE}";
+
+# make history file respect xdg dirs
+export HISTFILE="${XDG_STATE_HOME}"/bash/history
+
+# Omit duplicates and commands that begin with a space from history.
+export HISTCONTROL='ignoreboth';
+
+# ------------------------------ aliases and general functions -----------------------------
+#      (use exec scripts instead, which work from vim and subprocs)
+
+# general
+alias dot='cd $DOTFILES'
+alias chmox='chmod +x'
+
+# moving around
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+# ls 
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# make it so that wget can work without needing to write its config to the home dir
+alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
+
+# load all files from dotfiles/bash/functions directory
+if [ -d "$DOTFILES/bash/functions" ]; then
+  for file in $DOTFILES/bash/functions/*.sh; do
+    source $file
+  done
+fi
+
+# ------------- binds / completion ------------
+
+# make sure bash completion gets put in xdg folders
+export BASH_COMPLETION_USER_DIR="$XDG_CONFIG_HOME"/bash-completion
+export BASH_COMPLETION_USER_FILE="$BASH_COMPLETION_USER_DIR"/bash_completion
+
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# -------------------- command not found handler --------------------
+
+# handles certain file types when nothing is specified for the program so they still open up
+function command_not_found_handle() {
+  if [[ $1 =~ .*.pdf || $1 =~ .*.PDF ]]; then
+    evince "$1"
+  elif [[ $1 =~ .*.jar || $1 =~ .*.JAR ]]; then
+   java -jar "$1"
+  elif [[ $1 =~ .*.html || $1 =~ .*.HTML || $1 =~ .*.HTM || $1 =~ .*.htm ]]; then
+   brave "$1"
+  elif [[ $1 =~ .*.zip || $1 =~ .*.ZIP || $1 =~ .*.war || $1 =~ .*.WAR ]]; then
+    unzip -l "$1"
+  elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
+    tar -tf "$1"
+  else
+    # based on https://askubuntu.com/a/1464110
+    printf "%s: command not found\n" "$1" >&2
+    return 127
+  fi
+}
+
+# -------------------- personalized configuration --------------------
+
+_source_if "$HOME/.local_exports"
+_source_if "$HOME/.local_rc"
+
+# -------------------- run common setup functions --------------------
+
+# set nvm version to use and export if it exists already
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# gvm setup if possible
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
+sshstart # start SSH for Github if it has not already started
+
+c

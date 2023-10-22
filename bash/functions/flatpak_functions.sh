@@ -14,7 +14,7 @@ function obsidian() {
 
 # allows for easy running of brave via terminal
 function brave() {
-  flatpak run com.brave.Browser &
+  flatpak run com.brave.Browser "$@" &
 }
 
 # allows for easy running of GnuCash via terminal
@@ -37,7 +37,7 @@ function office() {
 
 # allows for easy running of Sigil via terminal
 function sigil() {
-  flatpak run com.sigil_ebook.Sigil &
+  flatpak run com.sigil_ebook.Sigil "$@" &
 }
 
 # allows for easy running of Calibre via terminal

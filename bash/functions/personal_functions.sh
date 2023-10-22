@@ -5,7 +5,8 @@ if is_work_computer ; then
   return
 fi
 
-# personal computer aliases
+# personal computer functions
+
 function hibernate() {
   sudo systemctl hibernate
 }
@@ -14,6 +15,8 @@ function hibernate() {
 function enablebright() {
   sudo chmod a+wr /sys/class/backlight/amdgpu_bl0/brightness
 }
+
+# ebook functions
 
 # compressepub helps with compressing epubs so they take up less space
 function compressepub() {
@@ -43,4 +46,14 @@ function epubmanualfixes() {
   # TODO: see about swapping the logic to check the param count and based on the param
   # count either take in all params provided as is or just take in the epub value
   ebook-lint epub fixable -f "$1" -a
+}
+
+# Obsidian functions for opening differnt vaults that I have
+
+function notes() {
+  xdg-open obsidian://open?vault=Obsidian
+}
+
+function testVault() {
+  xdg-open obsidian://open?vault=TestVault
 }

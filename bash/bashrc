@@ -40,9 +40,8 @@ export NVM_VERSION=18.0
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 
 # Golang
-export GO_BINARY_BASE_URL=https://go.dev/dl
-export GO_VERSION=1.21
-export GOROOT=$HOME/.gvm/gos/go$GO_VERSION.0/
+export GO_VERSION=1.21.0
+export GOPATH="$XDG_DATA_HOME"/go
 
 # set SSH_AUTH_SOCK env var to a fixed value
 export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
@@ -84,7 +83,7 @@ prepend_path "$HOME/.local/bin"
 prepend_path "$CARGO_HOME/bin"
 prepend_path "/sbin"
 prepend_path "/usr/sbin"
-prepend_path "$GOROOT/bin"
+prepend_path "/usr/local/go/bin"
 prepend_path "$SCRIPTS"
 
 # Remove duplicates (preserving prepended items)
@@ -152,7 +151,6 @@ else
 fi
 unset color_prompt force_color_prompt
 
-
 # ------------------------------ history -----------------------------
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
@@ -184,6 +182,7 @@ alias .....='cd ../../../../'
 
 # ls 
 alias ll='ls -alF'
+alias lh='ls -alh'
 alias la='ls -A'
 alias l='ls -CF'
 
@@ -243,16 +242,15 @@ function command_not_found_handle() {
 # -------------------- personalized configuration --------------------
 
 _source_if "$HOME/.local_exports"
-_source_if "$HOME/.local_rc"
+_source_if "$HOME/.localrc"
 
 # -------------------- run common setup functions --------------------
-
-# set nvm version to use and export if it exists already
 
 _source_if "$NVM_DIR/nvm.sh" # This loads nvm
 _have nvm && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
-_source_if "$HOME/.gvm/scripts/gvm" # gvm setup if possible
+# setup rust env
+_source_if "$CARGO_HOME/env"
 
 sshstart # start SSH for Github if it has not already started
 

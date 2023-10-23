@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# installs the specified version of go to /usr/local/go
+
+set -e
+
+# installs the specified go version if it is not already installed
+function install_go() {
+  if go version | grep -q "$1"; then
+    echo "Go v$1 is already installed."
+
+    return
+  fi
+
+  goTar="go$1.linux-amd64.tar.gz"
+  downloadFile="$DOWNLOADS/$goTar"
+  wget "https://go.dev/dl/$goTar" -P "$DOWNLOADS"
+
+  sudo rm -rf /usr/local/go
+
+  echo "sudo tar -C /usr/local -zxvf \"$downloadFile\""
+
+  sudo tar -C /usr/local -zxf "$downloadFile"
+
+  rm "$downloadFile"
+
+  echo "Go v$1 should be installed now."
+}
+
+if [ -z "$1" ]; then
+  echo "Please specifiy the go version to install (i.e. 1.12.0)."
+fi
+
+install_go "$1"

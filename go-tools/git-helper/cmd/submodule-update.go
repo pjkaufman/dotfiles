@@ -41,7 +41,9 @@ var updateCmd = &cobra.Command{
 
 			checkoutLatestFromMaster(submoduleDir)
 
-			commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
+			if branchName == "master" {
+				commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
+			}
 
 			commandhandler.MustChangeDirectoryTo(upADirectory)
 

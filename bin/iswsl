@@ -4,7 +4,7 @@
 
 is_wsl=$(uname -r | grep -i "Microsoft")
 if [ -z "$is_wsl" ]; then
-  return 0
+  return 1
 fi
 
-return 1
+return 0

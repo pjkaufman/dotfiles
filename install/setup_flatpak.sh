@@ -62,3 +62,6 @@ setup_only_office_settings
 setup_gnucash_settings
 setup_sigil_settings
 setup_obsidian_settings
+
+sudo flatpak override --filesystem="$HOME/.themes"
+sudo flatpak override --env=GTK_THEME="$GTK_THEME"

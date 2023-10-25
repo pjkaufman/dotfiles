@@ -63,6 +63,9 @@ export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
 # sets the place where scripts should send their downloads
 export DOWNLOADS="$HOME"/Downloads
 
+# gtk theme
+export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
+
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 
@@ -224,13 +227,13 @@ function command_not_found_handle() {
     evince "$1"
   elif [[ $1 =~ .*.jar || $1 =~ .*.JAR ]]; then
     java -jar "$1"
-  elif [[ $1 =~ .*.html || $1 =~ .*.HTML || $1 =~ .*.HTM || $1 =~ .*.htm ]]; then
+  elif is_personal_computer && [[ $1 =~ .*.html || $1 =~ .*.HTML || $1 =~ .*.HTM || $1 =~ .*.htm ]]; then
     brave "$1"
   elif [[ $1 =~ .*.zip || $1 =~ .*.ZIP || $1 =~ .*.war || $1 =~ .*.WAR ]]; then
     unzip -l "$1"
   elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
     tar -tf "$1"
-  elif [[ $1 =~ .*.epub ]]; then
+  elif is_personal_computer && [[ $1 =~ .*.epub ]]; then
     sigil "$1"
   else
     # based on https://askubuntu.com/a/1464110

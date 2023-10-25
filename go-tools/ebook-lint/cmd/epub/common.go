@@ -58,28 +58,3 @@ func validateCommonEpubFlags(epubPath string) error {
 
 	return nil
 }
-
-// func compressImages(destFolder, opfFolder string, images map[string]struct{}) {
-// 	for imagePath := range images {
-// 		if !isCompressableImage(imagePath) {
-// 			continue
-// 		}
-
-// 		var params = fmt.Sprintf("%s %s %s", imgComperssionProgramName, strings.Join(compressionParams, " "), filehandler.JoinPath(opfFolder, imagePath))
-// 		commandhandler.MustRunCommand("bash", fmt.Sprintf(`failed to compress "%s"`, imagePath), []string{"-c", params}...)
-
-// 		// TODO: see if I can figure out why the following does not work
-// 		// var params = append(compressionParams, "\""+filehandler.JoinPath(opfFolder, imagePath)+"\"")
-// 		// fmt.Println(commandhandler.MustGetCommandOutput(imgComperssionProgramName, fmt.Sprintf(`failed to compress "%s"`, imagePath), params...))
-// 	}
-// }
-
-// func isCompressableImage(imagePath string) bool {
-// 	for _, ext := range compressableImageExts {
-// 		if strings.HasSuffix(strings.ToLower(imagePath), ext) {
-// 			return true
-// 		}
-// 	}
-
-// 	return false
-// }

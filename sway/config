@@ -1,8 +1,16 @@
-# Default config for sway
-#
-# Copy this to ~/.config/sway/config and edit it to your liking.
-#
-# Read `man 5 sway` for a complete reference.
+# include catppuccin mocha file for styling
+
+include catppuccin-mocha
+
+## Styling:
+
+# target                 title     bg    text   indicator  border
+client.focused           $lavender $base $text  $rosewater $lavender
+client.focused_inactive  $overlay0 $base $text  $rosewater $overlay0
+client.unfocused         $overlay0 $base $text  $rosewater $overlay0
+client.urgent            $peach    $base $peach $overlay0  $peach
+client.placeholder       $overlay0 $base $text  $overlay0  $overlay0
+client.background        $base
 
 ### Variables
 #
@@ -214,17 +222,13 @@ bindsym $mod+x mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    position top
-	status_command "$HOME.local/bin/bumblebee-status" \
-		-m pasink brightness cpu disk memory battery-upower time traffic nic \
-		-p time.format='%H:%M' \
-		-t solarized
+    swaybar_command waybar
 }
 
 # initial workspace config setup
-exec --no-startup-id swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmu"'
+exec --no-startup-id swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
 exec --no-startup-id swaymsg 'workspace 1; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
 exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/syncthing'
 exec --no-startup-id swaymsg 'workspace 3; exec xdg-open obsidian://open?vault=Obsidian; sleep 5'
 
-include /etc/sway/config.d/*
+include ~/.config/sway/conf.d/*

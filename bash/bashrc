@@ -66,6 +66,10 @@ export DOWNLOADS="$HOME"/Downloads
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
 
+# Force GTK to use wayland
+export GDK_BACKEND=wayland
+export CLUTTER_BACKEND=wayland
+
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 

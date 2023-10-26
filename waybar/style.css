@@ -54,8 +54,8 @@ window#waybar {
 #network,
 #power {
   background-color: @surface0;
-  margin: 7px 3px 0px 7px;
-  padding: 10px 5px 10px 5px;
+  margin: 7px 0px 0px 5px;
+  padding: 10px 5px;
   border-radius: 1rem;
 }
 

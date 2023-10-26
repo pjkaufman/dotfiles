@@ -6,7 +6,6 @@
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
     "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "battery", "clock", "network#up", "network#down", "network"],
     // Modules configuration
     "sway/mode": {

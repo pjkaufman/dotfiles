@@ -50,6 +50,7 @@
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
     },
     "network#up": {
+        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
         "interval": 1,
         "format-wifi": "Up {bandwidthUpBits}",
         "format-ethernet": "Up {bandwidthUpBits}",
@@ -58,6 +59,7 @@
         "tooltip": false
     },
     "network#down": {
+        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
         "interval": 1,
         "format-wifi": "Down {bandwidthDownBits}",
         "format-ethernet": "Down {bandwidthDownBytes}",

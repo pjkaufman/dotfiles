@@ -1,0 +1,89 @@
+{
+    // "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
+    "height": 25, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 0, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": ["sway/workspaces", "sway/mode"],
+    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "battery", "clock", "network#up", "network#down", "network"],
+    // Modules configuration
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "clock": {
+        "format": "{:%H:%M}  ",
+        "tooltip": false
+    },
+    "cpu": {
+        "interval": 1,
+        "format": "{usage}% {avg_frequency} GHz ",
+        "tooltip": false
+    },
+    "memory": {
+        "interval": 1,
+        "format": "{used:0.2f}GB/{total:0.2f}GB ({percentage}%) ",
+        "tooltip": false
+    },
+    "backlight": {
+        "format": "{percent}% {icon}",
+        "format-icons": ["", ""]
+    },
+    "battery": {
+        "states": {
+            "good": 80,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "network": {
+        "format-wifi": "{essid} {signalStrength}% ({ipaddr}) ",
+        "format-ethernet": "{ipaddr}/{cidr} ",
+        "tooltip-format": "{ifname} via {gwaddr} ",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "Disconnected ⚠",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    },
+    "network#up": {
+        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
+        "interval": 1,
+        "format-wifi": "Up {bandwidthUpBits}",
+        "format-ethernet": "Up {bandwidthUpBits}",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "N/A ⚠",
+        "tooltip": false
+    },
+    "network#down": {
+        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
+        "interval": 1,
+        "format-wifi": "Down {bandwidthDownBits}",
+        "format-ethernet": "Down {bandwidthDownBytes}",
+        "format-linked": "{ifname} (No IP) ",
+        "format-disconnected": "N/A ⚠",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        }
+    }
+}
+

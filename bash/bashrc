@@ -66,6 +66,10 @@ export DOWNLOADS="$HOME"/Downloads
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
 
+# Force GTK to use wayland
+export GDK_BACKEND=wayland
+export CLUTTER_BACKEND=wayland
+
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 
@@ -86,7 +90,7 @@ prepend_path "$HOME/.local/bin"
 prepend_path "$CARGO_HOME/bin"
 prepend_path "/sbin"
 prepend_path "/usr/sbin"
-prepend_path "/usr/local/go/bin"
+prepend_path "$GOPATH/bin"
 prepend_path "$SCRIPTS"
 
 # Remove duplicates (preserving prepended items)

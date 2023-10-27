@@ -82,11 +82,6 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
     bindsym $mod+d exec $menu
 
     # Use pactl to adjust volume in PulseAudio.
-    # set $refresh_i3status killall -SIGUSR1 i3status
-    # bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-    # bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-    # bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-    # bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
     bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
     bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
     bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
@@ -95,6 +90,17 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
     # Screen brightness controls
     bindsym XF86MonBrightnessUp exec light -A 5
     bindsym XF86MonBrightnessDown exec light -U 5
+
+    # Screenshots
+
+    # take a screenshot of all screens
+    bindsym --release Print exec "scrot -m '$HOME/Pictures/Screenshots/%s_%H%M_%d.%m.%Y_$wx$h.png'"
+
+    # select a part of the screen to take an image from
+    bindsym --release Shift+Print exec "scrot -s '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
+
+    # take a screenshot of the currently focused window after 4 seconds
+    bindsym --release $mod+Shift+Print exec "scrot -u -d 4 '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -231,8 +237,6 @@ bar {
 
 # initial workspace config setup
 exec --no-startup-id swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
-exec --no-startup-id swaymsg 'workspace 1; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
+exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
 exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/syncthing'
 exec --no-startup-id swaymsg 'workspace 3; exec xdg-open obsidian://open?vault=Obsidian; sleep 5'
-
-include ~/.config/sway/conf.d/*

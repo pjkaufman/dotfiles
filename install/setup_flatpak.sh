@@ -65,3 +65,4 @@ setup_obsidian_settings
 
 sudo flatpak override --filesystem="$HOME/.themes"
 sudo flatpak override --env=GTK_THEME="$GTK_THEME"
+sudo flatpak override --env=QT_QPA_PLATFORM=wayland

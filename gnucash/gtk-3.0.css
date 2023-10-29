@@ -1,0 +1,61 @@
+/* Register defaults */
+@define-color register_header_bg_color #181825;
+@define-color register_primary_bg_color #1e1e2e;
+@define-color register_secondary_bg_color #6c7086;
+@define-color register_split_bg_color #6c7086;
+@define-color register_cursor_bg_color #9399b2;
+@define-color register_fg_color #cdd6f4;
+
+*.gnc-class-register-foreground {
+  color: @register_fg_color;
+}
+
+*.gnc-class-register-header {
+  background-color: @register_header_bg_color;
+}
+
+*.gnc-class-register-primary {
+  background-color: @register_primary_bg_color;
+}
+
+*.gnc-class-register-primary:disabled {
+  background-color: mix(@register_primary_bg_color, grey, 0.2);
+}
+
+*.gnc-class-register-secondary {
+  background-color: @register_secondary_bg_color;
+}
+
+*.gnc-class-register-secondary:disabled {
+  background-color: mix(@register_secondary_bg_color, grey, 0.2);
+}
+
+*.gnc-class-register-split {
+  background-color: @register_split_bg_color;
+}
+
+*.gnc-class-register-split:disabled {
+  background-color: mix(@register_split_bg_color, grey, 0.2);
+}
+
+*.gnc-class-register-cursor {
+  background-color: @register_cursor_bg_color;
+}
+
+*.gnc-class-register-cursor:disabled {
+  background-color: mix(@register_cursor_bg_color, grey, 0.2);
+}
+
+/* Change font color by mixing with grey */
+.gnc-class-lighter-grey-mix {
+  color: mix(currentColor, #bac2de, 0.8);
+}
+
+.gnc-class-darker-grey-mix {
+  color: mix(currentColor, #bac2de, 0.2);
+}
+
+/* Highlight some text */
+.gnc-class-highlight {
+  color: #f5c2e7;
+}

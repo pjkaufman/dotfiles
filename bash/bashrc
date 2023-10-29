@@ -10,9 +10,9 @@
 # test for an interactive shell. There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
-if [[ $- != *i* ]] ; then
-  # shell is non-interactive. be done now!
-  return
+if [[ $- != *i* ]]; then
+	# shell is non-interactive. be done now!
+	return
 fi
 
 # ---------------------- local utility functions ---------------------
@@ -32,8 +32,8 @@ export XDG_CACHE_HOME=$HOME/.cache
 export EDITOR="nvim"
 
 # Prefer US English and use UTF-8.
-export LANG='en_US.UTF-8';
-export LC_ALL='en_US.UTF-8';
+export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 
 # nvm
 export NVM_VERSION=18.0
@@ -66,10 +66,8 @@ export DOWNLOADS="$HOME"/Downloads
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
 
-# Force GTK to use wayland
-export GDK_BACKEND=wayland
-export CLUTTER_BACKEND=wayland
-export QT_QPA_PLATFORM=wayland
+# qt theme
+export QT_QPA_PLATFORMTHEME=catppuccin
 
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
@@ -78,7 +76,7 @@ export SCRIPTS="$DOTFILES/bin"
 
 # Add to path
 prepend_path() {
-  [ -d "$1" ] && PATH="$1:$PATH"
+	[ -d "$1" ] && PATH="$1:$PATH"
 }
 
 # Prepend new items to path (if directory exists)
@@ -108,68 +106,68 @@ export PATH
 # shopt is for BASHOPTS, set is for SHELLOPTS
 
 shopt -s checkwinsize # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-shopt -s nocaseglob; # Case-insensitive globbing (used in pathname expansion)
-shopt -s histappend; # Append to the Bash history file, rather than overwriting it
-shopt -s cdspell; # Autocorrect typos in path names when using `cd`
+shopt -s nocaseglob   # Case-insensitive globbing (used in pathname expansion)
+shopt -s histappend   # Append to the Bash history file, rather than overwriting it
+shopt -s cdspell      # Autocorrect typos in path names when using `cd`
 
 # Enable some Bash 4 features when possible:
 # * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
 # * Recursive globbing, e.g. `echo **/*.txt`
 for option in autocd globstar; do
-  shopt -s "$option" 2> /dev/null;
-done;
+	shopt -s "$option" 2>/dev/null
+done
 
 # --------------------------- smart prompt ---------------------------
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+	debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+xterm-color | *-256color) color_prompt=yes ;;
 esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
+	test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
+	alias ls='ls --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 fi
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-      # We have color support; assume it's compliant with Ecma-48
-      # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-      # a case would tend to support setf rather than setaf.)
-      color_prompt=yes
-    else
-      color_prompt=
-    fi
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+		# We have color support; assume it's compliant with Ecma-48
+		# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+		# a case would tend to support setf rather than setaf.)
+		color_prompt=yes
+	else
+		color_prompt=
+	fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-  PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
 else
-  PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)")\$ '
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)")\$ '
 fi
 unset color_prompt force_color_prompt
 
 # ------------------------------ history -----------------------------
 
 # Increase Bash history size. Allow 32³ entries; the default is 500.
-export HISTSIZE='32768';
-export HISTFILESIZE="${HISTSIZE}";
+export HISTSIZE='32768'
+export HISTFILESIZE="${HISTSIZE}"
 
 # make history file respect xdg dirs
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 
 # Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth';
+export HISTCONTROL='ignoreboth'
 
 # ------------------------------ aliases and general functions -----------------------------
 #      (use exec scripts instead, which work from vim and subprocs)
@@ -188,7 +186,7 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 
-# ls 
+# ls
 alias ll='ls -alF'
 alias lh='ls -alh'
 alias la='ls -A'
@@ -199,10 +197,19 @@ alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 
 # load all files from dotfiles/bash/functions directory
 if [ -d "$DOTFILES/bash/functions" ]; then
-  for file in "$DOTFILES/bash/functions"/*.sh; do
-    source "$file"
-  done
+	for file in "$DOTFILES/bash/functions"/*.sh; do
+		source "$file"
+	done
 fi
+
+# Force GTK and other use of wayland variables on personal computers
+is_personal_computer && export XDG_CURRENT_DESKTOP="sway"
+is_personal_computer && export GDK_BACKEND=wayland
+is_personal_computer && export CLUTTER_BACKEND=wayland
+is_personal_computer && export QT_QPA_PLATFORM=wayland
+
+
+
 
 # ------------- binds / completion ------------
 
@@ -217,34 +224,34 @@ bind 'TAB:menu-complete'
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		. /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		. /etc/bash_completion
+	fi
 fi
 
 # -------------------- command not found handler --------------------
 
 # handles certain file types when nothing is specified for the program so they still open up
 function command_not_found_handle() {
-  if [[ $1 =~ .*.pdf || $1 =~ .*.PDF ]]; then
-    evince "$1"
-  elif [[ $1 =~ .*.jar || $1 =~ .*.JAR ]]; then
-    java -jar "$1"
-  elif is_personal_computer && [[ $1 =~ .*.html || $1 =~ .*.HTML || $1 =~ .*.HTM || $1 =~ .*.htm ]]; then
-    brave "$1"
-  elif [[ $1 =~ .*.zip || $1 =~ .*.ZIP || $1 =~ .*.war || $1 =~ .*.WAR ]]; then
-    unzip -l "$1"
-  elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
-    tar -tf "$1"
-  elif is_personal_computer && [[ $1 =~ .*.epub ]]; then
-    sigil "$1"
-  else
-    # based on https://askubuntu.com/a/1464110
-    printf "%s: command not found\n" "$1" >&2
-    return 127
-  fi
+	if [[ $1 =~ .*.pdf || $1 =~ .*.PDF ]]; then
+		evince "$1"
+	elif [[ $1 =~ .*.jar || $1 =~ .*.JAR ]]; then
+		java -jar "$1"
+	elif is_personal_computer && [[ $1 =~ .*.html || $1 =~ .*.HTML || $1 =~ .*.HTM || $1 =~ .*.htm ]]; then
+		brave "$1"
+	elif [[ $1 =~ .*.zip || $1 =~ .*.ZIP || $1 =~ .*.war || $1 =~ .*.WAR ]]; then
+		unzip -l "$1"
+	elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
+		tar -tf "$1"
+	elif is_personal_computer && [[ $1 =~ .*.epub ]]; then
+		sigil "$1"
+	else
+		# based on https://askubuntu.com/a/1464110
+		printf "%s: command not found\n" "$1" >&2
+		return 127
+	fi
 }
 
 # -------------------- personalized configuration --------------------
@@ -253,7 +260,7 @@ _source_if "$HOME/.localrc"
 
 # -------------------- run common setup functions --------------------
 
-_source_if "$NVM_DIR/nvm.sh" # This loads nvm
+_source_if "$NVM_DIR/nvm.sh"              # This loads nvm
 _have nvm && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # setup rust env

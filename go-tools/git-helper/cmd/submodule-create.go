@@ -15,13 +15,14 @@ import (
 )
 
 var (
-	submoduleName        string
-	repoFolderPath       string
-	ticketAbbreviation   string
-	branchName           string
-	branchPrefix         string
-	pathToSubmodule      = []string{"src", "modules"}
-	getCurrentBranchArgs = []string{"branch", "--show-current"}
+	submoduleName           string
+	repoFolderPath          string
+	ticketAbbreviation      string
+	branchName              string
+	branchPrefix            string
+	pathToSubmodule         = []string{"src", "modules"}
+	getCurrentBranchArgs    = []string{"branch", "--show-current"}
+	getMasterBranchNameArgs = []string{"symbolic-ref", "--short", "refs/remotes/origin/HEAD"}
 )
 
 var prLinkRegex = regexp.MustCompile(`https:[^\n]*`)
@@ -53,10 +54,12 @@ var createCmd = &cobra.Command{
 		folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
 
 		var currentBranch string
+		var masterBranch string
 		var prLinks []string
 		for _, folder := range folders {
 			commandhandler.MustChangeDirectoryTo(folder)
 
+			masterBranch = getGitMasterBranch()
 			currentBranch = commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to get current branch for "%s"`, folder), getCurrentBranchArgs...)
 			if strings.Contains(currentBranch, ticketAbbreviation) {
 				continue
@@ -65,7 +68,7 @@ var createCmd = &cobra.Command{
 			currentBranch = strings.TrimSpace(currentBranch)
 			logger.WriteInfo(fmt.Sprintf(`"%s" does not contain "%s"`, currentBranch, ticketAbbreviation))
 
-			prLinks = append(prLinks, createSubmoduleUpdateBranch(folder, submoduleName, branchPrefix))
+			prLinks = append(prLinks, createSubmoduleUpdateBranch(folder, submoduleName, branchPrefix, masterBranch))
 		}
 
 		if len(prLinks) != 0 {
@@ -113,16 +116,16 @@ func getListOfFoldersWithSubmodule(path, submoduleName string) []string {
 	return folders
 }
 
-func createSubmoduleUpdateBranch(folder, submodule, branchPrefix string) string {
+func createSubmoduleUpdateBranch(folder, submodule, branchPrefix, masterBranch string) string {
 	logger.WriteInfo("Creating the DE branch for " + folder)
-	checkoutLatestFromMaster(folder)
+	checkoutLatestFromMaster(folder, masterBranch)
 
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", "-B", branchPrefix+"/"+ticketAbbreviation+"-update-"+submodule)
 
 	var submoduleDir = filepath.Join(append(pathToSubmodule, submodule)...)
 	commandhandler.MustChangeDirectoryTo(filepath.Join(append(pathToSubmodule, submodule)...))
 
-	checkoutLatestFromMaster(submoduleDir)
+	checkoutLatestFromMaster(submoduleDir, masterBranch)
 
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout "%s" for "%s"`, branchName, folder), "checkout", branchName)
 
@@ -135,8 +138,8 @@ func createSubmoduleUpdateBranch(folder, submodule, branchPrefix string) string 
 	return GetPullRequestLink(pushOutput)
 }
 
-func checkoutLatestFromMaster(folder string) {
-	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout master for "%s"`, folder), "checkout", "master")
+func checkoutLatestFromMaster(folder, masterBranch string) {
+	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to checkout master for "%s"`, folder), "checkout", masterBranch)
 	commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "pull")
 }
 
@@ -171,4 +174,21 @@ func GetPullRequestLink(pushOutput string) string {
 	}
 
 	return matches[0]
+}
+
+func getGitMasterBranch() string {
+	shortBranch := commandhandler.MustGetCommandOutput(gitProgramName, "failed to get master branch name", getMasterBranchNameArgs...)
+
+	actualBranchIndex := strings.Index(shortBranch, "/")
+	var actualBranch = shortBranch
+	if actualBranchIndex != -1 {
+		actualBranch = shortBranch[actualBranchIndex+1:]
+	}
+
+	actualBranch = strings.TrimSpace(actualBranch)
+	if actualBranch == "" {
+		logger.WriteError("failed to get master branch name as it is empty")
+	}
+
+	return actualBranch
 }

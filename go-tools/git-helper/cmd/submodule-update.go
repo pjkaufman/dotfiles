@@ -26,11 +26,13 @@ var updateCmd = &cobra.Command{
 
 		folders := getListOfFoldersWithSubmodule(repoFolderPath, submoduleName)
 		var currentBranch string
+		var masterBranch string
 		for _, folder := range folders {
 			var pathParts = append([]string{folder}, append(pathToSubmodule, submoduleName)...)
 			var submoduleDir = filepath.Join(pathParts...)
 			commandhandler.MustChangeDirectoryTo(submoduleDir)
 
+			masterBranch = getGitMasterBranch()
 			currentBranch = commandhandler.MustGetCommandOutput(gitProgramName, fmt.Sprintf(`failed to get current branch for "%s"`, folder), getCurrentBranchArgs...)
 			if strings.Contains(currentBranch, branchName) {
 				logger.WriteInfo(fmt.Sprintf(`Skipping "%s" since it already has "%s" as its branch`, submoduleDir, branchName))
@@ -39,9 +41,9 @@ var updateCmd = &cobra.Command{
 
 			logger.WriteInfo(fmt.Sprintf(`Updating "%s"'s branch to "%s"`, submoduleDir, branchName))
 
-			checkoutLatestFromMaster(submoduleDir)
+			checkoutLatestFromMaster(submoduleDir, masterBranch)
 
-			if branchName == "master" {
+			if branchName == masterBranch {
 				commandhandler.MustRunCommand(gitProgramName, fmt.Sprintf(`failed to pull latest changes for "%s"`, folder), "checkout", branchName)
 			}
 

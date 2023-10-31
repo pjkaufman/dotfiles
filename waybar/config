@@ -6,7 +6,7 @@
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "battery", "clock", "network#up", "network#down", "network"],
+    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "disk", "battery", "clock", "network#up", "network#down", "network"],
     // Modules configuration
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -84,6 +84,11 @@
             "car": "",
             "default": ["", "", ""]
         }
+    },
+    "disk": {
+        "interval": 60,
+        "format": "{used}/{total} ({percentage_used}%)",
+        "path": "/"
     }
 }
 

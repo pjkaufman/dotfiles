@@ -43,6 +43,7 @@ window#waybar {
     background-color: @surface2;
 }
 
+#disk,
 #mode,
 #cpu,
 #network,
@@ -83,7 +84,7 @@ window#waybar {
   color: @yellow;
 }
 
-#pulseaudio {
+#pulseaudio, #disk {
   color: @pink;
 }
 

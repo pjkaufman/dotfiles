@@ -36,11 +36,6 @@ function setup_obsidian_settings() {
 	desktop_file=obsidian.desktop
 	obsidian_desktop="$desktop_folder/$desktop_file"
 
-	if [ ! -s "$desktop_folder/obsidian.desktop" ]; then
-		ensure_file_symlink_is_in_place "$DOTFILES/obsidian/$desktop_file" "$obsidian_desktop"
-	fi
-
-<<<<<<< Updated upstream
   if [ ! -s "$desktop_folder/obsidian.desktop" ]; then
     ensure_file_symlink_is_in_place "$HOME/dotfiles/obsidian/$desktop_file" "$obsidian_desktop"
   fi
@@ -48,15 +43,8 @@ function setup_obsidian_settings() {
   if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then {
     xdg-mime default "$desktop_file" x-scheme-handler/obsidian
     update-desktop-database
-  }
-=======
-	if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then
-		xdg-mime default "$desktop_file" x-scheme-handler/obsidian
-		update-desktop-database
-	fi
->>>>>>> Stashed changes
+  fi
 }
-
 if ! command -v flatpak &>/dev/null; then
 	echo "Flatpak not installed. Please install it."
 	return
@@ -68,7 +56,6 @@ else
 	install_flatpak_package "Calibre" "com.calibre_ebook.calibre"
 	install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
 	install_flatpak_package "Only Office" "org.onlyoffice.desktopeditors"
-	install_flatpak_package "Flatseal" "com.github.tchx84.Flatseal"
 fi
 
 setup_only_office_settings

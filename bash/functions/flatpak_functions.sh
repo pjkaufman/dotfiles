@@ -45,8 +45,3 @@ function sigil() {
 function calibre() {
 	flatpak run com.calibre_ebook.calibre &
 }
-
-# allows for easy running of Flatseal via terminal
-function flatseal() {
-	flatpak run com.github.tchx84.Flatseal &
-}

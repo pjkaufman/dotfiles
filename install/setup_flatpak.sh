@@ -19,8 +19,6 @@ function setup_only_office_settings() {
 # GnuCash Settings
 function setup_gnucash_settings() {
 	gnucashConfigDir="$HOME/.var/app/org.gnucash.GnuCash/config"
-  # TODO: see about swapping this out for an overrid that makes the gtk-3.0 folder available to flapaks
-	ensure_file_symlink_is_in_place "$DOTFILES/gtk-3.0/settings.ini" "$gnucashConfigDir/gtk-3.0/settings.ini"
 	ensure_folder_symlink_is_in_place "$DOTFILES/gnucash" "$gnucashConfigDir/gnucash"
 }
 
@@ -41,11 +39,12 @@ function setup_obsidian_settings() {
     ensure_file_symlink_is_in_place "$HOME/dotfiles/obsidian/$desktop_file" "$obsidian_desktop"
   fi
 
-  if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then {
+  if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then
     xdg-mime default "$desktop_file" x-scheme-handler/obsidian
     update-desktop-database
   fi
 }
+
 if ! command -v flatpak &>/dev/null; then
 	echo "Flatpak not installed. Please install it."
 	return
@@ -65,6 +64,7 @@ setup_sigil_settings
 setup_obsidian_settings
 
 sudo flatpak override --filesystem="$HOME/.themes"
+sudo flatpak override --filesystem="$HOME/.config/gtk-3.0"
 sudo flatpak override --env=GTK_THEME="$GTK_THEME"
 # sudo flatpak override --env=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP"
 # sudo flatpak override --env=QT_QPA_PLATFORM=wayland # this currently does not seem to work

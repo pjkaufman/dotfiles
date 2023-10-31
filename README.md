@@ -13,7 +13,7 @@ _Note that the expectation is that this repo will be in the home directory of th
 
 ### Tmux
 
-Once you start up tmux for the first time, make sure to enter `ctrl+a+I` to install the tmux plugins
+Once you start up tmux for the first time, make sure to enter `ctrl+a+I` in a tmux session to install the tmux plugins.
 
 ## Rational
 
@@ -32,7 +32,11 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 - Running Go tests does not seem to work
 - golangci-lint does not seem to work for Go
 
-### Setting Up Calibre DeDRM
+### Sigil Styling
+
+- Currently the styling is not quite right, but should be fixable over time with changes to the qss styles file
+
+## Setting Up Calibre DeDRM
 
 - Install Calibre
 - Install a compatible version of the DeDRM plugin

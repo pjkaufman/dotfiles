@@ -19,6 +19,7 @@ function setup_only_office_settings() {
 # GnuCash Settings
 function setup_gnucash_settings() {
 	gnucashConfigDir="$HOME/.var/app/org.gnucash.GnuCash/config"
+  # TODO: see about swapping this out for an overrid that makes the gtk-3.0 folder available to flapaks
 	ensure_file_symlink_is_in_place "$DOTFILES/gtk-3.0/settings.ini" "$gnucashConfigDir/gtk-3.0/settings.ini"
 	ensure_folder_symlink_is_in_place "$DOTFILES/gnucash" "$gnucashConfigDir/gnucash"
 }

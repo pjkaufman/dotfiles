@@ -1,63 +1,30 @@
-@base =#1e1e2e;
-@mantle =#181825;
-@crust =#11111b;
-
-@text =#cdd6f4;
-@subtext0 =#a6adc8;
-@subtext1 =#bac2de;
-
-@surface0 =#313244;
-@surface1 =#45475a;
-@surface2 =#585b70;
-
-@overlay0 =#6c7086;
-@overlay1 =#7f849c;
-@overlay2 =#9399b2;
-
-@blue =#89b4fa;
-@lavender =#b4befe;
-@sapphire =#74c7ec;
-@sky =#89dceb;
-@teal =#94e2d5;
-@green =#a6e3a1;
-@yellow =#f9e2af;
-@peach =#fab387;
-@maroon =#eba0ac;
-@red =#f38ba8;
-@mauve =#cba6f7;
-@pink =#f5c2e7;
-@flamingo =#f2cdcd;
-@rosewater =#f5e0dc;
-@white =#ffffff;
-@black =#000000;
-
 QToolTip {
-    border: 1px solid @white;
-    background-color: @crust;
+    border: 1px solid $white;
+    background-color: $crust;
     padding: 1px;
     border-radius: 3px;
     opacity: 100;
-    color: @white;
+    color: $white;
 }
 
 QWidget {
-    color: @text;
-    background-color: @base; /* TODO: Need to determine what to do here*/
+    color: $text;
+    background-color: $base; /* TODO: Need to determine what to do here*/
 }
 
 QWidget:item:hover {
-    background-color: @overlay0; /* TODO: verify this once everything has been styled */
-    color: @text;
+    background-color: $overlay0; /* TODO: verify this once everything has been styled */
+    color: $text;
 }
 
 QWidget:item:selected {
-    background-color: @overlay2;
+    background-color: $overlay2;
 }
 
 /** QMenuBar is the bar at the top that houses values like File, Edit, etc. **/
 QMenuBar {
-    background-color: @surface1;
-    color: @white;
+    background-color: $surface1;
+    color: $white;
 }
 
 QMenuBar::item {
@@ -67,40 +34,40 @@ QMenuBar::item {
 QMenuBar::item:selected {
     background: transparent;
     background-color: transparent;
-    color: @white;
+    color: $white;
 }
 
 QMenuBar::item:pressed
 {
-    background-color: @overlay0;
+    background-color: $overlay0;
     margin-bottom:-1px;
     padding-bottom:1px;
-    color: @white;
+    color: $white;
 }
 
 /** QMenu is the menu that has the sub options for items like File, Edit, etc.**/
 QMenu {
-    color: @white;
-    border: 1px solid @lavender;
+    color: $white;
+    border: 1px solid $lavender;
 }
 
 QMenu::item {
     padding: 2px 20px 2px 20px;
-    background-color: @surface1;
+    background-color: $surface1;
 }
 
 QMenu::item:selected {
-    color: @white;
-    background-color: @overlay2;
+    color: $white;
+    background-color: $overlay2;
 }
 
 QWidget:disabled {
-    color: @subtext0;
-    background-color: @base; /** TODO: determine what to do here **/
+    color: $subtext0;
+    background-color: $base; /** TODO: determine what to do here **/
 }
 
 QAbstractItemView {
-    background-color: @base;
+    background-color: $base;
 }
 
 QWidget:focus {
@@ -118,8 +85,8 @@ QLineEdit {
 /** QPushButton is the a button that allows you to click it**/
 QPushButton
 {
-    color: @crust;
-    background-color: @mauve;
+    color: $crust;
+    background-color: $mauve;
     border-width: 1px;
     border-style: solid;
     border-radius: 6;
@@ -130,12 +97,12 @@ QPushButton
 }
 
 QPushButton:pressed {
-    color: @crust;
-    background-color: @mauve;
+    color: $crust;
+    background-color: $mauve;
 }
 
 QComboBox {
-    selection-background-color: @mauve;
+    selection-background-color: $mauve;
     background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
     border-style: solid;
     border: 1px solid #1e1e1e;
@@ -144,8 +111,8 @@ QComboBox {
 
 QComboBox:hover,
 QPushButton:hover {
-    color: @crust;
-    border: @pink; /** TODO: see if there is a better color to use that is closer to mauve **/
+    color: $crust;
+    border: $pink; /** TODO: see if there is a better color to use that is closer to mauve **/
 }
 
 
@@ -153,7 +120,7 @@ QComboBox:on {
     padding-top: 3px;
     padding-left: 4px;
     background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);
-    selection-background-color: @mauve;
+    selection-background-color: $mauve;
 }
 
 QComboBox QAbstractItemView {
@@ -284,9 +251,10 @@ QPlainTextEdit {
     background-color: #242424;
 }
 
+/** QHeaderView is the header that shows up in table like options **/
 QHeaderView::section {
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #616161, stop: 0.5 #505050, stop: 0.6 #434343, stop:1 #656565);
-    color: white;
+    background-color: $surface0;
+    color: $text;
     padding-left: 4px;
     border: 1px solid #6c6c6c;
 }
@@ -299,7 +267,7 @@ QDockWidget::title {
     text-align: center;
     spacing: 3px;
     /* spacing between items in the tool bar */
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 @base, stop: 0.5 #242424, stop:1 @base);
+    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 $base, stop: 0.5 #242424, stop:1 $base);
 }
 
 QDockWidget::close-button,
@@ -307,7 +275,7 @@ QDockWidget::float-button {
     text-align: center;
     spacing: 1px;
     /* spacing between items in the tool bar */
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 @base, stop: 0.5 #242424, stop:1 @base);
+    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 $base, stop: 0.5 #242424, stop:1 $base);
 }
 
 QDockWidget::close-button:hover,
@@ -368,10 +336,10 @@ QProgressBar::chunk {
 
 /** QTabBar is the tab that contains the file names in it **/
 QTabBar::tab {
-    color: @mauve;
+    color: $mauve;
     border: 1px solid #444;
     border-bottom-style: none;
-    background-color: @base;
+    background-color: $base;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 3px;
@@ -410,17 +378,17 @@ QTabBar::tab:selected {
 }
 
 QTabBar::tab: !selected:hover {
-    /*border-top: 2px solid @mauve;
+    /*border-top: 2px solid $mauve;
     padding-bottom: 3px;*/
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #212121, stop:0.4 #343434, stop:0.2 #343434, stop:0.1 @mauve);
+    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:1 #212121, stop:0.4 #343434, stop:0.2 #343434, stop:0.1 $mauve);
 }
 
 QRadioButton::indicator:checked,
 QRadioButton::indicator:unchecked {
     color: #b1b1b1;
-    background-color: @base;
+    background-color: $base;
     border: 1px solid #b1b1b1;
     border-radius: 6px;
 }
@@ -429,13 +397,13 @@ QRadioButton::indicator:checked {
     background-color: qradialgradient(cx: 0.5, cy: 0.5,
             fx: 0.5, fy: 0.5,
             radius: 1.0,
-            stop: 0.25 @mauve,
-            stop: 0.3 @base);
+            stop: 0.25 $mauve,
+            stop: 0.3 $base);
 }
 
 QCheckBox::indicator {
     color: #b1b1b1;
-    background-color: @base;
+    background-color: $base;
     border: 1px solid #b1b1b1;
     width: 9px;
     height: 9px;
@@ -447,7 +415,7 @@ QRadioButton::indicator {
 
 QRadioButton::indicator:hover,
 QCheckBox::indicator:hover {
-    border: 1px solid @mauve;
+    border: 1px solid $mauve;
 }
 
 QCheckBox::indicator:checked {

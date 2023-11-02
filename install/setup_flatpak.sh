@@ -55,7 +55,6 @@ else
 	install_flatpak_package "Sigil" "com.sigil_ebook.Sigil"
 	install_flatpak_package "Calibre" "com.calibre_ebook.calibre"
 	install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
-	install_flatpak_package "Only Office" "org.onlyoffice.desktopeditors"
 fi
 
 setup_only_office_settings

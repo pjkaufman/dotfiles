@@ -46,5 +46,5 @@ if [ ! -d "$gtk_config_dir" ]; then
   mkdir -p "$gtk_config_dir"
 fi
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/gtk-3.0/settings.ini" "$gtk_config_dir/settings.ini"
-ensure_folder_symlink_is_in_place "$DOTFILES/themes" "$HOME/.themes"
+ensure_file_symlink_is_in_place "$DOTFILES/gtk-3.0/settings.ini" "$gtk_config_dir/settings.ini"
+ensure_folder_symlink_is_in_place "$DOTFILES/gtk-3.0/themes" "$HOME/.themes"

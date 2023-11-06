@@ -24,6 +24,24 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 
 ## Dependencies
 
+These dotfiles are meant to be run in bash. As such they are meant to be run on a unix system and not Windows.
+
+### Programs
+
+The current list of programs that need installing and are used are as follows:
+
+| Program Name | Installation Method | Use Case |
+| ------------ | ------------------- | -------- |
+| `grep` | apt | General cli utility for string searching |
+| `ripgrep` | apt | General cli utility for string searching that is used in some NeoVim plugins |
+| `curl` | apt | General cli utility for getting webpage content from the cli |
+| `fzf` | apt | Fuzzy finder for the cli |
+| `btop` | apt | Cli task/resource manager |
+| `python3` | apt | Helps with writing some scripts and installing some programs used |
+| `pip3` | apt | Helps get some packages that are not available on in apt and are written in Python |
+| `rename` | apt | Helps rename files using regex from the cli |
+
+
 ## Known Issues
 
 ### Neovim
@@ -32,9 +50,6 @@ The repo also acts as a secondary copy of my configs which allows me to backup m
 - Running Go tests does not seem to work
 - golangci-lint does not seem to work for Go
 
-### Sigil Styling
-
-- Currently the styling is not quite right, but should be fixable over time with changes to the qss styles file
 
 ## Setting Up Calibre DeDRM
 

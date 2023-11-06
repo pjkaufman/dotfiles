@@ -8,4 +8,4 @@ There are a couple things that are saved from Sigil to save time:
   - helps find spelling mistakes faster when the list is properly filled out
   - Note that these need to be manually enabled by editing preferences on initial use under preferences
 - Styles
-  - This just helps keep things look the way I want without having to spend a lot of time looking for things
+  - Currently there is a file called `qt_styles.qss.bak` that is meant to go ahead and serve as a backup if I want a dark theme for Sigil that is not supplied by Kvantum

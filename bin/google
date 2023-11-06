@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-# based on https://github.com/rwxrob/dot/blob/ff6ceefbd36db895b70c4b1625f465d3bab594d1/scripts/google
-
-url="https://google.com/search?q=$(urlencode "$*")"
-
-exec w3m "https://google.com/search?q=$url"

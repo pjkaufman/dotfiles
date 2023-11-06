@@ -89,6 +89,7 @@ prepend_path "$HOME/.local/bin"
 prepend_path "$CARGO_HOME/bin"
 prepend_path "/sbin"
 prepend_path "/usr/sbin"
+prepend_path "/usr/local/go/bin"
 prepend_path "$GOPATH/bin"
 prepend_path "$SCRIPTS"
 
@@ -175,10 +176,6 @@ export HISTCONTROL='ignoreboth'
 # general
 alias dot='cd $DOTFILES'
 alias chmox='chmod +x'
-
-# seaching
-alias '?'=duck
-alias '??'=google
 
 # moving around
 alias ..='cd ..'

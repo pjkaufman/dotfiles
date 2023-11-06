@@ -66,9 +66,6 @@ export DOWNLOADS="$HOME"/Downloads
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
 
-# qt theme
-export QT_QPA_PLATFORMTHEME=catppuccin
-
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 
@@ -204,9 +201,6 @@ is_personal_computer && export XDG_CURRENT_DESKTOP="sway"
 is_personal_computer && export GDK_BACKEND=wayland
 is_personal_computer && export CLUTTER_BACKEND=wayland
 is_personal_computer && export QT_QPA_PLATFORM=wayland
-
-
-
 
 # ------------- binds / completion ------------
 

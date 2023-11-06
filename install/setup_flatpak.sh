@@ -6,16 +6,6 @@ if is_work_computer; then
 	return
 fi
 
-# Only Office Settings
-function setup_only_office_settings() {
-	only_office_dark_theme_setting="UITheme2=theme-dark"
-	only_office_settings_file="$HOME/.var/app/org.onlyoffice.desktopeditors/config/onlyoffice/DesktopEditors.conf"
-	if ! grep -q "$only_office_dark_theme_setting" "$only_office_settings_file"; then
-		echo "Adding dark theme setting for Only Office"
-		sed -i "s/\[General\]/\[General\]\n$only_office_dark_theme_setting/g" "$only_office_settings_file"
-	fi
-}
-
 # GnuCash Settings
 function setup_gnucash_settings() {
 	gnucashConfigDir="$HOME/.var/app/org.gnucash.GnuCash/config"
@@ -57,13 +47,10 @@ else
 	install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
 fi
 
-setup_only_office_settings
 setup_gnucash_settings
 setup_sigil_settings
 setup_obsidian_settings
 
-sudo flatpak override --filesystem="$HOME/.themes"
-sudo flatpak override --filesystem="$HOME/.config/gtk-3.0"
-sudo flatpak override --env=GTK_THEME="$GTK_THEME"
+sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$HOME/.config/gtk-3.0" --env=GTK_THEME="$GTK_THEME"
 # sudo flatpak override --env=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP"
 # sudo flatpak override --env=QT_QPA_PLATFORM=wayland # this currently does not seem to work

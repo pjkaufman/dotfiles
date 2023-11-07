@@ -237,7 +237,7 @@ function command_not_found_handle() {
 	elif [[ $1 =~ .*.gz || $1 =~ .*.tgz || $1 =~ .*.TGZ ]]; then
 		tar -tf "$1"
 	elif is_personal_computer && [[ $1 =~ .*.epub ]]; then
-		sigil "$1"
+		editepub "$1"
 	else
 		# based on https://askubuntu.com/a/1464110
 		printf "%s: command not found\n" "$1" >&2

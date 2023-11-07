@@ -27,12 +27,12 @@ function minecraft() {
 	flatpak run com.mojang.Minecraft &
 }
 
-# allows for easy running of Sigil via terminal
-function sigil() {
-	flatpak run com.sigil_ebook.Sigil "$@" &
-}
-
 # allows for easy running of Calibre via terminal
 function calibre() {
 	flatpak run com.calibre_ebook.calibre &
+}
+
+# allows for easy running of Calibre editor view via terminal
+function editepub() {
+	flatpak run --command="ebook-edit" com.calibre_ebook.calibre --detach "$@"
 }

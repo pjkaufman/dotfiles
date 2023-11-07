@@ -12,10 +12,9 @@ function setup_gnucash_settings() {
 	ensure_folder_symlink_is_in_place "$DOTFILES/gnucash" "$gnucashConfigDir/gnucash"
 }
 
-# Sigil Settings
-function setup_sigil_settings() {
-	ensure_file_symlink_is_in_place "$DOTFILES/sigil/qt_styles.qss" "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/qt_styles.qss"
-	ensure_folder_symlink_is_in_place "$DOTFILES/sigil/user-dictionaries" "$HOME/.var/app/com.sigil_ebook.Sigil/data/sigil-ebook/sigil/user_dictionaries"
+# Calibre Settings
+function setup_calibre_settings() {
+	ensure_folder_symlink_is_in_place "$DOTFILES/calibre/dictionaries" "$HOME/.var/app/com.calibre_ebook.calibre/config/calibre/dictionaries"
 }
 
 # Obsidian Settings
@@ -42,13 +41,12 @@ else
 	install_flatpak_package "Brave Browser" "com.brave.Browser"
 	install_flatpak_package "Minecraft" "com.mojang.Minecraft"
 	install_flatpak_package "GnuCash" "org.gnucash.GnuCash"
-	install_flatpak_package "Sigil" "com.sigil_ebook.Sigil"
 	install_flatpak_package "Calibre" "com.calibre_ebook.calibre"
 	install_flatpak_package "Obsidian" "md.obsidian.Obsidian"
 fi
 
 setup_gnucash_settings
-setup_sigil_settings
+setup_calibre_settings
 setup_obsidian_settings
 
 sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$HOME/.config/gtk-3.0" --env=GTK_THEME="$GTK_THEME"

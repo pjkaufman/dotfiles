@@ -105,3 +105,4 @@ The current list of programs that need installing and are used are as follows:
 - Add dark option for church song converter
 - Add option to convert church songs to odf or similar format from html for flexibility
 - Add Obsidian configs if possible
+- Add a bluetooth manager

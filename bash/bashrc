@@ -23,10 +23,10 @@ _source_if() { [[ -r "$1" ]] && source "$1"; }
 # ----------------------- environment variables ----------------------
 
 # XDG vars
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_CACHE_HOME=$HOME/.cache
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
 
 # Set the default editor to neovim
 export EDITOR="nvim"

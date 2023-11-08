@@ -2,4 +2,4 @@
 
 install-go "$GO_VERSION"
 
-cd "$HOME/dotfiles/go-tools" && make install
+cd "$DOTFILES/go-tools" && make install

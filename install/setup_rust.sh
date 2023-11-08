@@ -8,4 +8,4 @@ cargo_packages_to_install=(
 )
 for pkg in "${cargo_packages_to_install[@]}"; do cargo_install_package "$pkg"; done
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/topgrade/topgrade.toml" "$HOME/.config/topgrade.toml"
+ensure_file_symlink_is_in_place "$DOTFILES/topgrade/topgrade.toml" "$XDG_CONFIG_HOME/topgrade.toml"

@@ -21,11 +21,11 @@ install_apt_package "pactl" "pulseaudio-utils" # sound changes
 # clipboard manager
 go_install_package "cliphist" "go.senan.xyz/cliphist"
 
-ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$HOME/.config/sway"
-ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$HOME/.config/waybar"
+ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
+ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
 
 # echo "Copying images"
 
 # # make sure to overwrite the existing image if there is one since I cannot use symlinks
-# cp -f "$HOME/dotfiles/i3/Laminin.png" "$HOME/.config/i3/Laminin.png"
-# cp -f "$HOME/dotfiles/i3/CharlesOutside.jpg" "$HOME/.config/i3/CharlesOutside.jpg"
+# cp -f "$DOTFILES/i3/Laminin.png" "$XDG_CONFIG_HOME/i3/Laminin.png"
+# cp -f "$DOTFILES/i3/CharlesOutside.jpg" "$XDG_CONFIG_HOME/i3/CharlesOutside.jpg"

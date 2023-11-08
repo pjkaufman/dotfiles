@@ -2,7 +2,7 @@
 
 add_ppa_and_install_package "neovim-ppa/unstable" "neovim"
 
-ensure_folder_symlink_is_in_place "$HOME/dotfiles/nvim" "$HOME/.config/nvim"
+ensure_folder_symlink_is_in_place "$DOTFILES/nvim" "$XDG_CONFIG_HOME/nvim"
 
 # null-ls lsp formatters and diagnostics 
 neovim_pip_packages_to_install=(

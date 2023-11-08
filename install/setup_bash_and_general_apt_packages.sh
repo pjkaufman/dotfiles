@@ -41,7 +41,7 @@ personal_apt_packages_to_install=(
 for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 
 # gtk-3.0
-gtk_config_dir="$HOME/.config/gtk-3.0"
+gtk_config_dir="$XDG_CONFIG_HOME/gtk-3.0"
 if [ ! -d "$gtk_config_dir" ]; then
   mkdir -p "$gtk_config_dir"
 fi

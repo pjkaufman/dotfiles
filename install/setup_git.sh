@@ -9,7 +9,7 @@ install_apt_package "ssh-keygen" "openssh-server"
 
 mkdir -p "$XDG_CONFIG_HOME/git"
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/git/config" "$XDG_CONFIG_HOME/git/config" 
+ensure_file_symlink_is_in_place "$DOTFILES/git/config" "$XDG_CONFIG_HOME/git/config" 
 
 # setup the ssh values for github
 
@@ -20,7 +20,7 @@ if [ ! -d "$ssh_folder" ]; then
   mkdir "$ssh_folder"
 fi
 
-ssh_key_file="${ssh_folder}/id_ed25519.pub"
+ssh_key_file="$ssh_folder/id_ed25519.pub"
 if [ ! -f "$ssh_key_file" ]; then
   email=$(git config --global user.email)
   ssh-keygen -t ed25519 -C "$email"
@@ -32,4 +32,4 @@ else
   cat "$ssh_key_file"
 fi
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/ssh/config" "$HOME/.ssh/config"
+ensure_file_symlink_is_in_place "$DOTFILES/ssh/config" "$ssh_folder/config"

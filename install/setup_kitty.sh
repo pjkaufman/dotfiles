@@ -7,4 +7,4 @@ fi
 
 install_apt_package "kitty"
 
-ensure_file_symlink_is_in_place "$HOME/dotfiles/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+ensure_file_symlink_is_in_place "$DOTFILES/kitty/kitty.conf" "$XDG_CONFIG_HOME/kitty/kitty.conf"

@@ -20,12 +20,12 @@ function setup_calibre_settings() {
 # Obsidian Settings
 function setup_obsidian_settings() {
 	# based on https://forum.obsidian.md/t/meta-post-linux-tips-tricks-solutions-to-common-problems/6291/17
-	desktop_folder="$HOME/.local/share/applications"
+	desktop_folder="$XDG_DATA_HOME/applications"
 	desktop_file=obsidian.desktop
 	obsidian_desktop="$desktop_folder/$desktop_file"
 
   if [ ! -s "$desktop_folder/obsidian.desktop" ]; then
-    ensure_file_symlink_is_in_place "$HOME/dotfiles/obsidian/$desktop_file" "$obsidian_desktop"
+    ensure_file_symlink_is_in_place "$DOTFILES/obsidian/$desktop_file" "$obsidian_desktop"
   fi
 
   if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then
@@ -49,6 +49,6 @@ setup_gnucash_settings
 setup_calibre_settings
 setup_obsidian_settings
 
-sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$HOME/.config/gtk-3.0" --env=GTK_THEME="$GTK_THEME"
+sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$XDG_CONFIG_HOME/gtk-3.0" --env=GTK_THEME="$GTK_THEME"
 # sudo flatpak override --env=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP"
 # sudo flatpak override --env=QT_QPA_PLATFORM=wayland # this currently does not seem to work

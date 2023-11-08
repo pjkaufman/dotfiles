@@ -24,7 +24,7 @@ fi
 
 cert_file=/usr/share/ca-certificates/mozilla/VeriSign_Class_3_Public_Primary_Certification_Authority_-_G5.crt
 if [ ! -f "$cert_file" ]; then 
-  sudo cp "$HOME/dotfiles/wine/certificate" "$cert_file"
+  sudo cp "$DOTFILES/wine/certificate" "$cert_file"
   sudo update-ca-certificates
 fi
 

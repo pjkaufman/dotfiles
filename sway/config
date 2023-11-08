@@ -114,6 +114,10 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
 
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+    # Clipboard
+    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+
 #
 # Moving around:
 #
@@ -236,6 +240,8 @@ bar {
 }
 
 # initial workspace config setup
+exec --no-startup-id swaymsg 'workspace 1; wl-paste --type text --watch cliphist store &' #Stores only text data
+exec --no-startup-id swaymsg 'workspace 1; wl-paste --type image --watch cliphist store &' #Stores only image data
 exec --no-startup-id swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
 exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
 exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/syncthing'

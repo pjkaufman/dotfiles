@@ -68,6 +68,7 @@ export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
 
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
+export REPOS="$HOME/repos"
 
 # ------------------------------- path -------------------------------
 
@@ -98,6 +99,11 @@ PATH=$(echo -n "$PATH" | awk -v RS=: '{ if (!arr[$0]++) {printf("%s%s",!ln++?"":
 # Wrap up
 
 export PATH
+
+# ------------------------------ cdpath ------------------------------
+
+# allows you to autocomplete file paths for the colon separated directories from anywhere
+export CDPATH=".:$DOTFILES:$REPOS:/media/$USER:$HOME"
 
 # ------------------------ bash shell options ------------------------
 

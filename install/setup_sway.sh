@@ -13,6 +13,7 @@ sway_packages_to_install=(
   "swaylock" # lockscreen setup
   "waybar" # status bar
   "wofi" # app selector
+  "wl-clipboard" # clipboard base
 )
 for pkg in "${sway_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 
@@ -23,6 +24,7 @@ go_install_package "cliphist" "go.senan.xyz/cliphist"
 
 ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
 ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
+ensure_folder_symlink_is_in_place "$DOTFILES/environment.d" "$XDG_CONFIG_HOME/environment.d"
 
 # echo "Copying images"
 

@@ -99,7 +99,6 @@ The current list of programs that need installing and are used are as follows:
 
 - Add VsCode
 - Add Sway install script
-- Add clipboard to Sway
 - Convert NeoVim to a more stable setup
 - Setup monitor in Sway
 - Add dark option for church song converter

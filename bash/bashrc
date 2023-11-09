@@ -59,6 +59,11 @@ export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 export REPOS="$HOME/repos"
 
+if [[ $- != *i* ]]; then
+	# shell is non-interactive. be done now!
+	return
+fi
+
 # ------------------------------- path -------------------------------
 
 # Add to path

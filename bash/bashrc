@@ -7,22 +7,10 @@
 # that can't tolerate any output. So make sure this doesn't display
 # anything or bad things will happen !
 
-# test for an interactive shell. There is no need to set anything
-# past this point for scp and rcp, and it's important to refrain from
-# outputting anything in those cases.
-if [[ $- != *i* ]]; then
-	# shell is non-interactive. be done now!
-	return
-fi
-
-# ---------------------- local utility functions ---------------------
-
-_have() { type "$1" &>/dev/null; }
-_source_if() { [[ -r "$1" ]] && source "$1"; }
-
 # ----------------------- environment variables ----------------------
 
 # XDG vars
+# Note: if these changes, please update the values in environment.d/sway.conf
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_STATE_HOME="$HOME/.local/state"
@@ -36,11 +24,12 @@ export LANG='en_US.UTF-8'
 export LC_ALL='en_US.UTF-8'
 
 # nvm
-export NVM_VERSION=18.0
+export NODE_VERSION=18.0
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 
 # Golang
 export GO_VERSION=1.21.0
+# Note: if GOPATH changes, please update the values in environment.d/sway.conf
 export GOPATH="$XDG_DATA_HOME"/go
 
 # set SSH_AUTH_SOCK env var to a fixed value
@@ -104,6 +93,21 @@ export PATH
 
 # allows you to autocomplete file paths for the colon separated directories from anywhere
 export CDPATH=".:$DOTFILES:$REPOS:/media/$USER:$HOME"
+
+# ------------ interactive shell only after this ---------------------
+
+# test for an interactive shell. There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]]; then
+	# shell is non-interactive. be done now!
+	return
+fi
+
+# ---------------------- local utility functions ---------------------
+
+_have() { type "$1" &>/dev/null; }
+_source_if() { [[ -r "$1" ]] && source "$1"; }
 
 # ------------------------ bash shell options ------------------------
 

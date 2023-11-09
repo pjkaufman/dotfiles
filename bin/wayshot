@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# from https://github.com/reinefjord/wayshot
+
 shopt -s extglob
 
 if hash jq 2>/dev/null; then

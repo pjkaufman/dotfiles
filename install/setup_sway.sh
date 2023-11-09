@@ -14,6 +14,9 @@ sway_packages_to_install=(
   "waybar" # status bar
   "wofi" # app selector
   "wl-clipboard" # clipboard base
+  "jq" # json processor for wayshot
+  "grim" # part of screenshot taking as a part of wayshot
+  "slurp" # part of screenshot taking as a part of wayshot
 )
 for pkg in "${sway_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 

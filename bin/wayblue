@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+if ! command -v bluetoothctl &> /dev/null; then
+  echo "bluetoothctl must be installed to run wayblue"
+  exit 1;
+fi
+
+if ! command -v wofi &> /dev/null; then
+  echo "wofi must be installed to run wayblue"
+  exit 1;
+fi
+
+function getAvailableConnections() {
+  timeout 5 bluetoothctl scan on | grep -o -e "Device [^ ]* [^\n]*"
+}
+
+function selectDevice() {
+  # get all of the text post the third space of each line
+  # lines look like : Device AL:B8:89:AD:H6:78 NAME_HERE
+  local bluetooth_names
+  bluetooth_names=$(cut -d " " -f 3- <<< "$1" )
+
+  local selected_device
+  selected_device=$(echo "$bluetooth_names" | wofi --dmenu)
+
+  echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
+}
+
+function connectToDevice() {
+  bluetoothctl connect "$1"
+}
+
+bluetooth_info=$(getAvailableConnections)
+
+selected_device_id=$(selectDevice "$bluetooth_info")
+
+connectToDevice "$selected_device_id"
+

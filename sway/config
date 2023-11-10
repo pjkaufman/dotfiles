@@ -118,6 +118,8 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
     # Clipboard
     bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
 
+    # Bluetooth
+    bindsym $mod+Shift+b exec "$HOME/dotfiles/bin/wayblue -c"
 #
 # Moving around:
 #

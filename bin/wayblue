@@ -28,7 +28,7 @@ function selectDevice() {
   bluetooth_names=$(cut -d " " -f 3- <<< "$1" )
 
   local selected_device
-  selected_device=$(echo "$bluetooth_names" | "$2")
+  selected_device=$(echo "$bluetooth_names" | $2)
 
   echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
 }
@@ -115,6 +115,11 @@ fi
 
 if [ "$CONNECT" = "yes" ]; then
   bluetooth_info=$(getAvailableConnections)
+  if [ -z "$bluetooth_info" ] || [ "$bluetooth_info" == "" ]; then
+    echo "No devices found"
+    exit 0;
+  fi
+
   selected_device_id=$(selectDevice "$bluetooth_info" "$selector")
 
   connectToDevice "$selected_device_id"

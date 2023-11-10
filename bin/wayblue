@@ -10,6 +10,13 @@ if ! command -v wofi &> /dev/null; then
   exit 1;
 fi
 
+if hash fzf 2>/dev/null; then
+  FZF_AVAILABLE=1
+fi
+
+wofi_selector="wofi --dmenu"
+fzf_selector="fzf"
+
 function getAvailableConnections() {
   timeout 5 bluetoothctl scan on | grep -o -e "Device [^ ]* [^\n]*"
 }
@@ -21,7 +28,7 @@ function selectDevice() {
   bluetooth_names=$(cut -d " " -f 3- <<< "$1" )
 
   local selected_device
-  selected_device=$(echo "$bluetooth_names" | wofi --dmenu)
+  selected_device=$(echo "$bluetooth_names" | "$2")
 
   echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
 }
@@ -30,9 +37,95 @@ function connectToDevice() {
   bluetoothctl connect "$1"
 }
 
-bluetooth_info=$(getAvailableConnections)
+function disconnectFromDevice() {
+  bluetoothctl disconnect "$1"
+}
 
-selected_device_id=$(selectDevice "$bluetooth_info")
+function trustDevice() {
+  bluetoothctl trust "$1"
+}
 
-connectToDevice "$selected_device_id"
+USAGE="\
+Usage: $(basename "$0") [options...]
 
+A wrapper around bluetoothctl that helps with some common actions.
+It waits 5 seconds when scanning for available connections.
+
+Options:
+  -c      Connect to a device
+  -d      Disconnect from a device
+  -t      Trust the device once a connection is established
+  -s      Use the command just from the cli $([ -z "$FZF_AVAILABLE" ] && echo " - (not available)")
+  -h      Show this help message
+"
+
+function echoUsage {
+  echo ""
+  echo "$USAGE"
+}
+
+CONNECT=no
+TRUST=no
+DISCONNECT=no
+CLI=no
+
+if [ -z "$1" ]; then
+  echoUsage
+  exit 0
+fi
+
+while (( $# > 0 )); do
+  case $1 in
+    -c)
+      CONNECT=yes
+      shift
+      ;;
+    -d)
+      DISCONNECT=yes
+      shift
+      ;;
+    -t)
+      TRUST=yes
+      shift
+      ;;
+    -s)
+      if [ -z "$FZF_AVAILABLE" ]; then
+        echo "fzf was not found, please install fzf to use this function."
+        exit 1
+      fi
+      CLI=yes
+      shift
+      ;;
+    -h)
+      echo "$USAGE"
+      exit 0
+      ;;
+    *)
+      echo "Too many arguments."
+      echoUsage
+      exit 1
+      ;;
+  esac
+done
+
+selector="$wofi_selector"
+if [ "$CLI" = "yes" ]; then
+  selector="$fzf_selector"
+fi
+
+if [ "$CONNECT" = "yes" ]; then
+  bluetooth_info=$(getAvailableConnections)
+  selected_device_id=$(selectDevice "$bluetooth_info" "$selector")
+
+  connectToDevice "$selected_device_id"
+  if [ "$TRUST" = "yes" ]; then
+    trustDevice "$selected_device_id"
+  fi
+fi
+
+if [ "$DISCONNECT" = "yes" ]; then
+  bluetooth_info=$(getAvailableConnections)
+  selected_device_id=$(selectDevice "$bluetooth_info" "$selector")
+
+  disconnectFromDevice "$selected_device_id"
+fi

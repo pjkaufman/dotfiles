@@ -46,7 +46,6 @@ window#waybar {
 #disk,
 #mode,
 #cpu,
-#network,
 #backlight,
 #clock,
 #battery,
@@ -72,7 +71,7 @@ window#waybar {
   color: @green;
 }
 
-#battery.warning:not(.charging) {
+#battery.warning:not(.charging), #battery.critical:not(.charging) {
   color: @red;
 }
 

@@ -6,7 +6,7 @@
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "disk", "battery", "clock", "network#up", "network#down", "network"],
+    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "disk", "battery", "clock", "network"],
     // Modules configuration
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -48,24 +48,6 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
-    },
-    "network#up": {
-        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
-        "interval": 1,
-        "format-wifi": "Up {bandwidthUpBits}",
-        "format-ethernet": "Up {bandwidthUpBits}",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "N/A ⚠",
-        "tooltip": false
-    },
-    "network#down": {
-        "interface": "wlo1", // needed as per https://github.com/Alexays/Waybar/issues/1392
-        "interval": 1,
-        "format-wifi": "Down {bandwidthDownBits}",
-        "format-ethernet": "Down {bandwidthDownBytes}",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "N/A ⚠",
-        "tooltip": false
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float

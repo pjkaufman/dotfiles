@@ -25,9 +25,14 @@ install_apt_package "pactl" "pulseaudio-utils" # sound changes
 # clipboard manager
 go_install_package "cliphist" "go.senan.xyz/cliphist"
 
+# make sure wlroots and its portal is installed
+install_apt_package_by_package_name_only "wlroots"
+install_apt_package_by_package_name_only "xdg-desktop-portal-wlr"
+
 ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
 ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
 ensure_folder_symlink_is_in_place "$DOTFILES/environment.d" "$XDG_CONFIG_HOME/environment.d"
+ensure_folder_symlink_is_in_place "$DOTFILES/xdg-desktop-portal" "$XDG_CONFIG_HOME/xdg-desktop-portal"
 
 # echo "Copying images"
 

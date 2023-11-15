@@ -26,7 +26,7 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu exec wofi --show search
+set $menu exec wofi --show=drun
 
 include /etc/sway/config-vars.d/*
 

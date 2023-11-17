@@ -37,3 +37,12 @@ func MustChangeDirectoryTo(path string) {
 func GetCurrentDirectory() (string, error) {
 	return os.Getwd()
 }
+
+func MustGetUserConfigDir() string {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		logger.WriteError(fmt.Sprintf(`failed to get user config directory: %s`, err))
+	}
+
+	return configDir
+}

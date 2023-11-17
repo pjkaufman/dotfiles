@@ -233,3 +233,14 @@ func MustGetFileSize(path string) float64 {
 
 	return float64(f.Size()) / bytesInAKiloByte
 }
+
+func MustCreateFolderIfNotExists(path string) {
+	if FolderExists(path) {
+		return
+	}
+
+	err := os.MkdirAll(path, folderPerms)
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("failed to create folder(s) for path \"%s\": %s", path, err))
+	}
+}

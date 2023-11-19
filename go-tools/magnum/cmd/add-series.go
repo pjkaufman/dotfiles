@@ -20,6 +20,7 @@ var (
 	seriesName      string
 	seriesType      string
 	seriesPublisher string
+	slugOverride    string
 )
 
 // addBookInfoCmd represents the createCover command
@@ -45,10 +46,16 @@ var addBookInfoCmd = &cobra.Command{
 			return
 		}
 
+		var override *string
+		if strings.TrimSpace(slugOverride) != "" {
+			override = &slugOverride
+		}
+
 		newSeries := config.SeriesInfo{
-			Name:      seriesName,
-			Publisher: config.PublisherType(seriesPublisher),
-			Type:      config.SeriesType(seriesType),
+			Name:         seriesName,
+			Publisher:    config.PublisherType(seriesPublisher),
+			Type:         config.SeriesType(seriesType),
+			SlugOverride: override,
 		}
 
 		seriesInfo.Series = append(seriesInfo.Series, newSeries)
@@ -64,6 +71,7 @@ func init() {
 	addBookInfoCmd.Flags().StringVarP(&seriesName, "name", "n", "", "the name of the series")
 	addBookInfoCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "publisher")
 	addBookInfoCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
+	addBookInfoCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
 
 	addBookInfoCmd.MarkFlagRequired("name")
 }

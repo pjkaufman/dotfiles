@@ -2,6 +2,7 @@ package yenpress
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -15,8 +16,10 @@ type VolumeInfo struct {
 	RelativeLink string
 }
 
-func GetVolumes(seriesName string, verbose bool) ([]*VolumeInfo, int) {
-	c := crawler.CreateNewCrawler(verbose)
+var seriesInvalidSlugCharacters = regexp.MustCompile(`[\(\),:\-?!]`)
+
+func GetVolumes(seriesName string, slugOverride *string, verbose bool) ([]*VolumeInfo, int) {
+	c := crawler.CreateNewCollyCrawler(verbose)
 
 	var volumes = []*VolumeInfo{}
 
@@ -47,7 +50,13 @@ func GetVolumes(seriesName string, verbose bool) ([]*VolumeInfo, int) {
 		}
 	})
 
-	var seriesSlug = strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(seriesName), " ", "-"), ")", ""), "(", "")
+	var seriesSlug string
+	if slugOverride != nil {
+		seriesSlug = *slugOverride
+	} else {
+		seriesSlug = getSeriesSlugFromName(seriesName)
+	}
+
 	var seriesURL = baseURL + seriesPath + seriesSlug
 	err := c.Visit(seriesURL)
 	if err != nil {
@@ -56,4 +65,14 @@ func GetVolumes(seriesName string, verbose bool) ([]*VolumeInfo, int) {
 	}
 
 	return volumes, numVolumes
+}
+
+func getSeriesSlugFromName(seriesName string) string {
+	var slug = seriesInvalidSlugCharacters.ReplaceAllString(seriesName, "")
+
+	slug = strings.ReplaceAll(strings.ToLower(slug), " ", "-")
+	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
+
+	logger.WriteInfo(slug)
+	return slug
 }

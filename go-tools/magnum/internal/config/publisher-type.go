@@ -3,5 +3,6 @@ package config
 type PublisherType string
 
 const (
-	YenPress SeriesType = "YenPress"
+	YenPress   PublisherType = "YenPress"
+	JNovelClub PublisherType = "JNovelClub"
 )

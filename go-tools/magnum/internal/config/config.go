@@ -2,11 +2,17 @@ package config
 
 import "strings"
 
+type ReleaseInfo struct {
+	Name        string `json:"name"`
+	ReleaseDate string `json:"release_date"`
+}
+
 type SeriesInfo struct {
 	Name              string        `json:"name"`
 	TotalVolumes      int           `json:"total_volumes"`
 	LatestVolume      string        `json:"latest_volume"`
-	UnreleasedVolumes []string      `json:"unreleased_volumes"`
+	UnreleasedVolumes []ReleaseInfo `json:"unreleased_volumes"`
+	SlugOverride      *string       `json:"slug_override"`
 	Type              SeriesType    `json:"type"`
 	Publisher         PublisherType `json:"publisher"`
 }

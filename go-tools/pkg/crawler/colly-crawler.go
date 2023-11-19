@@ -7,7 +7,7 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
-func CreateNewCrawler(verbose bool) *colly.Collector {
+func CreateNewCollyCrawler(verbose bool) *colly.Collector {
 	c := colly.NewCollector()
 
 	if verbose {

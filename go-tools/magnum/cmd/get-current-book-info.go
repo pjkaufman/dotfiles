@@ -6,20 +6,13 @@ import (
 
 	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
+	jnovelclub "github.com/pjkaufman/dotfiles/go-tools/magnum/internal/jnovel-club"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/yenpress"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
-// const (
-// 	CoverPathArgEmpty  = "cover-file must have a non-whitespace value"
-// 	CoverPathNotMdFile = "cover-file must be an md file"
-// )
-
 var verbose bool
-
-// var coverOutputFile string
-// var coverInputFilePath string
 
 // getCurrentInfoCmd represents the createCover command
 var getCurrentInfoCmd = &cobra.Command{
@@ -32,7 +25,6 @@ var getCurrentInfoCmd = &cobra.Command{
 	song-converter create-cover -f cover-file.md
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
-		// var series = "The Asterisk War"
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
@@ -47,13 +39,23 @@ func init() {
 	rootCmd.AddCommand(getCurrentInfoCmd)
 
 	getCurrentInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
-	// createCoverCmd.Flags().StringVarP(&coverOutputFile, "output", "o", "", "the html file to write the output to")
-	// createCoverCmd.MarkFlagRequired("cover-file")
 }
 
 func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 	logger.WriteInfo(fmt.Sprintf("Checking for volume info for \"%s\"", seriesInfo.Name))
-	volumes, numVolumes := yenpress.GetVolumes(seriesInfo.Name, verbose)
+
+	switch seriesInfo.Publisher {
+	case config.YenPress:
+		return yenPressGetSeriesVolumeInfo(seriesInfo)
+	case config.JNovelClub:
+		return jNovelClubGetSeriesVolumeInfo(seriesInfo)
+	default:
+		return seriesInfo
+	}
+}
+
+func yenPressGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	volumes, numVolumes := yenpress.GetVolumes(seriesInfo.Name, seriesInfo.SlugOverride, verbose)
 
 	if len(volumes) == 0 {
 		logger.WriteInfo("The yen press light novels do not exist for this series.")
@@ -62,7 +64,13 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 	}
 
 	if numVolumes == seriesInfo.TotalVolumes {
-		logger.WriteWarn("No change in volumes from last check.")
+		logger.WriteWarn("No change in list of volumes from last check.")
+
+		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
+			logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol.Name, unreleasedVol.ReleaseDate))
+		}
+
+		return seriesInfo
 	}
 
 	var today = time.Now()
@@ -82,26 +90,59 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 		}
 	}
 
+	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, numVolumes, volumes[0].Name)
+}
+
+func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	volumeInfo := jnovelclub.GetVolumeInfo(seriesInfo.Name, seriesInfo.SlugOverride, verbose)
+
+	if len(volumeInfo) == 0 {
+		logger.WriteInfo("The jnovel club light novels do not exist for this series.")
+
+		return seriesInfo
+	}
+
+	if len(volumeInfo) == seriesInfo.TotalVolumes {
+		logger.WriteWarn("No change in list of volumes from last check.")
+
+		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
+			logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol.Name, unreleasedVol.ReleaseDate))
+		}
+
+		return seriesInfo
+	}
+
+	var today = time.Now()
+	today = time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	var unreleasedVolumes = []string{}
+	var releaseDateInfo = []string{}
+	for _, info := range volumeInfo {
+		if info.ReleaseDate.Before(today) {
+			break
+		} else {
+			releaseDateInfo = append(releaseDateInfo, info.ReleaseDate.Format("January 2, 2006"))
+			unreleasedVolumes = append(unreleasedVolumes, info.Name)
+		}
+
+	}
+
+	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)
+}
+
+func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unreleasedVolumes, releaseDateInfo []string, totalVolumes int, latestVolumeName string) config.SeriesInfo {
+	var releaseInfo = []config.ReleaseInfo{}
 	for i, unreleasedVol := range unreleasedVolumes {
+		releaseInfo = append(releaseInfo, config.ReleaseInfo{
+			Name:        unreleasedVol,
+			ReleaseDate: releaseDateInfo[i],
+		})
+
 		logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol, releaseDateInfo[i]))
 	}
 
-	// set the volume info we have gathered before finishing up in the function
-	seriesInfo.TotalVolumes = numVolumes
-	seriesInfo.LatestVolume = volumes[0].Name
-	seriesInfo.UnreleasedVolumes = unreleasedVolumes
+	seriesInfo.TotalVolumes = totalVolumes
+	seriesInfo.LatestVolume = latestVolumeName
+	seriesInfo.UnreleasedVolumes = releaseInfo
 
 	return seriesInfo
 }
-
-// func ValidateCreateCoverFlags(songsCoverFilePath string) error {
-// 	if strings.TrimSpace(songsCoverFilePath) == "" {
-// 		return errors.New(CoverPathArgEmpty)
-// 	}
-
-// 	if !strings.HasSuffix(songsCoverFilePath, ".md") {
-// 		return errors.New(CoverPathNotMdFile)
-// 	}
-
-// 	return nil
-// }

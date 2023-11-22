@@ -67,7 +67,6 @@ var addBookInfoCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(addBookInfoCmd)
 
-	// addBookInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
 	addBookInfoCmd.Flags().StringVarP(&seriesName, "name", "n", "", "the name of the series")
 	addBookInfoCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "publisher")
 	addBookInfoCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")

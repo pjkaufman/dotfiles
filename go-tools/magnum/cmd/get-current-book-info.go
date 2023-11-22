@@ -7,12 +7,17 @@ import (
 	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	jnovelclub "github.com/pjkaufman/dotfiles/go-tools/magnum/internal/jnovel-club"
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/wikipedia"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/yenpress"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
 )
 
 var verbose bool
+
+var userAgent = "Magnum/1.0"
+
+const defaultReleaseDate = "TBA"
 
 // getCurrentInfoCmd represents the createCover command
 var getCurrentInfoCmd = &cobra.Command{
@@ -25,6 +30,24 @@ var getCurrentInfoCmd = &cobra.Command{
 	song-converter create-cover -f cover-file.md
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
+		// resp, err := http.Get("https://en.wikipedia.org/robots.txt")
+		// if err != nil {
+		// 	log.Fatalln(err)
+		// }
+		// //We Read the response body on the line below.
+		// body, err := io.ReadAll(resp.Body)
+		// if err != nil {
+		// 	log.Fatalln(err)
+		// }
+		// //Convert the body to type string
+		// sb := string(body)
+
+		// ok := grobotstxt.AgentAllowed(sb, userAgent, "https://en.wikipedia.org/wiki/Berserk_of_Gluttony")
+		// fmt.Println(ok)
+
+		// wikipedia.GetSectionInfo()
+		// spew.Dump(wikipedia.GetVolumeInfo(userAgent, "Classroom of the Elite", verbose))
+
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
@@ -49,6 +72,8 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 		return yenPressGetSeriesVolumeInfo(seriesInfo)
 	case config.JNovelClub:
 		return jNovelClubGetSeriesVolumeInfo(seriesInfo)
+	case config.SevenSeasEntertainment:
+		return wikipediaGetSeriesVolumeInfo(seriesInfo)
 	default:
 		return seriesInfo
 	}
@@ -129,6 +154,47 @@ func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesIn
 	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)
 }
 
+func wikipediaGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	volumeInfo := wikipedia.GetVolumeInfo(userAgent, seriesInfo.Name, seriesInfo.SlugOverride, verbose)
+
+	if len(volumeInfo) == 0 {
+		logger.WriteInfo("The wikipedia light novels do not exist for this series.")
+
+		return seriesInfo
+	}
+
+	if len(volumeInfo) == seriesInfo.TotalVolumes && (len(seriesInfo.UnreleasedVolumes) == 0 || seriesInfo.UnreleasedVolumes[0].ReleaseDate != defaultReleaseDate) {
+		logger.WriteWarn("No change in list of volumes from last check.")
+
+		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
+			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
+		}
+
+		return seriesInfo
+	}
+
+	var today = time.Now()
+	today = time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	var unreleasedVolumes = []string{}
+	var releaseDateInfo = []string{}
+	for _, info := range volumeInfo {
+		if info.ReleaseDate != nil && info.ReleaseDate.Before(today) {
+			break
+		} else {
+			var releaseDate = defaultReleaseDate
+			if info.ReleaseDate != nil {
+				releaseDate = info.ReleaseDate.Format("January 2, 2006")
+			}
+
+			releaseDateInfo = append(releaseDateInfo, releaseDate)
+			unreleasedVolumes = append(unreleasedVolumes, info.Name)
+		}
+
+	}
+
+	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)
+}
+
 func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unreleasedVolumes, releaseDateInfo []string, totalVolumes int, latestVolumeName string) config.SeriesInfo {
 	var releaseInfo = []config.ReleaseInfo{}
 	for i, unreleasedVol := range unreleasedVolumes {
@@ -137,7 +203,7 @@ func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unrelease
 			ReleaseDate: releaseDateInfo[i],
 		})
 
-		logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol, releaseDateInfo[i]))
+		logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol, releaseDateInfo[i]))
 	}
 
 	seriesInfo.TotalVolumes = totalVolumes
@@ -145,4 +211,12 @@ func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unrelease
 	seriesInfo.UnreleasedVolumes = releaseInfo
 
 	return seriesInfo
+}
+
+func getUnreleasedVolumeDisplayText(unreleasedVol, releaseDate string) string {
+	if releaseDate == defaultReleaseDate {
+		return fmt.Sprintf("\"%s\" release has not been announced yet", unreleasedVol)
+	}
+
+	return fmt.Sprintf("\"%s\" releases on %s", unreleasedVol, releaseDate)
 }

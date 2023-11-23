@@ -9,7 +9,7 @@ import (
 const SectionBreakEl = `<hr class="character" />`
 
 func GetPotentialSectionBreaks(fileContent, sectionBreakIndicator string) map[string]string {
-	var contextBreakRegex = regexp.MustCompile(fmt.Sprintf(`(\n[ \t]*<p[^\n>]*>([^\n])*)%s(([^\n]*)</p>)`, sectionBreakIndicator))
+	var contextBreakRegex = regexp.MustCompile(fmt.Sprintf(`(\n[ \t]*<p[^\n>]*>([^\n])*)%s(([^\n]*)</p>)`, regexp.QuoteMeta(sectionBreakIndicator)))
 
 	var subMatches = contextBreakRegex.FindAllStringSubmatch(fileContent, -1)
 	var originalToSuggested = make(map[string]string, len(subMatches))

@@ -124,6 +124,17 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1"><a id="p57"></a>There are no people in the world of magic who do not know the famous Taurus Silver. However, those who can use magic make up only one thousandth of the adult population. But this does not mean that 99.99% of people live without magic, because some people are related to magic in the role of engineers, managers, politicians, soldiers, and other civil servants, even without the ability to use magic in practice. </p>`,
 		},
 	},
+	"make sure that we properly handle – at the end of a sentence": {
+		InputText: `<p class="calibre1">Here is some text.</p>
+		<p class="calibre1">Once again, Minoru was at a loss for words. Miyuki was telling the truth – Minoru was forced to admit he had miscalculated. Leading Tatsuya away was not enough – </p>
+		<p class="calibre1">when planning a diversion, it was more important to lead Miyuki away. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1">Once again, Minoru was at a loss for words. Miyuki was telling the truth – Minoru was forced to admit he had miscalculated. Leading Tatsuya away was not enough – </p>
+		<p class="calibre1">when planning a diversion, it was more important to lead Miyuki away. </p>`: `
+		<p class="calibre1">Once again, Minoru was at a loss for words. Miyuki was telling the truth – Minoru was forced to admit he had miscalculated. Leading Tatsuya away was not enough – when planning a diversion, it was more important to lead Miyuki away. </p>`,
+		},
+	},
 }
 
 func TestGetPotentiallyBrokenLines(t *testing.T) {

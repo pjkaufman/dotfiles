@@ -9,6 +9,7 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
 	filehandler "github.com/pjkaufman/dotfiles/go-tools/pkg/file-handler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
+	stringdiff "github.com/pjkaufman/dotfiles/go-tools/pkg/string-diff"
 	"github.com/spf13/cobra"
 )
 
@@ -125,45 +126,50 @@ var fixableCmd = &cobra.Command{
 				logger.WriteError(CssPathsEmptyWhenArgIsNeeded)
 			}
 
+			var saveAndQuit = false
 			for file := range epubInfo.HtmlFiles {
+				if saveAndQuit {
+					break
+				}
+
 				var filePath = getFilePath(opfFolder, file)
 				fileText := filehandler.ReadInFileContents(filePath)
 
 				var newText = fileText
 				if runAll || runBrokenLines {
 					var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
-					newText, _ = promptAboutSuggestions("Potential Broken Lines", brokenLineFixSuggestions, newText, false)
+					newText, _, saveAndQuit = promptAboutSuggestions("Potential Broken Lines", brokenLineFixSuggestions, newText, false)
 				}
 
-				if runAll || runSectionBreak {
+				if (runAll || runSectionBreak) && !saveAndQuit {
 					var contextBreakSuggestions = linter.GetPotentialSectionBreaks(newText, contextBreak)
 
 					var contextBreakUpdated bool
-					newText, contextBreakUpdated = promptAboutSuggestions("Potential Section Breaks", contextBreakSuggestions, newText, true)
+					newText, contextBreakUpdated, saveAndQuit = promptAboutSuggestions("Potential Section Breaks", contextBreakSuggestions, newText, true)
 					addCssSectionIfMissing = addCssSectionIfMissing || contextBreakUpdated
 				}
 
-				if runAll || runPageBreak {
+				if (runAll || runPageBreak) && !saveAndQuit {
 					var pageBreakSuggestions = linter.GetPotentialPageBreaks(newText)
 
 					var pageBreakUpdated bool
-					newText, pageBreakUpdated = promptAboutSuggestions("Potential Page Breaks", pageBreakSuggestions, newText, true)
+					newText, pageBreakUpdated, saveAndQuit = promptAboutSuggestions("Potential Page Breaks", pageBreakSuggestions, newText, true)
 					addCssPageIfMissing = addCssPageIfMissing || pageBreakUpdated
 				}
 
-				if runAll || runOxfordCommas {
+				if (runAll || runOxfordCommas) && !saveAndQuit {
 					var oxfordCommaSuggestions = linter.GetPotentialMissingOxfordCommas(newText)
-					newText, _ = promptAboutSuggestions("Potential Missing Oxford Commas", oxfordCommaSuggestions, newText, false)
+					newText, _, saveAndQuit = promptAboutSuggestions("Potential Missing Oxford Commas", oxfordCommaSuggestions, newText, false)
 				}
 
-				if runAll || runAlthoughBut {
+				if (runAll || runAlthoughBut) && !saveAndQuit {
 					var althoughButSuggestions = linter.GetPotentialAlthoughButInstances(newText)
-					newText, _ = promptAboutSuggestions("Potential Although But Instances", althoughButSuggestions, newText, false)
+					newText, _, saveAndQuit = promptAboutSuggestions("Potential Although But Instances", althoughButSuggestions, newText, false)
 				}
 
-				if runAll || runThoughts {
+				if (runAll || runThoughts) && !saveAndQuit {
 					var thoughtSuggestions = linter.GetPotentialThoughtInstances(newText)
-					newText, _ = promptAboutSuggestions("Potential Thought Instances", thoughtSuggestions, newText, false)
+					newText, _, saveAndQuit = promptAboutSuggestions("Potential Thought Instances", thoughtSuggestions, newText, false)
 				}
 
 				if fileText == newText {
@@ -207,12 +213,12 @@ func ValidateManuallyFixableFlags(epubPath string, runAll, runBrokenLines, runSe
 	return nil
 }
 
-func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]string, fileText string, replaceAllInstances bool) (string, bool) {
+func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]string, fileText string, replaceAllInstances bool) (string, bool, bool) {
 	var valueReplaced = false
 	var newText = fileText
 
 	if len(suggestions) == 0 {
-		return newText, valueReplaced
+		return newText, valueReplaced, false
 	}
 
 	// replace count was added to make sure that if we have a case where the original and suggested value
@@ -228,16 +234,18 @@ func promptAboutSuggestions(suggestionsTitle string, suggestions map[string]stri
 	logger.WriteInfo(cliLineSeparator + "\n")
 
 	for original, suggestion := range suggestions {
-		resp := logger.GetInputString(fmt.Sprintf("Would you like to update \"%s\" to \"%s\"? (Y/N): ", strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n")))
+		resp := logger.GetInputString(fmt.Sprintf("Would you like to make the following update \"%s\"? (Y/N): ", stringdiff.GetPrettyDiffString(strings.TrimLeft(original, "\n"), strings.TrimLeft(suggestion, "\n"))))
 		if strings.EqualFold(resp, "Y") {
 			newText = strings.Replace(newText, original, suggestion, replaceCount)
 			valueReplaced = true
+		} else if strings.EqualFold(resp, "Q") {
+			return newText, valueReplaced, true
 		}
 
 		logger.WriteInfo("")
 	}
 
-	return newText, valueReplaced
+	return newText, valueReplaced, false
 }
 
 func handleCssChanges(addCssSectionIfMissing, addCssPageIfMissing bool, opfFolder string, cssFiles []string, contextBreak string) {

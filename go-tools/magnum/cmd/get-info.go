@@ -13,22 +13,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var verbose bool
-
-var userAgent = "Magnum/1.0"
-
-const defaultReleaseDate = "TBA"
-
-// getCurrentInfoCmd represents the createCover command
-var getCurrentInfoCmd = &cobra.Command{
+// GetInfoCmd represents the get book info command
+var GetInfoCmd = &cobra.Command{
 	Use:   "get-info",
-	Short: "Takes in the cover file path and creates the html cover file",
-	Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
-	song-converter create-cover -f cover-file.md -o output-file.html
-	
-	To write the output of converting the cover file to std out:
-	song-converter create-cover -f cover-file.md
-	`),
+	Short: "Gets the book release info for books that have been added to the list of series to track",
+	Example: heredoc.Doc(`To get all of the release data for non-completed series:
+	magnum get-info`),
 	Run: func(cmd *cobra.Command, args []string) {
 		// resp, err := http.Get("https://en.wikipedia.org/robots.txt")
 		// if err != nil {
@@ -59,9 +49,9 @@ var getCurrentInfoCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(getCurrentInfoCmd)
+	rootCmd.AddCommand(GetInfoCmd)
 
-	getCurrentInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
+	GetInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
 }
 
 func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
@@ -92,7 +82,7 @@ func yenPressGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo
 		logger.WriteWarn("No change in list of volumes from last check.")
 
 		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
-			logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol.Name, unreleasedVol.ReleaseDate))
+			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
 		}
 
 		return seriesInfo
@@ -131,7 +121,7 @@ func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesIn
 		logger.WriteWarn("No change in list of volumes from last check.")
 
 		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
-			logger.WriteInfo(fmt.Sprintf("\"%s\" releases on %s", unreleasedVol.Name, unreleasedVol.ReleaseDate))
+			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
 		}
 
 		return seriesInfo
@@ -145,7 +135,7 @@ func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesIn
 		if info.ReleaseDate.Before(today) {
 			break
 		} else {
-			releaseDateInfo = append(releaseDateInfo, info.ReleaseDate.Format("January 2, 2006"))
+			releaseDateInfo = append(releaseDateInfo, info.ReleaseDate.Format(releaseDateFormat))
 			unreleasedVolumes = append(unreleasedVolumes, info.Name)
 		}
 
@@ -211,12 +201,4 @@ func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unrelease
 	seriesInfo.UnreleasedVolumes = releaseInfo
 
 	return seriesInfo
-}
-
-func getUnreleasedVolumeDisplayText(unreleasedVol, releaseDate string) string {
-	if releaseDate == defaultReleaseDate {
-		return fmt.Sprintf("\"%s\" release has not been announced yet", unreleasedVol)
-	}
-
-	return fmt.Sprintf("\"%s\" releases on %s", unreleasedVol, releaseDate)
 }

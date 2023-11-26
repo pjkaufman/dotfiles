@@ -23,10 +23,10 @@ var (
 	slugOverride    string
 )
 
-// addBookInfoCmd represents the createCover command
-var addBookInfoCmd = &cobra.Command{
+// AddCmd represents the add book info command
+var AddCmd = &cobra.Command{
 	Use:   "add",
-	Short: "Add adds the provided series info to the list of series to keep track of",
+	Short: "Adds the provided series info to the list of series to keep track of",
 	Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
 	song-converter create-cover -f cover-file.md -o output-file.html
 	
@@ -65,14 +65,14 @@ var addBookInfoCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(addBookInfoCmd)
+	rootCmd.AddCommand(AddCmd)
 
-	addBookInfoCmd.Flags().StringVarP(&seriesName, "name", "n", "", "the name of the series")
-	addBookInfoCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "publisher")
-	addBookInfoCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
-	addBookInfoCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
+	AddCmd.Flags().StringVarP(&seriesName, "name", "n", "", "the name of the series")
+	AddCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "publisher")
+	AddCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
+	AddCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
 
-	addBookInfoCmd.MarkFlagRequired("name")
+	AddCmd.MarkFlagRequired("name")
 }
 
 func ValidateAddSeriesFlags(seriesName, seriesPublisher, seriesType string) error {

@@ -5,6 +5,7 @@ go 1.21.0
 require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/adrg/frontmatter v0.2.0
+	github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883
 	github.com/fatih/color v1.15.0
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386
 	github.com/playwright-community/playwright-go v0.3900.1
@@ -30,6 +31,7 @@ require (
 	github.com/nwaples/rardecode v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
+	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/temoto/robotstxt v1.1.2 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	go.uber.org/multierr v1.11.0 // indirect

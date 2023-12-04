@@ -135,6 +135,18 @@ var GetPotentiallyBrokenLinesTestCases = map[string]GetPotentiallyBrokenLinesTes
 		<p class="calibre1">Once again, Minoru was at a loss for words. Miyuki was telling the truth – Minoru was forced to admit he had miscalculated. Leading Tatsuya away was not enough – when planning a diversion, it was more important to lead Miyuki away. </p>`,
 		},
 	},
+	"make sure that we properly handle — at the end of a sentence": {
+		InputText: `<p>Text here.</p>
+		<p class="calibre1">Blood vessels, nerves, and other tissues found in the body that met in a straight line —</p>
+		<p class="calibre1">everything was also decomposed. </p>
+		<p class="calibre1">A hole was drilled in the joint of the right shoulder. </p>`,
+		ExpectedSuggestions: map[string]string{
+			`
+		<p class="calibre1">Blood vessels, nerves, and other tissues found in the body that met in a straight line —</p>
+		<p class="calibre1">everything was also decomposed. </p>`: `
+		<p class="calibre1">Blood vessels, nerves, and other tissues found in the body that met in a straight line — everything was also decomposed. </p>`,
+		},
+	},
 }
 
 func TestGetPotentiallyBrokenLines(t *testing.T) {

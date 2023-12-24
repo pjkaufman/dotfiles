@@ -3,6 +3,8 @@ package epub
 import (
 	"errors"
 	"fmt"
+	"os"
+	"runtime/pprof"
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
@@ -43,11 +45,17 @@ var compressAndLintCmd = &cobra.Command{
 	Some of the things that the linting includes:
 	- Replacing a list of common strings
 	- Removing links from the nav and/or the ncx file
-	- Adds absolute page numbers if present in file's ids
 	- Adds language encoding specified if it is not present already (default is "en")
 	- Sets encoding on content files to utf-8 to prevent errors in some readers
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
+		f, perr := os.Create("cpu.pprof")
+		if perr != nil {
+			logger.WriteError(perr.Error())
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+
 		err := ValidateCompressAndLintFlags(lintDir, lang)
 		if err != nil {
 			logger.WriteError(err.Error())
@@ -106,7 +114,6 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 
 			// TODO: remove images links that do not exist in the manifest
 			newText = linter.EnsureLanguageIsSet(newText, lang)
-			epubInfo.PageIds = linter.GetPageIdsForFile(newText, file, epubInfo.PageIds)
 
 			if fileText == newText {
 				continue
@@ -115,8 +122,8 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 			filehandler.WriteFileContents(filePath, newText)
 		}
 
-		updateNavFile(opfFolder, epubInfo.NavFile, epubInfo.PageIds)
-		updateNcxFile(opfFolder, epubInfo.NcxFile, epubInfo.PageIds)
+		updateNavFile(opfFolder, epubInfo.NavFile)
+		updateNcxFile(opfFolder, epubInfo.NcxFile)
 		//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 		if runCompressImages {
@@ -175,7 +182,7 @@ func ValidateCompressAndLintFlags(lintDir, lang string) error {
 	return nil
 }
 
-func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNcxFile(opfFolder, file string) {
 	if file == "" {
 		return
 	}
@@ -188,8 +195,6 @@ func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
 
-	newText = linter.AddPageListToNcxFile(newText, pageIds)
-
 	if fileText == newText {
 		return
 	}
@@ -197,7 +202,7 @@ func updateNcxFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	filehandler.WriteFileContents(filePath, newText)
 }
 
-func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
+func updateNavFile(opfFolder, file string) {
 	if file == "" {
 		return
 	}
@@ -209,8 +214,6 @@ func updateNavFile(opfFolder, file string, pageIds []linter.PageIdInfo) {
 	if err != nil {
 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
 	}
-
-	newText = linter.AddPageListToNavFile(newText, pageIds)
 
 	if fileText == newText {
 		return

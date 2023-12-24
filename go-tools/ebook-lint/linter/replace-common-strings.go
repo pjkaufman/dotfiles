@@ -1,107 +1,132 @@
 package linter
 
 import (
-	"fmt"
-	"regexp"
+	"strings"
 )
 
-type ReplaceString struct {
-	Search   *regexp.Regexp
+type ReplaceWords struct {
+	Search   string
 	Replace  string
 	Rational string
 }
 
-type ReplaceStringFunc struct {
-	Search   *regexp.Regexp
-	Replace  func(string) string
-	Rational string
-}
-
-var (
-	regexEscapedPeriod = regexp.QuoteMeta(".")
+const (
+	emIndicator = "--"
+	doubleSpace = "  "
 )
 
-var commonReplaceStrings = []ReplaceString{
+var commonReplaceWords = []ReplaceWords{
 	{
-		// [^\w\s] means any non-whitespace or alphanumeric values or an underscore
-		Search:   regexp.MustCompile(`(\b|[^\w\s])( ){2,}(\b|[^\w\s])`),
-		Replace:  "${1} ${3}",
-		Rational: "Replace multiple spaces in a row between words with a single space since this can cause issues with replace strings",
+		Search:   "Sneaked",
+		Replace:  "Snuck",
+		Rational: "Use snuck instead of sneaked as it is the more commonly used version of the word nowadays",
 	},
 	{
-		Search:   regexp.MustCompile(`[“”]`),
+		Search:   "sneaked",
+		Replace:  "snuck",
+		Rational: "Use snuck instead of sneaked as it is the more commonly used version of the word nowadays",
+	},
+	{
+		Search:   "“",
 		Replace:  "\"",
 		Rational: "Replace smart double quotes with straight double quotes",
 	},
 	{
-		Search:   regexp.MustCompile(`[‘’]`),
+		Search:   "”",
+		Replace:  "\"",
+		Rational: "Replace smart double quotes with straight double quotes",
+	},
+	{
+		Search:   `‘`,
 		Replace:  "'",
 		Rational: "Replace smart single quotes with straight single quotes",
 	},
 	{
-		Search:   regexp.MustCompile(fmt.Sprintf("(%[1]s ?){2}%[1]s", regexEscapedPeriod)),
+		Search:   `’`,
+		Replace:  "'",
+		Rational: "Replace smart single quotes with straight single quotes",
+	},
+	{
+		Search:   "...",
 		Replace:  "…",
-		Rational: "Proper ellipses should be used where possible as it keeps things clean and consistent",
-	},
-	{
-		Search:   regexp.MustCompile("(^|[^!])--([^>]|$)"),
-		Replace:  "$1—$2",
-		Rational: "Em dashes should be used where possible as it keeps things clean and consistent",
-	},
-	{
-		Search:   regexp.MustCompile("(^|[^~])~([^~]|$)"),
-		Replace:  "$1!$2",
-		Rational: "Tildes should be replaced with an exclamation mark when they are by themselves as they seem interchangeable, though it could be another form of punctuation for drawing out the sound of the last letter used",
-	},
-	{
-		Search:   regexp.MustCompile("(B|b)y the by"),
-		Replace:  "${1}y the way",
-		Rational: "'By the by' seems to be an improper translation of 'By the way', so we should auto-correct it to its proper English idiom",
-	},
-	{
-		Search:   regexp.MustCompile("(S|s)neaked"),
-		Replace:  "${1}nuck",
-		Rational: "Use snuck instead of sneaked as it is the more commonly used version of the word nowadays",
-	},
-}
-
-var commonReplaceStringFuncs = []ReplaceStringFunc{
-	{
-		Search: regexp.MustCompile("(A|a) bolt (o)(ut of the blue)"),
-		Replace: func(part string) string {
-			var firstLetter = "O"
-			if part[0] == 'a' {
-				firstLetter = "o"
-			}
-
-			return firstLetter + "ut of the blue"
-		},
-		Rational: "'a bolt out of the blue' seems to be an improper translation of 'out of the blue', so we should auto-correct it to its proper English idiom",
-	},
-	{
-		Search: regexp.MustCompile("(L|l)ittle( wonder)"),
-		Replace: func(part string) string {
-			var firstLetter = "N"
-			if part[0] == 'l' {
-				firstLetter = "n"
-			}
-
-			return firstLetter + "o wonder"
-		},
-		Rational: "'little wonder' seems to be an improper translation of 'no wonder', so we should auto-correct it to its proper English idiom",
+		Rational: "Proper ellipses should be used where possible as it keeps things clean and consistentReplace smart single quotes with straight single quotes",
 	},
 }
 
 func CommonStringReplace(text string) string {
-	var newText = text
 
-	for _, replaceString := range commonReplaceStrings {
-		newText = replaceString.Search.ReplaceAllString(newText, replaceString.Replace)
+	// Replace multiple spaces in a row between words with a single space since this can cause issues with replace strings
+	var newText = replaceTwoPlusSpacesBetweenWords(text)
+
+	var stringsToReplace []string = make([]string, 2*len(commonReplaceWords))
+	for i, replaceWord := range commonReplaceWords {
+		stringsToReplace[2*i] = replaceWord.Search
+		stringsToReplace[2*i+1] = replaceWord.Replace
 	}
 
-	for _, replaceStringFunc := range commonReplaceStringFuncs {
-		newText = replaceStringFunc.Search.ReplaceAllStringFunc(newText, replaceStringFunc.Replace)
+	var replacer = strings.NewReplacer(stringsToReplace...)
+	newText = replacer.Replace(newText)
+
+	return replaceDoubleDashesWithEmDashes(newText)
+}
+
+func replaceDoubleDashesWithEmDashes(text string) string {
+	var index = strings.Index(text, emIndicator)
+	if index == -1 {
+		return text
 	}
 
-	return newText
+	var newText = strings.Builder{}
+	for index != -1 {
+		if index > 0 && text[index-1] == '!' {
+			newText.WriteString(text[0 : index+2])
+		} else if index+2 < len(text) && text[index+2] == '>' {
+			newText.WriteString(text[0 : index+2])
+		} else {
+			newText.WriteString(text[0:index] + "—")
+		}
+
+		text = text[index+2:]
+		index = strings.Index(text, emIndicator)
+	}
+
+	newText.WriteString(text)
+
+	return newText.String()
+}
+
+func replaceTwoPlusSpacesBetweenWords(text string) string {
+	var index = strings.Index(text, doubleSpace)
+	if index == -1 {
+		return text
+	}
+
+	var newText = strings.Builder{}
+	var endingWhitespace, startWhitespace int
+	for index != -1 {
+		startWhitespace = index
+		endingWhitespace = index + 1
+		for startWhitespace > 0 && text[startWhitespace-1] == ' ' {
+			startWhitespace--
+		}
+
+		for endingWhitespace+1 < len(text) && text[endingWhitespace+1] == ' ' {
+			endingWhitespace++
+		}
+
+		if startWhitespace > 0 && (text[startWhitespace-1] == '\n' || text[startWhitespace-1] == '\t') {
+			newText.WriteString(text[0 : index+2])
+		} else if endingWhitespace+1 < len(text) && (text[endingWhitespace+1] == '<' || text[endingWhitespace+1] == '\n') {
+			newText.WriteString(text[0 : index+2])
+		} else {
+			newText.WriteString(text[0:startWhitespace] + " ")
+		}
+
+		text = text[endingWhitespace+1:]
+		index = strings.Index(text, doubleSpace)
+	}
+
+	newText.WriteString(text)
+
+	return newText.String()
 }

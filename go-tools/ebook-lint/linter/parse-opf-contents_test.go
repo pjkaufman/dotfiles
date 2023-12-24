@@ -266,7 +266,6 @@ var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 			NavFile: "",
 			NcxFile: "toc.ncx",
 			Version: 2,
-			PageIds: []linter.PageIdInfo{},
 		},
 	},
 	"make sure that parsing an epub 3 has the proper version info and other package data": {
@@ -325,7 +324,6 @@ var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 			NavFile: "nav.xhtml",
 			NcxFile: "toc.ncx",
 			Version: 3,
-			PageIds: []linter.PageIdInfo{},
 		},
 	},
 }

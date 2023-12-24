@@ -11,7 +11,6 @@ type EpubInfo struct {
 	ImagesFiles map[string]struct{}
 	CssFiles    map[string]struct{}
 	OtherFiles  map[string]struct{}
-	PageIds     []PageIdInfo
 	NcxFile     string
 	NavFile     string
 	TocFile     string
@@ -38,7 +37,6 @@ func ParseOpfFile(text string) (EpubInfo, error) {
 		ImagesFiles: make(map[string]struct{}),
 		OtherFiles:  make(map[string]struct{}),
 		CssFiles:    make(map[string]struct{}),
-		PageIds:     []PageIdInfo{},
 	}
 	var version, err = getVersion(text)
 	if err != nil {

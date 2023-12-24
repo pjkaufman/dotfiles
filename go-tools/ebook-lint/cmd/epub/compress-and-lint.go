@@ -3,8 +3,6 @@ package epub
 import (
 	"errors"
 	"fmt"
-	"os"
-	"runtime/pprof"
 	"strings"
 
 	"github.com/MakeNowJust/heredoc"
@@ -49,13 +47,6 @@ var compressAndLintCmd = &cobra.Command{
 	- Sets encoding on content files to utf-8 to prevent errors in some readers
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
-		f, perr := os.Create("cpu.pprof")
-		if perr != nil {
-			logger.WriteError(perr.Error())
-		}
-		pprof.StartCPUProfile(f)
-		defer pprof.StopCPUProfile()
-
 		err := ValidateCompressAndLintFlags(lintDir, lang)
 		if err != nil {
 			logger.WriteError(err.Error())

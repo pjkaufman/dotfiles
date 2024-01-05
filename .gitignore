@@ -13,5 +13,4 @@ churchsongconverter/stagingGround/*.md
 churchsongconverter/html/*.html
 churchsongconverter/html/*.md
 churchsongconverter/html/*.txt
-
-!churchsongconverter/html/styles.html
+churchsongconverter/html/styles.css

@@ -8,13 +8,16 @@ extra:
 	rm -rf ./stagingGround/*
 	cp ~/Notes/Obsidian/Songs/*.md ./stagingGround
 	cp ~/Notes/Obsidian/Songs/Extras/*.md ./stagingGround
+dark-html:
+	@cat ./html/dark.css > ./html/styles.css && cat ./html/common.css >> ./html/styles.css
+	@song-converter create-html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html
 html:
-	song-converter create-cover -f ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/cover.html
-	song-converter create-songs -d ./stagingGround/ -s ./html/styles.html -o ./html/songs.html 
+	@cat ./html/common.css > ./html/styles.css
+	@song-converter create-html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html
 pdf:
-	echo "Creating PDF"
-	wkhtmltopdf --page-size A5 cover ./html/cover.html toc --xsl-style-sheet ./html/updatedToc.xsl ./html/songs.html churchSongsTest.pdf
+	@echo "Creating PDF"
+	weasyprint ./html/churchSongs.html churchSongsWeasy.pdf -s ./html/styles.css
 show:
-	evince churchSongsTest.pdf
+	evince churchSongsWeasy.pdf
 csv:
 	song-converter create-csv -d ./stagingGround/ -o churchSongs.csv

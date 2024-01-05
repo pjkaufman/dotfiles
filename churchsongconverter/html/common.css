@@ -1,0 +1,102 @@
+html {
+    font-family: arial;
+    font-size: medium;
+}
+
+.keep-together { 
+    page-break-inside: avoid; 
+}
+
+.metadata {
+    width: 100%;
+    display: block;
+    font-size: small;
+    padding-bottom: 20px;
+}
+
+.row-padding {
+    padding-bottom: 30px;
+}
+
+.melody {
+    width: 50%;
+    float: left;
+}
+
+.melody-75 {
+    width: 75%;
+    float: left;
+}
+
+.verse {
+    width: 50%;
+    float: left;
+}
+
+.author {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.key {
+    width: 25%;
+    float: left;
+    text-align: right;
+}
+
+.location {
+    width: 25%;
+    float: left;
+    text-align: right;
+}
+
+.other-title {
+    font-size: medium;
+}
+
+p {
+    line-height: 1.5;
+    padding-bottom: 5px;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+#cover {
+    text-align: center;
+}
+
+/* TOC Styles */
+#contents {
+    break-after: always;
+}
+
+#contents a {
+    text-decoration:none; color: black;
+}
+
+#contents a::before {
+    content: target-text(attr(href));
+}
+
+#contents a::after {
+    content: target-counter(attr(href), page);
+    float: right;
+}
+
+#contents .toc {
+    text-align: center;
+    font-size: 20px;
+}
+
+#contents li {
+    border-bottom: 1px dashed rgb(200,200,200);
+    list-style: none;
+}
+
+#contents ul {
+    padding-left: 0em;
+    font-size: 20px;
+}

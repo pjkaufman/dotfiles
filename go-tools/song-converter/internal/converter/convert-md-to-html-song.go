@@ -23,7 +23,7 @@ type SongMetadata struct {
 
 const (
 	emptyColumnContent = "&nbsp;&nbsp;&nbsp;&nbsp;"
-	closeMetadata      = "</div><br><br>"
+	closeMetadata      = "</div><br>"
 )
 
 var otherTitleRegex = regexp.MustCompile(`^(<h1.*)\((.*)\)<(.*)`)

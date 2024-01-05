@@ -1,0 +1,8 @@
+@page {
+    color: white;
+    background-color: black;
+}
+
+* {
+    color: white !important;
+}

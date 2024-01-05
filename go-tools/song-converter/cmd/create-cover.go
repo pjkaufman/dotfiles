@@ -39,7 +39,7 @@ var createCoverCmd = &cobra.Command{
 
 		var isWritingToFile = strings.TrimSpace(coverOutputFile) == ""
 		if isWritingToFile {
-			logger.WriteInfo("Converting files to html cover")
+			logger.WriteInfo("Converting file to html cover")
 		}
 
 		var coverMd = filehandler.ReadInFileContents(coverInputFilePath)

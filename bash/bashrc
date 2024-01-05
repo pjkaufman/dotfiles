@@ -51,6 +51,8 @@ export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
 
 # sets the place where scripts should send their downloads
 export DOWNLOADS="$HOME"/Downloads
+export DOCOUMENTS="$HOME"/Documents
+export EBOOKS="$DOCOUMENTS"/EBooks
 
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
@@ -64,6 +66,10 @@ export FZF_DEFAULT_OPTS=" \
 export DOTFILES="$HOME/dotfiles"
 export SCRIPTS="$DOTFILES/bin"
 export REPOS="$HOME/repos"
+
+export XKB_DEFAULT_LAYOUT=us
+export XKB_DEFAULT_VARIANT=altgr-intl
+export XKB_DEFAULT_OPTIONS=compose:menu,level3:ralt_switch
 
 if [[ $- != *i* ]]; then
 	# shell is non-interactive. be done now!
@@ -194,6 +200,10 @@ export HISTCONTROL='ignoreboth'
 # general
 alias dot='cd $DOTFILES'
 alias chmox='chmod +x'
+
+# browsing
+alias '?'=duck
+alias '??'=google
 
 # moving around
 alias ..='cd ..'

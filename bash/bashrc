@@ -201,10 +201,6 @@ export HISTCONTROL='ignoreboth'
 alias dot='cd $DOTFILES'
 alias chmox='chmod +x'
 
-# browsing
-alias '?'=duck
-alias '??'=google
-
 # moving around
 alias ..='cd ..'
 alias ...='cd ../../'

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# takes files and copies them to their proper locations
+
+TRUE=0
+FALSE=1
+
+function hasFileTypes() {
+  count=$(ls -1 "$DOWNLOADS"/*.$1 2>/dev/null | wc -l)
+  if [ "$count" == 0 ]; then
+    return $FALSE
+  fi 
+
+  return $TRUE
+}
+
+if hasFileTypes "epub"; then
+  echo "Moving ebook files"
+  temp_ebooks="$EBOOKS"/Temp
+  [[ ! -d "$temp_ebooks" ]] && mkdir -p "$temp_ebooks"
+
+  mv "$DOWNLOADS"/*.epub "$temp_ebooks/"
+fi
+
+echo "Cleaned up downloads folder"

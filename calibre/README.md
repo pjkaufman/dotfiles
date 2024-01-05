@@ -10,7 +10,7 @@ This is an all in one place to do ebook modifications.
 - Install Calibre in wine*
 - Install a compatible version of the DeDRM plugin in wine*
 - Restart Calibre in wine*
-  - The DeDRM plugin should autoload the key for DeDRM the books
+  - The DeDRM plugin should autoload the key for DeDRMing the books
   - If it does not, press the green plus sign and it should load the key
 - Export the key
 - Import the key in the version of Caliber on your non-wine install

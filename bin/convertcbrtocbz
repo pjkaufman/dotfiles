@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 echo 'running converter for each cbr in dir'
 
 shopt -s nocaseglob # ignore file name case
 shopt -s globstar # search globs in 0 or more subdirectories
 for i in *.cbr; do
-    echo 'starting cbr conversion for' ${i} '...'
+    echo 'starting cbr conversion for' "${i}" '...'
 
     # rm -rf ./cbr #delete the folder if it already exists
 

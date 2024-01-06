@@ -23,7 +23,11 @@ import (
 // var stylesFilePath string
 // var bodyHtmlOutputFile string
 
-const fileFormat = `<html>
+const (
+	CoverPathArgEmpty  = "cover-file must have a non-whitespace value"
+	CoverPathNotMdFile = "cover-file must be an md file"
+	StagingDirArgEmpty = "working-dir must have a non-whitespace value"
+	fileFormat         = `<html>
   <body>
     <section id="cover">
       %s
@@ -39,21 +43,29 @@ const fileFormat = `<html>
     </section>
   </body>
 </html>`
+)
+
+var (
+	stagingDir         string
+	bodyHtmlOutputFile string
+	coverOutputFile    string
+	coverInputFilePath string
+)
 
 // CreateHtmlCmd represents the CreateSongs command
 var CreateHtmlCmd = &cobra.Command{
 	Use:   "create-html",
 	Short: "Converts the cover and all Markdown files in the specified folder into html in alphabetical order generating three sections: the cover, table of contents, and songs",
 	Example: heredoc.Doc(`To write the output of converting the files in the specified folder to html to a file:
-	song-converter create-songs -d working-dir -s styles.html -o songs.html
+	song-converter create-html -d working-dir -c cover.md -o songs.html
 
 	To write the output of converting the files in the specified folder to html to std out:
-	song-converter create-songs -d working-dir -s styles.html
+	song-converter create-html -d working-dir -s cover.md
 	`),
 	Long: heredoc.Doc(`How it works:
 	- Reads in all of the files in the specified folder
 	- Sorts the files alphabetically
-	- Adds the styles to the start of the html
+	- Adds the cover to the start of the content after converting it to html
 	- Converts each file into html
 	- Writes the content to the specified source
 	`),
@@ -68,12 +80,19 @@ var CreateHtmlCmd = &cobra.Command{
 
 		var isWritingToFile = strings.TrimSpace(coverOutputFile) == ""
 		if isWritingToFile {
-			logger.WriteInfo("Converting Markdown files to html")
+			logger.WriteInfo("Converting file to html cover")
 		}
-
 		var coverMd = filehandler.ReadInFileContents(coverInputFilePath)
 
 		coverHtml := converter.BuildHtmlCover(coverMd)
+
+		if isWritingToFile {
+			logger.WriteInfo("Finished creating html cover file")
+		}
+
+		if isWritingToFile {
+			logger.WriteInfo("Converting Markdown files to html")
+		}
 
 		files := filehandler.MustGetAllFilesWithExtInASpecificFolder(stagingDir, ".md")
 		sort.Strings(files)

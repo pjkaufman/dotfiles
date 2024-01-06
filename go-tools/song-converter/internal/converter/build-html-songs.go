@@ -6,6 +6,12 @@ import (
 	"strings"
 )
 
+type MdFileInfo struct {
+	FilePath     string
+	FileName     string
+	FileContents string
+}
+
 var h1Regex = regexp.MustCompile(`<h1[^\n>]+id="([a-zA-Z-\d]+)"[^\n>]*>`)
 
 func BuildHtmlSongs(mdInfo []MdFileInfo) (string, []string, error) {
@@ -35,7 +41,7 @@ func BuildHtmlSongs(mdInfo []MdFileInfo) (string, []string, error) {
 			headerIdMap[headerId] = 1
 			headerIds[i] = headerId
 		} else {
-			fmt.Println("Problem?")
+			return "", nil, fmt.Errorf(`no heading found for file "%s"`, mdData.FilePath)
 		}
 
 		html.WriteString(fileContentInHtml + "\n")

@@ -3,67 +3,6 @@
 package converter_test
 
 const (
-	stylesFileHtml = `<style>
-    .keep-together { 
-        page-break-inside: avoid; 
-    }
-
-    .metadata {
-        width: 100%;
-        display: block;
-        font-size: small;
-    }
-
-    .row-padding {
-        padding-bottom: 30px;
-    }
-
-    .melody {
-        width: 50%;
-        float: left;
-    }
-
-    .melody-75 {
-        width: 75%;
-        float: left;
-    }
-
-    .verse {
-        width: 50%;
-        float: left;
-    }
-
-    .author {
-        width: 50%;
-        float: left;
-        text-align: right;
-    }
-
-    .key {
-        width: 25%;
-        float: left;
-        text-align: right;
-    }
-
-    .location {
-        width: 25%;
-        float: left;
-        text-align: right;
-    }
-
-    .other-title {
-        font-size: medium;
-    }
-
-    p {
-        line-height: 1.5;
-        padding-bottom: 5px;
-    }
-
-    h1 {
-        font-size: 1.5em;
-    }
-</style>`
 	coverFileMd = `# Church Songs - E Version
 
 <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
@@ -284,7 +223,7 @@ He is and ever more shall be.
 `
 	HeIsFileHtml = `<div class="keep-together">
 <h1 id="he-is">He Is</h1>
-<div><div class="metadata"><div><div class="author">Chris Knauf</div></div><div><div class="key"><b>Key C</b></div></div><div><div class="location">(MS16) (B20)</div></div></div></div><br><br>
+<div><div class="metadata"><div><div class="author">Chris Knauf</div></div><div><div class="key"><b>Key C</b></div></div><div><div class="location">(MS16) (B20)</div></div></div></div><br>
 <p>~ 1 ~ He is fairer than the lily of the valley, He is brighter than the morning star.<br>
 He is purer than the snow, fresher than the breeze, Lovelier by far than all of these.</p>
 <p>~ 2 ~ But He calms all the storms, and conquers the raging seas.<br>
@@ -316,7 +255,7 @@ And He made me happy\*. Above it all, He\'s still the \*\*same\*\*.
 `
 	AboveItAllFileHtml = `<div class="keep-together">
 <h1 id="above-it-all-there-stands-jesus">Above It All <span class="other-title">(There Stands Jesus)</span></h1>
-<div><div class="metadata"><div><div class="author">LaVerne & Edith Tripp</div></div><div><div class="key"><b>Key G</b></div></div><div><div class="location">(MS68) (B1)</div></div></div></div><br><br>
+<div><div class="metadata"><div><div class="author">LaVerne & Edith Tripp</div></div><div><div class="key"><b>Key G</b></div></div><div><div class="location">(MS68) (B1)</div></div></div></div><br>
 <p>Above it all, There stands Jesus. Above it all, He&rsquo;s still my King. *He took my life,<br>
 And He made me happy*. Above it all, He&rsquo;s still the **same**.</p>
 <p>*This fleeting life is but a vapor*<br>
@@ -344,7 +283,7 @@ We\'re walking together in Zion; And there are no limits in Him.
 `
 	BeholdTheHeavensFileHtml = `<div class="keep-together">
 <h1 id="behold-the-heavens">Behold The Heavens</h1>
-<div><div class="metadata row-padding"><div><div class="author"><b>I. Amundson</b></div></div><div><div class="key">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="location">&nbsp;&nbsp;&nbsp;&nbsp;</div></div></div><div class="metadata"><div><div class="melody-75"><b>(tune The Kingdom of God is Not Meat and Drink)</b></div></div></div></div><br><br>
+<div><div class="metadata row-padding"><div><div class="author"><b>I. Amundson</b></div></div><div><div class="key">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="location">&nbsp;&nbsp;&nbsp;&nbsp;</div></div></div><div class="metadata"><div><div class="melody-75"><b>(tune The Kingdom of God is Not Meat and Drink)</b></div></div></div></div><br>
 <p>~ 1 ~ Behold the heavens are open; Behold the face of the King<br>
 We now have a new way of walking; We now have a new song to sing.</p>
 <p>~ 2 ~ Behold the heavens are open; Forever the veil has been rent;<br>
@@ -375,7 +314,7 @@ And Thy truth unto the clouds.
 `
 	BeThouExaltedFileHtml = `<div class="keep-together">
 <h1 id="be-thou-exalted">Be Thou Exalted</h1>
-<div><div class="metadata row-padding"><div><div class="author">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="key"><b>Key F</b></div></div><div><div class="location">(MS4) (B4)</div></div></div><div class="metadata"><div><div class="melody">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="verse">Ps. 57:9-11</div></div></div></div><br><br>
+<div><div class="metadata row-padding"><div><div class="author">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="key"><b>Key F</b></div></div><div><div class="location">(MS4) (B4)</div></div></div><div class="metadata"><div><div class="melody">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="verse">Ps. 57:9-11</div></div></div></div><br>
 <p>~ 1 ~ Be Thou exalted, oh God (x3) above the heavens.<br>
 Let Thy glory be above the whole earth.<br>
 (Repeat)</p>
@@ -385,6 +324,19 @@ For Thy mercy is great unto the heavens<br>
 And Thy truth unto the clouds.</p>
 </div>
 <br>`
+	BeThouExalted2FileHtml = `<div class="keep-together">
+<h1 id="be-thou-exalted-2">Be Thou Exalted</h1>
+<div><div class="metadata row-padding"><div><div class="author">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="key"><b>Key F</b></div></div><div><div class="location">(MS4) (B4)</div></div></div><div class="metadata"><div><div class="melody">&nbsp;&nbsp;&nbsp;&nbsp;</div></div><div><div class="verse">Ps. 57:9-11</div></div></div></div><br>
+<p>~ 1 ~ Be Thou exalted, oh God (x3) above the heavens.<br>
+Let Thy glory be above the whole earth.<br>
+(Repeat)</p>
+<p>~ 2 ~ I will praise Thee oh Lord among the people.<br>
+I will sing unto Thee among the nations.<br>
+For Thy mercy is great unto the heavens<br>
+And Thy truth unto the clouds.</p>
+</div>
+<br>`
+
 	AHymnOfPraiseFileMd = `---
 melody: 
 key: Key C

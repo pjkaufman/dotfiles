@@ -16,8 +16,8 @@ html:
 	@song-converter create-html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html
 pdf:
 	@echo "Creating PDF"
-	weasyprint ./html/churchSongs.html churchSongsWeasy.pdf -s ./html/styles.css
+	weasyprint ./html/churchSongs.html churchSongs.pdf -s ./html/styles.css
 show:
-	evince churchSongsWeasy.pdf
+	evince churchSongs.pdf
 csv:
 	song-converter create-csv -d ./stagingGround/ -o churchSongs.csv

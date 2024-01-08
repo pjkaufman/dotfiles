@@ -1,0 +1,27 @@
+{
+  "go.toolsManagement.autoUpdate": true,
+  "go.buildTags": "-tags=integration unit",
+  "diffEditor.wordWrap": "on",
+  "editor.wordWrap": "on",
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.tabCompletion": "on",
+  "search.searchOnType": false,
+  "editor.minimap.enabled": false,
+  "breadcrumbs.enabled": false,
+  "editor.rename.enablePreview": false,
+  "[python]": {
+    "editor.formatOnType": true
+  },
+  "workbench.editor.enablePreview": false,
+  "window.menuBarVisibility": "compact",
+  "workbench.layoutControl.enabled": false,
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "cSpell.userWords": [
+    "Blockquotes",
+    "callouts"
+  ],
+  "catppuccin.accentColor": "blue",
+  "window.zoomLevel": 1
+}

@@ -97,8 +97,6 @@ The current list of programs that need installing and are used are as follows:
 
 ## TODOs
 
-- Add VsCode
 - Convert NeoVim to a more stable setup
-- Setup monitor in Sway
 - Add option to convert church songs to odf or similar format from html for flexibility
 - Add Obsidian configs if possible

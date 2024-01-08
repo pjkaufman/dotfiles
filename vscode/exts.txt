@@ -1,0 +1,10 @@
+bierner.markdown-mermaid
+dbaeumer.vscode-eslint
+golang.go
+mohsen1.prettify-json
+ms-python.isort
+ms-python.python
+ms-python.vscode-pylance
+ms-vscode.makefile-tools
+shd101wyy.markdown-preview-enhanced
+streetsidesoftware.code-spell-checker

@@ -1,5 +1,4 @@
 # include catppuccin mocha file for styling
-
 include catppuccin-mocha
 
 ## Styling:
@@ -34,39 +33,15 @@ include /etc/sway/config-vars.d/*
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
-#
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
 
-### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
 
-### Input configuration
-#
-# Example configuration:
-#
-#   input "2:14:SynPS/2_Synaptics_TouchPad" {
-#       dwt enabled
-#       tap enabled
-#       natural_scroll enabled
-#       middle_emulation enabled
-#   }
-#
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+### Keyboard layout
+
+input * {
+    xkb_layout "us"
+    xkb_variant "altgr-intl"
+    xkb_options "compose:menu,level3:ralt_switch"
+}
 
 ### Key bindings
 #
@@ -82,10 +57,10 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
     bindsym $mod+d exec $menu
 
     # Use pactl to adjust volume in PulseAudio.
-    bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
-    bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
-    bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
-    bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%
+    bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -10%
+    bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+    bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
     # Screen brightness controls
     bindsym XF86MonBrightnessUp exec light -A 5
@@ -116,7 +91,7 @@ output * bg $HOME/Pictures/Charles/CharlesOutside.jpg fill
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
     # Clipboard
-    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"1
 
     # Bluetooth
     bindsym $mod+Shift+b exec "$HOME/dotfiles/bin/wayblue -c"
@@ -224,7 +199,7 @@ bindsym $mod+r mode "resize"
 mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock" {
   bindsym l exec swaymsg exit
   bindsym r exec systemctl reboot
-  bindsym s exec systemctl shutdown
+  bindsym s exec shutdown now
   bindsym h exec systemctl hibernate
   bindsym x exec swaylock -i "$HOME/Pictures/Laminin.png" default -n -e
   bindsym Escape mode "default"
@@ -232,6 +207,10 @@ mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock" {
 }
 
 bindsym $mod+x mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock"
+
+# Floating windows
+
+for_window [app_id="obsidian" title="Open folder as vault"] floating enable
 
 #
 # Status Bar:
@@ -242,8 +221,11 @@ bar {
 }
 
 # initial workspace config setup
-exec_always "$HOME/dotfiles/bin/clipboardstart"
-exec --no-startup-id swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
-exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
-exec --no-startup-id swaymsg 'workspace 2; exec /usr/bin/syncthing'
-exec --no-startup-id swaymsg 'workspace 3; exec xdg-open obsidian://open?vault=Obsidian; sleep 5'
+# make sure that wlr portal gets properly loaded
+exec "$XDG_CONFIG_HOME/sway/scripts/session"
+exec_always "$XDG_CONFIG_HOME/sway/scripts/clipboardstart"
+exec swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
+exec swaymsg 'workspace 2; exec /usr/bin/flatpak run com.brave.Browser; sleep 5'
+exec swaymsg 'workspace 2; exec /usr/bin/syncthing'
+exec swaymsg 'workspace 3; exec xdg-open obsidian://open?vault=Obsidian; sleep 5'
+

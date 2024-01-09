@@ -219,12 +219,6 @@ if [ -d "$DOTFILES/bash/functions" ]; then
 	done
 fi
 
-# Force GTK and other use of wayland variables on personal computers
-is_personal_computer && export XDG_CURRENT_DESKTOP="sway"
-is_personal_computer && export GDK_BACKEND=wayland
-is_personal_computer && export CLUTTER_BACKEND=wayland
-is_personal_computer && export QT_QPA_PLATFORM=wayland
-
 # ------------- binds / completion ------------
 
 # make sure bash completion gets put in xdg folders
@@ -271,6 +265,13 @@ function command_not_found_handle() {
 # -------------------- personalized configuration --------------------
 
 _source_if "$HOME/.localrc"
+
+# only check for is_personal_computer after loading the computer type from `.localrc`
+# Force GTK and other use of wayland variables on personal computers
+is_personal_computer && export XDG_CURRENT_DESKTOP="sway"
+is_personal_computer && export GDK_BACKEND=wayland
+is_personal_computer && export CLUTTER_BACKEND=wayland
+is_personal_computer && export QT_QPA_PLATFORM=wayland
 
 # -------------------- run common setup functions --------------------
 

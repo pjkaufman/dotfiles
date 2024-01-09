@@ -1,5 +1,7 @@
 #!/usr/bin/sh
 #
+# from https://github.com/dbarenholz/dotfiles/blob/2dc359dbe57bb6aabad70577dfef741946cf90c4/.config/sway/scripts/session.sh
+#
 # Address several issues with DBus activation and systemd user sessions
 #
 # 1. DBus-activated and systemd services do not share the environment with user

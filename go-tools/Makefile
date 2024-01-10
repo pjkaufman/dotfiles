@@ -14,6 +14,7 @@ install:
 	@go build -o ~/.local/bin/ebook-lint ./ebook-lint/main.go
 	@go build -o ~/.local/bin/git-helper ./git-helper/main.go
 	@go build -o ~/.local/bin/song-converter ./song-converter/main.go
+	@go build -o ~/.local/bin/cat-ascii ./cat-ascii/main.go
 	
 	@mkdir -p ${BASH_COMPLETION_USER_DIR}
 

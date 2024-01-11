@@ -91,7 +91,7 @@ input * {
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
     # Clipboard
-    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"1
+    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
 
     # Bluetooth
     bindsym $mod+Shift+b exec "$HOME/dotfiles/bin/wayblue -c"

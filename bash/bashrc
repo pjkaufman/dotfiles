@@ -284,3 +284,5 @@ _source_if "$CARGO_HOME/env"
 sshstart # start SSH for Github if it has not already started
 
 c
+
+_have cat-ascii && cat-ascii

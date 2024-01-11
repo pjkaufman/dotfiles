@@ -1,14 +1,28 @@
 package ascii
 
-import "embed"
+import (
+	"embed"
+	"fmt"
+)
 
 //go:embed *.txt
-var AsciiEmbeds embed.FS
+var asciiEmbeds embed.FS
 
-// make sure that all file names are in this list or else they will not be pulled by the program
-var CatAsciiFileNames = []string{
-	"scared-cat",
-	"sitting-cat",
-	"sleeping-cat",
-	"stalking-cat",
+func GetAllAsciiFileContent() ([]string, error) {
+	asciiFiles, err := asciiEmbeds.ReadDir(".")
+	if err != nil {
+		return nil, fmt.Errorf("failed to get embeded ascii files: %w", err)
+	}
+
+	var fileContent = make([]string, len(asciiFiles))
+	for i, file := range asciiFiles {
+		content, err := asciiEmbeds.ReadFile(file.Name())
+		if err != nil {
+			return nil, fmt.Errorf(`failed to get embeded ascii file content for "%s", %w`, content, err)
+		}
+
+		fileContent[i] = string(content)
+	}
+
+	return fileContent, nil
 }

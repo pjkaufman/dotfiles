@@ -14,3 +14,7 @@ churchsongconverter/html/*.html
 churchsongconverter/html/*.md
 churchsongconverter/html/*.txt
 churchsongconverter/html/styles.css
+
+# rust
+rust-tools/*/target
+target/

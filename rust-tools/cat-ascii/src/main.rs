@@ -13,25 +13,24 @@ use crate::ascii::CAT_ASCII;
 fn main() {
     let match_result: ArgMatches = build_cli().get_matches();
 
-    if let Some(shell) = match_result.get_one::<Shell>("completion").copied() {
-        let mut cmd = build_cli();
-        eprintln!("Generating completion file for {shell}...");
-        print_completions(shell, &mut cmd);
-
-        return;
-    }
-
-    let is_list_action: bool = *match_result.get_one("list").unwrap_or(&false);
-    if is_list_action {
-        list_names();
-
-        return;
-    }
-
-    let name = match_result.get_one::<String>("show");
-    match name {
-        Some(name) => show_name(name.to_owned()),
-        None => pick_random_ascii(),
+    match match_result.subcommand() {
+        Some(("list", _)) => list_names(),
+        Some(("show", sub_matches)) => show_name(
+            sub_matches
+                .get_one::<String>("ASCII_NAME")
+                .expect("required")
+                .to_owned(),
+        ),
+        Some(("completion", sub_matches)) => {
+            let shell = sub_matches
+                .get_one::<Shell>("SHELL_NAME")
+                .expect("required")
+                .to_owned();
+            let mut cmd = build_cli();
+            eprintln!("Generating completion file for {shell}...");
+            print_completions(shell, &mut cmd);
+        }
+        _ => pick_random_ascii(),
     }
 }
 

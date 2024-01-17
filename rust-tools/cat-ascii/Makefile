@@ -4,7 +4,7 @@ install:
 
 	@echo "Generating bash completion"
 	@mkdir -p ${BASH_COMPLETION_USER_DIR}
-	@cat-ascii --completion bash > "${BASH_COMPLETION_USER_DIR}/cat-ascii-completion"
+	@cat-ascii completion bash > "${BASH_COMPLETION_USER_DIR}/cat-ascii-completion"
 	@echo "cat-ascii installed" 
 
 build:

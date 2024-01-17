@@ -1,191 +1,25 @@
-use clap::{command, Arg, ArgMatches};
+pub mod ascii;
+pub mod cli;
+
+use std::io;
+
+use clap::{ArgMatches, Command};
+use clap_complete::{generate, Generator, Shell};
+use cli::build_cli;
 use rand::{seq::SliceRandom, thread_rng};
 
-struct CatAscii {
-    ascii: &'static str,
-    name: &'static str,
-    from: &'static str,
-}
-
-const CAT_ASCII: [CatAscii; 8] = [
-    CatAscii {
-        ascii: "
-  ───────────────────────────────────────
-  ───▐▀▄───────▄▀▌───▄▄▄▄▄▄▄─────────────
-  ───▌▒▒▀▄▄▄▄▄▀▒▒▐▄▀▀▒██▒██▒▀▀▄──────────
-  ──▐▒▒▒▒▀▒▀▒▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄────────
-  ──▌▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▒▒▒▒▒▒▒▒▒▒▒▒▀▄──────
-  ▀█▒▒▒█▌▒▒█▒▒▐█▒▒▒▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌─────
-  ▀▌▒▒▒▒▒▒▀▒▀▒▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐───▄▄
-  ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌▄█▒█
-  ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒█▀─
-  ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▀───
-  ▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌────
-  ─▌▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐─────
-  ─▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌─────
-  ──▌▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐──────
-  ──▐▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▌──────
-  ────▀▄▄▀▀▀▀▀▄▄▀▀▀▀▀▀▀▄▄▀▀▀▀▀▄▄▀────────
-    
-  ",
-        name: "big-cat",
-        from: "https://www.asciiartcopy.com/ascii-cat.html",
-    },
-    CatAscii {
-        ascii: r#"
-                    .............                .""".             .""".
-            ..."""""             """""...       $   . ".         ." .   $
-        ..""        .   .   .   .   .    ..    $   $$$. ". ... ." .$$$   $
-      ."    . " . " . " . " . " . " . " .  "" ."  $$$"""  "   "  """$$$  ".
-    ."      . " . " . " . " . " . " . " .     $  "                    "   $
-   ."   . " . " . "           "   " . " . "  ."      ...          ...     ".
-  ."    . " . "    .."""""""""...     " . "  $     .$"              "$.    $
- ."     . " . " .""     .   .    ""..   . " $ ".      .""$     .""$      ." $
-."    " . " .       . " . " . " .    $    " $ "      "  $$    "  $$       " $
-$     " . " . " . " . " . " . " . "   $     $             $$.$$             $
-$     " . " . " . " . " . " . " . " .  $  " $  " .        $$$$$        . "  $
-$     " . " . " . " . " . " . " . " .  $    $      "  ..   "$"   ..  "      $
-".    " . " . " . " . " . " . " . "   ."  "  $  . . . $  . .". .  $ . . .  $
- $    " . " . " . " . " . " . " . "  ."   "            ".."   ".."
-  $     . " . " . " . " . " . "   .."   . " . "..    "             "    .."
-  ".      " . " . " . " . " .  .""    " . " .    """$...         ...$"""
-   ". "..     " . " . " . " .  "........  "    .....  ."""....."""
-     ". ."$".....                       $..."$"$"."   $".$"... `":....
-       "".."    $"$"$"$"""$........$"$"$"  ."."."  ...""      ."".    `"".
-           """.$.$." ."  ."."."    ."."." $.$.$"""".......  ". ". $ ". ". $
-                  """.$.$.$.$.....$.$.""""               ""..$..$."..$..$."
-
-"#,
-        name: "big-happy-cat",
-        from: "https://ascii.co.uk/art/cats",
-    },
-    CatAscii {
-        ascii: r#"
-                                     ,
-              ,-.       _,---._ __  / \
-             /  )    .-'       `./ /   \
-            (  (   ,'            `/    /|
-             \  `-"             \'\   / |
-              `.              ,  \ \ /  |
-               /`.          ,'-`----Y   |
-              (            ;        |   '
-              |  ,-.    ,-'         |  /
-              |  | (   |        hjw | /
-              )  |  \  `.___________|/
-              `--'   `--'
-"#,
-        name: "box-search-cat",
-        from: "https://ascii.co.uk/art/cats",
-    },
-    CatAscii {
-        ascii: r#"
-      Art by Blazej Kozlowski
-             _                        
-             \`*-.                    
-              )  _`-.                 
-             .  : `. .                
-             : _   '  \               
-             ; *` _.   `*-._          
-             `-.-'          `-.       
-               ;       `       `.     
-               :.       .        \    
-               . \  .   :   .-'   .   
-               '  `+.;  ;  '      :   
-               :  '  |    ;       ;-. 
-               ; '   : :`-:     _.`* ;
-      [bug] .*' /  .*' ; .*`- +'  `*' 
-            `*-*   `*-*  `*-*'
-      "#,
-        name: "bug-cat",
-        from: "https://www.asciiart.eu/animals/cats",
-    },
-    CatAscii {
-        ascii: r#"
-                                _.---.
-                      |\---/|  / ) ca|
-          ------------;     |-/ /|foo|---
-                      )     (' / `---'
-          ===========(       ,'==========
-          ||   _     |      |
-          || o/ )    |      | o
-          || ( (    /       ;
-          ||  \ `._/       /
-          ||   `._        /|
-          ||      |\    _/||
-        __||_____.' )  |__||____________
-         ________\  |  |_________________
-                  \ \  `-.
-                   `-`---'  hjw
-"#,
-        name: "cat-food-cat",
-        from: "https://user.xmission.com/~emailbox/ascii_cats.htm",
-    },
-    CatAscii {
-        ascii: r#"
-_____$$_____$$
-_____$$$___$$$
-_____$$$$$$$$$_______$$
-______$$$$$$$_______$$$
-_______$$$$$________$$$$
-________$$$__________$$$$
-________$$$$__________$$$
-________$$$$$$$______$$$
-________$$$$$$$$____$$$
-_________$$$$$$$____$$
-__________$$$$$$___$$
-__________$$$$$_$__$$
-__________$$$$_$$$_$$
-__________$$$_$$$$$_$$
-_________$$$__$$$$_$$
-"#,
-        name: "dollar-cat",
-        from: "https://www.asciiartcopy.com/ascii-cat.html",
-    },
-    CatAscii {
-        ascii: r#"
-_._     _,-'""`-._
-(,-.`._,'(       |\`-/|
-    `-.-' \ )-`( , o o)
-          `-    \`_`"'-
-"#,
-        name: "scared-cat",
-        from: "https://www.asciiartcopy.com/ascii-cat.html",
-    },
-    CatAscii {
-        name: "yarn-and-cat",
-        ascii: "
-            .-o=o-.
-        ,  /=o=o=o=\\ .--.
-       _|\\|=o=O=o=O=|    \\
-   __.'  a`\\=o=o=o=(`\\   /
-   '.   a 4/`|.-\"\"'`\\ \\ ;'`)   .---.
-     \\   .'  /   .--'  |_.'   / .-._)
-      `)  _.'   /     /`-.__.' /
-   jgs `'-.____;     /'-.___.-'
-                `\"\"\"`
-",
-        from: " https://user.xmission.com/~emailbox/ascii_cats.htm",
-    },
-];
+use crate::ascii::CAT_ASCII;
 
 fn main() {
-    let match_result: ArgMatches = command!().about(
-    "Displays cat ascii when run."
-  ).arg(
-    Arg::new("list")
-      .short('l')
-      .long("list")
-      .help("Lists names of all cat ascii options")
-      .num_args(0)
-      .exclusive(true)
-  ).arg(
-    Arg::new("show")
-      .short('s')
-      .long("show")
-      .help("Shows the specified cat ascii whose name is provided. Use the list command to see the list of available names.")
-      .num_args(1)
-      .exclusive(true)
-  ).get_matches();
+    let match_result: ArgMatches = build_cli().get_matches();
+
+    if let Some(shell) = match_result.get_one::<Shell>("completion").copied() {
+        let mut cmd = build_cli();
+        eprintln!("Generating completion file for {shell}...");
+        print_completions(shell, &mut cmd);
+
+        return;
+    }
 
     let is_list_action: bool = *match_result.get_one("list").unwrap_or(&false);
     if is_list_action {
@@ -228,4 +62,8 @@ fn pick_random_ascii() {
         Some(cat_ascii) => println!("{}", cat_ascii.ascii),
         None => println!("No cat ascii is available"),
     }
+}
+
+fn print_completions<G: Generator>(gen: G, cmd: &mut Command) {
+    generate(gen, cmd, cmd.get_name().to_string(), &mut io::stdout());
 }

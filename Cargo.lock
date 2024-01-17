@@ -55,6 +55,7 @@ name = "cat-ascii"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "clap_complete",
  "rand",
 ]
 
@@ -83,6 +84,15 @@ dependencies = [
  "anstyle",
  "clap_lex",
  "strsim",
+]
+
+[[package]]
+name = "clap_complete"
+version = "4.4.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dfb0d4825b75ff281318c393e8e1b80c4da9fb75a6b1d98547d389d6fe1f48d2"
+dependencies = [
+ "clap",
 ]
 
 [[package]]

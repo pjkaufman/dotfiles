@@ -11,10 +11,11 @@ cover:
 
 install:
 	@echo "Building go tools"
-	@go build -o ~/.local/bin/ebook-lint ./ebook-lint/main.go
-	@go build -o ~/.local/bin/git-helper ./git-helper/main.go
-	@go build -o ~/.local/bin/song-converter ./song-converter/main.go
-	@go build -o ~/.local/bin/cat-ascii ./cat-ascii/main.go
+	@go build -o "${HOME}/.local/bin/ebook-lint" ./ebook-lint/main.go
+	@go build -o "${HOME}/.local/bin/git-helper" ./git-helper/main.go
+	@go build -o "${HOME}/.local/bin/song-converter" ./song-converter/main.go
+	@go build -o "${HOME}/.local/bin/cat-ascii" ./cat-ascii/main.go
+	@go build -o "${HOME}/.local/bin/magnum" ./magnum/main.go
 	
 	@mkdir -p ${BASH_COMPLETION_USER_DIR}
 
@@ -23,3 +24,4 @@ install:
 	@git-helper completion bash > "${BASH_COMPLETION_USER_DIR}/git-helper-completion"
 	@song-converter completion bash > "${BASH_COMPLETION_USER_DIR}/song-converter-completion"
 	@cat-ascii completion bash > "${BASH_COMPLETION_USER_DIR}/cat-ascii-completion"
+	@magnum completion bash > "${BASH_COMPLETION_USER_DIR}/magnum-completion"

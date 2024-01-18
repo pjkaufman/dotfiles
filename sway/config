@@ -69,13 +69,13 @@ input * {
     # Screenshots
 
     # take a screenshot of all screens
-    bindsym --release Print exec "scrot -m '$HOME/Pictures/Screenshots/%s_%H%M_%d.%m.%Y_$wx$h.png'"
+    bindsym --release Print exec "$DOTFILES/bin/wayshot '$HOME/Pictures/Screenshots/'"
 
     # select a part of the screen to take an image from
-    bindsym --release Shift+Print exec "scrot -s '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
+    bindsym --release Shift+Print exec "$DOTFILES/bin/wayshot -s '$HOME/Pictures/Screenshots/'"
 
     # take a screenshot of the currently focused window after 4 seconds
-    bindsym --release $mod+Shift+Print exec "scrot -u -d 4 '$HOME/Pictures/Screenshots/%s_%H%M_%d%m%Y_$wx$h.png'"
+    bindsym --release $mod+Shift+Print exec "$DOTFILES/bin/wayshot -w -d 4 '$HOME/Pictures/Screenshots/'"
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -95,6 +95,10 @@ input * {
 
     # Bluetooth
     bindsym $mod+Shift+b exec "$HOME/dotfiles/bin/wayblue -c"
+
+    # Open network chooser
+    bindsym $mod+w exec "$HOME/dotfiles/bin/nmcli-wofi"
+
 #
 # Moving around:
 #
@@ -154,11 +158,6 @@ input * {
     # respectively.
     bindsym $mod+b splith
     bindsym $mod+v splitv
-
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen

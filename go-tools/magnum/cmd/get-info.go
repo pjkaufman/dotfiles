@@ -41,7 +41,9 @@ var GetInfoCmd = &cobra.Command{
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
-			seriesInfo.Series[i] = getSeriesVolumeInfo(series)
+			if series.Status != config.Completed || includeCompleted {
+				seriesInfo.Series[i] = getSeriesVolumeInfo(series)
+			}
 		}
 
 		config.WriteConfig(seriesInfo)
@@ -52,6 +54,7 @@ func init() {
 	rootCmd.AddCommand(GetInfoCmd)
 
 	GetInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
+	SetStatus.Flags().BoolVarP(&includeCompleted, "include-completed", "c", false, "get info for completed series")
 }
 
 func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {

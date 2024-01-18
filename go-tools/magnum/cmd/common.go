@@ -1,6 +1,8 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var (
 	verbose bool

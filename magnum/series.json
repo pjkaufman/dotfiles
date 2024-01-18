@@ -7,7 +7,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "C"
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
@@ -21,7 +22,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Goblin Slayer (light novel)",
@@ -35,7 +37,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Sword Art Online",
@@ -44,7 +47,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
@@ -62,7 +66,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Re:ZERO -Starting Life in Another World",
@@ -76,7 +81,8 @@
       ],
       "slug_override": "re-starting-life-in-another-world",
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
@@ -90,7 +96,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "A Certain Magical Index (light novel)",
@@ -99,7 +106,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
@@ -113,7 +121,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "86--EIGHTY-SIX (light novel)",
@@ -127,7 +136,8 @@
       ],
       "slug_override": "86-eighty-six-light-novel",
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Sword Art Online Progressive",
@@ -136,7 +146,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Log Horizon",
@@ -145,7 +156,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "H"
     },
     {
       "name": "No Game No Life",
@@ -154,7 +166,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "No Game No Life, Please!",
@@ -163,7 +176,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Overlord",
@@ -172,7 +186,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "So I'm a Spider, So What? (light novel)",
@@ -181,7 +196,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "C"
     },
     {
       "name": "The Devil Is a Part-Timer!",
@@ -190,7 +206,8 @@
       "unreleased_volumes": [],
       "slug_override": "the-devil-is-a-part-timer",
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "C"
     },
     {
       "name": "The Executioner and Her Way of Life",
@@ -204,7 +221,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
@@ -218,7 +236,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "The Hero Is Overpowered but Overly Cautious (light novel)",
@@ -227,7 +246,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "The Irregular at Magic High School",
@@ -241,7 +261,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
@@ -259,7 +280,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "The Saga of Tanya the Evil (light novel)",
@@ -268,7 +290,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "Torture Princess: Fremd Torturchen (light novel)",
@@ -277,7 +300,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "C"
     },
     {
       "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (light novel)",
@@ -286,7 +310,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "High School Prodigies Have It Easy Even in Another World! (light novel)",
@@ -300,7 +325,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "YenPress"
+      "publisher": "YenPress",
+      "status": "O"
     },
     {
       "name": "How a Realist Hero Rebuilt the Kingdom",
@@ -314,7 +340,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "JNovelClub"
+      "publisher": "JNovelClub",
+      "status": "O"
     },
     {
       "name": "Outbreak Company",
@@ -323,7 +350,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "JNovelClub"
+      "publisher": "JNovelClub",
+      "status": "O"
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
@@ -332,7 +360,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "JNovelClub"
+      "publisher": "JNovelClub",
+      "status": "O"
     },
     {
       "name": "Arifureta: From Commonplace to World's Strongest",
@@ -341,7 +370,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "JNovelClub"
+      "publisher": "JNovelClub",
+      "status": "C"
     },
     {
       "name": "Arifureta Zero",
@@ -350,7 +380,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "JNovelClub"
+      "publisher": "JNovelClub",
+      "status": "O"
     },
     {
       "name": "Classroom of the Elite",
@@ -376,7 +407,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "SevenSeasEntertainment"
+      "publisher": "SevenSeasEntertainment",
+      "status": "O"
     },
     {
       "name": "The Hidden Dungeon Only I Can Enter",
@@ -385,7 +417,8 @@
       "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
-      "publisher": "SevenSeasEntertainment"
+      "publisher": "SevenSeasEntertainment",
+      "status": "O"
     },
     {
       "name": "Mushoku Tensei",
@@ -399,7 +432,8 @@
       ],
       "slug_override": "List_of_Mushoku_Tensei_volumes",
       "type": "LN",
-      "publisher": "SevenSeasEntertainment"
+      "publisher": "SevenSeasEntertainment",
+      "status": "O"
     },
     {
       "name": "Skeleton Knight in Another World",
@@ -413,7 +447,8 @@
       ],
       "slug_override": null,
       "type": "LN",
-      "publisher": "SevenSeasEntertainment"
+      "publisher": "SevenSeasEntertainment",
+      "status": "O"
     }
   ]
 }

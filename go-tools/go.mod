@@ -8,6 +8,7 @@ require (
 	github.com/andreyvit/diff v0.0.0-20170406064948-c7f18ee00883
 	github.com/fatih/color v1.15.0
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386
+	github.com/manifoldco/promptui v0.9.0
 	github.com/playwright-community/playwright-go v0.3900.1
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
@@ -19,6 +20,7 @@ require (
 	github.com/antchfx/htmlquery v1.3.0 // indirect
 	github.com/antchfx/xmlquery v1.3.18 // indirect
 	github.com/antchfx/xpath v1.2.4 // indirect
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.1 // indirect

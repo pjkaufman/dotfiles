@@ -4,7 +4,6 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -27,12 +26,12 @@ var (
 var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Adds the provided series info to the list of series to keep track of",
-	Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
-	song-converter create-cover -f cover-file.md -o output-file.html
-	
-	To write the output of converting the cover file to std out:
-	song-converter create-cover -f cover-file.md
-	`),
+	// Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
+	// song-converter create-cover -f cover-file.md -o output-file.html
+
+	// To write the output of converting the cover file to std out:
+	// song-converter create-cover -f cover-file.md
+	// `),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateAddSeriesFlags(seriesName, seriesPublisher, seriesType)
 		if err != nil {

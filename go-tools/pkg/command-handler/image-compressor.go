@@ -9,6 +9,7 @@ import (
 )
 
 const imgComperssionProgramName = "imgp"
+const minimumSizeOfImageToCompress = 300 // 300kb
 
 var compressionParams = []string{"-x", "800x800", "-e", "-O", "-q", "40", "-m", "-w"}
 var CompressableImageExts = []string{"png", "jpg", "jpeg"}
@@ -20,7 +21,7 @@ func CompressRelativeImages(baseFolder string, images map[string]struct{}) {
 }
 
 func CompressImage(imagePath string) {
-	if !isCompressableImage(imagePath) {
+	if !isCompressableImage(imagePath) || filehandler.MustGetFileSize(imagePath) <= minimumSizeOfImageToCompress {
 		return
 	}
 
@@ -43,8 +44,4 @@ func isCompressableImage(imagePath string) bool {
 	}
 
 	return false
-}
-
-func mustCompressImage(programName, errorMsg string, args ...string) {
-
 }

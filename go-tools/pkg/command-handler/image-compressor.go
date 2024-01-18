@@ -9,7 +9,7 @@ import (
 )
 
 const imgComperssionProgramName = "imgp"
-const minimumSizeOfImageToCompress = 300 // 300kb
+const minimumSizeOfImageToCompress = 150 // 150kb
 
 var compressionParams = []string{"-x", "800x800", "-e", "-O", "-q", "40", "-m", "-w"}
 var CompressableImageExts = []string{"png", "jpg", "jpeg"}

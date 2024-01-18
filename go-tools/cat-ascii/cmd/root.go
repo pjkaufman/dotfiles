@@ -15,15 +15,10 @@ var rootCmd = &cobra.Command{
 	Use:   "cat-acii",
 	Short: "A cat ascii art generator that displays a random cat ascii art on each invocation",
 	Run: func(cmd *cobra.Command, args []string) {
-		fileContent, err := ascii.GetAllAsciiFileContent()
-		if err != nil {
-			logger.WriteError(err.Error())
-		}
-
 		generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-		n := int(generator.Int63()) % len(fileContent)
+		n := int(generator.Int63()) % len(ascii.CAT_ASCII)
 
-		logger.WriteInfo(fileContent[n])
+		logger.WriteInfo(ascii.CAT_ASCII[n].Ascii)
 	},
 }
 

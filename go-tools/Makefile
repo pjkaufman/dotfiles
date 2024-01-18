@@ -19,6 +19,7 @@ install:
 	@mkdir -p ${BASH_COMPLETION_USER_DIR}
 
 	@echo "Generating the bash completion for the tools"
-	@ebook-lint completion bash > ${BASH_COMPLETION_USER_FILE}
-	@git-helper completion bash >> ${BASH_COMPLETION_USER_FILE}
-	@song-converter completion bash >> ${BASH_COMPLETION_USER_FILE}
+	@ebook-lint completion bash > "${BASH_COMPLETION_USER_DIR}/ebook-lint-completion"
+	@git-helper completion bash > "${BASH_COMPLETION_USER_DIR}/git-helper-completion"
+	@song-converter completion bash > "${BASH_COMPLETION_USER_DIR}/song-converter-completion"
+	@cat-ascii completion bash > "${BASH_COMPLETION_USER_DIR}/cat-ascii-completion"

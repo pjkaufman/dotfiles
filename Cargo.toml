@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-    "rust-tools/cat-ascii",
+    "rust-tools/cat-ascii", "rust-tools/ebook-lint",
 ]
 
 [profile.release]

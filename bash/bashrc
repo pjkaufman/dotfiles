@@ -239,6 +239,12 @@ if ! shopt -oq posix; then
 	fi
 fi
 
+if [ -d "$BASH_COMPLETION_USER_DIR" ]; then
+	for file in "$BASH_COMPLETION_USER_DIR"/*; do
+		. "$file"
+	done
+fi
+
 # -------------------- command not found handler --------------------
 
 # handles certain file types when nothing is specified for the program so they still open up

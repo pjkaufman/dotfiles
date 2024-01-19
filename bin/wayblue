@@ -5,8 +5,8 @@ if ! command -v bluetoothctl &> /dev/null; then
   exit 1;
 fi
 
-if ! command -v wofi &> /dev/null; then
-  echo "wofi must be installed to run wayblue"
+if ! command -v rofi &> /dev/null; then
+  echo "rofi must be installed to run wayblue"
   exit 1;
 fi
 
@@ -14,11 +14,16 @@ if hash fzf 2>/dev/null; then
   FZF_AVAILABLE=1
 fi
 
-wofi_selector="wofi --dmenu"
+rofi_selector="rofi -dmenu -p 'Bluetooth connection'"
 fzf_selector="fzf"
 
+function getExistingDevices() {
+  bluetoothctl devices | grep -o -e "Device [^ ]* [^\n]*"
+}
+
+
 function getAvailableConnections() {
-  timeout 5 bluetoothctl scan on | grep -o -e "Device [^ ]* [^\n]*"
+  bluetoothctl --timeout 5 scan on | grep -o -e "Device [^ ]* [^\n]*"
 }
 
 function selectDevice() {
@@ -108,13 +113,14 @@ while (( $# > 0 )); do
   esac
 done
 
-selector="$wofi_selector"
+selector="$rofi_selector"
 if [ "$CLI" = "yes" ]; then
   selector="$fzf_selector"
 fi
 
 if [ "$CONNECT" = "yes" ]; then
-  bluetooth_info=$(getAvailableConnections)
+  bluetooth_info=$(getExistingDevices)
+  bluetooth_info+=$(echo -e "\n$(getAvailableConnections)")
   if [ -z "$bluetooth_info" ] || [ "$bluetooth_info" == "" ]; then
     echo "No devices found"
     exit 0;

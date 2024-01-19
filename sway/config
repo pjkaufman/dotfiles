@@ -25,7 +25,7 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu exec wofi --show=drun
+set $menu exec rofi -show drun
 
 include /etc/sway/config-vars.d/*
 
@@ -91,13 +91,13 @@ input * {
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
     # Clipboard
-    bindsym $mod+Shift+v exec "cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+    bindsym $mod+Shift+v exec "cliphist list | rofi -dmenu | cliphist decode | wl-copy"
 
     # Bluetooth
     bindsym $mod+Shift+b exec "$HOME/dotfiles/bin/wayblue -c"
 
     # Open network chooser
-    bindsym $mod+w exec "$HOME/dotfiles/bin/nmcli-wofi"
+    bindsym $mod+w exec "$HOME/dotfiles/bin/wayfi"
 
 #
 # Moving around:

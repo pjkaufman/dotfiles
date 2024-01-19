@@ -70,12 +70,12 @@ function menu () {
   fi
 }
 
-function wofi_cmd () {
+function rofi_cmd () {
   # don't repeat lines with uniq -u
-  echo -e "$1" | uniq -u | wofi --show dmenu --insensitive -p "Network connection" --cache /dev/null
+  echo -e "$1" | uniq -u | rofi -dmenu -i -p "Network connection" --cache /dev/null
 }
 
-function wofi_menu () {
+function rofi_menu () {
     TOGGLE=$(toggle_wifi)
     CURRCONNECT=$(current_connection)
     [[ "$TOGGLE" =~ 'Enable' ]] && WIFILIST="" || WIFILIST=$(wifi_list)
@@ -83,7 +83,7 @@ function wofi_menu () {
 
     MENU=$(menu "$WIFILIST" "$CURRCONNECT" "$TOGGLE" "$VPNLIST")
 
-    wofi_cmd "$MENU"
+    rofi_cmd "$MENU"
 }
 
 function get_ssid () {
@@ -111,7 +111,7 @@ function cleanup_networks () {
 }
 
 function main () {
-    OPS=$(wofi_menu)
+    OPS=$(rofi_menu)
     CHSSID=$(get_ssid "$OPS")
 
     if [ -z "$OPS" ]; then
@@ -139,11 +139,11 @@ function main () {
 
     elif [[ "$OPS" =~ 'Manual' ]]; then
       # Manual entry of the SSID
-      MSSID=$(echo -en "" | wofi -dmenu -p "SSID" -mesg "Enter the SSID of the network" \
+      MSSID=$(echo -en "" | rofi -dmenu -p "SSID" -mesg "Enter the SSID of the network" \
         -lines 0 -font "$FONT")
 
       # manual entry of the PASSWORD
-      MPASS=$(echo -en "" | wofi -dmenu -password -p "PASSWORD" -mesg \
+      MPASS=$(echo -en "" | rofi -dmenu -password -p "PASSWORD" -mesg \
         "Enter the PASSWORD of the network" -lines 0 -font "$FONT")
 
       # If the user entered a manual password, then use the password nmcli command
@@ -161,7 +161,7 @@ function main () {
           nmcli connection up "$CHSSID"
       else
         if [[ "$OPS" =~ "WPA2" ]] || [[ "$OPS" =~ "WEP" ]]; then
-          WIFIPASS=$(echo -en "" | wofi --show dmenu --password -p "PASSWORD" --lines=0)
+          WIFIPASS=$(echo -en "" | rofi --show dmenu --password -p "PASSWORD" --lines=0)
           if [ -z "$WIFIPASS" ]; then
             exit 0
           fi

@@ -12,7 +12,7 @@ sway_packages_to_install=(
   "light" # brightness changes
   "swaylock" # lockscreen setup
   "waybar" # status bar
-  "wofi" # app selector
+  "rofi" # app selector
   "wl-clipboard" # clipboard base
   "jq" # json processor for wayshot
   "grim" # part of screenshot taking as a part of wayshot

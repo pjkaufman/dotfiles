@@ -37,16 +37,15 @@ func selectBookName(series []config.SeriesInfo, includeCompleted bool) string {
 	return result
 }
 
-func selectBookStatus() config.Status {
-	var statuses = []config.Status{
+func selectBookStatus() config.BookStatus {
+	var statuses = []config.BookStatus{
 		config.Ongoing,
 		config.Hiatus,
 		config.Completed,
 	}
-	var seriesStatuses = []string{
-		string(config.Ongoing) + " - Ongoing",
-		string(config.Hiatus) + " - Hiatus",
-		string(config.Completed) + " - Completed",
+	var seriesStatuses = make([]string, len(statuses))
+	for i, status := range statuses {
+		seriesStatuses[i] = fmt.Sprintf("%s - %s", status, config.BookStatusToDisplayText(status))
 	}
 
 	prompt := promptui.Select{
@@ -60,4 +59,52 @@ func selectBookStatus() config.Status {
 	}
 
 	return statuses[i]
+}
+
+func selectPublisher() config.PublisherType {
+	var publishers = []config.PublisherType{
+		config.YenPress,
+		config.JNovelClub,
+		config.SevenSeasEntertainment,
+	}
+	var publisherTypes = make([]string, len(publishers))
+	for i, publisherType := range publishers {
+		publisherTypes[i] = fmt.Sprintf("%[1]s - %[1]s", publisherType)
+	}
+
+	prompt := promptui.Select{
+		Label: "Select Book Publisher",
+		Items: publisherTypes,
+	}
+
+	i, _, err := prompt.Run()
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("Book publisher prompt failed %v", err))
+	}
+
+	return publishers[i]
+}
+
+func selectSeriesType() config.SeriesType {
+	var types = []config.SeriesType{
+		config.WebNovel,
+		config.Manga,
+		config.LightNovel,
+	}
+	var seriesTypes = make([]string, len(types))
+	for i, seriesType := range types {
+		seriesTypes[i] = fmt.Sprintf("%s - %s", seriesType, config.SeriesTypeToDisplayText(seriesType))
+	}
+
+	prompt := promptui.Select{
+		Label: "Select Series Type",
+		Items: seriesTypes,
+	}
+
+	i, _, err := prompt.Run()
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("Book series type prompt failed %v", err))
+	}
+
+	return types[i]
 }

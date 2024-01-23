@@ -20,24 +20,6 @@ var GetInfoCmd = &cobra.Command{
 	Example: heredoc.Doc(`To get all of the release data for non-completed series:
 	magnum get-info`),
 	Run: func(cmd *cobra.Command, args []string) {
-		// resp, err := http.Get("https://en.wikipedia.org/robots.txt")
-		// if err != nil {
-		// 	log.Fatalln(err)
-		// }
-		// //We Read the response body on the line below.
-		// body, err := io.ReadAll(resp.Body)
-		// if err != nil {
-		// 	log.Fatalln(err)
-		// }
-		// //Convert the body to type string
-		// sb := string(body)
-
-		// ok := grobotstxt.AgentAllowed(sb, userAgent, "https://en.wikipedia.org/wiki/Berserk_of_Gluttony")
-		// fmt.Println(ok)
-
-		// wikipedia.GetSectionInfo()
-		// spew.Dump(wikipedia.GetVolumeInfo(userAgent, "Classroom of the Elite", verbose))
-
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
@@ -54,7 +36,7 @@ func init() {
 	rootCmd.AddCommand(GetInfoCmd)
 
 	GetInfoCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more info about what is going on")
-	SetStatus.Flags().BoolVarP(&includeCompleted, "include-completed", "c", false, "get info for completed series")
+	GetInfoCmd.Flags().BoolVarP(&includeCompleted, "include-completed", "c", false, "get info for completed series")
 }
 
 func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {

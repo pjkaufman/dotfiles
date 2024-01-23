@@ -49,7 +49,7 @@ var SetStatus = &cobra.Command{
 			logger.WriteInfo(fmt.Sprintf("\"%s\" selected", name))
 		}
 
-		var status = config.Status(bookStatus)
+		var status = config.BookStatus(bookStatus)
 		if !config.IsStatus(bookStatus) {
 			logger.WriteWarn(fmt.Sprintf(`Status "%s" is not a valid book status, so it is being ignored`, bookStatus))
 

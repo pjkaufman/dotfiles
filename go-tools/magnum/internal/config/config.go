@@ -15,7 +15,7 @@ type SeriesInfo struct {
 	SlugOverride      *string       `json:"slug_override"`
 	Type              SeriesType    `json:"type"`
 	Publisher         PublisherType `json:"publisher"`
-	Status            Status        `json:"status"`
+	Status            BookStatus    `json:"status"`
 }
 
 type Config struct {

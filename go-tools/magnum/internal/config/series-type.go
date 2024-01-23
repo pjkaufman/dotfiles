@@ -8,6 +8,12 @@ const (
 	LightNovel SeriesType = "LN"
 )
 
+const (
+	WebNovelDisplay   string = "Web Novel"
+	MangaDisplay      string = "Manga"
+	LightNovelDisplay string = "Light Novel"
+)
+
 func IsSeriesType(val string) bool {
 	switch val {
 	case string(WebNovel):
@@ -18,5 +24,18 @@ func IsSeriesType(val string) bool {
 		return true
 	default:
 		return false
+	}
+}
+
+func SeriesTypeToDisplayText(val SeriesType) string {
+	switch val {
+	case WebNovel:
+		return WebNovelDisplay
+	case Manga:
+		return MangaDisplay
+	case LightNovel:
+		return LightNovelDisplay
+	default:
+		return ""
 	}
 }

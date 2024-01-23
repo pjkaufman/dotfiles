@@ -10,9 +10,7 @@ import (
 )
 
 const (
-	NameArgEmpty      = "name must have a non-whitespace value"
-	TypeArgEmpty      = "type must have a non-whitespace value"
-	PublisherArgEmpty = "publisher must have a non-whitespace value"
+	NameArgEmpty = "name must have a non-whitespace value"
 )
 
 var (
@@ -20,6 +18,7 @@ var (
 	seriesType      string
 	seriesPublisher string
 	slugOverride    string
+	seriesStatus    string
 )
 
 // AddCmd represents the add book info command
@@ -33,7 +32,7 @@ var AddCmd = &cobra.Command{
 	// song-converter create-cover -f cover-file.md
 	// `),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := ValidateAddSeriesFlags(seriesName, seriesPublisher, seriesType)
+		err := ValidateAddSeriesFlags(seriesName)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
@@ -45,6 +44,21 @@ var AddCmd = &cobra.Command{
 			return
 		}
 
+		var publisher = config.PublisherType(seriesPublisher)
+		if strings.TrimSpace(seriesPublisher) == "" || !config.IsPublisherType(seriesPublisher) {
+			publisher = selectPublisher()
+		}
+
+		var typeOfSeries = config.SeriesType(seriesType)
+		if strings.TrimSpace(seriesType) == "" || !config.IsSeriesType(seriesType) {
+			typeOfSeries = selectSeriesType()
+		}
+
+		var status = config.BookStatus(seriesStatus)
+		if strings.TrimSpace(seriesStatus) == "" || !config.IsStatus(seriesStatus) {
+			status = selectBookStatus()
+		}
+
 		var override *string
 		if strings.TrimSpace(slugOverride) != "" {
 			override = &slugOverride
@@ -52,9 +66,10 @@ var AddCmd = &cobra.Command{
 
 		newSeries := config.SeriesInfo{
 			Name:         seriesName,
-			Publisher:    config.PublisherType(seriesPublisher),
-			Type:         config.SeriesType(seriesType),
+			Publisher:    publisher,
+			Type:         typeOfSeries,
 			SlugOverride: override,
+			Status:       status,
 		}
 
 		seriesInfo.Series = append(seriesInfo.Series, newSeries)
@@ -67,24 +82,17 @@ func init() {
 	rootCmd.AddCommand(AddCmd)
 
 	AddCmd.Flags().StringVarP(&seriesName, "name", "n", "", "the name of the series")
-	AddCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "publisher")
+	AddCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "the publisher of the series")
 	AddCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
 	AddCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
+	AddCmd.Flags().StringVarP(&slugOverride, "status", "r", string(config.Ongoing), "the status of the series (defaults to Ongoing)")
 
 	AddCmd.MarkFlagRequired("name")
 }
 
-func ValidateAddSeriesFlags(seriesName, seriesPublisher, seriesType string) error {
+func ValidateAddSeriesFlags(seriesName string) error {
 	if strings.TrimSpace(seriesName) == "" {
 		return errors.New(NameArgEmpty)
-	}
-
-	if strings.TrimSpace(seriesPublisher) == "" {
-		return errors.New(TypeArgEmpty)
-	}
-
-	if strings.TrimSpace(seriesType) == "" {
-		return errors.New(PublisherArgEmpty)
 	}
 
 	return nil

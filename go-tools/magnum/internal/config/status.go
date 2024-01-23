@@ -1,11 +1,17 @@
 package config
 
-type Status string
+type BookStatus string
 
 const (
-	Ongoing   Status = "O"
-	Hiatus    Status = "H"
-	Completed Status = "C"
+	Ongoing   BookStatus = "O"
+	Hiatus    BookStatus = "H"
+	Completed BookStatus = "C"
+)
+
+const (
+	OngoingDisplay   string = "Ongoing"
+	HiatusDisplay    string = "Hiatus"
+	CompletedDisplay string = "Completed"
 )
 
 func IsStatus(val string) bool {
@@ -18,5 +24,18 @@ func IsStatus(val string) bool {
 		return true
 	default:
 		return false
+	}
+}
+
+func BookStatusToDisplayText(val BookStatus) string {
+	switch val {
+	case Ongoing:
+		return OngoingDisplay
+	case Hiatus:
+		return HiatusDisplay
+	case Completed:
+		return CompletedDisplay
+	default:
+		return ""
 	}
 }

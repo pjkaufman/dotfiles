@@ -22,29 +22,29 @@ CURRUUID="$(nmcli -f UUID,TYPE con show --active | grep wifi | awk '{print $1}')
 
 # get wifi state
 function wifistate () {
-  echo "$(nmcli -fields WIFI g | sed -n 2p)"
+  nmcli -fields WIFI g | sed -n 2p
 }
 
 # get active wifi connections
 function wifiactive () {
-  echo "$(nmcli con show --active | grep wifi)"
+  nmcli con show --active | grep wifi
 }
 
 function if_wifistate () {
   # return a expression based on wifi state
   [[ "$(wifistate)" =~ $ENABLED ]] && rt=$1 || rt=$2
-  echo $rt
+  echo "$rt"
 }
 
 function toggle_wifi () {
   toggle=$(if_wifistate "Disable Network" "Enable Network")
-  echo $toggle
+  echo "$toggle"
 }
 
 function current_connection () {
   currssid=$(iwgetid -r)
   [[ "$currssid" != '' ]] && currcon="Disconnect from \"$currssid\"" || currcon=""
-  echo $currcon
+  echo "$currcon"
 }
 
 function wifi_list () {
@@ -88,7 +88,7 @@ function rofi_menu () {
 
 function get_ssid () {
     # get fields in order
-    eval FIELDSARR=( $( echo "$FIELDS" | sed 's/,/ /g' ) )
+    FIELDSARR=$( echo "$FIELDS" | sed 's/,/ /g' )
 
     # get position of SSID field
     for i in "${!FIELDSARR[@]}"; do
@@ -177,8 +177,5 @@ function main () {
       fi
     fi
 }
-
-# clean up obsoleted connections
-# nmcli --fields UUID,TIMESTAMP-REAL,DEVICE con show | grep never |  awk '{print $1}' | while read line; do nmcli con delete uuid $line; done
 
 main

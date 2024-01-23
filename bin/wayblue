@@ -14,16 +14,24 @@ if hash fzf 2>/dev/null; then
   FZF_AVAILABLE=1
 fi
 
-rofi_selector="rofi -dmenu -p 'Bluetooth connection'"
-fzf_selector="fzf"
+NO_SELECTION="Selection cancelled"
 
 function getExistingDevices() {
   bluetoothctl devices | grep -o -e "Device [^ ]* [^\n]*"
 }
 
-
 function getAvailableConnections() {
   bluetoothctl --timeout 5 scan on | grep -o -e "Device [^ ]* [^\n]*"
+}
+
+function rofi_cmd() {
+  # don't repeat lines with uniq -u
+  echo -e "$1" | uniq -u | rofi -dmenu -i -p "Bluetooth connection" --cache /dev/null
+}
+
+function fzf_cmd() {
+  # don't repeat lines with uniq -u
+  echo -e "$1" | uniq -u | fzf
 }
 
 function selectDevice() {
@@ -33,9 +41,17 @@ function selectDevice() {
   bluetooth_names=$(cut -d " " -f 3- <<< "$1" )
 
   local selected_device
-  selected_device=$(echo "$bluetooth_names" | $2)
+  if [ "$2" = "yes" ]; then
+    selected_device=$(fzf_cmd "$bluetooth_names")
+  else
+    selected_device=$(rofi_cmd "$bluetooth_names")
+  fi
 
-  echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
+  if [ -z "$selected_device" ]; then
+    echo "$NO_SELECTION"
+  else
+    echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
+  fi
 }
 
 function connectToDevice() {
@@ -113,11 +129,6 @@ while (( $# > 0 )); do
   esac
 done
 
-selector="$rofi_selector"
-if [ "$CLI" = "yes" ]; then
-  selector="$fzf_selector"
-fi
-
 if [ "$CONNECT" = "yes" ]; then
   bluetooth_info=$(getExistingDevices)
   bluetooth_info+=$(echo -e "\n$(getAvailableConnections)")
@@ -126,7 +137,11 @@ if [ "$CONNECT" = "yes" ]; then
     exit 0;
   fi
 
-  selected_device_id=$(selectDevice "$bluetooth_info" "$selector")
+  selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
+  if [ "$selected_device_id" = "$NO_SELECTION" ]; then
+    echo "Quiting since no selection was made."
+    exit 0;
+  fi
 
   connectToDevice "$selected_device_id"
   if [ "$TRUST" = "yes" ]; then
@@ -136,7 +151,11 @@ fi
 
 if [ "$DISCONNECT" = "yes" ]; then
   bluetooth_info=$(getAvailableConnections)
-  selected_device_id=$(selectDevice "$bluetooth_info" "$selector")
+  selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
+  if [ "$selected_device_id" = "$NO_SELECTION" ]; then
+    echo "Quiting since no selection was made."
+    exit 0;
+  fi
 
   disconnectFromDevice "$selected_device_id"
 fi

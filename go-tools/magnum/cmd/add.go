@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -25,12 +26,16 @@ var (
 var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Adds the provided series info to the list of series to keep track of",
-	// Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
-	// song-converter create-cover -f cover-file.md -o output-file.html
+	Example: heredoc.Doc(`To add a series with just a name and other information to be filled out:
+	magnum add -n "Lady and the Tramp"
+	Note: that the other fields will be filled in via prompts except the series status which is assumed to be ongoing
 
-	// To write the output of converting the cover file to std out:
-	// song-converter create-cover -f cover-file.md
-	// `),
+	To add a series with a special URL slug that does not follow the normal pattern for the publisher in question or is on its own page:
+	magnum add -n "Re:ZERO -Starting Life in Another World" -s "re-starting-life-in-another-world"
+
+	To add a series that is not ongoing (for example Completed):
+	magnum add -n "Demon Slayer" -r "C"
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		err := ValidateAddSeriesFlags(seriesName)
 		if err != nil {
@@ -54,8 +59,8 @@ var AddCmd = &cobra.Command{
 			typeOfSeries = selectSeriesType()
 		}
 
-		var status = config.BookStatus(seriesStatus)
-		if strings.TrimSpace(seriesStatus) == "" || !config.IsStatus(seriesStatus) {
+		var status = config.SeriesStatus(seriesStatus)
+		if strings.TrimSpace(seriesStatus) == "" || !config.IsSeriesStatus(seriesStatus) {
 			status = selectBookStatus()
 		}
 
@@ -85,7 +90,7 @@ func init() {
 	AddCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "the publisher of the series")
 	AddCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
 	AddCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
-	AddCmd.Flags().StringVarP(&slugOverride, "status", "r", string(config.Ongoing), "the status of the series (defaults to Ongoing)")
+	AddCmd.Flags().StringVarP(&seriesStatus, "status", "r", string(config.Ongoing), "the status of the series (defaults to Ongoing)")
 
 	AddCmd.MarkFlagRequired("name")
 }

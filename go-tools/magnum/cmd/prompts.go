@@ -37,15 +37,15 @@ func selectBookName(series []config.SeriesInfo, includeCompleted bool) string {
 	return result
 }
 
-func selectBookStatus() config.BookStatus {
-	var statuses = []config.BookStatus{
+func selectBookStatus() config.SeriesStatus {
+	var statuses = []config.SeriesStatus{
 		config.Ongoing,
 		config.Hiatus,
 		config.Completed,
 	}
 	var seriesStatuses = make([]string, len(statuses))
 	for i, status := range statuses {
-		seriesStatuses[i] = fmt.Sprintf("%s - %s", status, config.BookStatusToDisplayText(status))
+		seriesStatuses[i] = fmt.Sprintf("%s - %s", status, config.SeriesStatusToDisplayText(status))
 	}
 
 	prompt := promptui.Select{

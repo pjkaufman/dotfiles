@@ -1,11 +1,11 @@
 package config
 
-type BookStatus string
+type SeriesStatus string
 
 const (
-	Ongoing   BookStatus = "O"
-	Hiatus    BookStatus = "H"
-	Completed BookStatus = "C"
+	Ongoing   SeriesStatus = "O"
+	Hiatus    SeriesStatus = "H"
+	Completed SeriesStatus = "C"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 	CompletedDisplay string = "Completed"
 )
 
-func IsStatus(val string) bool {
+func IsSeriesStatus(val string) bool {
 	switch val {
 	case string(Ongoing):
 		return true
@@ -27,7 +27,7 @@ func IsStatus(val string) bool {
 	}
 }
 
-func BookStatusToDisplayText(val BookStatus) string {
+func SeriesStatusToDisplayText(val SeriesStatus) string {
 	switch val {
 	case Ongoing:
 		return OngoingDisplay

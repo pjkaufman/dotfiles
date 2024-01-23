@@ -6,6 +6,7 @@ Magnum is a program that checks if the list of specified light novels has any up
 
 - JNovel Club
 - Yen Press
+- Seven Seas Entertainment (Uses Wikipedia)
 
 ## Light Novels to Account for
 

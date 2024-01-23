@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
+	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -12,12 +14,12 @@ import (
 var ListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Lists the names of each of the series that is currently being tracked",
-	// Example: heredoc.Doc(`To write the output of converting the cover file to a specific file:
-	// song-converter create-cover -f cover-file.md -o output-file.html
+	Example: heredoc.Doc(`To show a list of all series names that are being tracked:
+	magnum list
 
-	// To write the output of converting the cover file to std out:
-	// song-converter create-cover -f cover-file.md
-	// `),
+	To include information like publisher, status, series, etc.:
+	magnum list -v
+	`),
 	Run: func(cmd *cobra.Command, args []string) {
 		seriesInfo := config.GetConfig()
 
@@ -27,11 +29,24 @@ var ListCmd = &cobra.Command{
 			return
 		}
 
+		var (
+			filterOnPublisher    = strings.TrimSpace(seriesPublisher) != "" && config.IsPublisherType(seriesPublisher)
+			publisherType        = config.PublisherType(seriesPublisher)
+			filterOnSeriesType   = strings.TrimSpace(seriesType) != "" && config.IsSeriesType(seriesType)
+			typeOfSeries         = config.SeriesType(seriesType)
+			filterOnSeriesStatus = strings.TrimSpace(seriesStatus) != "" && config.IsSeriesStatus(seriesStatus)
+			statusOfSeries       = config.SeriesStatus(seriesStatus)
+		)
 		for _, series := range seriesInfo.Series {
+			if (filterOnPublisher && publisherType != series.Publisher) || (filterOnSeriesType && typeOfSeries != series.Type) || (filterOnSeriesStatus && statusOfSeries != series.Status) {
+				continue
+			}
+
 			logger.WriteInfo(series.Name)
 			if verbose {
+				logger.WriteInfo("Status: " + config.SeriesStatusToDisplayText(series.Status))
 				logger.WriteInfo("Publisher: " + string(series.Publisher))
-				logger.WriteInfo("Type: " + string(series.Type))
+				logger.WriteInfo("Type: " + config.SeriesTypeToDisplayText(series.Type))
 				logger.WriteInfo(fmt.Sprintf("Total Volumes: %d", series.TotalVolumes))
 
 				var slugOverride = "N/A"
@@ -49,5 +64,8 @@ var ListCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(ListCmd)
 
-	ListCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show more the publisher and other info about the series")
+	ListCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "show the publisher and other info about the series")
+	ListCmd.Flags().StringVarP(&seriesPublisher, "publisher", "p", "", "show series with the specified publisher")
+	ListCmd.Flags().StringVarP(&seriesType, "type", "t", "", "show series with the specified type")
+	ListCmd.Flags().StringVarP(&seriesStatus, "status", "r", "", "show series with the specified status")
 }

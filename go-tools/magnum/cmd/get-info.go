@@ -49,6 +49,8 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 		return jNovelClubGetSeriesVolumeInfo(seriesInfo)
 	case config.SevenSeasEntertainment:
 		return wikipediaGetSeriesVolumeInfo(seriesInfo)
+	case config.OnePeaceBooks:
+		return wikipediaGetSeriesVolumeInfo(seriesInfo)
 	default:
 		return seriesInfo
 	}
@@ -64,13 +66,7 @@ func yenPressGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo
 	}
 
 	if numVolumes == seriesInfo.TotalVolumes {
-		logger.WriteWarn("No change in list of volumes from last check.")
-
-		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
-			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
-		}
-
-		return seriesInfo
+		return handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo)
 	}
 
 	var today = time.Now()
@@ -103,13 +99,7 @@ func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesIn
 	}
 
 	if len(volumeInfo) == seriesInfo.TotalVolumes {
-		logger.WriteWarn("No change in list of volumes from last check.")
-
-		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
-			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
-		}
-
-		return seriesInfo
+		return handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo)
 	}
 
 	var today = time.Now()
@@ -139,13 +129,7 @@ func wikipediaGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInf
 	}
 
 	if len(volumeInfo) == seriesInfo.TotalVolumes && (len(seriesInfo.UnreleasedVolumes) == 0 || seriesInfo.UnreleasedVolumes[0].ReleaseDate != defaultReleaseDate) {
-		logger.WriteWarn("No change in list of volumes from last check.")
-
-		for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
-			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
-		}
-
-		return seriesInfo
+		return handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo)
 	}
 
 	var today = time.Now()
@@ -184,6 +168,24 @@ func printReleaseInfoAndUpdateSeriesInfo(seriesInfo config.SeriesInfo, unrelease
 	seriesInfo.TotalVolumes = totalVolumes
 	seriesInfo.LatestVolume = latestVolumeName
 	seriesInfo.UnreleasedVolumes = releaseInfo
+
+	return seriesInfo
+}
+
+func handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	logger.WriteWarn("No change in list of volumes from last check.")
+
+	var updatedUnreleasedVolumes = []config.ReleaseInfo{}
+	var today = time.Now()
+	today = time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	for _, unreleasedVol := range seriesInfo.UnreleasedVolumes {
+		if !unreleasedDateIsBeforeDate(unreleasedVol.ReleaseDate, today) {
+			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVol.Name, unreleasedVol.ReleaseDate))
+			updatedUnreleasedVolumes = append(updatedUnreleasedVolumes, unreleasedVol)
+		}
+	}
+
+	seriesInfo.UnreleasedVolumes = updatedUnreleasedVolumes
 
 	return seriesInfo
 }

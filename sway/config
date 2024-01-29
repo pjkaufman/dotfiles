@@ -62,6 +62,15 @@ input * {
     bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
+    # playerctl based media rules
+    bindsym --locked {
+      XF86AudioPlay       exec playerctl play-pause
+      XF86AudioStop       exec playerctl stop
+      XF86AudioForward    exec playerctl position +10
+      XF86AudioNext       exec playerctl next
+      XF86AudioPause      exec playerctl pause
+    }
+
     # Screen brightness controls
     bindsym XF86MonBrightnessUp exec light -A 5
     bindsym XF86MonBrightnessDown exec light -U 5

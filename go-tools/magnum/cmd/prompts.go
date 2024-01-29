@@ -66,6 +66,7 @@ func selectPublisher() config.PublisherType {
 		config.YenPress,
 		config.JNovelClub,
 		config.SevenSeasEntertainment,
+		config.OnePeaceBooks,
 	}
 	var publisherTypes = make([]string, len(publishers))
 	for i, publisherType := range publishers {

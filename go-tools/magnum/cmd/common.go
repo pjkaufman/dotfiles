@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"time"
+
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 var (
@@ -20,4 +23,17 @@ func getUnreleasedVolumeDisplayText(unreleasedVol, releaseDate string) string {
 	}
 
 	return fmt.Sprintf("\"%s\" releases on %s", unreleasedVol, releaseDate)
+}
+
+func unreleasedDateIsBeforeDate(releaseDate string, date time.Time) bool {
+	if releaseDate == defaultReleaseDate {
+		return false
+	}
+
+	release, err := time.Parse(releaseDateFormat, releaseDate)
+	if err != nil {
+		logger.WriteError(fmt.Sprintf(`failed to convert date "%s" to date time: %s`, releaseDate, err))
+	}
+
+	return release.Before(date)
 }

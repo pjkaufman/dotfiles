@@ -52,7 +52,14 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 
 	var volumeInfo = make([]VolumeInfo, len(volumeContent))
 	for i, contentHtml := range volumeContent {
-		volumeInfo[i] = parseVolumeInfo(seriesName, contentHtml, i+1)
+		var tempVolumeInfo, err = ParseVolumeInfo(seriesName, contentHtml, i+1)
+		if err != nil {
+			logger.WriteError(err.Error())
+		}
+
+		if tempVolumeInfo != nil {
+			volumeInfo[i] = *tempVolumeInfo
+		}
 	}
 
 	slices.Reverse(volumeInfo)
@@ -67,42 +74,4 @@ func getSeriesSlugFromName(seriesName string) string {
 	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
 
 	return slug
-}
-
-func parseVolumeInfo(series, contentHtml string, volume int) VolumeInfo {
-	// get name from the anchor in the h3
-	var firstHeading = volumeNameRegex.FindStringSubmatch(contentHtml)
-	if len(firstHeading) < 2 {
-		logger.WriteError(fmt.Sprintf(`failed to get the name of volume %d for series "%s"`, volume, series))
-	}
-
-	// get early digital release if present
-	var earlyDigitalAccessDateInfo = earlyDigitalAccessRegex.FindStringSubmatch(contentHtml)
-	var releaseDateString string
-	if len(earlyDigitalAccessDateInfo) > 1 {
-		releaseDateString = earlyDigitalAccessDateInfo[1]
-	}
-
-	// if not present get release date
-	if releaseDateString == "" {
-		var releaseDateInfo = releaseDateRegex.FindStringSubmatch(contentHtml)
-		if len(releaseDateInfo) > 1 {
-			releaseDateString = releaseDateInfo[1]
-		}
-	}
-
-	var releaseDate *time.Time
-	if releaseDateString != "" {
-		tempDate, err := time.Parse(releaseDateFormat, releaseDateString)
-		if err != nil {
-			logger.WriteError(fmt.Sprintf("failed to parse \"%s\" to a date time value: %v", releaseDateString, err))
-		}
-
-		releaseDate = &tempDate
-	}
-
-	return VolumeInfo{
-		Name:        firstHeading[1],
-		ReleaseDate: releaseDate,
-	}
 }

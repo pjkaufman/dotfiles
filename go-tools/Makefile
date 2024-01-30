@@ -1,5 +1,5 @@
 
-.PHONY: test install cover
+.PHONY: test install cover install-deps
 
 test:
 	go test ~/dotfiles/go-tools/... -tags "unit"
@@ -25,3 +25,6 @@ install:
 	@song-converter completion bash > "${BASH_COMPLETION_USER_DIR}/song-converter-completion"
 	@cat-ascii completion bash > "${BASH_COMPLETION_USER_DIR}/cat-ascii-completion"
 	@magnum completion bash > "${BASH_COMPLETION_USER_DIR}/magnum-completion"
+
+install-deps:
+	@go run github.com/playwright-community/playwright-go/cmd/playwright@latest install --with-deps

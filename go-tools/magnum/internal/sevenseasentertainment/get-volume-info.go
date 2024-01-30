@@ -7,24 +7,22 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gocolly/colly/v2"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/crawler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 type VolumeInfo struct {
 	Name        string
-	ReleaseDate time.Time
+	ReleaseDate *time.Time
 }
 
+var volumeNameRegex = regexp.MustCompile(`<a[^>]*>([^<]+)</a>`)
+var earlyDigitalAccessRegex = regexp.MustCompile(`<b>Early Digital:</b> (\d{4}/\d{2}/\d{2})`)
+var releaseDateRegex = regexp.MustCompile(`<b>Release Date</b>: (\d{4}/\d{2}/\d{2})`)
 var seriesInvalidSlugCharacters = regexp.MustCompile(`[\(\),:\-?!]`)
 
 func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []VolumeInfo {
-	var volumes = []VolumeInfo{}
-
-	// playwright is used here instead of colly since the release date info is loaded by JS
-	// and so we need to wait for the page to load to scrape the page
-	pw, browser, page := crawler.CreateNewPlaywrightCrawler()
-
 	var seriesSlug string
 	if slugOverride != nil {
 		seriesSlug = *slugOverride
@@ -32,65 +30,34 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 		seriesSlug = getSeriesSlugFromName(seriesName)
 	}
 
-	var seriesURL = baseURL + seriesPath + seriesSlug
-	_, err := page.Goto(seriesURL)
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("failed to visit \"%s\": %v", seriesURL, err))
-	}
+	c := crawler.CreateNewCollyCrawler(verbose)
 
-	err = page.WaitForLoadState()
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("failed to wait for the load state: %v", err))
-	}
+	var err error
 
-	// page.WaitForTimeout(20000)
-
-	// spew.Dump(page.InnerHTML("html"))
-	// #content > div:nth-child(7) > h3 > a:nth-child(2)
-	volumeTitles, err := page.Locator("#content > div:nth-child(7) > h3 > a:nth-child(2)").All()
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("could not get entries: %v", err))
-	}
-
-	for _, entry := range volumeTitles {
-		title, err := entry.TextContent()
+	var volumeContent = []string{}
+	c.OnHTML(".series-volume", func(e *colly.HTMLElement) {
+		contentHtml, err := e.DOM.Html()
 		if err != nil {
-			logger.WriteError(fmt.Sprintf("could not get text content for volume title: %v", err))
+			logger.WriteError(fmt.Sprintf("failed to get content body: %s", err))
 		}
 
-		volumes = append(volumes, VolumeInfo{
-			Name: title,
-		})
+		volumeContent = append(volumeContent, contentHtml)
+	})
+
+	var url = googleCacheURL + baseURL + seriesPath + seriesSlug + "/"
+	err = c.Visit(url)
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("failed call to google cache for \"%s\": %s", url, err))
 	}
 
-	// entries, err := page.Locator("div.f1g4j9eh > div.f1k2es0r > div.f1ijq7jq > div.f1s7hfqq.label.f1n072s.color-digital > div.f1oyfch5.text").All()
-	// if err != nil {
-	// 	logger.WriteError(fmt.Sprintf("could not get entries: %v", err))
-	// }
+	var volumeInfo = make([]VolumeInfo, len(volumeContent))
+	for i, contentHtml := range volumeContent {
+		volumeInfo[i] = parseVolumeInfo(seriesName, contentHtml, i+1)
+	}
 
-	// for i, entry := range entries {
-	// 	releaseDate, err := entry.TextContent()
-	// 	if err != nil {
-	// 		logger.WriteError(fmt.Sprintf("could not get text content for release date: %v", err))
-	// 	}
+	slices.Reverse(volumeInfo)
 
-	// 	date, err := time.Parse(releaseDateFormat, releaseDate)
-	// 	if err != nil {
-	// 		logger.WriteError(fmt.Sprintf("failed to parse \"%s\" to a date time value: %v", releaseDate, err))
-	// 	}
-
-	// 	if i >= len(volumes) {
-	// 		break
-	// 	}
-
-	// 	volumes[i].ReleaseDate = date
-	// }
-
-	crawler.ClosePlaywrightCrawler(pw, browser)
-
-	slices.Reverse(volumes)
-
-	return volumes
+	return volumeInfo
 }
 
 func getSeriesSlugFromName(seriesName string) string {
@@ -100,4 +67,42 @@ func getSeriesSlugFromName(seriesName string) string {
 	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
 
 	return slug
+}
+
+func parseVolumeInfo(series, contentHtml string, volume int) VolumeInfo {
+	// get name from the anchor in the h3
+	var firstHeading = volumeNameRegex.FindStringSubmatch(contentHtml)
+	if len(firstHeading) < 2 {
+		logger.WriteError(fmt.Sprintf(`failed to get the name of volume %d for series "%s"`, volume, series))
+	}
+
+	// get early digital release if present
+	var earlyDigitalAccessDateInfo = earlyDigitalAccessRegex.FindStringSubmatch(contentHtml)
+	var releaseDateString string
+	if len(earlyDigitalAccessDateInfo) > 1 {
+		releaseDateString = earlyDigitalAccessDateInfo[1]
+	}
+
+	// if not present get release date
+	if releaseDateString == "" {
+		var releaseDateInfo = releaseDateRegex.FindStringSubmatch(contentHtml)
+		if len(releaseDateInfo) > 1 {
+			releaseDateString = releaseDateInfo[1]
+		}
+	}
+
+	var releaseDate *time.Time
+	if releaseDateString != "" {
+		tempDate, err := time.Parse(releaseDateFormat, releaseDateString)
+		if err != nil {
+			logger.WriteError(fmt.Sprintf("failed to parse \"%s\" to a date time value: %v", releaseDateString, err))
+		}
+
+		releaseDate = &tempDate
+	}
+
+	return VolumeInfo{
+		Name:        firstHeading[1],
+		ReleaseDate: releaseDate,
+	}
 }

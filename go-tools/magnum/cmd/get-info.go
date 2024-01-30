@@ -7,6 +7,7 @@ import (
 	"github.com/MakeNowJust/heredoc"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	jnovelclub "github.com/pjkaufman/dotfiles/go-tools/magnum/internal/jnovel-club"
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/sevenseasentertainment"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/wikipedia"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/yenpress"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -20,6 +21,7 @@ var GetInfoCmd = &cobra.Command{
 	Example: heredoc.Doc(`To get all of the release data for non-completed series:
 	magnum get-info`),
 	Run: func(cmd *cobra.Command, args []string) {
+		// spew.Dump(sevenseasentertainment.GetVolumeInfo("Loner Life in Another World (Light Novel)", nil, true))
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
@@ -48,7 +50,7 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 	case config.JNovelClub:
 		return jNovelClubGetSeriesVolumeInfo(seriesInfo)
 	case config.SevenSeasEntertainment:
-		return wikipediaGetSeriesVolumeInfo(seriesInfo)
+		return sevenSeasEntertainmentGetSeriesVolumeInfo(seriesInfo)
 	case config.OnePeaceBooks:
 		return wikipediaGetSeriesVolumeInfo(seriesInfo)
 	default:
@@ -124,6 +126,41 @@ func wikipediaGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInf
 
 	if len(volumeInfo) == 0 {
 		logger.WriteInfo("The wikipedia light novels do not exist for this series.")
+
+		return seriesInfo
+	}
+
+	if len(volumeInfo) == seriesInfo.TotalVolumes && (len(seriesInfo.UnreleasedVolumes) == 0 || seriesInfo.UnreleasedVolumes[0].ReleaseDate != defaultReleaseDate) {
+		return handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo)
+	}
+
+	var today = time.Now()
+	today = time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	var unreleasedVolumes = []string{}
+	var releaseDateInfo = []string{}
+	for _, info := range volumeInfo {
+		if info.ReleaseDate != nil && info.ReleaseDate.Before(today) {
+			break
+		} else {
+			var releaseDate = defaultReleaseDate
+			if info.ReleaseDate != nil {
+				releaseDate = info.ReleaseDate.Format("January 2, 2006")
+			}
+
+			releaseDateInfo = append(releaseDateInfo, releaseDate)
+			unreleasedVolumes = append(unreleasedVolumes, info.Name)
+		}
+
+	}
+
+	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)
+}
+
+func sevenSeasEntertainmentGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	volumeInfo := sevenseasentertainment.GetVolumeInfo(seriesInfo.Name, seriesInfo.SlugOverride, verbose)
+
+	if len(volumeInfo) == 0 {
+		logger.WriteInfo("The seven seas entertainment light novels do not exist for this series.")
 
 		return seriesInfo
 	}

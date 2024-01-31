@@ -50,15 +50,17 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 		logger.WriteError(fmt.Sprintf("failed call to google cache for \"%s\": %s", url, err))
 	}
 
-	var volumeInfo = make([]VolumeInfo, len(volumeContent))
-	for i, contentHtml := range volumeContent {
-		var tempVolumeInfo, err = ParseVolumeInfo(seriesName, contentHtml, i+1)
+	var volumeInfo = []VolumeInfo{}
+	var index = 1
+	for _, contentHtml := range volumeContent {
+		var tempVolumeInfo, err = ParseVolumeInfo(seriesName, contentHtml, index)
 		if err != nil {
 			logger.WriteError(err.Error())
 		}
 
 		if tempVolumeInfo != nil {
-			volumeInfo[i] = *tempVolumeInfo
+			volumeInfo = append(volumeInfo, *tempVolumeInfo)
+			index++
 		}
 	}
 

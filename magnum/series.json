@@ -414,16 +414,12 @@
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
-      "total_volumes": 37,
-      "latest_volume": "Mushoku Tensei: Jobless Reincarnation (Audiobook) Vol. 11",
+      "total_volumes": 26,
+      "latest_volume": "Mushoku Tensei: Jobless Reincarnation (Light Novel) Vol. 26",
       "unreleased_volumes": [
         {
-          "name": "Mushoku Tensei: Jobless Reincarnation (Audiobook) Vol. 11",
-          "release_date": "February 22, 2024"
-        },
-        {
-          "name": "Mushoku Tensei: Jobless Reincarnation (Audiobook) Vol. 10",
-          "release_date": "February 22, 2024"
+          "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel) Vol. 26",
+          "release_date": "February 1, 2024"
         }
       ],
       "slug_override": null,
@@ -447,53 +443,6 @@
       "status": "O"
     },
     {
-      "name": "The Wrong Way to Use Healing Magic",
-      "total_volumes": 12,
-      "latest_volume": "The Wrong Way to Use Healing Magic Vol. 12",
-      "unreleased_volumes": [
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 12",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 11",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 10",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 9",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 8",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 7",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 6",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 5",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 4",
-          "release_date": "TBA"
-        }
-      ],
-      "slug_override": null,
-      "type": "LN",
-      "publisher": "OnePeaceBooks",
-      "status": "O"
-    },
-    {
       "name": "Loner Life in Another World (Light Novel)",
       "total_volumes": 9,
       "latest_volume": "Loner Life in Another World (Light Novel) Vol. 9",
@@ -514,12 +463,12 @@
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 31,
-      "latest_volume": "Classroom of the Elite (Audiobook) Vol. 7",
+      "total_volumes": 23,
+      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 8",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite (Audiobook) Vol. 7",
-          "release_date": "February 1, 2024"
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 8",
+          "release_date": "April 16, 2024"
         }
       ],
       "slug_override": null,

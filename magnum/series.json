@@ -490,6 +490,35 @@
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
+    },
+    {
+      "name": "Twin Star Exorcists",
+      "total_volumes": 31,
+      "latest_volume": "Twin Star Exorcists, Vol. 31",
+      "unreleased_volumes": [
+        {
+          "name": "Twin Star Exorcists, Vol. 31",
+          "release_date": "May 21, 2024"
+        },
+        {
+          "name": "Twin Star Exorcists, Vol. 30",
+          "release_date": "February 20, 2024"
+        }
+      ],
+      "slug_override": null,
+      "type": "MN",
+      "publisher": "VizMedia",
+      "status": "O"
+    },
+    {
+      "name": "Blue Exorcist",
+      "total_volumes": 28,
+      "latest_volume": "Blue Exorcist, Vol. 28",
+      "unreleased_volumes": [],
+      "slug_override": null,
+      "type": "MN",
+      "publisher": "VizMedia",
+      "status": "O"
     }
   ]
 }

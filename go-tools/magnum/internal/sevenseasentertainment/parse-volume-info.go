@@ -2,9 +2,14 @@ package sevenseasentertainment
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 )
+
+var volumeNameRegex = regexp.MustCompile(`<a[^>]*>([^<]+)</a>`)
+var earlyDigitalAccessRegex = regexp.MustCompile(`<b>Early Digital:</b> (\d{4}/\d{2}/\d{2})`)
+var releaseDateRegex = regexp.MustCompile(`<b>Release Date</b>: (\d{4}/\d{2}/\d{2})`)
 
 func ParseVolumeInfo(series, contentHtml string, volume int) (*VolumeInfo, error) {
 	// get name from the anchor in the h3

@@ -7,6 +7,7 @@ const (
 	JNovelClub             PublisherType = "JNovelClub"
 	SevenSeasEntertainment PublisherType = "SevenSeasEntertainment"
 	OnePeaceBooks          PublisherType = "OnePeaceBooks"
+	VizMedia               PublisherType = "VizMedia"
 )
 
 func IsPublisherType(val string) bool {
@@ -18,6 +19,8 @@ func IsPublisherType(val string) bool {
 	case string(SevenSeasEntertainment):
 		return true
 	case string(OnePeaceBooks):
+		return true
+	case string(VizMedia):
 		return true
 	default:
 		return false

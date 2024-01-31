@@ -8,6 +8,7 @@ import (
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	jnovelclub "github.com/pjkaufman/dotfiles/go-tools/magnum/internal/jnovel-club"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/sevenseasentertainment"
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/vizmedia"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/wikipedia"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/yenpress"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -21,7 +22,6 @@ var GetInfoCmd = &cobra.Command{
 	Example: heredoc.Doc(`To get all of the release data for non-completed series:
 	magnum get-info`),
 	Run: func(cmd *cobra.Command, args []string) {
-		// spew.Dump(sevenseasentertainment.GetVolumeInfo("Loner Life in Another World (Light Novel)", nil, true))
 		seriesInfo := config.GetConfig()
 
 		for i, series := range seriesInfo.Series {
@@ -53,6 +53,8 @@ func getSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
 		return sevenSeasEntertainmentGetSeriesVolumeInfo(seriesInfo)
 	case config.OnePeaceBooks:
 		return wikipediaGetSeriesVolumeInfo(seriesInfo)
+	case config.VizMedia:
+		return vizMediaGetSeriesVolumeInfo(seriesInfo)
 	default:
 		return seriesInfo
 	}
@@ -186,6 +188,38 @@ func sevenSeasEntertainmentGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) con
 			unreleasedVolumes = append(unreleasedVolumes, info.Name)
 		}
 
+	}
+
+	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)
+}
+
+func vizMediaGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
+	volumeInfo := vizmedia.GetVolumeInfo(seriesInfo.Name, seriesInfo.SlugOverride, verbose)
+
+	if len(volumeInfo) == 0 {
+		logger.WriteInfo("The viz media series does not exist.")
+
+		return seriesInfo
+	}
+
+	if len(volumeInfo) == seriesInfo.TotalVolumes && (len(seriesInfo.UnreleasedVolumes) == 0 || seriesInfo.UnreleasedVolumes[0].ReleaseDate != defaultReleaseDate) {
+		return handleNoChangeDisplayAndSeriesInfoUpdates(seriesInfo)
+	}
+
+	var today = time.Now()
+	today = time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
+	var unreleasedVolumes = []string{}
+	var releaseDateInfo = []string{}
+	for _, info := range volumeInfo {
+		if info.ReleaseDate.Before(today) {
+			break
+		} else {
+			var releaseDate = defaultReleaseDate
+			releaseDate = info.ReleaseDate.Format("January 2, 2006")
+
+			releaseDateInfo = append(releaseDateInfo, releaseDate)
+			unreleasedVolumes = append(unreleasedVolumes, info.Name)
+		}
 	}
 
 	return printReleaseInfoAndUpdateSeriesInfo(seriesInfo, unreleasedVolumes, releaseDateInfo, len(volumeInfo), volumeInfo[0].Name)

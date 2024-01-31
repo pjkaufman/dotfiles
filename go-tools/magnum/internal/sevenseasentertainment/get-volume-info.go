@@ -2,7 +2,6 @@ package sevenseasentertainment
 
 import (
 	"fmt"
-	"regexp"
 	"slices"
 	"time"
 
@@ -16,10 +15,6 @@ type VolumeInfo struct {
 	Name        string
 	ReleaseDate *time.Time
 }
-
-var volumeNameRegex = regexp.MustCompile(`<a[^>]*>([^<]+)</a>`)
-var earlyDigitalAccessRegex = regexp.MustCompile(`<b>Early Digital:</b> (\d{4}/\d{2}/\d{2})`)
-var releaseDateRegex = regexp.MustCompile(`<b>Release Date</b>: (\d{4}/\d{2}/\d{2})`)
 
 func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []VolumeInfo {
 	var seriesSlug string

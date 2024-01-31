@@ -475,6 +475,21 @@
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
+    },
+    {
+      "name": "Seraph of the End",
+      "total_volumes": 29,
+      "latest_volume": "Seraph of the End, Vol. 29",
+      "unreleased_volumes": [
+        {
+          "name": "Seraph of the End, Vol. 29",
+          "release_date": "March 19, 2024"
+        }
+      ],
+      "slug_override": null,
+      "type": "MN",
+      "publisher": "VizMedia",
+      "status": "O"
     }
   ]
 }

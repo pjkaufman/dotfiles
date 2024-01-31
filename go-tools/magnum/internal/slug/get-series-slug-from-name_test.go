@@ -41,7 +41,7 @@ var GetSeriesSlugFromNameTestCases = map[string]GetSeriesSlugFromNameTestCase{
 	},
 }
 
-func TestParseWikipediaTableToVolumeInfo(t *testing.T) {
+func TestGetSeriesSlugFromName(t *testing.T) {
 	for name, args := range GetSeriesSlugFromNameTestCases {
 		t.Run(name, func(t *testing.T) {
 			actualSlug := slug.GetSeriesSlugFromName(args.SeriesName)

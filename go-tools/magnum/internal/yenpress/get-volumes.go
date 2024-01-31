@@ -2,11 +2,11 @@ package yenpress
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 
 	"github.com/gocolly/colly/v2"
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/slug"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/crawler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
@@ -15,8 +15,6 @@ type VolumeInfo struct {
 	Name         string
 	RelativeLink string
 }
-
-var seriesInvalidSlugCharacters = regexp.MustCompile(`[\(\),:\-?!]`)
 
 func GetVolumes(seriesName string, slugOverride *string, verbose bool) ([]*VolumeInfo, int) {
 	c := crawler.CreateNewCollyCrawler(verbose)
@@ -54,7 +52,7 @@ func GetVolumes(seriesName string, slugOverride *string, verbose bool) ([]*Volum
 	if slugOverride != nil {
 		seriesSlug = *slugOverride
 	} else {
-		seriesSlug = getSeriesSlugFromName(seriesName)
+		seriesSlug = slug.GetSeriesSlugFromName(seriesName)
 	}
 
 	var seriesURL = baseURL + seriesPath + seriesSlug
@@ -65,14 +63,4 @@ func GetVolumes(seriesName string, slugOverride *string, verbose bool) ([]*Volum
 	}
 
 	return volumes, numVolumes
-}
-
-func getSeriesSlugFromName(seriesName string) string {
-	var slug = seriesInvalidSlugCharacters.ReplaceAllString(seriesName, "")
-
-	slug = strings.ReplaceAll(strings.ToLower(slug), " ", "-")
-	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
-
-	logger.WriteInfo(slug)
-	return slug
 }

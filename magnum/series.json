@@ -149,7 +149,7 @@
       "total_volumes": 12,
       "latest_volume": "86--EIGHTY-SIX, Vol. 12 (light novel): Holy Blue Bullet",
       "unreleased_volumes": [],
-      "slug_override": "86-eighty-six-light-novel",
+      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -219,7 +219,7 @@
       "total_volumes": 21,
       "latest_volume": "The Devil Is a Part-Timer!, Vol. 21 (light novel)",
       "unreleased_volumes": [],
-      "slug_override": "the-devil-is-a-part-timer",
+      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
       "status": "C"

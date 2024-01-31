@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"regexp"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/gocolly/colly/v2"
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/slug"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/crawler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
@@ -20,14 +20,13 @@ type VolumeInfo struct {
 var volumeNameRegex = regexp.MustCompile(`<a[^>]*>([^<]+)</a>`)
 var earlyDigitalAccessRegex = regexp.MustCompile(`<b>Early Digital:</b> (\d{4}/\d{2}/\d{2})`)
 var releaseDateRegex = regexp.MustCompile(`<b>Release Date</b>: (\d{4}/\d{2}/\d{2})`)
-var seriesInvalidSlugCharacters = regexp.MustCompile(`[\(\),:\-?!]`)
 
 func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []VolumeInfo {
 	var seriesSlug string
 	if slugOverride != nil {
 		seriesSlug = *slugOverride
 	} else {
-		seriesSlug = getSeriesSlugFromName(seriesName)
+		seriesSlug = slug.GetSeriesSlugFromName(seriesName)
 	}
 
 	c := crawler.CreateNewCollyCrawler(verbose)
@@ -67,13 +66,4 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 	slices.Reverse(volumeInfo)
 
 	return volumeInfo
-}
-
-func getSeriesSlugFromName(seriesName string) string {
-	var slug = seriesInvalidSlugCharacters.ReplaceAllString(seriesName, "")
-
-	slug = strings.ReplaceAll(strings.ToLower(slug), " ", "-")
-	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
-
-	return slug
 }

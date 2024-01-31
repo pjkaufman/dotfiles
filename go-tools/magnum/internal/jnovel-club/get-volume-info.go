@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"regexp"
 	"slices"
-	"strings"
 	"time"
 
+	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/slug"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/crawler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
@@ -29,7 +29,7 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 	if slugOverride != nil {
 		seriesSlug = *slugOverride
 	} else {
-		seriesSlug = getSeriesSlugFromName(seriesName)
+		seriesSlug = slug.GetSeriesSlugFromName(seriesName)
 	}
 
 	var seriesURL = baseURL + seriesPath + seriesSlug
@@ -87,13 +87,4 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 	slices.Reverse(volumes)
 
 	return volumes
-}
-
-func getSeriesSlugFromName(seriesName string) string {
-	var slug = seriesInvalidSlugCharacters.ReplaceAllString(seriesName, "")
-
-	slug = strings.ReplaceAll(strings.ToLower(slug), " ", "-")
-	slug = strings.ReplaceAll(strings.ToLower(slug), "'", "-")
-
-	return slug
 }

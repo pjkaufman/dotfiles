@@ -22,6 +22,10 @@ func WriteWarn(msg string) {
 	color.New(color.FgYellow).Fprintln(os.Stdout, msg)
 }
 
+func WriteInfoWithColor(msg string, displayColor color.Attribute) {
+	color.New(displayColor).Fprintln(os.Stdout, msg)
+}
+
 func GetInputString(prompt string) string {
 	fmt.Println(prompt)
 	// based on https://stackoverflow.com/a/20895629 since for some reason spaces were not read properly by fmt.Scanln

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/MakeNowJust/heredoc"
+	"github.com/fatih/color"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/config"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 	"github.com/spf13/cobra"
@@ -55,25 +56,40 @@ var ShowInfoCmd = &cobra.Command{
 				return false
 			}
 
-			date1, err := time.Parse(releaseDateFormat, unreleasedVolumes[i].ReleaseDate)
-			if err != nil {
-				logger.WriteError(fmt.Sprintf("failed to parse release date \"%s\" for \"%s\": %s", unreleasedVolumes[i].Name, unreleasedVolumes[i].ReleaseDate, err))
-			}
+			date1 := parseVolumeReleaseDate(unreleasedVolumes[i].Name, unreleasedVolumes[i].ReleaseDate)
 
-			date2, err := time.Parse(releaseDateFormat, unreleasedVolumes[j].ReleaseDate)
-			if err != nil {
-				logger.WriteError(fmt.Sprintf("failed to parse release date \"%s\" for \"%s\": %s", unreleasedVolumes[j].Name, unreleasedVolumes[j].ReleaseDate, err))
-			}
+			date2 := parseVolumeReleaseDate(unreleasedVolumes[j].Name, unreleasedVolumes[j].ReleaseDate)
 
 			return date1.Before(date2)
 		})
 
+		var today = time.Now()
+		var oneWeekAgo = today.AddDate(0, 0, -7)
+		var nextMonth = today.AddDate(0, 1, 0)
 		for _, unreleasedVolume := range unreleasedVolumes {
-			logger.WriteInfo(getUnreleasedVolumeDisplayText(unreleasedVolume.Name, unreleasedVolume.ReleaseDate))
+			date := parseVolumeReleaseDate(unreleasedVolume.Name, unreleasedVolume.ReleaseDate)
+			var displayText = getUnreleasedVolumeDisplayText(unreleasedVolume.Name, unreleasedVolume.ReleaseDate)
+
+			if date.Before(oneWeekAgo) {
+				logger.WriteInfoWithColor(displayText, color.FgRed)
+			} else if date.Before(nextMonth) {
+				logger.WriteInfoWithColor(displayText, color.FgYellow)
+			} else {
+				logger.WriteInfo(displayText)
+			}
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(ShowInfoCmd)
+}
+
+func parseVolumeReleaseDate(name, releaseDate string) time.Time {
+	date, err := time.Parse(releaseDateFormat, releaseDate)
+	if err != nil {
+		logger.WriteError(fmt.Sprintf("failed to parse release date \"%s\" for \"%s\": %s", name, releaseDate, err))
+	}
+
+	return date
 }

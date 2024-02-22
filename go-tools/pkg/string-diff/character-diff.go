@@ -2,10 +2,11 @@ package stringdiff
 
 import (
 	"bytes"
-	"strings"
+	"fmt"
 
 	"github.com/andreyvit/diff"
 	"github.com/fatih/color"
+	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
 )
 
 var (
@@ -62,13 +63,24 @@ func GetPrettyDiffString(original, new string) string {
 		i++
 	}
 
-	return convertUnicodeStringsToVisualRepresentations(buff.String())
+	displayString, err := repairLatin1(buff.String())
+	if err != nil {
+		logger.WriteError(fmt.Sprintf(`failed to correct any latin1 bad characters: %s`, err))
+	}
+
+	return displayString
 }
 
-func convertUnicodeStringsToVisualRepresentations(val string) string {
-	val = strings.ReplaceAll(val, "â\u0080¦", "…")
-	val = strings.ReplaceAll(val, "â\u0080\u0093", "–")
-	val = strings.ReplaceAll(val, "â\u0097\u0087", "◇")
-
-	return val
+// From https://go.dev/play/p/dBrx_ZmrsMN and https://stackoverflow.com/questions/13510458/golang-convert-iso8859-1-to-utf8
+// It seems that the latin1 text was not encoded correctly so we needed to look for any characters that were garbled and go
+// ahead and fix those specific characters.
+func repairLatin1(s string) (string, error) {
+	buf := make([]byte, 0, len(s))
+	for i, r := range s {
+		if r > 255 {
+			return "", fmt.Errorf("character %s at index %d is not part of latin1", string(r), i)
+		}
+		buf = append(buf, byte(r))
+	}
+	return string(buf), nil
 }

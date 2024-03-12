@@ -37,6 +37,11 @@ var commonReplaceWords = []ReplaceWords{
 		Rational: "Replace smart double quotes with straight double quotes",
 	},
 	{
+		Search:   "”",
+		Replace:  "\"",
+		Rational: "Replace smart double quotes with straight double quotes",
+	},
+	{
 		Search:   `‘`,
 		Replace:  "'",
 		Rational: "Replace smart single quotes with straight single quotes",

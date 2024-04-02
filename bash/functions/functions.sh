@@ -22,10 +22,12 @@ function update() {
 
 function rn() {
   if [[ -z "$4" ]]; then
+   # shellcheck disable=SC2086
     rename "s/$1/$2/" $3
     return;
   fi
 
+  # shellcheck disable=SC2086
   rename -n "s/$1/$2/" $3
 }
 

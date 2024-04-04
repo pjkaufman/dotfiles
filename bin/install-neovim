@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# installs the specified version of neovim to /usr/local/bin/nvim
+
+set -e
+
+# installs the specified neovim version
+function install_neovim() {
+  # todo: decide if I want to keep this
+  # if go version | grep -q "$1"; then
+  #   echo "Go v$1 is already installed."
+
+  #   return
+  # fi
+
+  nvimTar="nvim-linux64.tar.gz"
+  downloadFile="$DOWNLOADS/$nvimTar"
+  wget "https://github.com/neovim/neovim/releases/download/v$1/$nvimTar" -P "$DOWNLOADS"
+
+  tar -C "$DOWNLOADS" -zxf "$downloadFile"
+
+  [[ -d /usr/local/nvim ]] && sudo rm -rf /usr/local/nvim/*
+  [[ ! -d /usr/local/nvim ]] && sudo mkdir /usr/local/nvim 
+
+  sudo cp -R "$DOWNLOADS/nvim-linux64"/* /usr/local/nvim
+
+  rm "$downloadFile"
+  rm -rf "$DOWNLOADS/nvim-linux64"
+
+  echo "Nvim v$1 should be installed now."
+}
+
+if [ -z "$1" ]; then
+  echo "Please specifiy the neovim version to install (i.e. 0.9.5)."
+fi
+
+install_neovim "$1"

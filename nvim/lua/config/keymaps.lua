@@ -9,7 +9,7 @@ local mapkey = mapkeyper.mapkey
 local opts = { silent = true }
 
 --Remap space as leader key
--- mapkey("<Space>", "<Nop>", "", opts)
+mapkey("<Space>", "<Nop>", "", opts)
 
 -- Normal --
 -- Better window navigation

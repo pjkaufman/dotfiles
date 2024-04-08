@@ -1,15 +1,15 @@
-local status_ok, mapkeyper = pcall(require, "util.mapkeyper")
+local status_ok, keymapper = pcall(require, "util.keymapper")
 if not status_ok then
-  vim.notify("failed to load mapkeyper utils", vim.log.levels.ERROR)
+  vim.notify("failed to load keymapper utils", vim.log.levels.ERROR)
   return
 end
-local mapkey = mapkeyper.mapkey
+local mapkey = keymapper.mapkey
 
 -- Silent mapkey option
 local opts = { silent = true }
 
 --Remap space as leader key
-mapkey("<Space>", "<Nop>", "", opts)
+-- mapkey("<Space>", "<Nop>", "", opts)
 
 -- Normal --
 -- Better window navigation

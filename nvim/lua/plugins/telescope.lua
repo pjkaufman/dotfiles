@@ -41,8 +41,9 @@ return {
     -- Make sure that the Nvim Tree is closed before we opene find files for telescope which lets finding files when none is currently open work instead of just closing neovim
 		-- from https://www.reddit.com/r/neovim/comments/v49jxi/dont_open_telescope_action_in_nvimtree_window/
     mapkey("<leader>ff", "execute 'NvimTreeClose' | Telescope find_files", "n"),
+    mapkey("<leader>fk", "Telescope keymaps", "n"),
+		mapkey("<leader>fh", "Telescope help_tags", "n"),
     mapkey("<leader>ft", "Telescope live_grep", "n"),
-    mapkey("<leader>fp", "Telescope projects", "n"),
     mapkey("<leader>fb", "Telescope buffers", "n"),
   }
 }

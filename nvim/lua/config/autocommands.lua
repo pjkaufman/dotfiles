@@ -31,3 +31,18 @@ autocmd('LspAttach', {
       vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
   end
 })
+
+-- auto-format on save from https://github.com/radleylewis/nvim/blob/85f6a8d2ff35bdf4c28db92e4965825692364317/lua/config/autocmds.lua
+local lsp_fmt_group = vim.api.nvim_create_augroup("LspFormattingGroup", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = lsp_fmt_group,
+	callback = function()
+		local efm = vim.lsp.get_active_clients({ name = "efm" })
+
+		if vim.tbl_isempty(efm) then
+			return
+		end
+
+		vim.lsp.buf.format({ name = "efm", async = true })
+	end,
+})

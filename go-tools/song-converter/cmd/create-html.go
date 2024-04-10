@@ -13,16 +13,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// const (
-// 	StylesPathArgEmpty    = "styles-file must have a non-whitespace value"
-// 	StylesPathNotHtmlFile = "styles-file must be a html file"
-// 	StagingDirArgEmpty    = "working-dir must have a non-whitespace value"
-// )
-
-// var stagingDir string
-// var stylesFilePath string
-// var bodyHtmlOutputFile string
-
 const (
 	CoverPathArgEmpty  = "cover-file must have a non-whitespace value"
 	CoverPathNotMdFile = "cover-file must be an md file"

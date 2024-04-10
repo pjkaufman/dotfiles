@@ -3,6 +3,7 @@
 package linter_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/pjkaufman/dotfiles/go-tools/ebook-lint/linter"
@@ -13,6 +14,7 @@ type ParseOpfContentsTestCase struct {
 	InputText        string
 	ExpectedEpubInfo linter.EpubInfo
 	ExpectedErr      error
+	IsSyntaxError    bool
 }
 
 const (
@@ -203,8 +205,8 @@ const (
 
 var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 	"make sure that parsing an opf that does not have a package tag results in an error": {
-		InputText:   noPackageFile,
-		ExpectedErr: linter.ErrNoPackageInfo,
+		InputText:     noPackageFile,
+		IsSyntaxError: true,
 	},
 	"make sure that parsing an opf that does have a package tag, but no version info results in an error": {
 		InputText:   noVersionFile,
@@ -215,8 +217,8 @@ var ParseOpfContentsTestCases = map[string]ParseOpfContentsTestCase{
 		ExpectedErr: linter.ErrNoManifest,
 	},
 	"make sure that parsing an opf that does have a manifest tag, but no ending manifest tag results in an error": {
-		InputText:   noManifestEndFile,
-		ExpectedErr: linter.ErrNoEndOfManifest,
+		InputText:     noManifestEndFile,
+		IsSyntaxError: true,
 	},
 	"make sure that parsing an opf that does have a manifest tag, but no list items in it results in an error": {
 		InputText:   noManifestContentsFile,
@@ -333,7 +335,13 @@ func TestParseOpfContents(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			actual, err := linter.ParseOpfFile(args.InputText)
 
-			assert.Equal(t, args.ExpectedErr, err)
+			if !args.IsSyntaxError {
+				assert.Equal(t, args.ExpectedErr, err)
+			} else {
+				assert.NotNil(t, err)
+				assert.True(t, strings.HasPrefix(err.Error(), linter.ErrorParsingXmlMessageStart), "A syntax error must start with the syntax error prefix")
+			}
+
 			if err == nil {
 				assert.Equal(t, args.ExpectedEpubInfo, actual)
 			}

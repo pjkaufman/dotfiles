@@ -1,8 +1,9 @@
 package linter
 
 import (
+	"encoding/xml"
 	"fmt"
-	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -17,19 +18,44 @@ type EpubInfo struct {
 	Version     int
 }
 
-const closingManifestEl = "</manifest>"
+type Package struct {
+	XMLName  xml.Name  `xml:"package"`
+	Version  string    `xml:"version,attr"`
+	Manifest *Manifest `xml:"manifest"`
+	Guide    *Guide    `xml:"guide"`
+}
 
-var openingManifestRegex = regexp.MustCompile("<manifest[^>\n]*>")
-var packageVersionRegex = regexp.MustCompile(`<package[^>\n]*version=["']([^"']+)["'][^>\n]*>`)
-var itemElRegex = regexp.MustCompile(`<item [^>\n]*>`)
-var tocReferenceElRegex = regexp.MustCompile(`<reference [^>\n]*type=["']toc["'][^>\n]*>`)
-var hrefAttributeRegex = regexp.MustCompile(`href=["']([^'"]*)(["'])`)
-var mediaTypeAttributeRegex = regexp.MustCompile(`media-type=["']([^'"]*)(["'])`)
-var isNavFileRegex = regexp.MustCompile(`properties=["']nav["']`)
-var ErrNoPackageInfo = fmt.Errorf("no package info found for the epub - please verify that the opf has a version in it")
-var ErrNoItemEls = fmt.Errorf("no manifest items found for the epub - please verify that the opf has a items in it")
-var ErrNoManifest = fmt.Errorf("no manifest found")
-var ErrNoEndOfManifest = fmt.Errorf("manifest is incorrectly formatted since it has no closing manifest element")
+type Manifest struct {
+	XMLName xml.Name        `xml:"manifest"`
+	Items   []*ManifestItem `xml:"item"`
+}
+
+type ManifestItem struct {
+	XMLName    xml.Name `xml:"item"`
+	Href       string   `xml:"href,attr"`
+	MediaType  string   `xml:"media-type,attr"`
+	Properties string   `xml:"properties,attr"`
+}
+
+type Guide struct {
+	XMLName    xml.Name          `xml:"guide"`
+	References []*GuideReference `xml:"reference"`
+}
+
+type GuideReference struct {
+	XMLName xml.Name `xml:"reference"`
+	Href    string   `xml:"href,attr"`
+	Type    string   `xml:"type,attr"`
+}
+
+const ErrorParsingXmlMessageStart = "error parsing xml: "
+
+var (
+	ErrNoPackageInfo   = fmt.Errorf("no package info found for the epub - please verify that the opf has a version in it")
+	ErrNoItemEls       = fmt.Errorf("no manifest items found for the epub - please verify that the opf has items in it")
+	ErrNoManifest      = fmt.Errorf("no manifest found")
+	ErrNoEndOfManifest = fmt.Errorf("manifest is incorrectly formatted since it has no closing manifest element")
+)
 
 func ParseOpfFile(text string) (EpubInfo, error) {
 	var epubInfo = EpubInfo{
@@ -38,111 +64,83 @@ func ParseOpfFile(text string) (EpubInfo, error) {
 		OtherFiles:  make(map[string]struct{}),
 		CssFiles:    make(map[string]struct{}),
 	}
-	var version, err = getVersion(text)
+
+	var opfInfo Package
+	err := xml.Unmarshal([]byte(text), &opfInfo)
+	if err != nil {
+		return epubInfo, fmt.Errorf(ErrorParsingXmlMessageStart+"%v", err)
+	}
+
+	epubInfo.Version, err = versionTextToInt(opfInfo.Version)
 	if err != nil {
 		return epubInfo, err
 	}
 
-	epubInfo.Version = version
-	err = epubInfo.parseManifest(text)
-	if err != nil {
-		return epubInfo, err
+	if opfInfo.Manifest == nil {
+		return epubInfo, ErrNoManifest
 	}
 
-	err = epubInfo.getTocFile(text)
-	if err != nil {
-		return epubInfo, err
+	for _, manifestItem := range opfInfo.Manifest.Items {
+		var filePath = hrefToFile(manifestItem.Href)
+		if epubInfo.Version == 3 && strings.Contains(manifestItem.Properties, "nav") {
+			epubInfo.NavFile = filePath
+		}
+
+		if strings.Contains(manifestItem.MediaType, "xhtml") {
+			epubInfo.HtmlFiles[filePath] = struct{}{}
+		} else if strings.Contains(manifestItem.MediaType, "image") {
+			epubInfo.ImagesFiles[filePath] = struct{}{}
+		} else if strings.Contains(manifestItem.MediaType, "css") {
+			epubInfo.CssFiles[filePath] = struct{}{}
+		} else {
+			if strings.HasSuffix(filePath, ".ncx") {
+				epubInfo.NcxFile = filePath
+			}
+
+			epubInfo.OtherFiles[filePath] = struct{}{}
+		}
+	}
+
+	if len(opfInfo.Manifest.Items) == 0 {
+		return epubInfo, ErrNoItemEls
+	}
+
+	if opfInfo.Guide != nil {
+		for _, guideReference := range opfInfo.Guide.References {
+			if guideReference.Type == "toc" {
+				epubInfo.TocFile = hrefToFile(guideReference.Href)
+				break
+			}
+		}
 	}
 
 	return epubInfo, nil
 }
 
-func getVersion(text string) (int, error) {
-	var packageInfo = packageVersionRegex.FindAllStringSubmatch(text, 1)
-	if len(packageInfo) == 0 {
-		return 2, ErrNoPackageInfo
+func hrefToFile(href string) string {
+	var poundIndex = strings.Index(href, "#")
+	if poundIndex == -1 {
+		return href
 	}
 
-	if strings.Contains(packageInfo[0][1], "3.") {
-		return 3, nil
-	}
-
-	return 2, nil
+	return href[0:poundIndex]
 }
 
-func (ei *EpubInfo) parseManifest(text string) error {
-	var startOfManifest = openingManifestRegex.FindStringIndex(text)
-	if len(startOfManifest) == 0 {
-		return ErrNoManifest
+func versionTextToInt(versionText string) (int, error) {
+	versionText = strings.TrimSpace(versionText)
+	if versionText == "" {
+		return 0, ErrNoPackageInfo
 	}
 
-	var endOfManifest = strings.Index(text, closingManifestEl)
-	if endOfManifest < 0 {
-		return ErrNoEndOfManifest
+	var periodIndex = strings.Index(versionText, ".")
+	if periodIndex != -1 {
+		versionText = versionText[0:periodIndex]
 	}
 
-	var manifest = text[startOfManifest[0]:endOfManifest]
-	var itemEls = itemElRegex.FindAllStringIndex(manifest, -1)
-	for _, locs := range itemEls {
-		var itemEl = manifest[locs[0]:locs[1]]
-		hrefInfo := hrefAttributeRegex.FindAllStringSubmatch(itemEl, 1)
-		if len(hrefInfo) == 0 {
-			return fmt.Errorf("failed to get the href attribute on the item \"%s\"", itemEl)
-		}
-
-		var filePath = hrefInfo[0][1]
-
-		mediaTypeInfo := mediaTypeAttributeRegex.FindAllStringSubmatch(itemEl, 1)
-		if len(hrefInfo) == 0 {
-			return fmt.Errorf("failed to get the media-type attribute on the item \"%s\"", itemEl)
-		}
-		var mediaType = mediaTypeInfo[0][1]
-
-		if ei.Version == 3 && isNavFileRegex.MatchString(itemEl) {
-			ei.NavFile = filePath
-		}
-
-		if strings.Contains(mediaType, "xhtml") {
-			ei.HtmlFiles[filePath] = struct{}{}
-		} else if strings.Contains(mediaType, "image") {
-			ei.ImagesFiles[filePath] = struct{}{}
-		} else if strings.Contains(mediaType, "css") {
-			ei.CssFiles[filePath] = struct{}{}
-		} else {
-			if strings.HasSuffix(filePath, ".ncx") {
-				ei.NcxFile = filePath
-			}
-
-			ei.OtherFiles[filePath] = struct{}{}
-		}
-
-	}
-	if len(itemEls) == 0 {
-		return ErrNoItemEls
+	version, err := strconv.Atoi(versionText)
+	if err != nil {
+		return 0, fmt.Errorf(`failed to convert version text "%s" to an integer: %w`, versionText, err)
 	}
 
-	return nil
-}
-
-func (ei *EpubInfo) getTocFile(text string) error {
-	var tocInfo = tocReferenceElRegex.FindAllStringSubmatch(text, 1)
-	if len(tocInfo) == 0 {
-		return nil
-	}
-
-	var tocEl = tocInfo[0][0]
-	hrefInfo := hrefAttributeRegex.FindAllStringSubmatch(tocEl, 1)
-	if len(hrefInfo) == 0 {
-		return fmt.Errorf("failed to get the href attribute on the toc reference \"%s\"", tocEl)
-	}
-
-	var href = hrefInfo[0][1]
-	var hashTagIndex = strings.Index(href, "#")
-	if hashTagIndex != -1 {
-		href = href[0:hashTagIndex]
-	}
-
-	ei.TocFile = href
-
-	return nil
+	return version, nil
 }

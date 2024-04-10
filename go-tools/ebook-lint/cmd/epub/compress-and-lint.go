@@ -113,51 +113,13 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 			filehandler.WriteFileContents(filePath, newText)
 		}
 
-		updateNavFile(opfFolder, epubInfo.NavFile)
-		updateNcxFile(opfFolder, epubInfo.NcxFile)
+		// updateNavFile(opfFolder, epubInfo.NavFile)
+		// updateNcxFile(opfFolder, epubInfo.NcxFile)
 		//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 		if runCompressImages {
 			commandhandler.CompressRelativeImages(opfFolder, epubInfo.ImagesFiles)
 		}
-
-		// TODO: cleanup TOC file's links
-		/** Sample ToC
-				<?xml version="1.0" encoding="utf-8"?>
-		<!DOCTYPE html>
-
-		<html xmlns:epub="http://www.idpf.org/2007/ops" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-		<head>
-		<meta http-equiv="default-style" content="text/html; charset=UTF-8"/>
-		<title>Death March to the Parallel World Rhapsody, Vol. 19</title>
-		<link rel="stylesheet" href="../Styles/stylesheet.css" type="text/css"/>
-
-
-
-		</head>
-		<body>
-		<h1 class="toc-title"><a id="page-iii"></a><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.1.1">Contents</span></h1>
-		<p class="toc-front" id="cover"><a href="../Text/cover.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.2.1">Cover</span></a></p>
-		<p class="toc-front" id="insert001"><a href="../Text/insert001.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.3.1">Insert</span></a></p>
-		<p class="toc-front" id="titlepage"><a href="../Text/titlepage.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.4.1">Title Page</span></a></p>
-		<p class="toc-front" id="toc-copyright"><a href="../Text/copyright.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.5.1">Copyright</span></a></p>
-		<p class="toc-chapter1" id="toc-chapter001"><a href="../Text/chapter001.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.6.1">Vice-Minister of Tourism</span></a></p>
-		<p class="toc-chapter" id="toc-chapter006"><a href="../Text/chapter006.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.7.1">Return to Labyrinth City</span></a></p>
-		<p class="toc-chapter" id="toc-chapter010"><a href="../Text/chapter010.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.8.1">The Barren Territory</span></a></p>
-		<p class="toc-chapter" id="toc-chapter013"><a href="../Text/chapter013.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.9.1">An Unexpected Reunion</span></a></p>
-		<p class="toc-chapter" id="toc-chapter016"><a href="../Text/chapter016.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.10.1">Journey to Yowork Kingdom</span></a></p>
-		<p class="toc-chapter" id="toc-chapter017"><a href="../Text/chapter017.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.11.1">Interlude: A Skirmish</span></a></p>
-		<p class="toc-chapter" id="toc-chapter018"><a href="../Text/chapter018.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.12.1">Sacrificial Labyrinth</span></a></p>
-		<p class="toc-chapter" id="toc-chapter019"><a href="../Text/chapter019.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.13.1">Requiem</span></a></p>
-		<p class="toc-chapter" id="toc-chapter022"><a href="../Text/chapter022.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.14.1">Uprising</span></a></p>
-		<p class="toc-chapter" id="toc-chapter023"><a href="../Text/chapter023.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.15.1">A Bitter Battlefield</span></a></p>
-		<p class="toc-chapter" id="toc-chapter024"><a href="../Text/chapter024.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.16.1">Epilogue</span></a></p>
-		<p class="toc-chapter" id="toc-chapter027"><a href="../Text/chapter027.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.17.1">EX: Karina and Zena's Big Adventure</span></a></p>
-		<p class="toc-chapter1" id="toc-appendix001"><a href="../Text/appendix001.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.18.1">Afterword</span></a></p>
-		<p class="toc-chapter" id="newsletter1"><a href="../Text/newsletterSignup.xhtml"><span xmlns="http://www.w3.org/1999/xhtml" class="koboSpan" id="kobo.19.1">Yen Newsletter</span></a></p>
-		</body>
-		</html>
-		*/
 	})
 }
 
@@ -173,45 +135,45 @@ func ValidateCompressAndLintFlags(lintDir, lang string) error {
 	return nil
 }
 
-func updateNcxFile(opfFolder, file string) {
-	if file == "" {
-		return
-	}
+// func updateNcxFile(opfFolder, file string) {
+// 	if file == "" {
+// 		return
+// 	}
 
-	var filePath = getFilePath(opfFolder, file)
-	fileText := filehandler.ReadInFileContents(filePath)
+// 	var filePath = getFilePath(opfFolder, file)
+// 	fileText := filehandler.ReadInFileContents(filePath)
 
-	newText, err := linter.CleanupNavMap(fileText)
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
-	}
+// 	newText, err := linter.CleanupNavMap(fileText)
+// 	if err != nil {
+// 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+// 	}
 
-	if fileText == newText {
-		return
-	}
+// 	if fileText == newText {
+// 		return
+// 	}
 
-	filehandler.WriteFileContents(filePath, newText)
-}
+// 	filehandler.WriteFileContents(filePath, newText)
+// }
 
-func updateNavFile(opfFolder, file string) {
-	if file == "" {
-		return
-	}
+// // func updateNavFile(opfFolder, file string) {
+// 	if file == "" {
+// 		return
+// 	}
 
-	var filePath = getFilePath(opfFolder, file)
-	fileText := filehandler.ReadInFileContents(filePath)
+// 	var filePath = getFilePath(opfFolder, file)
+// 	fileText := filehandler.ReadInFileContents(filePath)
 
-	newText, err := linter.RemoveIdsFromNav(fileText)
-	if err != nil {
-		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
-	}
+// 	newText, err := linter.RemoveIdsFromNav(fileText)
+// 	if err != nil {
+// 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
+// 	}
 
-	if fileText == newText {
-		return
-	}
+// 	if fileText == newText {
+// 		return
+// 	}
 
-	filehandler.WriteFileContents(filePath, newText)
-}
+// 	filehandler.WriteFileContents(filePath, newText)
+// }
 
 func getFilePath(opfFolder, file string) string {
 	return filehandler.JoinPath(opfFolder, file)

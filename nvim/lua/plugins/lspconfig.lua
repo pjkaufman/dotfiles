@@ -135,6 +135,9 @@ local config = function()
 	local golangci_lint = require("efmls-configs.linters.golangci_lint")
 	local gofmt = require("efmls-configs.formatters.gofmt")
 	local goimports = require("efmls-configs.formatters.goimports")
+
+	golangci_lint.lintCommand = golangci_lint.lintCommand:gsub("INPUT", "ROOT")
+
 	-- configure efm server
 	lspconfig.efm.setup({
 		filetypes = {

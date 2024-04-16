@@ -135,7 +135,7 @@ var fixableCmd = &cobra.Command{
 				var filePath = getFilePath(opfFolder, file)
 				fileText := filehandler.ReadInFileContents(filePath)
 
-				var newText = fileText
+				var newText = linter.CleanupHtmlSpacing(fileText)
 				if runAll || runBrokenLines {
 					var brokenLineFixSuggestions = linter.GetPotentiallyBrokenLines(newText)
 					newText, _, saveAndQuit = promptAboutSuggestions("Potential Broken Lines", brokenLineFixSuggestions, newText, false)

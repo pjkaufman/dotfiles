@@ -31,3 +31,19 @@ func (c *Config) HasSeries(name string) bool {
 
 	return false
 }
+
+func (c *Config) RemoveSeriesIfExists(name string) bool {
+	var newSeries []SeriesInfo
+	for _, series := range c.Series {
+		if !strings.EqualFold(name, series.Name) {
+			newSeries = append(newSeries, series)
+		}
+	}
+
+	var changeMade = len(newSeries) != len(c.Series)
+	if changeMade {
+		c.Series = newSeries
+	}
+
+	return changeMade
+}

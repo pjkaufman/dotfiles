@@ -398,21 +398,6 @@
       "status": "O"
     },
     {
-      "name": "The Hidden Dungeon Only I Can Enter (Light Novel)",
-      "total_volumes": 7,
-      "latest_volume": "The Hidden Dungeon Only I Can Enter (Light Novel) Vol. 7",
-      "unreleased_volumes": [
-        {
-          "name": "The Hidden Dungeon Only I Can Enter (Light Novel) Vol. 7",
-          "release_date": "June 25, 2024"
-        }
-      ],
-      "slug_override": null,
-      "type": "LN",
-      "publisher": "SevenSeasEntertainment",
-      "status": "O"
-    },
-    {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
       "total_volumes": 26,
       "latest_volume": "Mushoku Tensei: Jobless Reincarnation (Light Novel) Vol. 26",
@@ -435,25 +420,6 @@
         {
           "name": "Skeleton Knight in Another World (Light Novel) Vol. 11",
           "release_date": "April 22, 2025"
-        }
-      ],
-      "slug_override": null,
-      "type": "LN",
-      "publisher": "SevenSeasEntertainment",
-      "status": "O"
-    },
-    {
-      "name": "Loner Life in Another World (Light Novel)",
-      "total_volumes": 9,
-      "latest_volume": "Loner Life in Another World (Light Novel) Vol. 9",
-      "unreleased_volumes": [
-        {
-          "name": "Loner Life in Another World (Light Novel) Vol. 9",
-          "release_date": "July 9, 2024"
-        },
-        {
-          "name": "Loner Life in Another World (Light Novel) Vol. 8",
-          "release_date": "February 8, 2024"
         }
       ],
       "slug_override": null,

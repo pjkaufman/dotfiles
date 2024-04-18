@@ -27,4 +27,4 @@ install:
 	@magnum completion bash > "${BASH_COMPLETION_USER_DIR}/magnum-completion"
 
 install-deps:
-	@go run github.com/playwright-community/playwright-go/cmd/playwright@v1.41.1 install --with-deps
+	@go run github.com/playwright-community/playwright-go/cmd/playwright@v0.4201.1 install --with-deps

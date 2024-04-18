@@ -2,7 +2,6 @@ package jnovelclub
 
 import (
 	"fmt"
-	"regexp"
 	"slices"
 	"time"
 
@@ -15,8 +14,6 @@ type VolumeInfo struct {
 	Name        string
 	ReleaseDate time.Time
 }
-
-var seriesInvalidSlugCharacters = regexp.MustCompile(`[\(\),:\-?!]`)
 
 func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []VolumeInfo {
 	var volumes = []VolumeInfo{}

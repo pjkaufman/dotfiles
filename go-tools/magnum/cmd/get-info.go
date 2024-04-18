@@ -124,7 +124,7 @@ func jNovelClubGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesIn
 }
 
 func wikipediaGetSeriesVolumeInfo(seriesInfo config.SeriesInfo) config.SeriesInfo {
-	volumeInfo := wikipedia.GetVolumeInfo(userAgent, seriesInfo.Name, seriesInfo.SlugOverride, verbose)
+	volumeInfo := wikipedia.GetVolumeInfo(userAgent, seriesInfo.Name, seriesInfo.SlugOverride, seriesInfo.WikipediaTablesToParseOverride, verbose)
 
 	if len(volumeInfo) == 0 {
 		logger.WriteInfo("The wikipedia light novels do not exist for this series.")

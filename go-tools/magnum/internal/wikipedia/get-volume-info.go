@@ -21,16 +21,19 @@ var wikiTableRegex = regexp.MustCompile(`<table[^>]*class="wikitable"[^>]*>`)
 var volumeRowHeaderRegex = regexp.MustCompile(`<th[^>]*scope="row"[^>]*>([^<]*)</th>`)
 var columnAmountToExpectedColumn = map[int]int{
 	4: 3,
-	5: 3,
+	5: 4,
 	6: 4,
 }
 
 const (
-	wikiTableEnd    = `</table>`
-	wikiTableRowEnd = `</tr>`
+	tableStart                   = `<table`
+	tableEnd                     = `</table>`
+	wikiTableRowEnd              = `</tr>`
+	tableDataStartingElIndicator = "<td"
+	tableDataEndingElIndicator   = "</td"
 )
 
-func GetVolumeInfo(userAgent, title string, slugOverride *string, verbose bool) []VolumeInfo {
+func GetVolumeInfo(userAgent, title string, slugOverride *string, tablesToParseOverride *int, verbose bool) []VolumeInfo {
 	var seriesSlug string
 	if slugOverride != nil {
 		seriesSlug = *slugOverride
@@ -143,10 +146,13 @@ func GetVolumeInfo(userAgent, title string, slugOverride *string, verbose bool) 
 	}
 
 	var volumeInfo = []VolumeInfo{}
-	for _, subSectionTitle := range subSectionTiles {
-		start, stop := getTableStartAndStop(lnSectionHtml)
-		volumeInfo = append(volumeInfo, ParseWikipediaTableToVolumeInfo(subSectionTitle, lnSectionHtml[start:stop])...)
+	for i, subSectionTitle := range subSectionTiles {
+		if tablesToParseOverride != nil && *tablesToParseOverride < i+1 {
+			break
+		}
 
+		tableHtml, stop := GetNextTableAndItsEndPosition(lnSectionHtml)
+		volumeInfo = append(volumeInfo, ParseWikipediaTableToVolumeInfo(subSectionTitle, tableHtml)...)
 		lnSectionHtml = lnSectionHtml[stop:]
 	}
 
@@ -155,20 +161,35 @@ func GetVolumeInfo(userAgent, title string, slugOverride *string, verbose bool) 
 	return volumeInfo
 }
 
-func getTableStartAndStop(sectionHtml string) (int, int) {
+func GetNextTableAndItsEndPosition(sectionHtml string) (string, int) {
 	var wikiStartLocation = wikiTableRegex.FindStringIndex(sectionHtml)
 	if len(wikiStartLocation) == 0 {
-		return -1, -1
+		return "", -1
 	}
 
 	var wikipediaTableStart = wikiStartLocation[0]
-	var wikipediaTableEnd = strings.Index(sectionHtml, wikiTableEnd)
+	var tableHtml = sectionHtml[wikipediaTableStart:]
+	var potentialTableHtml = tableHtml
+	var wikipediaTableEnd = wikipediaTableStart
+	for {
+		var possibleWikiTableEnd = strings.Index(potentialTableHtml, tableEnd)
 
-	if wikipediaTableEnd == -1 {
-		return wikipediaTableStart, len(sectionHtml)
+		if possibleWikiTableEnd == -1 {
+			return sectionHtml[wikipediaTableStart:], len(sectionHtml)
+		}
+
+		wikipediaTableEnd += possibleWikiTableEnd + len(tableEnd)
+
+		tableHtml = sectionHtml[wikipediaTableStart:wikipediaTableEnd]
+
+		if strings.Count(tableHtml, tableEnd) == strings.Count(tableHtml, tableStart) {
+			break
+		}
+
+		potentialTableHtml = potentialTableHtml[possibleWikiTableEnd:]
 	}
 
-	return wikipediaTableStart, wikipediaTableEnd + len(wikiTableEnd)
+	return tableHtml, wikipediaTableEnd
 }
 
 func convertTitleToSlug(title string) string {

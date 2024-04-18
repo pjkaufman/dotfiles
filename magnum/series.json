@@ -8,7 +8,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Berserk of Gluttony",
@@ -18,7 +19,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "Solo Leveling (novel)",
@@ -28,7 +30,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Asterisk War",
@@ -38,7 +41,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
@@ -53,7 +57,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Goblin Slayer (light novel)",
@@ -63,7 +68,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Sword Art Online",
@@ -73,7 +79,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
@@ -83,16 +90,13 @@
         {
           "name": "That Time I Got Reincarnated as a Slime, Vol. 19 (light novel)",
           "release_date": "August 20, 2024"
-        },
-        {
-          "name": "That Time I Got Reincarnated as a Slime, Vol. 18 (light novel)",
-          "release_date": "April 16, 2024"
         }
       ],
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Re:ZERO -Starting Life in Another World",
@@ -107,13 +111,18 @@
       "slug_override": "re-starting-life-in-another-world",
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
-      "total_volumes": 11,
-      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 11 (light novel)",
+      "total_volumes": 12,
+      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 12 (light novel)",
       "unreleased_volumes": [
+        {
+          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 12 (light novel)",
+          "release_date": "September 17, 2024"
+        },
         {
           "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 11 (light novel)",
           "release_date": "May 21, 2024"
@@ -122,7 +131,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "A Certain Magical Index (light novel)",
@@ -132,7 +142,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
@@ -147,7 +158,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "86--EIGHTY-SIX (light novel)",
@@ -157,7 +169,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Sword Art Online Progressive",
@@ -167,7 +180,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Log Horizon",
@@ -177,7 +191,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "H"
+      "status": "H",
+      "tables_to_parse_override": null
     },
     {
       "name": "No Game No Life",
@@ -187,7 +202,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "No Game No Life, Please!",
@@ -197,7 +213,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Overlord",
@@ -207,7 +224,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "So I'm a Spider, So What? (light novel)",
@@ -217,7 +235,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Devil Is a Part-Timer!",
@@ -227,7 +246,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Executioner and Her Way of Life",
@@ -242,7 +262,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
@@ -257,7 +278,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Hero Is Overpowered but Overly Cautious (light novel)",
@@ -267,13 +289,18 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Irregular at Magic High School",
-      "total_volumes": 22,
-      "latest_volume": "The Irregular at Magic High School, Vol. 22 (light novel)",
+      "total_volumes": 23,
+      "latest_volume": "The Irregular at Magic High School, Vol. 23 (light novel)",
       "unreleased_volumes": [
+        {
+          "name": "The Irregular at Magic High School, Vol. 23 (light novel)",
+          "release_date": "September 17, 2024"
+        },
         {
           "name": "The Irregular at Magic High School, Vol. 22 (light novel)",
           "release_date": "May 21, 2024"
@@ -282,7 +309,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
@@ -292,16 +320,13 @@
         {
           "name": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
           "release_date": "August 20, 2024"
-        },
-        {
-          "name": "The Misfit of Demon King Academy, Vol. 3 (light novel)",
-          "release_date": "April 16, 2024"
         }
       ],
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "The Saga of Tanya the Evil (light novel)",
@@ -311,7 +336,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Torture Princess: Fremd Torturchen (light novel)",
@@ -321,7 +347,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (light novel)",
@@ -331,7 +358,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "High School Prodigies Have It Easy Even in Another World! (light novel)",
@@ -341,7 +369,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "How a Realist Hero Rebuilt the Kingdom",
@@ -351,7 +380,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Outbreak Company",
@@ -361,7 +391,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
@@ -376,7 +407,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Arifureta: From Commonplace to World's Strongest",
@@ -386,7 +418,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "C"
+      "status": "C",
+      "tables_to_parse_override": null
     },
     {
       "name": "Arifureta Zero",
@@ -396,7 +429,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
@@ -415,7 +449,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Skeleton Knight in Another World (Light Novel)",
@@ -430,7 +465,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
@@ -445,7 +481,8 @@
       "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Seraph of the End",
@@ -460,7 +497,8 @@
       "slug_override": null,
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Twin Star Exorcists",
@@ -475,7 +513,8 @@
       "slug_override": null,
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
     },
     {
       "name": "Blue Exorcist",
@@ -485,7 +524,67 @@
       "slug_override": null,
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": null
+    },
+    {
+      "name": "The Rising of the Shield Hero",
+      "total_volumes": 22,
+      "latest_volume": "The Rising of the Shield Hero Vol. 22",
+      "unreleased_volumes": [],
+      "slug_override": "List_of_The_Rising_of_the_Shield_Hero_volumes",
+      "type": "LN",
+      "publisher": "OnePeaceBooks",
+      "status": "H",
+      "tables_to_parse_override": 1
+    },
+    {
+      "name": "The Wrong Way to Use Healing Magic",
+      "total_volumes": 12,
+      "latest_volume": "The Wrong Way to Use Healing Magic Vol. 12",
+      "unreleased_volumes": [
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 12",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 11",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 10",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 9",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 8",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 7",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 6",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 5",
+          "release_date": "TBA"
+        },
+        {
+          "name": "The Wrong Way to Use Healing Magic Vol. 4",
+          "release_date": "TBA"
+        }
+      ],
+      "slug_override": null,
+      "type": "LN",
+      "publisher": "OnePeaceBooks",
+      "status": "O",
+      "tables_to_parse_override": null
     }
   ]
 }

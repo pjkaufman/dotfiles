@@ -15,11 +15,12 @@ const (
 )
 
 var (
-	seriesName      string
-	seriesType      string
-	seriesPublisher string
-	slugOverride    string
-	seriesStatus    string
+	seriesName                     string
+	seriesType                     string
+	seriesPublisher                string
+	slugOverride                   string
+	seriesStatus                   string
+	wikipediaTablesToParseOverride int
 )
 
 // AddCmd represents the add book info command
@@ -77,6 +78,14 @@ var AddCmd = &cobra.Command{
 			Status:       status,
 		}
 
+		if wikipediaTablesToParseOverride > 0 {
+			if publisher == config.OnePeaceBooks {
+				newSeries.WikipediaTablesToParseOverride = &wikipediaTablesToParseOverride
+			} else {
+				logger.WriteWarn("wikipedia tables to parse override is only valid on the publisher OpenPeaceBooks")
+			}
+		}
+
 		seriesInfo.Series = append(seriesInfo.Series, newSeries)
 
 		config.WriteConfig(seriesInfo)
@@ -91,6 +100,7 @@ func init() {
 	AddCmd.Flags().StringVarP(&seriesType, "type", "t", "", "the series type")
 	AddCmd.Flags().StringVarP(&slugOverride, "slug", "s", "", "the slug for the series to use instead of the one based on the series name")
 	AddCmd.Flags().StringVarP(&seriesStatus, "status", "r", string(config.Ongoing), "the status of the series (defaults to Ongoing)")
+	AddCmd.Flags().IntVarP(&wikipediaTablesToParseOverride, "wikipedia-table-parse-override", "o", 0, "the amount of tables that should parsed in the light novels section of the wikipedia page if it should not be all of them")
 
 	AddCmd.MarkFlagRequired("name")
 }

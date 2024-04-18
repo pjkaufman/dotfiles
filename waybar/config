@@ -16,12 +16,12 @@
         "tooltip": false
     },
     "cpu": {
-        "interval": 1,
-        "format": "{usage}% {avg_frequency} GHz ",
+        "interval": 3,
+        "format": "{usage}% ",
         "tooltip": false
     },
     "memory": {
-        "interval": 1,
+        "interval": 60,
         "format": "{used:0.2f}GB/{total:0.2f}GB ({percentage}%) ",
         "tooltip": false
     },

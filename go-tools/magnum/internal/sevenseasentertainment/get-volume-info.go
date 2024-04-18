@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gocolly/colly/v2"
+	googlecache "github.com/pjkaufman/dotfiles/go-tools/magnum/internal/google-cache"
 	"github.com/pjkaufman/dotfiles/go-tools/magnum/internal/slug"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/crawler"
 	"github.com/pjkaufman/dotfiles/go-tools/pkg/logger"
@@ -38,7 +39,7 @@ func GetVolumeInfo(seriesName string, slugOverride *string, verbose bool) []Volu
 		volumeContent = append(volumeContent, contentHtml)
 	})
 
-	var url = googleCacheURL + baseURL + seriesPath + seriesSlug + "/"
+	var url = googlecache.BuildCacheURL(baseURL + seriesPath + seriesSlug + "/")
 	err = c.Visit(url)
 	if err != nil {
 		logger.WriteError(fmt.Sprintf("failed call to google cache for \"%s\": %s", url, err))

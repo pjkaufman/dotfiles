@@ -26,36 +26,6 @@ The rising of the shield hero - Open Peace Books?  https://www.onepeacebooks.com
       "status": "O"
     }
 ```
-Classroom of the Elite (broken again?):
-``` json
-    {
-      "name": "Classroom of the Elite",
-      "total_volumes": 26,
-      "latest_volume": "Classroom of the Elite: Year 2 Vol. 10",
-      "unreleased_volumes": [
-        {
-          "name": "Classroom of the Elite: Year 2 Vol. 10",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Classroom of the Elite: Year 2 Vol. 9.5",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Classroom of the Elite: Year 2 Vol. 9",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Classroom of the Elite: Year 2 Vol. 8",
-          "release_date": "TBA"
-        }
-      ],
-      "slug_override": null,
-      "type": "LN",
-      "publisher": "SevenSeasEntertainment",
-      "status": "O"
-    },
-```
 
 ## Features to Add
 

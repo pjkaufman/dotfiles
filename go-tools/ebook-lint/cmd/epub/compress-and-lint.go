@@ -42,7 +42,6 @@ var compressAndLintCmd = &cobra.Command{
 	Then it lints each epub separately making sure to compress the images if specified.
 	Some of the things that the linting includes:
 	- Replacing a list of common strings
-	- Removing links from the nav and/or the ncx file
 	- Adds language encoding specified if it is not present already (default is "en")
 	- Sets encoding on content files to utf-8 to prevent errors in some readers
 	`),
@@ -103,7 +102,6 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 			var newText = linter.EnsureEncodingIsPresent(fileText)
 			newText = linter.CommonStringReplace(newText)
 
-			// TODO: remove images links that do not exist in the manifest
 			newText = linter.EnsureLanguageIsSet(newText, lang)
 
 			if fileText == newText {
@@ -113,8 +111,6 @@ func LintEpub(lintDir, epub string, runCompressImages bool) {
 			filehandler.WriteFileContents(filePath, newText)
 		}
 
-		// updateNavFile(opfFolder, epubInfo.NavFile)
-		// updateNcxFile(opfFolder, epubInfo.NcxFile)
 		//TODO: get all files in the repo and prompt the user whether they want to delete them
 
 		if runCompressImages {
@@ -134,46 +130,6 @@ func ValidateCompressAndLintFlags(lintDir, lang string) error {
 
 	return nil
 }
-
-// func updateNcxFile(opfFolder, file string) {
-// 	if file == "" {
-// 		return
-// 	}
-
-// 	var filePath = getFilePath(opfFolder, file)
-// 	fileText := filehandler.ReadInFileContents(filePath)
-
-// 	newText, err := linter.CleanupNavMap(fileText)
-// 	if err != nil {
-// 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
-// 	}
-
-// 	if fileText == newText {
-// 		return
-// 	}
-
-// 	filehandler.WriteFileContents(filePath, newText)
-// }
-
-// // func updateNavFile(opfFolder, file string) {
-// 	if file == "" {
-// 		return
-// 	}
-
-// 	var filePath = getFilePath(opfFolder, file)
-// 	fileText := filehandler.ReadInFileContents(filePath)
-
-// 	newText, err := linter.RemoveIdsFromNav(fileText)
-// 	if err != nil {
-// 		logger.WriteError(fmt.Sprintf("%s: %v", filePath, err))
-// 	}
-
-// 	if fileText == newText {
-// 		return
-// 	}
-
-// 	filehandler.WriteFileContents(filePath, newText)
-// }
 
 func getFilePath(opfFolder, file string) string {
 	return filehandler.JoinPath(opfFolder, file)

@@ -54,6 +54,8 @@ var ShowInfoCmd = &cobra.Command{
 		sort.Slice(unreleasedVolumes, func(i, j int) bool {
 			if unreleasedVolumes[i].ReleaseDate == defaultReleaseDate {
 				return false
+			} else if unreleasedVolumes[j].ReleaseDate == defaultReleaseDate {
+				return true
 			}
 
 			date1 := parseVolumeReleaseDate(unreleasedVolumes[i].Name, unreleasedVolumes[i].ReleaseDate)
@@ -67,9 +69,13 @@ var ShowInfoCmd = &cobra.Command{
 		var oneWeekAgo = today.AddDate(0, 0, -7)
 		var nextMonth = today.AddDate(0, 1, 0)
 		for _, unreleasedVolume := range unreleasedVolumes {
-			date := parseVolumeReleaseDate(unreleasedVolume.Name, unreleasedVolume.ReleaseDate)
 			var displayText = getUnreleasedVolumeDisplayText(unreleasedVolume.Name, unreleasedVolume.ReleaseDate)
+			if unreleasedVolume.ReleaseDate == defaultReleaseDate {
+				logger.WriteInfo(displayText)
+				continue
+			}
 
+			date := parseVolumeReleaseDate(unreleasedVolume.Name, unreleasedVolume.ReleaseDate)
 			if date.Before(oneWeekAgo) {
 				logger.WriteInfoWithColor(displayText, color.FgRed)
 			} else if date.Before(nextMonth) {

@@ -646,11 +646,11 @@ var GetNextTableAndItsEndPositionTestCases = map[string]GetNextTableAndItsEndPos
 		ExpectedStopIndex: 11764,
 	},
 	// TODO: fix this issue
-	// "a section with a table with nested tables in it should be properly recognized and pulled out": {
-	// 	InputHtml:         theRisingOfTheShieldHereLightNovelSection,
-	// 	ExpectedTableHtml: theRisingOfTheShieldHereLightNovelTable,
-	// 	ExpectedStopIndex: 68247,
-	// },
+	"a section with a table with nested tables in it should be properly recognized and pulled out": {
+		InputHtml:         theRisingOfTheShieldHereLightNovelSection,
+		ExpectedTableHtml: theRisingOfTheShieldHereLightNovelTable,
+		ExpectedStopIndex: 68247,
+	},
 	"a section with no table should come back with an empty string and -1 for the stop value": {
 		InputHtml:         "<h1>This is a title<h1>",
 		ExpectedTableHtml: "",

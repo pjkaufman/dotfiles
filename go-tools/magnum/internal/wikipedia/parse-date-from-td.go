@@ -1,7 +1,6 @@
 package wikipedia
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -11,7 +10,6 @@ func ParseDateFromTd(tdHtml string) string {
 		tdHtml = tdHtml[:endOfRow]
 	}
 
-	fmt.Println(tdHtml)
 	var digitalVersionIndex = strings.Index(strings.ToLower(tdHtml), "(digital")
 	if digitalVersionIndex != -1 {
 		tdHtml = tdHtml[:digitalVersionIndex]

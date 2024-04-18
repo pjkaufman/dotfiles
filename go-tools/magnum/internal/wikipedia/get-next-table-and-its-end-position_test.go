@@ -649,12 +649,17 @@ var GetNextTableAndItsEndPositionTestCases = map[string]GetNextTableAndItsEndPos
 	// "a section with a table with nested tables in it should be properly recognized and pulled out": {
 	// 	InputHtml:         theRisingOfTheShieldHereLightNovelSection,
 	// 	ExpectedTableHtml: theRisingOfTheShieldHereLightNovelTable,
-	// 	ExpectedStopIndex: 68251,
+	// 	ExpectedStopIndex: 68247,
 	// },
 	"a section with no table should come back with an empty string and -1 for the stop value": {
 		InputHtml:         "<h1>This is a title<h1>",
 		ExpectedTableHtml: "",
 		ExpectedStopIndex: -1,
+	},
+	"a section with a table that lacks a closing table tag should come back with everything after the starting table tag": {
+		InputHtml:         `<h1>This is a title<h1> <table class="wikitable"><tbody></tbody>`,
+		ExpectedTableHtml: `<table class="wikitable"><tbody></tbody>`,
+		ExpectedStopIndex: 64,
 	},
 }
 

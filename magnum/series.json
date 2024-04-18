@@ -77,9 +77,13 @@
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
-      "total_volumes": 18,
-      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 18 (light novel)",
+      "total_volumes": 19,
+      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 19 (light novel)",
       "unreleased_volumes": [
+        {
+          "name": "That Time I Got Reincarnated as a Slime, Vol. 19 (light novel)",
+          "release_date": "August 20, 2024"
+        },
         {
           "name": "That Time I Got Reincarnated as a Slime, Vol. 18 (light novel)",
           "release_date": "April 16, 2024"
@@ -98,10 +102,6 @@
         {
           "name": "Re:ZERO -Starting Life in Another World-, Vol. 25 (light novel)",
           "release_date": "July 23, 2024"
-        },
-        {
-          "name": "Re:ZERO -Starting Life in Another World-, Vol. 24 (light novel)",
-          "release_date": "March 19, 2024"
         }
       ],
       "slug_override": "re-starting-life-in-another-world",
@@ -126,7 +126,7 @@
     },
     {
       "name": "A Certain Magical Index (light novel)",
-      "total_volumes": 24,
+      "total_volumes": 1,
       "latest_volume": "A Certain Magical Index: The Old Testament Omnibus Edition",
       "unreleased_volumes": [],
       "slug_override": null,
@@ -136,9 +136,14 @@
     },
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
-      "total_volumes": 18,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 18 (light novel)",
-      "unreleased_volumes": [],
+      "total_volumes": 19,
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
+          "release_date": "August 20, 2024"
+        }
+      ],
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
@@ -232,10 +237,6 @@
         {
           "name": "The Executioner and Her Way of Life, Vol. 8",
           "release_date": "July 23, 2024"
-        },
-        {
-          "name": "The Executioner and Her Way of Life, Vol. 7",
-          "release_date": "March 19, 2024"
         }
       ],
       "slug_override": null,
@@ -251,10 +252,6 @@
         {
           "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 10 (light novel)",
           "release_date": "June 18, 2024"
-        },
-        {
-          "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 9 (light novel): Dream of the Evil God",
-          "release_date": "February 20, 2024"
         }
       ],
       "slug_override": null,
@@ -289,9 +286,13 @@
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 3,
-      "latest_volume": "The Misfit of Demon King Academy, Vol. 3 (light novel)",
+      "total_volumes": 4,
+      "latest_volume": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
       "unreleased_volumes": [
+        {
+          "name": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
+          "release_date": "August 20, 2024"
+        },
         {
           "name": "The Misfit of Demon King Academy, Vol. 3 (light novel)",
           "release_date": "April 16, 2024"
@@ -336,12 +337,7 @@
       "name": "High School Prodigies Have It Easy Even in Another World! (light novel)",
       "total_volumes": 10,
       "latest_volume": "High School Prodigies Have It Easy Even in Another World!, Vol. 10 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "High School Prodigies Have It Easy Even in Another World!, Vol. 10 (light novel)",
-          "release_date": "March 19, 2024"
-        }
-      ],
+      "unreleased_volumes": [],
       "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
@@ -369,9 +365,14 @@
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
-      "total_volumes": 23,
-      "latest_volume": "Volume 23",
-      "unreleased_volumes": [],
+      "total_volumes": 24,
+      "latest_volume": "Volume 24",
+      "unreleased_volumes": [
+        {
+          "name": "Volume 24",
+          "release_date": "May 8, 2024"
+        }
+      ],
       "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
@@ -399,12 +400,16 @@
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
-      "total_volumes": 26,
-      "latest_volume": "Mushoku Tensei: Jobless Reincarnation (Light Novel) Vol. 26",
+      "total_volumes": 28,
+      "latest_volume": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
       "unreleased_volumes": [
         {
-          "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel) Vol. 26",
-          "release_date": "February 1, 2024"
+          "name": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
+          "release_date": "May 30, 2024"
+        },
+        {
+          "name": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes [Special Book]",
+          "release_date": "August 20, 2024"
         }
       ],
       "slug_override": null,
@@ -429,12 +434,12 @@
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 23,
-      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 8",
+      "total_volumes": 24,
+      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 8",
-          "release_date": "April 16, 2024"
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9",
+          "release_date": "August 6, 2024"
         }
       ],
       "slug_override": null,
@@ -444,12 +449,12 @@
     },
     {
       "name": "Seraph of the End",
-      "total_volumes": 29,
-      "latest_volume": "Seraph of the End, Vol. 29",
+      "total_volumes": 30,
+      "latest_volume": "Seraph of the End, Vol. 30",
       "unreleased_volumes": [
         {
-          "name": "Seraph of the End, Vol. 29",
-          "release_date": "March 19, 2024"
+          "name": "Seraph of the End, Vol. 30",
+          "release_date": "July 16, 2024"
         }
       ],
       "slug_override": null,
@@ -465,10 +470,6 @@
         {
           "name": "Twin Star Exorcists, Vol. 31",
           "release_date": "May 21, 2024"
-        },
-        {
-          "name": "Twin Star Exorcists, Vol. 30",
-          "release_date": "February 20, 2024"
         }
       ],
       "slug_override": null,

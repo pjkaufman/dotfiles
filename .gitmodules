@@ -1,0 +1,3 @@
+[submodule "go-go-gadgets"]
+	path = go-go-gadgets
+	url = git@github.com:pjkaufman/go-go-gadgets.git

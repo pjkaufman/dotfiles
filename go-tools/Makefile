@@ -1,6 +1,8 @@
 
 .PHONY: test install cover install-deps
 
+PLAYWRIGHT_VERSION=$(shell go list -m github.com/playwright-community/playwright-go | awk '{print $$2}')
+
 test:
 	go test ~/dotfiles/go-tools/... -tags "unit"
 
@@ -27,4 +29,4 @@ install:
 	@magnum completion bash > "${BASH_COMPLETION_USER_DIR}/magnum-completion"
 
 install-deps:
-	@go run github.com/playwright-community/playwright-go/cmd/playwright@v0.4201.1 install --with-deps
+	@go run github.com/playwright-community/playwright-go/cmd/playwright@${PLAYWRIGHT_VERSION} install --with-deps

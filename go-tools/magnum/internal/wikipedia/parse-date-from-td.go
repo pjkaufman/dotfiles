@@ -5,7 +5,7 @@ import (
 )
 
 func ParseDateFromTd(tdHtml string) string {
-	var endOfRow = strings.Index(tdHtml, `</td`)
+	var endOfRow = strings.Index(tdHtml, tableDataEndingElIndicator)
 	if endOfRow != -1 {
 		tdHtml = tdHtml[:endOfRow]
 	}

@@ -4,83 +4,61 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria (light novel)",
       "total_volumes": 12,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 12 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Berserk of Gluttony",
-      "total_volumes": 0,
-      "latest_volume": "",
-      "unreleased_volumes": null,
-      "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "Solo Leveling (novel)",
       "total_volumes": 8,
       "latest_volume": "Solo Leveling, Vol. 8 (novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Asterisk War",
       "total_volumes": 17,
       "latest_volume": "The Asterisk War, Vol. 17 (light novel): The Grand Finale",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
-      "total_volumes": 21,
-      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 21 (light novel)",
+      "total_volumes": 22,
+      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 22 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "Death March to the Parallel World Rhapsody, Vol. 21 (light novel)",
-          "release_date": "May 21, 2024"
+          "name": "Death March to the Parallel World Rhapsody, Vol. 22 (light novel)",
+          "release_date": "October 15, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Goblin Slayer (light novel)",
       "total_volumes": 16,
       "latest_volume": "Goblin Slayer, Vol. 16 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Sword Art Online",
       "total_volumes": 28,
       "latest_volume": "Sword Art Online Platinum Collector's Edition",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
@@ -92,11 +70,9 @@
           "release_date": "August 20, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Re:ZERO -Starting Life in Another World",
@@ -111,8 +87,7 @@
       "slug_override": "re-starting-life-in-another-world",
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
@@ -122,28 +97,19 @@
         {
           "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 12 (light novel)",
           "release_date": "September 17, 2024"
-        },
-        {
-          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 11 (light novel)",
-          "release_date": "May 21, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "A Certain Magical Index (light novel)",
       "total_volumes": 1,
       "latest_volume": "A Certain Magical Index: The Old Testament Omnibus Edition",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
@@ -155,99 +121,73 @@
           "release_date": "August 20, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "86--EIGHTY-SIX (light novel)",
       "total_volumes": 12,
       "latest_volume": "86--EIGHTY-SIX, Vol. 12 (light novel): Holy Blue Bullet",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Sword Art Online Progressive",
       "total_volumes": 8,
       "latest_volume": "Sword Art Online Progressive 8 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Log Horizon",
       "total_volumes": 11,
       "latest_volume": "Log Horizon, Vol. 11 (light novel): Krusty, Tycoon Lord",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "H",
-      "tables_to_parse_override": null
+      "status": "H"
     },
     {
       "name": "No Game No Life",
       "total_volumes": 13,
       "latest_volume": "No Game No Life Practical War Game",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "No Game No Life, Please!",
       "total_volumes": 4,
       "latest_volume": "No Game No Life, Please!, Vol. 4",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Overlord",
       "total_volumes": 16,
       "latest_volume": "Overlord, Vol. 16 (light novel): The Half-Elf Demigod Part II",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "So I'm a Spider, So What? (light novel)",
       "total_volumes": 16,
       "latest_volume": "So I'm a Spider, So What?, Vol. 16 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "The Devil Is a Part-Timer!",
       "total_volumes": 21,
       "latest_volume": "The Devil Is a Part-Timer!, Vol. 21 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "The Executioner and Her Way of Life",
@@ -259,11 +199,9 @@
           "release_date": "July 23, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
@@ -275,22 +213,17 @@
           "release_date": "June 18, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Hero Is Overpowered but Overly Cautious (light novel)",
       "total_volumes": 7,
       "latest_volume": "The Hero Is Overpowered but Overly Cautious, Vol. 7 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Irregular at Magic High School",
@@ -300,17 +233,11 @@
         {
           "name": "The Irregular at Magic High School, Vol. 23 (light novel)",
           "release_date": "September 17, 2024"
-        },
-        {
-          "name": "The Irregular at Magic High School, Vol. 22 (light novel)",
-          "release_date": "May 21, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
@@ -322,115 +249,87 @@
           "release_date": "August 20, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Saga of Tanya the Evil (light novel)",
       "total_volumes": 12,
       "latest_volume": "The Saga of Tanya the Evil, Vol. 12 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Torture Princess: Fremd Torturchen (light novel)",
       "total_volumes": 10,
       "latest_volume": "Torture Princess: Fremd Torturchen, Vol. 9 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (light novel)",
       "total_volumes": 7,
       "latest_volume": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat, Vol. 7 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "High School Prodigies Have It Easy Even in Another World! (light novel)",
       "total_volumes": 10,
       "latest_volume": "High School Prodigies Have It Easy Even in Another World!, Vol. 10 (light novel)",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "How a Realist Hero Rebuilt the Kingdom",
       "total_volumes": 18,
       "latest_volume": "Volume 18",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Outbreak Company",
       "total_volumes": 19,
       "latest_volume": "Gaiden",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
-      "total_volumes": 24,
-      "latest_volume": "Volume 24",
+      "total_volumes": 25,
+      "latest_volume": "Volume 25",
       "unreleased_volumes": [
         {
-          "name": "Volume 24",
-          "release_date": "May 8, 2024"
+          "name": "Volume 25",
+          "release_date": "September 3, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Arifureta: From Commonplace to World's Strongest",
       "total_volumes": 14,
       "latest_volume": "Volume 13",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "C",
-      "tables_to_parse_override": null
+      "status": "C"
     },
     {
       "name": "Arifureta Zero",
       "total_volumes": 6,
       "latest_volume": "Volume 6",
-      "unreleased_volumes": [],
-      "slug_override": null,
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
@@ -438,19 +337,13 @@
       "latest_volume": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
       "unreleased_volumes": [
         {
-          "name": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
-          "release_date": "May 30, 2024"
-        },
-        {
           "name": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes [Special Book]",
           "release_date": "August 20, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Skeleton Knight in Another World (Light Novel)",
@@ -462,11 +355,9 @@
           "release_date": "April 22, 2025"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
@@ -478,11 +369,9 @@
           "release_date": "August 6, 2024"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Seraph of the End",
@@ -494,44 +383,36 @@
           "release_date": "July 16, 2024"
         }
       ],
-      "slug_override": null,
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Twin Star Exorcists",
       "total_volumes": 31,
       "latest_volume": "Twin Star Exorcists, Vol. 31",
-      "unreleased_volumes": [
-        {
-          "name": "Twin Star Exorcists, Vol. 31",
-          "release_date": "May 21, 2024"
-        }
-      ],
-      "slug_override": null,
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "Blue Exorcist",
-      "total_volumes": 28,
-      "latest_volume": "Blue Exorcist, Vol. 28",
-      "unreleased_volumes": [],
-      "slug_override": null,
+      "total_volumes": 29,
+      "latest_volume": "Blue Exorcist, Vol. 29",
+      "unreleased_volumes": [
+        {
+          "name": "Blue Exorcist, Vol. 29",
+          "release_date": "August 6, 2024"
+        }
+      ],
       "type": "MN",
       "publisher": "VizMedia",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     },
     {
       "name": "The Rising of the Shield Hero",
       "total_volumes": 22,
       "latest_volume": "The Rising of the Shield Hero Vol. 22",
-      "unreleased_volumes": [],
       "slug_override": "List_of_The_Rising_of_the_Shield_Hero_volumes",
       "type": "LN",
       "publisher": "OnePeaceBooks",
@@ -580,11 +461,9 @@
           "release_date": "TBA"
         }
       ],
-      "slug_override": null,
       "type": "LN",
       "publisher": "OnePeaceBooks",
-      "status": "O",
-      "tables_to_parse_override": null
+      "status": "O"
     }
   ]
 }

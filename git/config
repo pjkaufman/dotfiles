@@ -23,7 +23,7 @@
 [advice]
   skippedCherryPicks = false
 [core]
-  editor = nvim
+  editor = code
 [pull]
   rebase = true
 [init]
@@ -33,3 +33,5 @@
 ; found originally at https://github.com/tjdevries/config_manager/blob/eb8c846bdd480e6ed8fb87574eac09d31d39befa/xdg_config/git/config#L16C3-L16C19
 [rebase]
   autoStash = true
+[rerere]
+	enabled = true

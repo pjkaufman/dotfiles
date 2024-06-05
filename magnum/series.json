@@ -463,7 +463,8 @@
       ],
       "type": "LN",
       "publisher": "OnePeaceBooks",
-      "status": "O"
+      "status": "O",
+      "tables_to_parse_override": 1
     }
   ]
 }

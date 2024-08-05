@@ -2,8 +2,14 @@
   "series": [
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria (light novel)",
-      "total_volumes": 12,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 12 (light novel)",
+      "total_volumes": 13,
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 13 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 13 (light novel)",
+          "release_date": "December 10, 2024"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -76,12 +82,12 @@
     },
     {
       "name": "Re:ZERO -Starting Life in Another World",
-      "total_volumes": 25,
-      "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 25 (light novel)",
+      "total_volumes": 26,
+      "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 26 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "Re:ZERO -Starting Life in Another World-, Vol. 25 (light novel)",
-          "release_date": "July 23, 2024"
+          "name": "Re:ZERO -Starting Life in Another World-, Vol. 26 (light novel)",
+          "release_date": "November 19, 2024"
         }
       ],
       "slug_override": "re-starting-life-in-another-world",
@@ -127,8 +133,14 @@
     },
     {
       "name": "86--EIGHTY-SIX (light novel)",
-      "total_volumes": 12,
-      "latest_volume": "86--EIGHTY-SIX, Vol. 12 (light novel): Holy Blue Bullet",
+      "total_volumes": 13,
+      "latest_volume": "86--EIGHTY-SIX, Vol. 13 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "86--EIGHTY-SIX, Vol. 13 (light novel)",
+          "release_date": "December 10, 2024"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -193,12 +205,6 @@
       "name": "The Executioner and Her Way of Life",
       "total_volumes": 8,
       "latest_volume": "The Executioner and Her Way of Life, Vol. 8",
-      "unreleased_volumes": [
-        {
-          "name": "The Executioner and Her Way of Life, Vol. 8",
-          "release_date": "July 23, 2024"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -207,12 +213,6 @@
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
       "total_volumes": 11,
       "latest_volume": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 10 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 10 (light novel)",
-          "release_date": "June 18, 2024"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -241,12 +241,16 @@
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 4,
+      "total_volumes": 5,
       "latest_volume": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
       "unreleased_volumes": [
         {
           "name": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
           "release_date": "August 20, 2024"
+        },
+        {
+          "name": "The Misfit of Demon King Academy, Vol. 4, Act 2 (light novel)",
+          "release_date": "December 10, 2024"
         }
       ],
       "type": "LN",
@@ -255,8 +259,14 @@
     },
     {
       "name": "The Saga of Tanya the Evil (light novel)",
-      "total_volumes": 12,
-      "latest_volume": "The Saga of Tanya the Evil, Vol. 12 (light novel)",
+      "total_volumes": 13,
+      "latest_volume": "The Saga of Tanya the Evil, Vol. 13 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "The Saga of Tanya the Evil, Vol. 13 (light novel)",
+          "release_date": "December 10, 2024"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -361,12 +371,12 @@
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 24,
-      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9",
+      "total_volumes": 25,
+      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9.5",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9",
-          "release_date": "August 6, 2024"
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9.5",
+          "release_date": "December 10, 2024"
         }
       ],
       "type": "LN",
@@ -375,12 +385,12 @@
     },
     {
       "name": "Seraph of the End",
-      "total_volumes": 30,
-      "latest_volume": "Seraph of the End, Vol. 30",
+      "total_volumes": 31,
+      "latest_volume": "Seraph of the End, Vol. 31",
       "unreleased_volumes": [
         {
-          "name": "Seraph of the End, Vol. 30",
-          "release_date": "July 16, 2024"
+          "name": "Seraph of the End, Vol. 31",
+          "release_date": "November 12, 2024"
         }
       ],
       "type": "MN",
@@ -389,8 +399,14 @@
     },
     {
       "name": "Twin Star Exorcists",
-      "total_volumes": 31,
-      "latest_volume": "Twin Star Exorcists, Vol. 31",
+      "total_volumes": 32,
+      "latest_volume": "Twin Star Exorcists, Vol. 32",
+      "unreleased_volumes": [
+        {
+          "name": "Twin Star Exorcists, Vol. 32",
+          "release_date": "November 19, 2024"
+        }
+      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -454,10 +470,6 @@
         },
         {
           "name": "The Wrong Way to Use Healing Magic Vol. 5",
-          "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 4",
           "release_date": "TBA"
         }
       ],

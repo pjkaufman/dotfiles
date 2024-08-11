@@ -477,6 +477,111 @@
       "publisher": "OnePeaceBooks",
       "status": "O",
       "tables_to_parse_override": 1
+      "status": "O"
+    },
+    {
+      "name": "Tsukimichi: Moonlit Fantasy",
+      "total_volumes": 20,
+      "latest_volume": "Tsukimichi: Moonlit Fantasy Vol. 19",
+      "unreleased_volumes": [
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 19",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 18",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 17",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 16",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 15",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 14",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 13",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 12",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 11",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 10",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 9",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 8.5",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 8",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 7",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 6",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 5",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 4",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 3",
+          "release_date": "TBA"
+        },
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 2",
+          "release_date": "TBA"
+        }
+      ],
+      "type": "LN",
+      "publisher": "HanashiMedia",
+      "status": "O"
+    },
+    {
+      "name": "Black Summoner",
+      "total_volumes": 18,
+      "latest_volume": "Black Summoner: Volume 18",
+      "unreleased_volumes": [
+        {
+          "name": "Black Summoner: Volume 18",
+          "release_date": "August 27, 2024"
+        },
+        {
+          "name": "Black Summoner: Volume 17",
+          "release_date": "June 5, 2024"
+        }
+      ],
+      "type": "LN",
+      "publisher": "JNovelClub",
+      "status": "O"
     }
   ]
 }

@@ -415,12 +415,6 @@
       "name": "Blue Exorcist",
       "total_volumes": 29,
       "latest_volume": "Blue Exorcist, Vol. 29",
-      "unreleased_volumes": [
-        {
-          "name": "Blue Exorcist, Vol. 29",
-          "release_date": "August 6, 2024"
-        }
-      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -477,13 +471,16 @@
       "publisher": "OnePeaceBooks",
       "status": "O",
       "tables_to_parse_override": 1
-      "status": "O"
     },
     {
       "name": "Tsukimichi: Moonlit Fantasy",
-      "total_volumes": 20,
-      "latest_volume": "Tsukimichi: Moonlit Fantasy Vol. 19",
+      "total_volumes": 21,
+      "latest_volume": "Tsukimichi: Moonlit Fantasy Vol. 20",
       "unreleased_volumes": [
+        {
+          "name": "Tsukimichi: Moonlit Fantasy Vol. 20",
+          "release_date": "TBA"
+        },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 19",
           "release_date": "TBA"
@@ -554,11 +551,7 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 3",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 2",
-          "release_date": "TBA"
+          "release_date": "September 29, 2024"
         }
       ],
       "type": "LN",
@@ -573,10 +566,6 @@
         {
           "name": "Black Summoner: Volume 18",
           "release_date": "August 27, 2024"
-        },
-        {
-          "name": "Black Summoner: Volume 17",
-          "release_date": "June 5, 2024"
         }
       ],
       "type": "LN",

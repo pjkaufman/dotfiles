@@ -13,6 +13,9 @@ ensure_file_symlink_is_in_place() {
   else
     echo "'$2' does not exist"
   fi
+
+  dir="$(dirname "$2")"
+  [[ ! -d "$dir" ]] && mkdir -p "$dir"
   
   ln -sf "$1" "$2"  
 }
@@ -30,6 +33,9 @@ ensure_file_symlink_is_in_place_as_sudo() {
   else
     echo "'$2' does not exist"
   fi
+
+  dir="$(dirname "$2")"
+  [[ ! -d "$dir" ]] && mkdir -p "$dir"
   
   sudo ln -sf "$1" "$2"  
 }

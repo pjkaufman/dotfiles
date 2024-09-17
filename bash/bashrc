@@ -40,9 +40,6 @@ export TERM=xterm-256color # needed to prevent an error on load
 # wine will get placed in the xdg config
 export WINEPREFIX="$XDG_CONFIG_HOME"/wine/
 
-# get cargo to install under xdg folders
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-
 # make sure that less history is under xdg folders
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 
@@ -283,9 +280,6 @@ is_personal_computer && export QT_QPA_PLATFORM=wayland
 
 _source_if "$NVM_DIR/nvm.sh"              # This loads nvm
 _have nvm && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-# setup rust env
-_source_if "$CARGO_HOME/env"
 
 sshstart # start SSH for Github if it has not already started
 

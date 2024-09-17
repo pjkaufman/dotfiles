@@ -5,7 +5,7 @@
 # $2 is the path for the file to put the text at the start of
 prepend_text_to_file() {
   echo "$1" > /tmp/tmpfile.$$
-  cat "$2" >> /tmp/tmpfile.$$
+  [[ -f "$2" ]] && cat "$2" >> /tmp/tmpfile.$$
   mv /tmp/tmpfile.$$ "$2"
 }
 
@@ -18,10 +18,10 @@ then
 
   if [ "$response_char" = "y" ]
   then
-    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.local_extra
+    prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.localrc
     export COMPUTER_TYPE=personal
   else
-    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.local_extra
+    prepend_text_to_file 'export COMPUTER_TYPE=work' ~/.localrc
     export COMPUTER_TYPE=work
   fi
 else

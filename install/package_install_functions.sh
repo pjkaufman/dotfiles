@@ -73,7 +73,7 @@ add_ppa_and_install_package() {
 # pip_install_package installs pip packages if it is not currently installed
 # $1 is the name of the pip package to install if it is not currently present
 pip_install_package() {
-  check_if_command_exists_and_run_install_command_otherwise "$1" "pip3 install --user $1"  
+  check_if_command_exists_and_run_install_command_otherwise "$1" "pipx install $1"  
 }
 
 # go_install_package installs a go package if it is not currently installed
@@ -87,10 +87,4 @@ go_install_package() {
 # $1 is the npm package to install globally
 npm_install_package() {
   check_if_command_exists_and_run_install_command_otherwise "$1" "npm install -g $1" 
-}
-
-# cargo_install_package installs a cargo package if it is not currently installed
-# $1 is the name of the cargo package to install
-cargo_install_package() {
-  check_if_command_exists_and_run_install_command_otherwise "$1" "cargo install $1" 
 }

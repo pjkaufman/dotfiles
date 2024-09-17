@@ -17,7 +17,10 @@ function python() {
 }
 
 function update() {
-  command topgrade
+  sudo apt update -y && sudo apt upgrade
+  pipx upgrade-all
+  # todo: add flatpak updates if installed...
+  # todo: add firmware updates for personal computers...
 }
 
 function rn() {

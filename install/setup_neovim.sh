@@ -30,6 +30,7 @@ for pkg in "${!neovim_common_go_packages_to_install[@]}"; do go_install_package 
 
 npm_install_package "eslint"
 
-cargo_install_package "stylua"
+# TODO: install via a different mechanism
+# cargo_install_package "stylua"
 
 # TODO: handle google_java_format install

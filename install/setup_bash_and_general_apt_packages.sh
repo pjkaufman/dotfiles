@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# create xdg file paths
+
+[ -d "$XDG_DATA_HOME" ] || mkdir -p "$XDG_DATA_HOME"
+[ -d "$XDG_CONFIG_HOME" ] || mkdir -p "$XDG_CONFIG_HOME"
+[ -d "$XDG_STATE_HOME" ] || mkdir -p "$XDG_STATE_HOME"
+[ -d "$XDG_CACHE_HOME" ] || mkdir -p "$XDG_CACHE_HOME"
+
 # setup the bash and terminal related files 
 
 declare -A bash_related_file_sylink_info=( 
@@ -17,6 +24,7 @@ declare -A apt_packages_to_install=(
   ["btop"]="btop" # linux task manager
   ["python3"]="python3"
   ["pip3"]="python3-pip" # python 3 package installer
+  ["pipx"]="pipx" # python 3 package installer
   ["rename"]="rename" # easier renaming of files
 )
 

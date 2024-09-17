@@ -74,9 +74,6 @@ The current list of programs that need installing and are used are as follows:
 | `stylua` | Cargo | A Lua file formatter/linter |
 | `nvm` | script | A file for managing node versions |
 | `rkhunter` | apt | A virus scanner and security checker for Linux |
-| `cargo` | apt | A Rust package manager used to install a couple of programs |
-| `topgrade` | Cargo | A package that helps manage updating many package managers |
-| `cargo-update` | Cargo | A package for helping update Rust and Rust packages |
 | `syncthing` | PPA | Program for syncing local files across devices more easily than would otherwise be possible |
 | `tmux` | apt | Program for easier session management in the cli |
 | `tpm` | script | Plugin manager for tmux |

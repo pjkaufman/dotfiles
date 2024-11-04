@@ -10,6 +10,7 @@ install_apt_package "ssh-keygen" "openssh-server"
 mkdir -p "$XDG_CONFIG_HOME/git"
 
 ensure_file_symlink_is_in_place "$DOTFILES/git/config" "$XDG_CONFIG_HOME/git/config" 
+ensure_file_symlink_is_in_place "$DOTFILES/git/ignore" "$XDG_CONFIG_HOME/git/ignore"
 
 # setup the ssh values for github
 

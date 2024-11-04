@@ -1,0 +1,20 @@
+# General file exclusions that help de-clutter my git status
+test*.txt
+test*.pdf
+
+# Work configs
+*config_dev.test*
+*config_dev.local*
+
+# JS files
+node_modules/
+*.min.js
+*.min.css
+*.js.map
+
+# Golang files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib

@@ -28,7 +28,7 @@ export NODE_VERSION=18.0
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 
 # Golang
-export GO_VERSION=1.21.0
+export GO_VERSION=1.21.1
 # Note: if GOPATH changes, please update the values in environment.d/sway.conf
 export GOPATH="$XDG_DATA_HOME"/go
 
@@ -73,7 +73,9 @@ fi
 
 # Add to path
 prepend_path() {
-	[ -d "$1" ] && PATH="$1:$PATH"
+  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+    PATH="$1:$PATH"
+  fi
 }
 
 # Prepend new items to path (if directory exists)
@@ -168,11 +170,17 @@ if [ -n "$force_color_prompt" ]; then
 	fi
 fi
 
+MAUVE="\[\033[38;2;203;166;247m\]"
+GREEN="\[\033[38;2;166;227;161m\]"
+BLUE="\[\033[38;2;137;180;250m\]"
+RESET="\[\033[00m\]"
+
 if [ "$color_prompt" = yes ]; then
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;32m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+    PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RESET}\$(__git_ps1 ' ${MAUVE}(%s)${RESET}')$ "
 else
-	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(__git_ps1 " (%s)")\$ '
+    PS1="\u@\h:\w\$(__git_ps1 ' (%s)')$ "
 fi
+
 unset color_prompt force_color_prompt
 
 # ------------------------------ history -----------------------------
@@ -185,7 +193,7 @@ export HISTFILESIZE="${HISTSIZE}"
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 
 # Omit duplicates and commands that begin with a space from history.
-export HISTCONTROL='ignoreboth'
+export HISTCONTROL='ignoreboth:erasedups'
 
 # ------------------------------ aliases and general functions -----------------------------
 #      (use exec scripts instead, which work from vim and subprocs)

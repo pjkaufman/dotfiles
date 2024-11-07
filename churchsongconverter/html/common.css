@@ -39,6 +39,12 @@ html {
     text-align: right;
 }
 
+.author-60 {
+  width: 60%;
+  float: left;
+  text-align: right;
+}
+
 .key {
     width: 25%;
     float: left;

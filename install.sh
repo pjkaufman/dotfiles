@@ -33,6 +33,7 @@ echo "starting environment setup"
 install_script_section_text=(
   "setup computer type"
   "setup bash and common packages"
+  "setup fonts"
   "setup git"
   "setup tmux"
   "setup go"
@@ -49,6 +50,7 @@ install_script_section_text=(
 declare -A install_script_sections_files=(
   ["setup computer type"]="install/setup_computer_type.sh"
   ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages.sh"
+  ["setup fonts"]="install/setup_fonts.sh"
   ["setup git"]="install/setup_git.sh"
   ["setup tmux"]="install/setup_tmux.sh"
   ["setup syncthing"]="install/setup_syncthing.sh"

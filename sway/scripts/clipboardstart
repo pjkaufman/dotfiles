@@ -19,6 +19,4 @@ fi
 if [ $(pgrep wl-paste -c) = 0 ]; then
   wl-paste --type text --watch cliphist store &
   wl-paste --type image --watch cliphist store &
-  wl-paste --type text --primary --watch cliphist store &
-  wl-paste --type image --primary --watch cliphist store &
 fi

@@ -27,6 +27,7 @@ declare -A apt_packages_to_install=(
   ["pipx"]="pipx"             # python 3 package installer
   ["rename"]="rename"         # easier renaming of files
   ["shellcheck"]="shellcheck" # bash warnings around potential issues
+  ["just"]="just"             # simpler version of make for the base of my dotfiles
 )
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done

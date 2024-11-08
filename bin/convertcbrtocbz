@@ -2,32 +2,33 @@
 echo 'running converter for each cbr in dir'
 
 shopt -s nocaseglob # ignore file name case
-shopt -s globstar # search globs in 0 or more subdirectories
+shopt -s globstar   # search globs in 0 or more subdirectories
 for i in *.cbr; do
-    echo 'starting cbr conversion for' "${i}" '...'
+	echo 'starting cbr conversion for' "${i}" '...'
 
-    # rm -rf ./cbr #delete the folder if it already exists
+	# rm -rf ./cbr #delete the folder if it already exists
 
-    unrar x "${i}" -idq cbr/
-    
-    cd cbr
-    zip -q -0 -X "../compress.cbz" mimetype
-    zip -q -rDX9 "../compress.cbz" * -x mimetype
-    cd ..
+	unrar x "${i}" -idq cbr/
 
-    echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+	cd cbr || exit
+	zip -q -0 -X "../compress.cbz" mimetype
+	# shellcheck disable=SC2035
+	zip -q -rDX9 "../compress.cbz" * -x mimetype
+	cd ..
 
-    # remove our work directory
-    rm -rf ./cbr
+	echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
 
-    # mv "${i}" "${i}.original"
-    newfile="${i%.cbr}.cbz"
-    mv compress.cbz "${newfile}"
+	# remove our work directory
+	rm -rf ./cbr
 
-    du -h "${i}"
-    du -h "${newfile}"
+	# mv "${i}" "${i}.original"
+	newfile="${i%.cbr}.cbz"
+	mv compress.cbz "${newfile}"
 
-    echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+	du -h "${i}"
+	du -h "${newfile}"
+
+	echo '-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
 done
 
 # remove changes to bash search interpretation

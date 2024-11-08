@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 function reload() {
+  # shellcheck source=./bash/bashrc
   [ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc"
 }
 
@@ -19,15 +20,16 @@ function python() {
 function update() {
   sudo apt update -y && sudo apt upgrade
   pipx upgrade-all
-  # todo: add flatpak updates if installed...
-  # todo: add firmware updates for personal computers...
+
+  is_personal_computer && fwupdmgr update
+  [ -n "$(which flatpak)" ] && flatpak update -y
 }
 
 function rn() {
   if [[ -z "$4" ]]; then
-   # shellcheck disable=SC2086
+    # shellcheck disable=SC2086
     rename "s/$1/$2/" $3
-    return;
+    return
   fi
 
   # shellcheck disable=SC2086

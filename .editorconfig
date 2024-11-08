@@ -1,0 +1,12 @@
+[*.sh]
+indent_style = space
+indent_size = 2
+
+# --language-variant
+# shell_variant      = posix
+# binary_next_line   = true
+# --case-indent
+switch_case_indent = true
+space_redirects    = true
+# --func-next-line
+function_next_line = false

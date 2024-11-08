@@ -1,69 +1,69 @@
 #!/usr/bin/env bash
 
-if ! command -v bluetoothctl &> /dev/null; then
-  echo "bluetoothctl must be installed to run wayblue"
-  exit 1;
+if ! command -v bluetoothctl &>/dev/null; then
+	echo "bluetoothctl must be installed to run wayblue"
+	exit 1
 fi
 
-if ! command -v rofi &> /dev/null; then
-  echo "rofi must be installed to run wayblue"
-  exit 1;
+if ! command -v rofi &>/dev/null; then
+	echo "rofi must be installed to run wayblue"
+	exit 1
 fi
 
 if hash fzf 2>/dev/null; then
-  FZF_AVAILABLE=1
+	FZF_AVAILABLE=1
 fi
 
 NO_SELECTION="Selection cancelled"
 
 function getExistingDevices() {
-  bluetoothctl devices | grep -o -e "Device [^ ]* [^\n]*"
+	bluetoothctl devices | grep -o -e "Device [^ ]* [^\n]*"
 }
 
 function getAvailableConnections() {
-  bluetoothctl --timeout 5 scan on | grep -o -e "Device [^ ]* [^\n]*"
+	bluetoothctl --timeout 5 scan on | grep -o -e "Device [^ ]* [^\n]*"
 }
 
 function rofi_cmd() {
-  # don't repeat lines with uniq -u
-  echo -e "$1" | uniq -u | rofi -dmenu -i -p "Bluetooth connection" --cache /dev/null
+	# don't repeat lines with uniq -u
+	echo -e "$1" | uniq -u | rofi -dmenu -i -p "Bluetooth connection" --cache /dev/null
 }
 
 function fzf_cmd() {
-  # don't repeat lines with uniq -u
-  echo -e "$1" | uniq -u | fzf
+	# don't repeat lines with uniq -u
+	echo -e "$1" | uniq -u | fzf
 }
 
 function selectDevice() {
-  # get all of the text post the third space of each line
-  # lines look like : Device AL:B8:89:AD:H6:78 NAME_HERE
-  local bluetooth_names
-  bluetooth_names=$(cut -d " " -f 3- <<< "$1" )
+	# get all of the text post the third space of each line
+	# lines look like : Device AL:B8:89:AD:H6:78 NAME_HERE
+	local bluetooth_names
+	bluetooth_names=$(cut -d " " -f 3- <<<"$1")
 
-  local selected_device
-  if [ "$2" = "yes" ]; then
-    selected_device=$(fzf_cmd "$bluetooth_names")
-  else
-    selected_device=$(rofi_cmd "$bluetooth_names")
-  fi
+	local selected_device
+	if [ "$2" = "yes" ]; then
+		selected_device=$(fzf_cmd "$bluetooth_names")
+	else
+		selected_device=$(rofi_cmd "$bluetooth_names")
+	fi
 
-  if [ -z "$selected_device" ]; then
-    echo "$NO_SELECTION"
-  else
-    echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
-  fi
+	if [ -z "$selected_device" ]; then
+		echo "$NO_SELECTION"
+	else
+		echo "$1" | grep -o -e "Device [^ ]* $selected_device" | cut -d " " -f 2
+	fi
 }
 
 function connectToDevice() {
-  bluetoothctl connect "$1"
+	bluetoothctl connect "$1"
 }
 
 function disconnectFromDevice() {
-  bluetoothctl disconnect "$1"
+	bluetoothctl disconnect "$1"
 }
 
 function trustDevice() {
-  bluetoothctl trust "$1"
+	bluetoothctl trust "$1"
 }
 
 USAGE="\
@@ -81,8 +81,8 @@ Options:
 "
 
 function echoUsage {
-  echo ""
-  echo "$USAGE"
+	echo ""
+	echo "$USAGE"
 }
 
 CONNECT=no
@@ -91,71 +91,71 @@ DISCONNECT=no
 CLI=no
 
 if [ -z "$1" ]; then
-  echoUsage
-  exit 0
+	echoUsage
+	exit 0
 fi
 
-while (( $# > 0 )); do
-  case $1 in
-    -c)
-      CONNECT=yes
-      shift
-      ;;
-    -d)
-      DISCONNECT=yes
-      shift
-      ;;
-    -t)
-      TRUST=yes
-      shift
-      ;;
-    -s)
-      if [ -z "$FZF_AVAILABLE" ]; then
-        echo "fzf was not found, please install fzf to use this function."
-        exit 1
-      fi
-      CLI=yes
-      shift
-      ;;
-    -h)
-      echo "$USAGE"
-      exit 0
-      ;;
-    *)
-      echo "Too many arguments."
-      echoUsage
-      exit 1
-      ;;
-  esac
+while (($# > 0)); do
+	case $1 in
+	-c)
+		CONNECT=yes
+		shift
+		;;
+	-d)
+		DISCONNECT=yes
+		shift
+		;;
+	-t)
+		TRUST=yes
+		shift
+		;;
+	-s)
+		if [ -z "$FZF_AVAILABLE" ]; then
+			echo "fzf was not found, please install fzf to use this function."
+			exit 1
+		fi
+		CLI=yes
+		shift
+		;;
+	-h)
+		echo "$USAGE"
+		exit 0
+		;;
+	*)
+		echo "Too many arguments."
+		echoUsage
+		exit 1
+		;;
+	esac
 done
 
 if [ "$CONNECT" = "yes" ]; then
-  bluetooth_info=$(getExistingDevices)
-  bluetooth_info+=$(echo -e "\n$(getAvailableConnections)")
-  if [ -z "$bluetooth_info" ] || [ "$bluetooth_info" == "" ]; then
-    echo "No devices found"
-    exit 0;
-  fi
+	bluetooth_info=$(getExistingDevices)
+	bluetooth_info+=$(echo -e "\n$(getAvailableConnections)")
+	if [ -z "$bluetooth_info" ] || [ "$bluetooth_info" == "" ]; then
+		echo "No devices found"
+		exit 0
+	fi
 
-  selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
-  if [ "$selected_device_id" = "$NO_SELECTION" ]; then
-    echo "Quiting since no selection was made."
-    exit 0;
-  fi
+	selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
+	if [ "$selected_device_id" = "$NO_SELECTION" ]; then
+		echo "Quiting since no selection was made."
+		exit 0
+	fi
 
-  connectToDevice "$selected_device_id"
-  if [ "$TRUST" = "yes" ]; then
-    trustDevice "$selected_device_id"
-  fi
+	connectToDevice "$selected_device_id"
+	if [ "$TRUST" = "yes" ]; then
+		trustDevice "$selected_device_id"
+	fi
 fi
 
 if [ "$DISCONNECT" = "yes" ]; then
-  bluetooth_info=$(getAvailableConnections)
-  selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
-  if [ "$selected_device_id" = "$NO_SELECTION" ]; then
-    echo "Quiting since no selection was made."
-    exit 0;
-  fi
+	bluetooth_info=$(getAvailableConnections)
+	selected_device_id=$(selectDevice "$bluetooth_info" "$CLI")
+	if [ "$selected_device_id" = "$NO_SELECTION" ]; then
+		echo "Quiting since no selection was made."
+		exit 0
+	fi
 
-  disconnectFromDevice "$selected_device_id"
+	disconnectFromDevice "$selected_device_id"
 fi

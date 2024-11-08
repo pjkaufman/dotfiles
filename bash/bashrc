@@ -73,9 +73,9 @@ fi
 
 # Add to path
 prepend_path() {
-  if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-    PATH="$1:$PATH"
-  fi
+	if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+		PATH="$1:$PATH"
+	fi
 }
 
 # Prepend new items to path (if directory exists)
@@ -119,6 +119,7 @@ fi
 # ---------------------- local utility functions ---------------------
 
 _have() { type "$1" &>/dev/null; }
+# shellcheck disable=SC1090
 _source_if() { [[ -r "$1" ]] && source "$1"; }
 
 # ------------------------ bash shell options ------------------------
@@ -151,7 +152,12 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-	test -r "$HOME/.dircolors" && eval "$(dircolors -b "$HOME/.dircolors")" || eval "$(dircolors -b)"
+	if [ -r "$HOME/.dircolors" ]; then
+		eval "$(dircolors -b "$HOME/.dircolors")"
+	else
+		eval "$(dircolors -b)"
+	fi
+
 	alias ls='ls --color=auto'
 
 	alias grep='grep --color=auto'
@@ -176,9 +182,9 @@ BLUE="\[\033[38;2;137;180;250m\]"
 RESET="\[\033[00m\]"
 
 if [ "$color_prompt" = yes ]; then
-    PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RESET}\$(__git_ps1 ' ${MAUVE}(%s)${RESET}')$ "
+	PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RESET}\$(__git_ps1 ' ${MAUVE}(%s)${RESET}')$ "
 else
-    PS1="\u@\h:\w\$(__git_ps1 ' (%s)')$ "
+	PS1="\u@\h:\w\$(__git_ps1 ' (%s)')$ "
 fi
 
 unset color_prompt force_color_prompt
@@ -220,6 +226,7 @@ alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
 # load all files from dotfiles/bash/functions directory
 if [ -d "$DOTFILES/bash/functions" ]; then
 	for file in "$DOTFILES/bash/functions"/*.sh; do
+		# shellcheck disable=SC1090
 		source "$file"
 	done
 fi
@@ -238,14 +245,17 @@ bind 'TAB:menu-complete'
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
 	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		# shellcheck disable=SC1091
 		. /usr/share/bash-completion/bash_completion
 	elif [ -f /etc/bash_completion ]; then
+		# shellcheck disable=SC1091
 		. /etc/bash_completion
 	fi
 fi
 
 if [ -d "$BASH_COMPLETION_USER_DIR" ]; then
 	for file in "$BASH_COMPLETION_USER_DIR"/*; do
+		# shellcheck disable=SC1090
 		. "$file"
 	done
 fi
@@ -286,7 +296,8 @@ is_personal_computer && export QT_QPA_PLATFORM=wayland
 
 # -------------------- run common setup functions --------------------
 
-_source_if "$NVM_DIR/nvm.sh"              # This loads nvm
+_source_if "$NVM_DIR/nvm.sh" # This loads nvm
+# shellcheck disable=SC1091
 _have nvm && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 sshstart # start SSH for Github if it has not already started

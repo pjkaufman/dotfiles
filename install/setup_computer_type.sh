@@ -12,12 +12,10 @@ prepend_text_to_file() {
 # make sure that if the computer type is missing we get the type from the user exporting it so we can use it throughout the install script
 # while we just print out the type if we already have it
 
-if [ -z "${COMPUTER_TYPE}" ]
-then
+if [ -z "${COMPUTER_TYPE}" ]; then
   read -rp 'Is this a personal computer? [y]es or [n]o: ' response_char
 
-  if [ "$response_char" = "y" ]
-  then
+  if [ "$response_char" = "y" ]; then
     prepend_text_to_file 'export COMPUTER_TYPE=personal' ~/.localrc
     export COMPUTER_TYPE=personal
   else

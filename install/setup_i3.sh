@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
 # only try to install i3 packages if on a personal computer
-if is_work_computer ; then
+if is_work_computer; then
   echo "skipping i3 setup"
   return
 fi
 
 i3_packages_to_install=(
   "i3"
-  "scrot" # screenshots
-  "light" # brightness changes
-  "feh" # background image
-  "i3lock" # lockscreen setup
+  "scrot"    # screenshots
+  "light"    # brightness changes
+  "feh"      # background image
+  "i3lock"   # lockscreen setup
   "i3status" # status info
-  "dmenu" # app selector
+  "dmenu"    # app selector
 )
 for pkg in "${i3_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 

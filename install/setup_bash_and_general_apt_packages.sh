@@ -7,33 +7,35 @@
 [ -d "$XDG_STATE_HOME" ] || mkdir -p "$XDG_STATE_HOME"
 [ -d "$XDG_CACHE_HOME" ] || mkdir -p "$XDG_CACHE_HOME"
 
-# setup the bash and terminal related files 
+# setup the bash and terminal related files
 
-declare -A bash_related_file_sylink_info=( 
-  ["$HOME/dotfiles/bash/bashrc"]="$HOME/.bashrc" 
+declare -A bash_related_file_sylink_info=(
+  ["$HOME/dotfiles/bash/bashrc"]="$HOME/.bashrc"
   ["$HOME/dotfiles/bash/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
 )
 
 for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${bash_related_file_sylink_info[$file]}"; done
 
-declare -A apt_packages_to_install=( 
-  ["grep"]="grep" 
-  ["curl"]="curl" 
+declare -A apt_packages_to_install=(
+  ["grep"]="grep"
+  ["curl"]="curl"
   ["rg"]="ripgrep" # better version of grep
-  ["fzf"]="fzf" # fuzzy finder for the terminal
-  ["btop"]="btop" # linux task manager
+  ["fzf"]="fzf"    # fuzzy finder for the terminal
+  ["btop"]="btop"  # linux task manager
   ["python3"]="python3"
-  ["pip3"]="python3-pip" # python 3 package installer
-  ["pipx"]="pipx" # python 3 package installer
-  ["rename"]="rename" # easier renaming of files
+  ["pip3"]="python3-pip"      # python 3 package installer
+  ["pipx"]="pipx"             # python 3 package installer
+  ["rename"]="rename"         # easier renaming of files
+  ["shellcheck"]="shellcheck" # bash warnings around potential issues
 )
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 
 # source exports so later on we have all of our env variables ready to go
+# shellcheck source=./bash/bashrc
 source "$HOME/.bashrc"
 
-ensure_file_symlink_is_in_place "$DOTFILES/bash/inputrc" "$INPUTRC" 
+ensure_file_symlink_is_in_place "$DOTFILES/bash/inputrc" "$INPUTRC"
 
 ensure_file_symlink_is_in_place "$DOTFILES/btop/btop.conf" "$XDG_CONFIG_HOME/btop/btop.conf"
 ensure_folder_symlink_is_in_place "$DOTFILES/btop/themes/" "$XDG_CONFIG_HOME/btop/themes"
@@ -44,9 +46,9 @@ if is_work_computer; then
 fi
 
 personal_apt_packages_to_install=(
-  "imgp" # image compression
+  "imgp"      # image compression
   "flameshot" # screenshots
-  "evince" # pdf editor and viewer
+  "evince"    # pdf editor and viewer
 )
 
 for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done

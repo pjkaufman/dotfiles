@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-if ! iswsl ; then
+if ! iswsl; then
   return
 fi
 

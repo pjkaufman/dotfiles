@@ -5,5 +5,5 @@ if is_work_computer; then
   return
 fi
 
-install_apt_package  "pandoc" # document conversion
-install_apt_package  "weasyprint" # html to pdf
+install_apt_package "pandoc"     # document conversion
+install_apt_package "weasyprint" # html to pdf

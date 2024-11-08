@@ -12,6 +12,7 @@ setup_header_text() {
 }
 
 include_file() {
+  # shellcheck disable=SC1090
   source "$HOME/dotfiles/$1"
 }
 
@@ -22,14 +23,15 @@ include_file "install/package_install_functions.sh"
 include_file "install/symlink_functions.sh"
 
 # include computer type functions
-source "$HOME/dotfiles/bash/functions/computer_type_functions.sh" 
+# shellcheck source=./bash/functions/computer_type_functions.sh
+source "$HOME/dotfiles/bash/functions/computer_type_functions.sh"
 
 # actual setup
 
 echo "starting environment setup"
 
 install_script_section_text=(
-  "setup computer type" 
+  "setup computer type"
   "setup bash and common packages"
   "setup git"
   "setup tmux"
@@ -44,8 +46,8 @@ install_script_section_text=(
   "setup wkhtmltopdf"
 )
 
- declare -A install_script_sections_files=( 
-  ["setup computer type"]="install/setup_computer_type.sh" 
+declare -A install_script_sections_files=(
+  ["setup computer type"]="install/setup_computer_type.sh"
   ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages.sh"
   ["setup git"]="install/setup_git.sh"
   ["setup tmux"]="install/setup_tmux.sh"
@@ -60,13 +62,13 @@ install_script_section_text=(
   ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
 )
 
-for i in "${!install_script_section_text[@]}"; do 
+for i in "${!install_script_section_text[@]}"; do
   header="${install_script_section_text[$i]}"
   setup_header_text "${header}:"
   include_file "${install_script_sections_files[$header]}"
 done
 
-unset header 
+unset header
 
 # remove any no longer needed packages
 sudo apt autoremove -y

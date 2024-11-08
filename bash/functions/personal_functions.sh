@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # only add these functions if on a personal computer
-if is_work_computer ; then
+if is_work_computer; then
   return
 fi
 

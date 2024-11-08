@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
 
-if ! command -v wl-paste &> /dev/null; then
-  echo "wl-paste must be installed to run clipboard manager"
-  exit 1;
+if ! command -v wl-paste &>/dev/null; then
+	echo "wl-paste must be installed to run clipboard manager"
+	exit 1
 fi
 
-if ! command -v pgrep &> /dev/null; then
-  echo "pgrep must be installed to check if wl-paste is already running"
-  exit 1;
+if ! command -v pgrep &>/dev/null; then
+	echo "pgrep must be installed to check if wl-paste is already running"
+	exit 1
 fi
 
-if ! command -v cliphist &> /dev/null; then
-  echo "cliphist must be installed to run clipboard manager"
-  exit 1;
+if ! command -v cliphist &>/dev/null; then
+	echo "cliphist must be installed to run clipboard manager"
+	exit 1
 fi
 
 # start wl-paste if it has not already started
 if [ $(pgrep wl-paste -c) = 0 ]; then
-  wl-paste --type text --watch cliphist store &
-  wl-paste --type image --watch cliphist store &
+	wl-paste --type text --watch cliphist store &
+	wl-paste --type image --watch cliphist store &
 fi

@@ -1,0 +1,31 @@
+name: Lint Files
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y shellcheck shfmt just
+      - name: Verify installation
+        run: |
+          shellcheck --version
+          shfmt --version
+          just --version
+      - name: Lint Bash Files
+        run: |
+          just lint
+        

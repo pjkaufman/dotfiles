@@ -43,6 +43,7 @@ install_script_section_text=(
   "setup syncthing"
   "setup flatpaks"
   "setup i3"
+  "setup vscode"
   "setup neovim"
   "setup wkhtmltopdf"
 )
@@ -61,6 +62,7 @@ declare -A install_script_sections_files=(
   ["setup rkhunter"]="install/setup_rkhunter.sh"
   ["setup i3"]="install/setup_i3.sh"
   ["setup neovim"]="install/setup_neovim.sh"
+  ["setup vscode"]="install/setup_vscode.sh"
   ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
 )
 

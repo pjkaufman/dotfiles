@@ -2,7 +2,7 @@
 
 install-go "$GO_VERSION"
 
-go_install_package "shfmt" "mvdan.cc/sh/v3/cmd/shfmt"
+go_install_package "mvdan.cc/sh/v3/cmd/shfmt" "shfmt"
 
 git submodule init
 

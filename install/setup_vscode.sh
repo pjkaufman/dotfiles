@@ -10,6 +10,8 @@ function copy_and_backup() {
 
 # this may need some modification to work better on initial setup since `iswsl` may not be available.
 if iswsl; then
+  [[ -z "$WINDOWS_USER" ]] && echo "Please define a WINDOWS_USER variable to setup vscode." && return
+
   # symlinks do not really work in wsl so we have to copy the value over to the Windows location
   copy_and_backup "$DOTFILES/vscode/settings/keybindings.json" "/mnt/c/Users/$WINDOWS_USER/AppData/Roaming/Code/User/keybindings.json"
   copy_and_backup "$DOTFILES/vscode/settings/settings.json" "/mnt/c/Users/$WINDOWS_USER/AppData/Roaming/Code/User/settings.json"

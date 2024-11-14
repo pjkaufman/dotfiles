@@ -23,7 +23,7 @@ for pkg in "${sway_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 install_apt_package "pactl" "pulseaudio-utils" # sound changes
 
 # clipboard manager
-go_install_package "cliphist" "go.senan.xyz/cliphist"
+go_install_package "go.senan.xyz/cliphist" "cliphist"
 
 # make sure wlroots and its portal is installed
 install_apt_package_by_package_name_only "wlroots"

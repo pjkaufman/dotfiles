@@ -38,12 +38,12 @@
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
-      "total_volumes": 22,
-      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 22 (light novel)",
+      "total_volumes": 23,
+      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 23 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "Death March to the Parallel World Rhapsody, Vol. 22 (light novel)",
-          "release_date": "October 15, 2024"
+          "name": "Death March to the Parallel World Rhapsody, Vol. 23 (light novel)",
+          "release_date": "March 18, 2025"
         }
       ],
       "type": "LN",
@@ -68,12 +68,12 @@
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
-      "total_volumes": 19,
-      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 19 (light novel)",
+      "total_volumes": 20,
+      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 20 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "That Time I Got Reincarnated as a Slime, Vol. 19 (light novel)",
-          "release_date": "August 20, 2024"
+          "name": "That Time I Got Reincarnated as a Slime, Vol. 20 (light novel)",
+          "release_date": "February 18, 2025"
         }
       ],
       "type": "LN",
@@ -82,12 +82,16 @@
     },
     {
       "name": "Re:ZERO -Starting Life in Another World",
-      "total_volumes": 26,
-      "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 26 (light novel)",
+      "total_volumes": 27,
+      "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 27 (light novel) ",
       "unreleased_volumes": [
         {
+          "name": "Re:ZERO -Starting Life in Another World-, Vol. 27 (light novel) ",
+          "release_date": "May 13, 2025"
+        },
+        {
           "name": "Re:ZERO -Starting Life in Another World-, Vol. 26 (light novel)",
-          "release_date": "November 19, 2024"
+          "release_date": "November 26, 2024"
         }
       ],
       "slug_override": "re-starting-life-in-another-world",
@@ -97,12 +101,12 @@
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
-      "total_volumes": 12,
-      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 12 (light novel)",
+      "total_volumes": 13,
+      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 13 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 12 (light novel)",
-          "release_date": "September 17, 2024"
+          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 13 (light novel)",
+          "release_date": "February 18, 2025"
         }
       ],
       "type": "LN",
@@ -121,12 +125,6 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
       "total_volumes": 19,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
-          "release_date": "August 20, 2024"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -227,12 +225,16 @@
     },
     {
       "name": "The Irregular at Magic High School",
-      "total_volumes": 23,
-      "latest_volume": "The Irregular at Magic High School, Vol. 23 (light novel)",
+      "total_volumes": 25,
+      "latest_volume": "The Irregular at Magic High School, Vol. 25 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "The Irregular at Magic High School, Vol. 23 (light novel)",
-          "release_date": "September 17, 2024"
+          "name": "The Irregular at Magic High School, Vol. 25 (light novel)",
+          "release_date": "May 13, 2025"
+        },
+        {
+          "name": "The Irregular at Magic High School, Vol. 24 (light novel)",
+          "release_date": "January 21, 2025"
         }
       ],
       "type": "LN",
@@ -241,16 +243,12 @@
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 5,
-      "latest_volume": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
+      "total_volumes": 6,
+      "latest_volume": "The Misfit of Demon King Academy, Vol. 5 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "The Misfit of Demon King Academy, Vol. 4, Act 1 (light novel)",
-          "release_date": "August 20, 2024"
-        },
-        {
-          "name": "The Misfit of Demon King Academy, Vol. 4, Act 2 (light novel)",
-          "release_date": "December 10, 2024"
+          "name": "The Misfit of Demon King Academy, Vol. 5 (light novel)",
+          "release_date": "April 15, 2025"
         }
       ],
       "type": "LN",
@@ -315,12 +313,6 @@
       "name": "Seirei Gensouki: Spirit Chronicles",
       "total_volumes": 25,
       "latest_volume": "Volume 25",
-      "unreleased_volumes": [
-        {
-          "name": "Volume 25",
-          "release_date": "September 3, 2024"
-        }
-      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -345,12 +337,6 @@
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
       "total_volumes": 28,
       "latest_volume": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
-      "unreleased_volumes": [
-        {
-          "name": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes [Special Book]",
-          "release_date": "August 20, 2024"
-        }
-      ],
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
@@ -387,24 +373,18 @@
       "name": "Seraph of the End",
       "total_volumes": 31,
       "latest_volume": "Seraph of the End, Vol. 31",
-      "unreleased_volumes": [
-        {
-          "name": "Seraph of the End, Vol. 31",
-          "release_date": "November 12, 2024"
-        }
-      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
     },
     {
       "name": "Twin Star Exorcists",
-      "total_volumes": 32,
-      "latest_volume": "Twin Star Exorcists, Vol. 32",
+      "total_volumes": 33,
+      "latest_volume": "Twin Star Exorcists, Vol. 33",
       "unreleased_volumes": [
         {
-          "name": "Twin Star Exorcists, Vol. 32",
-          "release_date": "November 19, 2024"
+          "name": "Twin Star Exorcists, Vol. 33",
+          "release_date": "February 18, 2025"
         }
       ],
       "type": "MN",
@@ -413,8 +393,14 @@
     },
     {
       "name": "Blue Exorcist",
-      "total_volumes": 29,
-      "latest_volume": "Blue Exorcist, Vol. 29",
+      "total_volumes": 30,
+      "latest_volume": "Blue Exorcist, Vol. 30",
+      "unreleased_volumes": [
+        {
+          "name": "Blue Exorcist, Vol. 30",
+          "release_date": "December 3, 2024"
+        }
+      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -543,15 +529,11 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 5",
-          "release_date": "TBA"
+          "release_date": "January 30, 2025"
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 4",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 3",
-          "release_date": "September 29, 2024"
+          "release_date": "November 29, 2024"
         }
       ],
       "type": "LN",
@@ -560,12 +542,16 @@
     },
     {
       "name": "Black Summoner",
-      "total_volumes": 18,
-      "latest_volume": "Black Summoner: Volume 18",
+      "total_volumes": 20,
+      "latest_volume": "Black Summoner: Volume 20",
       "unreleased_volumes": [
         {
-          "name": "Black Summoner: Volume 18",
-          "release_date": "August 27, 2024"
+          "name": "Black Summoner: Volume 20",
+          "release_date": "March 26, 2025"
+        },
+        {
+          "name": "Black Summoner: Volume 19",
+          "release_date": "November 27, 2024"
         }
       ],
       "type": "LN",

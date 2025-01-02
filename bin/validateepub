@@ -2,4 +2,4 @@
 
 set -e
 
-java -jar "$DOTFILES"/epubcheck/epubcheck.jar "$1"
+ebook-lint epub validate -f "$1"

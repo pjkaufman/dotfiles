@@ -20,8 +20,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export EDITOR="nvim"
 
 # Prefer US English and use UTF-8.
-export LANG='en_US.UTF-8'
-export LC_ALL='en_US.UTF-8'
+export LANG='en_US.utf8'
+export LANGUAGE='en_US.utf8'
+# export LC_ALL='en_US.utf8'
 
 # nvm
 export NODE_VERSION=18.0
@@ -45,6 +46,9 @@ export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 
 # make sure input rc is properly set to a value in under the xdg folders
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+
+# make sure that the bash prompt starts a line so we avoid it starting on the same line as the output of another command
+export PROMPT_COMMAND='printf "\n";'
 
 # sets the place where scripts should send their downloads
 export DOWNLOADS="$HOME"/Downloads
@@ -207,6 +211,7 @@ export HISTCONTROL='ignoreboth:erasedups'
 # general
 alias dot='cd $DOTFILES'
 alias chmox='chmod +x'
+alias cat="bat -pp"
 
 # moving around
 alias ..='cd ..'

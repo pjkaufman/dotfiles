@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # from https://github.com/reinefjord/wayshot
 
 shopt -s extglob

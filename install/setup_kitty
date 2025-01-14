@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if is_work_computer; then
-  echo "skipping kitty setup"
-  return
+	echo "skipping kitty setup"
+	return
 fi
 
 install_apt_package "kitty"

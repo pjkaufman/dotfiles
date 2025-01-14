@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 if is_work_computer; then
-  echo "skipping wkhtmltopdf install"
-  return
+	echo "skipping wkhtmltopdf install"
+	return
 fi
 
 install_apt_package "pandoc"     # document conversion

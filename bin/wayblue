@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if ! command -v bluetoothctl &>/dev/null; then
 	echo "bluetoothctl must be installed to run wayblue"
 	exit 1

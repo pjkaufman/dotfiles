@@ -40,7 +40,8 @@ The current list of programs that need installing and are used are as follows:
 | `python3` | apt | Helps with writing some scripts and installing some programs used |
 | `pip3` | apt | Helps get some packages that are not available on in apt and are written in Python |
 | `rename` | apt | Helps rename files using regex from the cli |
-| `imgp` | apt | A nice cli image compressor used in my epub compression scripts |
+| `bat` | apt | Adds syntax highlighting to cat commands |
+| `imgp` | apt | A nice cli image compressor that I keep around for the time being |
 | `flameshot` | apt* | A useful screenshot utility |
 | `evince` | apt | A nice pdf viewer that can be launched from the cli |
 | `Brave` | flatpak | A chromium based browser |

@@ -11,13 +11,13 @@ sshd_config=/etc/ssh/sshd_config
 # $1: name of config value
 # $2: name and value
 function replaceSshdConfigValue() {
-  # shellcheck disable=SC2046
-  if [ $(grep -c "$1" "$sshd_config") -eq 0 ]; then
-    echo "$2" | sudo tee -a "$sshd_config"
-  else
-    sudo sed -i -e "1,/#$1 [a-zA-Z0-9]*/s/#$1 [a-zA-Z0-9]*/$2/" "$sshd_config"
-    sudo sed -i -e "1,/$1 [a-zA-Z0-9]*/s/$1 [a-zA-Z0-9]*/$2/" "$sshd_config"
-  fi
+	# shellcheck disable=SC2046
+	if [ $(grep -c "$1" "$sshd_config") -eq 0 ]; then
+		echo "$2" | sudo tee -a "$sshd_config"
+	else
+		sudo sed -i -e "1,/#$1 [a-zA-Z0-9]*/s/#$1 [a-zA-Z0-9]*/$2/" "$sshd_config"
+		sudo sed -i -e "1,/$1 [a-zA-Z0-9]*/s/$1 [a-zA-Z0-9]*/$2/" "$sshd_config"
+	fi
 }
 
 # Back-up current configuration file

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# backs up the destination file if it exists and copies the source file to the destination
+# $1: source file
+# $2: destination file
+function copy_and_backup() {
+	[[ -f "$2" ]] && mv "$2" "$2.bak"
+	cp "$1" "$2"
+}
+
+# this may need some modification to work better on initial setup since `iswsl` may not be available.
+if iswsl; then
+	[[ -z "$WINDOWS_USER" ]] && echo "Please define a WINDOWS_USER variable to setup vscode." && return
+
+	# symlinks do not really work in wsl so we have to copy the value over to the Windows location
+	copy_and_backup "$DOTFILES/vscode/settings/keybindings.json" "/mnt/c/Users/$WINDOWS_USER/AppData/Roaming/Code/User/keybindings.json"
+	copy_and_backup "$DOTFILES/vscode/settings/settings.json" "/mnt/c/Users/$WINDOWS_USER/AppData/Roaming/Code/User/settings.json"
+else
+	linux_vscode_basepath="$HOME/.config/Code/User"
+	[[ ! -d "$linux_vscode_basepath" ]] && mkdir -p "$linux_vscode_basepath"
+	ensure_file_symlink_is_in_place "$DOTFILES/vscode/settings/keybindings.json" "$linux_vscode_basepath/settings.json"
+	ensure_file_symlink_is_in_place "$DOTFILES/vscode/settings/settings.json" "$linux_vscode_basepath/settings.json"
+fi

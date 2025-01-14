@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # based on https://github.com/jvanbruegge/dotfiles/blob/9196211a54d454b3227d5332fc345b6642bc978e/sway/wifi/nmcli-rofi
 
 # default config

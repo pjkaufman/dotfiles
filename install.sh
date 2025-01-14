@@ -3,6 +3,11 @@
 # make sure bash fails if any error happens
 set -e
 
+SCRIPTPATH="$(
+  cd -- "$(dirname "$0")" > /dev/null 2>&1
+  pwd -P
+)"
+
 setup_header_text() {
   echo ""
   echo "==============================="
@@ -13,18 +18,18 @@ setup_header_text() {
 
 include_file() {
   # shellcheck disable=SC1090
-  source "$HOME/dotfiles/$1"
+  source "$SCRIPTPATH/$1"
 }
 
 # pull in the package installation helper functions
-include_file "install/package_install_functions.sh"
+include_file "install/package_install_functions"
 
 # pull in the symlink helper functions
-include_file "install/symlink_functions.sh"
+include_file "install/symlink_functions"
 
 # include computer type functions
 # shellcheck source=./bash/functions/computer_type_functions.sh
-source "$HOME/dotfiles/bash/functions/computer_type_functions.sh"
+source "$SCRIPTPATH/bash/functions/computer_type_functions.sh"
 
 # actual setup
 
@@ -49,21 +54,21 @@ install_script_section_text=(
 )
 
 declare -A install_script_sections_files=(
-  ["setup computer type"]="install/setup_computer_type.sh"
-  ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages.sh"
-  ["setup fonts"]="install/setup_fonts.sh"
-  ["setup git"]="install/setup_git.sh"
-  ["setup tmux"]="install/setup_tmux.sh"
-  ["setup syncthing"]="install/setup_syncthing.sh"
-  ["setup flatpaks"]="install/setup_flatpak.sh"
-  ["setup go"]="install/setup_go.sh"
-  ["setup npm"]="install/setup_npm.sh"
-  ["setup kitty"]="install/setup_kitty.sh"
-  ["setup rkhunter"]="install/setup_rkhunter.sh"
-  ["setup i3"]="install/setup_i3.sh"
-  ["setup neovim"]="install/setup_neovim.sh"
-  ["setup vscode"]="install/setup_vscode.sh"
-  ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf.sh"
+  ["setup computer type"]="install/setup_computer_type"
+  ["setup bash and common packages"]="install/setup_bash_and_general_apt_packages"
+  ["setup fonts"]="install/setup_fonts"
+  ["setup git"]="install/setup_git"
+  ["setup tmux"]="install/setup_tmux"
+  ["setup syncthing"]="install/setup_syncthing"
+  ["setup flatpaks"]="install/setup_flatpak"
+  ["setup go"]="install/setup_go"
+  ["setup npm"]="install/setup_npm"
+  ["setup kitty"]="install/setup_kitty"
+  ["setup rkhunter"]="install/setup_rkhunter"
+  ["setup i3"]="install/setup_i3"
+  ["setup neovim"]="install/setup_neovim"
+  ["setup vscode"]="install/setup_vscode"
+  ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf"
 )
 
 for i in "${!install_script_section_text[@]}"; do

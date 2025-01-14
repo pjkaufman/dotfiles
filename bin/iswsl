@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 # determine whether or not the current setup is a WSL distro
 
 is_wsl=$(uname -r | grep -i "Microsoft")

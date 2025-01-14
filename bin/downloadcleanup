@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # takes files and copies them to their proper locations
 
 TRUE=0

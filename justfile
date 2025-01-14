@@ -8,5 +8,5 @@ format:
   shfmt -w .
 lint:
   # shellcheck disable=SC2046
-  shellcheck -x ./install.sh $(find ./bin/* -maxdepth 1 -not -name '*.md';) ./bash/bashrc ./bash/functions/*.sh ./install/*.sh
+  shellcheck -x ./install.sh $(find ./bash -type f -exec file --mime-type {} \; | grep "text/x-shellscript" | cut -d: -f1) $(find ./install -type f -exec file --mime-type {} \; | grep "text/x-shellscript" | cut -d: -f1) $(find ./bin -type f -exec file --mime-type {} \; | grep "text/x-shellscript" | cut -d: -f1)
   shfmt -d .

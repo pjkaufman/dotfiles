@@ -20,7 +20,7 @@ declare -A apt_packages_to_install=(
 	["pipx"]="pipx"             # python 3 package installer
 	["rename"]="rename"         # easier renaming of files
 	["shellcheck"]="shellcheck" # bash warnings around potential issues
-  ["batcat"]="bat" # colorized cat
+	["batcat"]="bat"            # colorized cat
 )
 
 # alias batcat to bat for easier use

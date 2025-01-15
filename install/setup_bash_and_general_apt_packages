@@ -25,7 +25,7 @@ declare -A apt_packages_to_install=(
 
 # alias batcat to bat for easier use
 batAliasPath="/usr/bin/batcat"
-[ -f /usr/bin/batcat ] && [ ! -f "$batAliasPath" ] && mkdir -p "$HOME/.local/bin" && ln -s "$batAliasPath" "$HOME/.local/bin/bat"
+[ ! -f "$batAliasPath" ] && mkdir -p "$HOME/.local/bin" && ln -s "$batAliasPath" "$HOME/.local/bin/bat"
 
 for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
 

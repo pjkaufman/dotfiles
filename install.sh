@@ -50,7 +50,7 @@ install_script_section_text=(
   "setup i3"
   "setup vscode"
   "setup neovim"
-  "setup wkhtmltopdf"
+  "setup doc converts"
 )
 
 declare -A install_script_sections_files=(
@@ -68,7 +68,7 @@ declare -A install_script_sections_files=(
   ["setup i3"]="install/setup_i3"
   ["setup neovim"]="install/setup_neovim"
   ["setup vscode"]="install/setup_vscode"
-  ["setup wkhtmltopdf"]="install/setup_wkhtmltopdf"
+  ["setup doc converts"]="install/setup_doc_converters"
 )
 
 for i in "${!install_script_section_text[@]}"; do

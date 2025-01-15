@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if is_work_computer; then
-	echo "skipping wkhtmltopdf install"
+	echo "skipping doc converters install"
 	return
 fi
 

@@ -565,6 +565,15 @@
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
+    },
+    {
+      "name": "Re:ZERO Ex (light novel)",
+      "total_volumes": 5,
+      "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 5 (light novel): The Tale of the Scarlet Princess",
+      "slug_override": "reex-light-novel",
+      "type": "LN",
+      "publisher": "YenPress",
+      "status": "O"
     }
   ]
 }

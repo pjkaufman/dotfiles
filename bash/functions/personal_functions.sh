@@ -48,7 +48,27 @@ function epubmanualfixes() {
   ebook-lint epub fixable -f "$1" -a
 }
 
-# Obsidian functions for opening differnt vaults that I have
+function validateepub() {
+  if [ "$#" -eq 0 ]; then
+    echo "No arguments supplied"
+    echo "Usage validateepub  [epub-file] [optional-json-output-file]"
+  elif [ "$#" -eq 1 ]; then
+    ebook-lint epub validate -f "$1"
+  else
+    ebook-lint epub validate -f "$1" --json-file "$2"
+  fi
+}
+
+function fixepub() {
+  if [ ! "$#" -eq 2 ]; then
+    echo "Incorrect number of arguments supplied"
+    echo "Usage fixepub  [epub-file] [json-file]"
+  else
+    ebook-lint epub fix-validation -f "$1" --issue-file "$2"
+  fi
+}
+
+# Obsidian functions for opening different vaults that I have
 
 function notes() {
   xdg-open obsidian://open?vault=Obsidian

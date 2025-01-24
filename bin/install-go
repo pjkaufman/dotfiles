@@ -28,7 +28,7 @@ function install_go() {
 }
 
 if [ -z "$1" ]; then
-	echo "Please specifiy the go version to install (i.e. 1.12.0)."
+	echo "Please specify the go version to install (i.e. 1.12.0)."
 fi
 
 install_go "$1"

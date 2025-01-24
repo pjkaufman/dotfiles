@@ -16,7 +16,7 @@
     },
     {
       "name": "Solo Leveling (novel)",
-      "total_volumes": 8,
+      "total_volumes": 1,
       "latest_volume": "Solo Leveling, Vol. 8 (novel)",
       "type": "LN",
       "publisher": "YenPress",
@@ -221,10 +221,6 @@
         {
           "name": "The Irregular at Magic High School, Vol. 25 (light novel)",
           "release_date": "May 13, 2025"
-        },
-        {
-          "name": "The Irregular at Magic High School, Vol. 24 (light novel)",
-          "release_date": "January 21, 2025"
         }
       ],
       "type": "LN",
@@ -443,10 +439,6 @@
         {
           "name": "The Wrong Way to Use Healing Magic Vol. 6",
           "release_date": "TBA"
-        },
-        {
-          "name": "The Wrong Way to Use Healing Magic Vol. 5",
-          "release_date": "TBA"
         }
       ],
       "type": "LN",
@@ -521,7 +513,7 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 6",
-          "release_date": "TBA"
+          "release_date": "March 30, 2025"
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 5",
@@ -570,12 +562,6 @@
           "release_date": "April 15, 2025"
         }
       ],
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
-      "name": "Re:ZERO Ex (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"

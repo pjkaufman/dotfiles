@@ -20,7 +20,11 @@ function enablebright() {
 
 # compressepub helps with compressing epubs so they take up less space
 function compressepub() {
-  ebook-lint epub compress-and-lint -i
+  if [ "$#" -eq 0 ]; then
+    ebook-lint epub compress-and-lint -i
+  else
+    ebook-lint epub compress-and-lint -i -l "$1"
+  fi
 }
 
 # convertcbrtocbz helps with converting cbrs to cbzs
@@ -45,13 +49,20 @@ function epubreplaceallstrings() {
 function epubmanualfixes() {
   # TODO: see about swapping the logic to check the param count and based on the param
   # count either take in all params provided as is or just take in the epub value
-  ebook-lint epub fixable -f "$1" -a
+  if [ "$#" -eq 0 ]; then
+    echo "No arguments supplied"
+    echo "Usage epubmanualfixes [epub-file] [any value to indicate that you want to use the TUI]"
+  elif [ "$#" -eq 1 ]; then
+    ebook-lint epub fixable -f "$1" -a
+  else
+    ebook-lint epub fixable -f "$1" -a --use-tui
+  fi
 }
 
 function validateepub() {
   if [ "$#" -eq 0 ]; then
     echo "No arguments supplied"
-    echo "Usage validateepub  [epub-file] [optional-json-output-file]"
+    echo "Usage validateepub [epub-file] [optional-json-output-file]"
   elif [ "$#" -eq 1 ]; then
     ebook-lint epub validate -f "$1"
   else

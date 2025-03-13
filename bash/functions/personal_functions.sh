@@ -51,11 +51,13 @@ function epubmanualfixes() {
   # count either take in all params provided as is or just take in the epub value
   if [ "$#" -eq 0 ]; then
     echo "No arguments supplied"
-    echo "Usage epubmanualfixes [epub-file] [any value to indicate that you want to use the TUI]"
+    echo "Usage epubmanualfixes [epub-file] [any value to indicate that you want to use the TUI] [optional TUI log file]"
   elif [ "$#" -eq 1 ]; then
     ebook-lint epub fixable -f "$1" -a
-  else
+  elif [ "$#" -eq 2 ]; then
     ebook-lint epub fixable -f "$1" -a --use-tui
+  else
+    ebook-lint epub fixable -f "$1" -a --use-tui --log-file "$3"
   fi
 }
 

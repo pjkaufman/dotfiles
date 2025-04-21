@@ -81,7 +81,7 @@
       "unreleased_volumes": [
         {
           "name": "Re:ZERO -Starting Life in Another World-, Vol. 27 (light novel) ",
-          "release_date": "May 13, 2025"
+          "release_date": "June 3, 2025"
         }
       ],
       "slug_override": "re-starting-life-in-another-world",
@@ -114,7 +114,13 @@
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
       "total_volumes": 19,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Collector's Edition, Vol. 1",
+      "unreleased_volumes": [
+        {
+          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Collector's Edition, Vol. 1",
+          "release_date": "July 8, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -122,7 +128,7 @@
     {
       "name": "86--EIGHTY-SIX (light novel)",
       "total_volumes": 13,
-      "latest_volume": "86--EIGHTY-SIX, Vol. 13 (light novel)",
+      "latest_volume": "86--EIGHTY-SIX, Vol. 13 (light novel): Dear Hunter",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -190,7 +196,7 @@
       "unreleased_volumes": [
         {
           "name": "The Executioner and Her Way of Life, Vol. 9",
-          "release_date": "June 10, 2025"
+          "release_date": "August 12, 2025"
         }
       ],
       "type": "LN",
@@ -200,7 +206,7 @@
     {
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
       "total_volumes": 11,
-      "latest_volume": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 10 (light novel)",
+      "latest_volume": "The Greatest Demon Lord Is Reborn as a Typical Nobody, Vol. 10 (light novel): Advent of the Greatest Demon Lord",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -220,7 +226,7 @@
       "unreleased_volumes": [
         {
           "name": "The Irregular at Magic High School, Vol. 25 (light novel)",
-          "release_date": "May 13, 2025"
+          "release_date": "July 15, 2025"
         }
       ],
       "type": "LN",
@@ -329,7 +335,7 @@
       "latest_volume": "Volume 6",
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "O"
+      "status": "C"
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
@@ -550,6 +556,12 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle",
       "total_volumes": 3,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
+      "unreleased_volumes": [
+        {
+          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
+          "release_date": "May 6, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"

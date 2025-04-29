@@ -34,12 +34,6 @@
       "name": "Death March to the Parallel World Rhapsody",
       "total_volumes": 23,
       "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 23 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Death March to the Parallel World Rhapsody, Vol. 23 (light novel)",
-          "release_date": "March 18, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -54,20 +48,26 @@
     },
     {
       "name": "Sword Art Online",
-      "total_volumes": 28,
-      "latest_volume": "Sword Art Online Platinum Collector's Edition",
+      "total_volumes": 29,
+      "latest_volume": "Sword Art Online 28 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Sword Art Online 28 (light novel)",
+          "release_date": "July 8, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
     },
     {
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
-      "total_volumes": 20,
-      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 20 (light novel)",
+      "total_volumes": 21,
+      "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 21 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "That Time I Got Reincarnated as a Slime, Vol. 20 (light novel)",
-          "release_date": "February 18, 2025"
+          "name": "That Time I Got Reincarnated as a Slime, Vol. 21 (light novel)",
+          "release_date": "July 8, 2025"
         }
       ],
       "type": "LN",
@@ -91,12 +91,12 @@
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
-      "total_volumes": 13,
-      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 13 (light novel)",
+      "total_volumes": 14,
+      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 14 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 13 (light novel)",
-          "release_date": "February 18, 2025"
+          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 14 (light novel)",
+          "release_date": "August 12, 2025"
         }
       ],
       "type": "LN",
@@ -229,12 +229,12 @@
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 6,
-      "latest_volume": "The Misfit of Demon King Academy, Vol. 5 (light novel)",
+      "total_volumes": 7,
+      "latest_volume": "The Misfit of Demon King Academy, Vol. 6 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "The Misfit of Demon King Academy, Vol. 5 (light novel)",
-          "release_date": "April 15, 2025"
+          "name": "The Misfit of Demon King Academy, Vol. 6 (light novel)",
+          "release_date": "August 12, 2025"
         }
       ],
       "type": "LN",
@@ -283,12 +283,6 @@
       "name": "How a Realist Hero Rebuilt the Kingdom",
       "total_volumes": 19,
       "latest_volume": "How a Realist Hero Rebuilt the Kingdom: Volume 19",
-      "unreleased_volumes": [
-        {
-          "name": "How a Realist Hero Rebuilt the Kingdom: Volume 19",
-          "release_date": "March 24, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -303,19 +297,31 @@
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
-      "total_volumes": 25,
-      "latest_volume": "Volume 25",
+      "total_volumes": 26,
+      "latest_volume": "Seirei Gensouki: Spirit Chronicles Volume 26",
+      "unreleased_volumes": [
+        {
+          "name": "Seirei Gensouki: Spirit Chronicles Volume 26",
+          "release_date": "May 30, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
     },
     {
       "name": "Arifureta: From Commonplace to World's Strongest",
-      "total_volumes": 14,
-      "latest_volume": "Volume 13",
+      "total_volumes": 15,
+      "latest_volume": "Arifureta: From Commonplace to World's Strongest: Volume 14",
+      "unreleased_volumes": [
+        {
+          "name": "Arifureta: From Commonplace to World's Strongest: Volume 14",
+          "release_date": "June 16, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "JNovelClub",
-      "status": "C"
+      "status": "O"
     },
     {
       "name": "Arifureta Zero",
@@ -328,33 +334,27 @@
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
       "total_volumes": 28,
-      "latest_volume": "Mushoku Tensei: Jobless Reincarnation – Recollections (Light Novel) [Ebook]",
+      "latest_volume": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes",
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
     },
     {
       "name": "Skeleton Knight in Another World (Light Novel)",
-      "total_volumes": 11,
-      "latest_volume": "Skeleton Knight in Another World (Light Novel) Vol. 11",
-      "unreleased_volumes": [
-        {
-          "name": "Skeleton Knight in Another World (Light Novel) Vol. 11",
-          "release_date": "April 22, 2025"
-        }
-      ],
+      "total_volumes": 10,
+      "latest_volume": "Skeleton Knight in Another World (Light Novel) Vol. 10",
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 25,
-      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9.5",
+      "total_volumes": 27,
+      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 11",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 9.5",
-          "release_date": "December 10, 2024"
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 11",
+          "release_date": "July 8, 2025"
         }
       ],
       "type": "LN",
@@ -365,24 +365,18 @@
       "name": "Seraph of the End",
       "total_volumes": 32,
       "latest_volume": "Seraph of the End, Vol. 32",
-      "unreleased_volumes": [
-        {
-          "name": "Seraph of the End, Vol. 32",
-          "release_date": "March 18, 2025"
-        }
-      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
     },
     {
       "name": "Twin Star Exorcists",
-      "total_volumes": 33,
-      "latest_volume": "Twin Star Exorcists, Vol. 33",
+      "total_volumes": 34,
+      "latest_volume": "Twin Star Exorcists, Vol. 34",
       "unreleased_volumes": [
         {
-          "name": "Twin Star Exorcists, Vol. 33",
-          "release_date": "February 18, 2025"
+          "name": "Twin Star Exorcists, Vol. 34",
+          "release_date": "July 15, 2025"
         }
       ],
       "type": "MN",
@@ -391,8 +385,14 @@
     },
     {
       "name": "Blue Exorcist",
-      "total_volumes": 30,
-      "latest_volume": "Blue Exorcist, Vol. 30",
+      "total_volumes": 31,
+      "latest_volume": "Blue Exorcist, Vol. 31",
+      "unreleased_volumes": [
+        {
+          "name": "Blue Exorcist, Vol. 31",
+          "release_date": "July 1, 2025"
+        }
+      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -509,15 +509,7 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 7",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 6",
-          "release_date": "March 30, 2025"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 5",
-          "release_date": "January 30, 2025"
+          "release_date": "May 30, 2025"
         }
       ],
       "type": "LN",
@@ -526,12 +518,12 @@
     },
     {
       "name": "Black Summoner",
-      "total_volumes": 20,
-      "latest_volume": "Black Summoner: Volume 20",
+      "total_volumes": 21,
+      "latest_volume": "Black Summoner: Volume 21",
       "unreleased_volumes": [
         {
-          "name": "Black Summoner: Volume 20",
-          "release_date": "March 26, 2025"
+          "name": "Black Summoner: Volume 21",
+          "release_date": "August 22, 2025"
         }
       ],
       "type": "LN",
@@ -540,6 +532,8 @@
     },
     {
       "name": "Mushoku Tensei: Redundant Reincarnation (Light Novel)",
+      "total_volumes": 2,
+      "latest_volume": "Mushoku Tensei: Redundant Reincarnation (Light Novel) Vol. 2",
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
@@ -556,12 +550,6 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle",
       "total_volumes": 3,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
-      "unreleased_volumes": [
-        {
-          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
-          "release_date": "April 15, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"

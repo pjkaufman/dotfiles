@@ -77,7 +77,7 @@ function fixepub() {
     echo "Incorrect number of arguments supplied"
     echo "Usage fixepub  [epub-file] [json-file]"
   else
-    ebook-lint epub fix-validation -f "$1" --issue-file "$2"
+    ebook-lint epub fix-validation -f "$1" --issue-file "$2" --cleanup-jnovels
   fi
 }
 

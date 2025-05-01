@@ -37,5 +37,5 @@ ensure_folder_symlink_is_in_place "$DOTFILES/xdg-desktop-portal" "$XDG_CONFIG_HO
 # echo "Copying images"
 
 # # make sure to overwrite the existing image if there is one since I cannot use symlinks
-# cp -f "$DOTFILES/i3/Laminin.png" "$XDG_CONFIG_HOME/i3/Laminin.png"
-# cp -f "$DOTFILES/i3/CharlesOutside.jpg" "$XDG_CONFIG_HOME/i3/CharlesOutside.jpg"
+# cp -f "$DOTFILES/resources/Laminin.png" "$XDG_CONFIG_HOME/sway/Laminin.png"
+# cp -f "$DOTFILES/resources/CharlesOutside.jpg" "$XDG_CONFIG_HOME/sway/CharlesOutside.jpg"

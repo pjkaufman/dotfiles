@@ -47,6 +47,11 @@ ensure_file_symlink_is_in_place "$DOTFILES/bash/inputrc" "$INPUTRC"
 ensure_file_symlink_is_in_place "$DOTFILES/btop/btop.conf" "$XDG_CONFIG_HOME/btop/btop.conf"
 ensure_folder_symlink_is_in_place "$DOTFILES/btop/themes/" "$XDG_CONFIG_HOME/btop/themes"
 
+[ -d "$XDG_CONFIG_HOME/bat" ] || mkdir -p "$XDG_CONFIG_HOME/bat"
+ensure_folder_symlink_is_in_place "$DOTFILES/bat/" "$XDG_CONFIG_HOME/bat"
+
+bat cache --build # rebuild the themes cache
+
 # only try to add the remaining packages if on a personal computer
 if is_work_computer; then
 	return

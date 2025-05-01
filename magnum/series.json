@@ -339,8 +339,14 @@
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
-      "total_volumes": 28,
-      "latest_volume": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes",
+      "total_volumes": 29,
+      "latest_volume": "Mushoku Tensei: Jobless Reincarnation Deluxe Edition 1 (Light Novel) (Vol. 1-3 Hardcover Omnibus)",
+      "unreleased_volumes": [
+        {
+          "name": "Mushoku Tensei: Jobless Reincarnation Deluxe Edition 1 (Light Novel) (Vol. 1-3 Hardcover Omnibus)",
+          "release_date": "November 4, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"

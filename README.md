@@ -52,15 +52,8 @@ The current list of programs that need installing and are used are as follows:
 | `git` | PPA | Cli program for interacting with git repos |
 | `openssh-server` | apt | Program for doing ssh key generation use for git authentication |
 | `go` | script | Golang is a great program for developing scripts and programs that are more performant |
-| `i3` | apt | Window manager for X11 |
-| `scrot` | apt | Program for taking screenshots in X11 |
 | `light` | apt | Program for handing brightness changes |
-| `feh` | apt | Program for setting the background image on X11 |
-| `i3lock` | apt | Program for setting the lock screen on X11 for i3 |
-| `i3status` | apt | Program helps with setting status info in X11 for i3 |
-| `dmenu` | apt | Program for X11 that helps with selecting apps | 
 | `pulseaudio-utils` | apt | Program for updating sound settings |
-| `bumblebee-status` | pip3 | Program for setting a better status bar on X11 for i3 |
 | `kitty` | apt | Default terminal |
 | `NeoVim` | PPA | A personal development editor for editing different kinds of files |
 | `codespell` | pip3 | A linter for spelling correction for NeoVim |

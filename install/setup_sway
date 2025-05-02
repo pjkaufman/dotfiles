@@ -8,7 +8,6 @@ fi
 
 sway_packages_to_install=(
 	"sway"
-	"scrot"        # screenshots
 	"light"        # brightness changes
 	"swaylock"     # lockscreen setup
 	"waybar"       # status bar

@@ -32,7 +32,7 @@ include /etc/sway/config-vars.d/*
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg $DOTFILES/resources/CharlesOutside.jpg fill
+output * bg $HOME/dotfiles/resources/CharlesOutside.jpg fill
 
 
 ### Keyboard layout
@@ -94,13 +94,13 @@ input * {
     # Screenshots
 
     # take a screenshot of all screens
-    bindsym --release Print exec "$DOTFILES/bin/wayshot '$HOME/Pictures/Screenshots/'"
+    bindsym --release Print exec "$HOME/dotfiles/bin/wayshot '$HOME/Pictures/Screenshots/'"
 
     # select a part of the screen to take an image from
-    bindsym --release Shift+Print exec "$DOTFILES/bin/wayshot -s '$HOME/Pictures/Screenshots/'"
+    bindsym --release Shift+Print exec "$HOME/dotfiles/bin/wayshot -s '$HOME/Pictures/Screenshots/'"
 
     # take a screenshot of the currently focused window after 4 seconds
-    bindsym --release $mod+Shift+Print exec "$DOTFILES/bin/wayshot -w -d 4 '$HOME/Pictures/Screenshots/'"
+    bindsym --release $mod+Shift+Print exec "$HOME/dotfiles/bin/wayshot -w -d 4 '$HOME/Pictures/Screenshots/'"
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -225,7 +225,7 @@ mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock" {
   bindsym r exec systemctl reboot
   bindsym s exec shutdown now
   bindsym h exec systemctl hibernate
-  bindsym x exec swaylock -i "$DOTFILES/resources/Laminin.png" default -n -e
+  bindsym x exec swaylock -i "$HOME/dotfiles/resources/Laminin.png" default -n -e
   bindsym Escape mode "default"
   bindsym Return mode "default"
 }

@@ -8,7 +8,6 @@ fi
 
 sway_packages_to_install=(
 	"sway"
-	"scrot"        # screenshots
 	"light"        # brightness changes
 	"swaylock"     # lockscreen setup
 	"waybar"       # status bar
@@ -33,9 +32,3 @@ ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
 ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
 ensure_folder_symlink_is_in_place "$DOTFILES/environment.d" "$XDG_CONFIG_HOME/environment.d"
 ensure_folder_symlink_is_in_place "$DOTFILES/xdg-desktop-portal" "$XDG_CONFIG_HOME/xdg-desktop-portal"
-
-# echo "Copying images"
-
-# # make sure to overwrite the existing image if there is one since I cannot use symlinks
-# cp -f "$DOTFILES/i3/Laminin.png" "$XDG_CONFIG_HOME/i3/Laminin.png"
-# cp -f "$DOTFILES/i3/CharlesOutside.jpg" "$XDG_CONFIG_HOME/i3/CharlesOutside.jpg"

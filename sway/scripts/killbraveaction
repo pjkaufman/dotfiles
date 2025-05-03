@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+max_attempts=10
+
+USAGE="\
+Usage: $(basename "$0") [exit|shutdown|reboot]
+
+Waits for brave to shutdown properly or the max amount of
+tries ($max_attempts) to be hit before doing the specified action.
+"
+
+function echo_usage {
+	echo ""
+	echo "$USAGE"
+}
+
+if [ -z "$1" ] || { [ "$1" != "shutdown" ] && [ "$1" != "exit" ] && [ "$1" != "reboot" ]; }; then
+	echo_usage
+	exit 1
+fi
+
+# kill brave so that the tabs properly get listed for the next time brave loads
+pkill -SIGINT brave
+
+attempt=0
+
+while pgrep -x "brave" >/dev/null && [ $attempt -lt $max_attempts ]; do
+	sleep 1
+	attempt=$((attempt + 1))
+done
+
+case "$1" in
+"shutdown")
+	shutdown now
+	;;
+"exit")
+	swaymsg exit
+	;;
+"reboot")
+	systemctl reboot
+	;;
+*)
+	echo_usage
+	exit 1
+	;;
+esac

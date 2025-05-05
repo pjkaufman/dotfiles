@@ -42,7 +42,6 @@ The current list of programs that need installing and are used are as follows:
 | `rename` | apt | Helps rename files using regex from the cli |
 | `bat` | apt | Adds syntax highlighting to cat commands |
 | `imgp` | apt | A nice cli image compressor that I keep around for the time being |
-| `flameshot` | apt* | A useful screenshot utility |
 | `evince` | apt | A nice pdf viewer that can be launched from the cli |
 | `Brave` | flatpak | A chromium based browser |
 | `Minecraft` | flatpak | Minecraft game |
@@ -73,8 +72,6 @@ The current list of programs that need installing and are used are as follows:
 | `tpm` | script | Plugin manager for tmux |
 | `weasyprint` | apt | Convert html to pdf |
 | `pandoc` | apt | Document converter |
-
-*: This is currently not really working on wayland
 
 ## Known Issues
 

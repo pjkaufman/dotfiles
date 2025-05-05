@@ -58,8 +58,8 @@ if is_work_computer; then
 fi
 
 personal_apt_packages_to_install=(
-	"imgp"      # image compression
-	"evince"    # pdf editor and viewer
+	"imgp"   # image compression
+	"evince" # pdf editor and viewer
 )
 
 for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done

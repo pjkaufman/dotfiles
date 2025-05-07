@@ -40,11 +40,13 @@ function __git_ps1_windows_mount() {
     format_str=" (%s)"
   fi
 
-  local path=$(pwd)
+  local path
+  path=$(pwd)
   if iswsl && [[ "$path" =~ /mnt/[a-z]/ ]] && git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     # We're in a Windows mount path
     # Use git.exe directly to get branch info
-    local branch=$(git.exe branch --show-current 2> /dev/null)
+    local branch
+    branch=$(git.exe branch --show-current 2> /dev/null)
     if [ -n "$branch" ]; then
       # Replace %s with the actual branch name
       echo "${format_str//%s/$branch}"

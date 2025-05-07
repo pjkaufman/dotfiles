@@ -30,3 +30,27 @@ function gs() {
     echo "No branch selected. Staying on the current branch."
   fi
 }
+
+# handle an issue with git_ps1 not 100% working with submodules on
+# the windows side of a WSL2 setup
+function __git_ps1_windows_mount() {
+  local format_str="$1"
+  # Default format if none provided
+  if [ -z "$format_str" ]; then
+    format_str=" (%s)"
+  fi
+
+  local path=$(pwd)
+  if iswsl && [[ "$path" =~ /mnt/[a-z]/ ]] && git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    # We're in a Windows mount path
+    # Use git.exe directly to get branch info
+    local branch=$(git.exe branch --show-current 2> /dev/null)
+    if [ -n "$branch" ]; then
+      # Replace %s with the actual branch name
+      echo "${format_str//%s/$branch}"
+    fi
+  else
+    # Use normal __git_ps1 for WSL paths
+    __git_ps1 "$format_str"
+  fi
+}

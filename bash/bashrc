@@ -299,6 +299,7 @@ is_personal_computer && export XDG_CURRENT_DESKTOP="sway"
 is_personal_computer && export GDK_BACKEND=wayland
 is_personal_computer && export CLUTTER_BACKEND=wayland
 is_personal_computer && export QT_QPA_PLATFORM=wayland
+is_personal_computer && export ELECTRON_OZONE_PLATFORM_HINT=auto
 
 # -------------------- run common setup functions --------------------
 

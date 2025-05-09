@@ -50,5 +50,6 @@ setup_calibre_settings
 setup_obsidian_settings
 
 sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$XDG_CONFIG_HOME/gtk-3.0" --env=GTK_THEME="$GTK_THEME"
+sudo flatpak override --user --socket=wayland
 # sudo flatpak override --env=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP"
 # sudo flatpak override --env=QT_QPA_PLATFORM=wayland # this currently does not seem to work

@@ -249,6 +249,6 @@ bar {
 exec "$XDG_CONFIG_HOME/sway/scripts/session"
 exec_always "$XDG_CONFIG_HOME/sway/scripts/clipboardstart"
 exec swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
-exec swaymsg 'workspace 2; exec brave; sleep 5'
+exec swaymsg 'workspace 2; exec flatpak run com.brave.Browser --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations; sleep 5'
 exec swaymsg 'workspace 2; exec /usr/bin/syncthing'
 exec swaymsg 'workspace 3; exec flatpak run md.obsidian.Obsidian obsidian://open?vault=Obsidian --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations; sleep 5'

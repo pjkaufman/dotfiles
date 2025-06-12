@@ -297,13 +297,12 @@ _source_if "$HOME/.localrc"
 # only check for is_personal_computer after loading the computer type from `.localrc`
 # Force GTK and other use of wayland variables on personal computers
 if is_personal_computer; then
-    export XDG_CURRENT_DESKTOP="sway"
-    export GDK_BACKEND=wayland
-    export CLUTTER_BACKEND=wayland
-    export QT_QPA_PLATFORM=wayland
-    export ELECTRON_OZONE_PLATFORM_HINT=auto
+	export XDG_CURRENT_DESKTOP="sway"
+	export GDK_BACKEND=wayland
+	export CLUTTER_BACKEND=wayland
+	export QT_QPA_PLATFORM=wayland
+	export ELECTRON_OZONE_PLATFORM_HINT=auto
 fi
-
 
 # -------------------- run common setup functions --------------------
 

@@ -2,8 +2,14 @@
   "series": [
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria (light novel)",
-      "total_volumes": 13,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 13 (light novel)",
+      "total_volumes": 14,
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 14 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 14 (light novel)",
+          "release_date": "October 14, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -32,8 +38,14 @@
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
-      "total_volumes": 23,
-      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 23 (light novel)",
+      "total_volumes": 24,
+      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 24 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Death March to the Parallel World Rhapsody, Vol. 24 (light novel)",
+          "release_date": "November 11, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -78,12 +90,6 @@
       "name": "Re:ZERO -Starting Life in Another World",
       "total_volumes": 27,
       "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 27 (light novel) ",
-      "unreleased_volumes": [
-        {
-          "name": "Re:ZERO -Starting Life in Another World-, Vol. 27 (light novel) ",
-          "release_date": "June 3, 2025"
-        }
-      ],
       "slug_override": "re-starting-life-in-another-world",
       "type": "LN",
       "publisher": "YenPress",
@@ -106,7 +112,7 @@
     {
       "name": "A Certain Magical Index (light novel)",
       "total_volumes": 1,
-      "latest_volume": "A Certain Magical Index: The Old Testament Omnibus Edition",
+      "latest_volume": "A Certain Magical Index SS, Vol. 2 (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -114,13 +120,7 @@
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
       "total_volumes": 19,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Collector's Edition, Vol. 1",
-      "unreleased_volumes": [
-        {
-          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Collector's Edition, Vol. 1",
-          "release_date": "July 8, 2025"
-        }
-      ],
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -251,12 +251,6 @@
       "name": "The Saga of Tanya the Evil (light novel)",
       "total_volumes": 14,
       "latest_volume": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
-          "release_date": "June 10, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -305,12 +299,6 @@
       "name": "Seirei Gensouki: Spirit Chronicles",
       "total_volumes": 26,
       "latest_volume": "Seirei Gensouki: Spirit Chronicles Volume 26",
-      "unreleased_volumes": [
-        {
-          "name": "Seirei Gensouki: Spirit Chronicles Volume 26",
-          "release_date": "May 30, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -339,14 +327,8 @@
     },
     {
       "name": "Mushoku Tensei: Jobless Reincarnation (Light Novel)",
-      "total_volumes": 29,
-      "latest_volume": "Mushoku Tensei: Jobless Reincarnation Deluxe Edition 1 (Light Novel) (Vol. 1-3 Hardcover Omnibus)",
-      "unreleased_volumes": [
-        {
-          "name": "Mushoku Tensei: Jobless Reincarnation Deluxe Edition 1 (Light Novel) (Vol. 1-3 Hardcover Omnibus)",
-          "release_date": "November 4, 2025"
-        }
-      ],
+      "total_volumes": 28,
+      "latest_volume": "Mushoku Tensei: Jobless Reincarnation – A Journey of Two Lifetimes",
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
@@ -361,12 +343,16 @@
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 27,
-      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 11",
+      "total_volumes": 29,
+      "latest_volume": "Classroom of the Elite: Year 2 (Light Novel) Vol. 12.5",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 11",
-          "release_date": "July 8, 2025"
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 12.5",
+          "release_date": "January 6, 2026"
+        },
+        {
+          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 12",
+          "release_date": "October 7, 2025"
         }
       ],
       "type": "LN",
@@ -375,8 +361,14 @@
     },
     {
       "name": "Seraph of the End",
-      "total_volumes": 32,
-      "latest_volume": "Seraph of the End, Vol. 32",
+      "total_volumes": 33,
+      "latest_volume": "Seraph of the End, Vol. 33",
+      "unreleased_volumes": [
+        {
+          "name": "Seraph of the End, Vol. 33",
+          "release_date": "September 9, 2025"
+        }
+      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -518,10 +510,6 @@
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 8",
           "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 7",
-          "release_date": "May 30, 2025"
         }
       ],
       "type": "LN",
@@ -562,12 +550,6 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle",
       "total_volumes": 3,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
-      "unreleased_volumes": [
-        {
-          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle, Vol. 3 (light novel): Episode Lyu 2",
-          "release_date": "May 6, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"

@@ -38,9 +38,6 @@ export SSH_AUTH_SOCK=$HOME/.ssh/ssh-agent.sock
 
 export TERM=xterm-256color # needed to prevent an error on load
 
-# wine will get placed in the xdg config
-export WINEPREFIX="$XDG_CONFIG_HOME"/wine/
-
 # make sure that less history is under xdg folders
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 
@@ -90,7 +87,6 @@ prepend_path "/usr/bin"
 prepend_path "/usr/local/bin"
 prepend_path "$HOME/bin"
 prepend_path "$HOME/.local/bin"
-prepend_path "$CARGO_HOME/bin"
 prepend_path "/sbin"
 prepend_path "/usr/sbin"
 prepend_path "/usr/local/go/bin"
@@ -123,7 +119,7 @@ fi
 
 # ---------------------- local utility functions ---------------------
 
-_have() { type "$1" &>/dev/null; }
+_have() { hash "$1" &>/dev/null; }
 # shellcheck disable=SC1090
 _source_if() { [[ -r "$1" ]] && source "$1"; }
 

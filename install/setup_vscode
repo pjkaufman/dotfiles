@@ -18,6 +18,6 @@ if iswsl; then
 else
 	linux_vscode_basepath="$HOME/.config/Code/User"
 	[[ ! -d "$linux_vscode_basepath" ]] && mkdir -p "$linux_vscode_basepath"
-	ensure_file_symlink_is_in_place "$DOTFILES/vscode/settings/keybindings.json" "$linux_vscode_basepath/settings.json"
+	ensure_file_symlink_is_in_place "$DOTFILES/vscode/settings/keybindings.json" "$linux_vscode_basepath/keybindings.json"
 	ensure_file_symlink_is_in_place "$DOTFILES/vscode/settings/settings.json" "$linux_vscode_basepath/settings.json"
 fi

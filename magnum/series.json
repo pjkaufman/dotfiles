@@ -192,10 +192,10 @@
     {
       "name": "The Executioner and Her Way of Life",
       "total_volumes": 9,
-      "latest_volume": "The Executioner and Her Way of Life, Vol. 9",
+      "latest_volume": "The Executioner and Her Way of Life, Vol. 9: Wish Upon a Star, Pray to a Flower",
       "unreleased_volumes": [
         {
-          "name": "The Executioner and Her Way of Life, Vol. 9",
+          "name": "The Executioner and Her Way of Life, Vol. 9: Wish Upon a Star, Pray to a Flower",
           "release_date": "August 12, 2025"
         }
       ],
@@ -251,6 +251,12 @@
       "name": "The Saga of Tanya the Evil (light novel)",
       "total_volumes": 14,
       "latest_volume": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
+          "release_date": "October 14, 2025"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -307,12 +313,6 @@
       "name": "Arifureta: From Commonplace to World's Strongest",
       "total_volumes": 15,
       "latest_volume": "Arifureta: From Commonplace to World's Strongest: Volume 14",
-      "unreleased_volumes": [
-        {
-          "name": "Arifureta: From Commonplace to World's Strongest: Volume 14",
-          "release_date": "June 16, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -561,6 +561,15 @@
       "slug_override": "reex-light-novel",
       "type": "LN",
       "publisher": "YenPress",
+      "status": "O"
+    },
+    {
+      "name": "An Archdemon's Dilemma: How to Love Your Elf Bride",
+      "total_volumes": 19,
+      "latest_volume": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 19",
+      "slug_override": "an-archdemon-s-dilemma-how-to-love-your-slave-elf-bride",
+      "type": "LN",
+      "publisher": "JNovelClub",
       "status": "O"
     }
   ]

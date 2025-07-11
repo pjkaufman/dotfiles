@@ -55,6 +55,9 @@ input * {
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    # Start web search
+    # Based on https://github.com/ThePrimeagen/dev/blob/3d87edf76da8a78a7eaeeeeeb2ddda2fe9a2c7fb/env/.config/hypr/hyprland.conf#L30C9-L30C98
+    bindsym $mod+s exec output=$(rofi -dmenu -p "Search> " -lines 1 -no-fixed-num-lines) && [ -n "$output" ] && xdg-open "https://search.brave.com/search?q=$output" && swaymsg [app_id="brave"] focus
 
     # Use pactl to adjust volume in PulseAudio.
     bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +10%

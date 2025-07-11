@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+
+# shellcheck source=../bash/functions/computer_type_functions.sh
+source "$DOTFILES/bash/functions/computer_type_functions.sh"
+# shellcheck source=../bash/functions/flatpak_functions.sh
+source "$DOTFILES/bash/functions/flatpak_functions.sh"
+
+outputDir=out
+oldDir=old
+
+[[ ! -d $outputDir ]] && mkdir $outputDir
+[[ ! -d $oldDir ]] && mkdir $oldDir
+
+count=0
+for f in *.acsm; do
+	if [ -f "$f" ]; then
+		echo "Downloading file for $f"
+		acsmdownloader "$f"
+
+		epub_name=$(ls *.epub)
+		echo "Working on $epub_name"
+		mv "$epub_name" "$oldDir/$epub_name"
+
+		# ignore stdout, but keep any errors that might happen
+		convertebook "$oldDir/$epub_name" "$outputDir/$epub_name" 1>/dev/null
+
+		mv "$f" "$oldDir/$f"
+		echo "Finished converting $epub_name"
+
+		count=$((count + 1))
+	fi
+done
+
+echo "Converted $1 ACSM files to epub files"
+echo "Delete the \"$oldDir\" folder whenever you have handled the files in \"$outputDir\""

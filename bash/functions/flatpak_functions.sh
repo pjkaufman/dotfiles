@@ -41,3 +41,12 @@ function editepub() {
 function vieweebook() {
   flatpak run --command="ebook-viewer" com.calibre_ebook.calibre --detach "$@"
 }
+
+function convertebook() {
+  if [ "$#" -le 1 ]; then
+    echo "No arguments supplied"
+    echo "Usage convertebook [epub-file] [new-epub-file]"
+  fi
+
+  flatpak run --command="ebook-convert" com.calibre_ebook.calibre "$1" "$2"
+}

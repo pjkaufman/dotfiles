@@ -24,4 +24,12 @@ if hasFileTypes "epub"; then
 	mv "$DOWNLOADS"/*.epub "$temp_ebooks/"
 fi
 
+if hasFileTypes "acsm"; then
+	echo "Moving adobe digital edition files"
+	temp_ebooks="$EBOOKS"/Temp/drm
+	[[ ! -d "$temp_ebooks" ]] && mkdir -p "$temp_ebooks"
+
+	mv "$DOWNLOADS"/*.acsm "$temp_ebooks/"
+fi
+
 echo "Cleaned up downloads folder"

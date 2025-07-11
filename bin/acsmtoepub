@@ -2,9 +2,9 @@
 
 set -e
 
-# shellcheck source=../bash/functions/computer_type_functions.sh
+# shellcheck source=./bash/functions/computer_type_functions.sh
 source "$DOTFILES/bash/functions/computer_type_functions.sh"
-# shellcheck source=../bash/functions/flatpak_functions.sh
+# shellcheck source=./bash/functions/flatpak_functions.sh
 source "$DOTFILES/bash/functions/flatpak_functions.sh"
 
 outputDir=out
@@ -19,7 +19,7 @@ for f in *.acsm; do
 		echo "Downloading file for $f"
 		acsmdownloader "$f"
 
-		epub_name=$(ls *.epub)
+		epub_name=$(ls ./*.epub)
 		echo "Working on $epub_name"
 		mv "$epub_name" "$oldDir/$epub_name"
 

@@ -20,3 +20,11 @@ This is an all in one place to do ebook modifications.
 *: the wine version is needed for working with Kindle for PC in wine if your non-wine Calibre cannot detect the key for Kindle for PC 
 
 _Note: this method is only meant to be used for books you have bought. This is not meant to be something used on books you have not bought.
+
+## Theming Calibre
+
+Instructions are originally from [https://github.com/catppuccin/calibre](https://github.com/catppuccin/calibre).
+
+1. Open Calibre's preferences and navigate to Interface > Look & feel.
+2. Click the Adjust colors button.
+3. Click the Import button, select your theme file from `~/dotfiles/calibre/themes`, and apply!

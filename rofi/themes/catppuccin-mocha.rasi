@@ -9,9 +9,9 @@
     grey: #6c7086;
 }
 
-element-text, element-icon , mode-switcher {
+element-text, element-icon, mode-switcher {
     background-color: inherit;
-    text-color:       inherit;
+    text-color: inherit;
 }
 
 window {
@@ -25,7 +25,7 @@ mainbox {
 }
 
 inputbar {
-    children: [prompt,entry];
+    children: [prompt, entry];
     background-color: @bg-col;
     border-radius: 5px;
     padding: 2px;
@@ -37,6 +37,7 @@ prompt {
     text-color: @bg-col;
     border-radius: 3px;
     margin: 20px 0px 0px 20px;
+    vertical-align: 0.5; /* Add this to vertically center the prompt */
 }
 
 textbox-prompt-colon {
@@ -45,10 +46,11 @@ textbox-prompt-colon {
 }
 
 entry {
-    padding: 0px;
-    margin: 20px 0px 0px 10px;
+    padding: 6px; /* Match the padding of the prompt */
+    margin: 20px 0px 0px 10px; /* Match the vertical margin of the prompt */
     text-color: @fg-col;
     background-color: @bg-col;
+    vertical-align: 0.5; /* Add this to vertically center the entry */
 }
 
 listview {
@@ -61,7 +63,7 @@ listview {
 element {
     padding: 0px;
     background-color: @bg-col;
-    text-color: @fg-col  ;
+    text-color: @fg-col;
 }
 
 element-icon {
@@ -69,8 +71,8 @@ element-icon {
 }
 
 element selected {
-    background-color:  @selected-col ;
-    text-color: @fg-col2  ;
+    background-color: @selected-col;
+    text-color: @fg-col2;
 }
 
 mode-switcher {
@@ -81,13 +83,13 @@ button {
     padding: 10px;
     background-color: @bg-col-light;
     text-color: @grey;
-    vertical-align: 0.5; 
+    vertical-align: 0.5;
     horizontal-align: 0.5;
 }
 
 button selected {
-  background-color: @bg-col;
-  text-color: @blue;
+    background-color: @bg-col;
+    text-color: @blue;
 }
 
 message {

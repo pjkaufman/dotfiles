@@ -7,7 +7,7 @@
       "unreleased_volumes": [
         {
           "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 14 (light novel)",
-          "release_date": "October 14, 2025"
+          "release_date": "October 21, 2025"
         }
       ],
       "type": "LN",
@@ -242,7 +242,7 @@
       "unreleased_volumes": [
         {
           "name": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
-          "release_date": "October 14, 2025"
+          "release_date": "October 21, 2025"
         }
       ],
       "type": "LN",
@@ -363,12 +363,6 @@
       "name": "Seraph of the End",
       "total_volumes": 33,
       "latest_volume": "Seraph of the End, Vol. 33",
-      "unreleased_volumes": [
-        {
-          "name": "Seraph of the End, Vol. 33",
-          "release_date": "September 9, 2025"
-        }
-      ],
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -490,10 +484,6 @@
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 9",
           "release_date": "October 30, 2025"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 8.5",
-          "release_date": "September 30, 2025"
         }
       ],
       "type": "LN",
@@ -540,8 +530,14 @@
     },
     {
       "name": "Re:ZERO Ex (light novel)",
-      "total_volumes": 5,
-      "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 5 (light novel): The Tale of the Scarlet Princess",
+      "total_volumes": 6,
+      "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel)",
+          "release_date": "March 10, 2026"
+        }
+      ],
       "slug_override": "reex-light-novel",
       "type": "LN",
       "publisher": "YenPress",

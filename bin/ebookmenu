@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+# Do not add e as fzf throws an error if no item is selectable for the query when you hit enter
+# set -x
+
+# shellcheck source=./bash/functions/computer_type_functions.sh
+source "$DOTFILES/bash/functions/computer_type_functions.sh"
+
+# shellcheck source=./bash/functions/personal_functions.sh
+source "$DOTFILES/bash/functions/personal_functions.sh"
+
+# shellcheck source=./bash/functions/flatpak_functions.sh
+source "$DOTFILES/bash/functions/flatpak_functions.sh"
+
+TEMP_PATH="$EBOOKS/Temp"
+DRM_PATH="$TEMP_PATH/drm"
+LIBRARY_PATH="$EBOOKS/Library"
+
+# Check if fzf is installed
+if ! command -v fzf >/dev/null 2>&1; then
+    echo "Error: 'fzf' is required but not installed. Please install fzf to use this menu."
+    exit 1
+fi
+
+# TODO: can the logic in this file be refactored/made easier to use and maintain?
+
+# Menu options
+MENU_OPTIONS=(
+    "Remove DRM"
+    "Clean Temp"
+    "Download Cleanup"
+    "Move Temp"
+    "Compress"
+    "Mass Rename"
+    "Rename"
+    "Update"
+)
+
+# Main menu with fzf
+CHOICE=$(printf '%s\n' "${MENU_OPTIONS[@]}" | fzf --prompt="EBOOK Tasks> " --height=10 --border --layout=reverse --exit-0)
+
+case "$CHOICE" in
+    "Remove DRM")
+        LOCATION="$(pwd)"
+        cd "$DRM_PATH" || exit 1
+        acsmtoepub
+        cd "$LOCATION" || exit 1
+        ;;
+    "Clean Temp")
+        find "$TEMP_PATH" -type d -empty ! -path "$DRM_PATH/*" -delete
+        ;;
+    "Download Cleanup")
+        downloadcleanup || echo "failed to cleanup download folder"
+        ;;
+    "Move Temp")
+        echo "TODO: Implement movetemp"
+        # Example: Move matching files from $TEMP_PATH to user-specified folder
+        ;;
+    "Compress")
+        # List folders in TEMP_PATH (including subfolders)
+        FOLDER=$(find "$TEMP_PATH" -type d | fzf --prompt="Select folder to compress> " --height=15 --border --layout=reverse --exit-0)
+        if [ -n "$FOLDER" ] && [ -d "$FOLDER" ]; then
+            LOCATION="$(pwd)"
+            cd "$FOLDER" || exit 1
+            compressepub || echo "failed to compress epubs in folder $FOLDER"
+            cd "$LOCATION" || exit 1
+        fi
+        ;;
+    "Rename")
+        echo "TODO: Implement Rename"
+        ;;
+    "Mass Rename")
+        echo "TODO: Implement Mass Rename"
+        ;;
+    "Update")
+        # Select EPUB file
+        EPUBFILE=$(find "$TEMP_PATH" -type f -name "*.epub" | fzf --prompt="Select EPUB file> " --height=15 --border --layout=reverse --exit-0)
+        [ -z "$EPUBFILE" ] && exit 0
+
+        # Submenu loop
+        while true; do
+            # TODO move this out of loop and just cut it down to actions
+            # add logic for TUI manual fixes
+            # add logic for non-TUI manual fixes
+            # add logic for moving tl notes in file
+            UPDATE_OPTIONS=(
+                "validateepub: Validate EPUB"
+                "validateandfixepub: Validate and Fix EPUB"
+                "manuallyfixableissues: Display manually fixable issues"
+                "editeepub: Edit EPUB"
+                "move:"
+            )
+            UPDATE_CHOICE=$(printf '%s\n' "${UPDATE_OPTIONS[@]}" | fzf --no-mouse --prompt="EPUB Actions> " --height=10 --border --layout=reverse --exit-0 | cut -d: -f1)
+            case "$UPDATE_CHOICE" in
+                validateepub)
+                    validateepub "$EPUBFILE"
+                    ;;
+                validateandfixepub)
+                    validateepub "$EPUBFILE" out.json && fixepub "$EPUBFILE" out.json && rm out.json && validateepub "$EPUBFILE"
+                    ;;
+                manuallyfixableissues)
+                    echo "TODO: Display manually fixable issues (to implement later...)"
+                    ;;
+                editeepub)
+                    editepub "$EPUBFILE" &
+                    ;;
+                move)
+                    # Find all subfolders under $LIBRARY_PATH, remove .stfolder and .sdr, and strip $LIBRARY_PATH from the results
+                    FOLDER=$(find "$LIBRARY_PATH" -type d ! -name "*.sdr" ! -name ".stfolder" ! -name "Library" \
+                        | sed "s|^$LIBRARY_PATH/||" \
+                        | fzf --prompt="Select folder to move to or create it> " --height=15 --border --layout=reverse --print-query)
+
+                    # Take user input (first line of fzf output)
+                    FOLDER=$(echo "$FOLDER" | head -n1)
+
+                    if [ -n "$FOLDER" ]; then
+                        # Add $LIBRARY_PATH base path (if not already absolute)
+                        TARGET_FOLDER="$LIBRARY_PATH/$FOLDER"
+                        if [ ! -d "$TARGET_FOLDER" ]; then
+                            mkdir -p "$TARGET_FOLDER"
+                        fi
+
+                        EPUB_NAME="$(basename "$EPUBFILE")"
+                        NAME=$(find "$TARGET_FOLDER" -maxdepth 1 -type f -name "*.epub" -printf "%f\n" \
+                            | fzf --prompt="Enter file name> " --height=15 --border --layout=reverse --print-query --query="$EPUB_NAME")
+                        NAME=$(echo "$NAME" | head -n1)
+                        [ -z "$NAME" ] && echo "You must select/enter a filename" && exit 1
+                        mv "$EPUBFILE" "$TARGET_FOLDER/$NAME"
+                        # Remove old epub as it is not needed
+                        [ -f "$EPUBFILE.original" ] && rm "$EPUBFILE.original"
+                        exit 0
+                    fi
+                    ;;
+                *)
+                    # Esc or closed menu
+                    break
+                    ;;
+            esac
+        done
+        ;;
+    *)
+        # Esc or closed menu
+        exit 0
+        ;;
+esac

@@ -58,7 +58,7 @@ function validateepub() {
   elif [ "$#" -eq 1 ]; then
     epub-lint validate -f "$1"
   else
-    epub-lint validate -f "$1" --json-file "$2"
+    epub-lint validate -f "$1" --output-file "$2"
   fi
 }
 

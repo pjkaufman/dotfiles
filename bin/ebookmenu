@@ -96,7 +96,7 @@ case "$CHOICE" in
                     validateepub "$EPUBFILE"
                     ;;
                 validateandfixepub)
-                    validateepub "$EPUBFILE" out.json && fixepub "$EPUBFILE" out.json && rm out.json && validateepub "$EPUBFILE"
+                    validateepub "$EPUBFILE" out.txt && fixepub "$EPUBFILE" out.txt && rm out.txt && validateepub "$EPUBFILE"
                     ;;
                 manuallyfixableissues)
                     echo "TODO: Display manually fixable issues (to implement later...)"

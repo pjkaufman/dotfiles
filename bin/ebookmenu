@@ -30,7 +30,7 @@ MENU_OPTIONS=(
     "Clean Temp"
     "Download Cleanup"
     "Move Temp"
-    "Compress"
+    "Optimze"
     "Mass Rename"
     "Rename"
     "Update"
@@ -56,13 +56,13 @@ case "$CHOICE" in
         echo "TODO: Implement movetemp"
         # Example: Move matching files from $TEMP_PATH to user-specified folder
         ;;
-    "Compress")
+    "Optimize")
         # List folders in TEMP_PATH (including subfolders)
-        FOLDER=$(find "$TEMP_PATH" -type d | fzf --prompt="Select folder to compress> " --height=15 --border --layout=reverse --exit-0)
+        FOLDER=$(find "$TEMP_PATH" -type d | fzf --prompt="Select folder to optimize> " --height=15 --border --layout=reverse --exit-0)
         if [ -n "$FOLDER" ] && [ -d "$FOLDER" ]; then
             LOCATION="$(pwd)"
             cd "$FOLDER" || exit 1
-            compressepub || echo "failed to compress epubs in folder $FOLDER"
+            optimizeepub || echo "failed to optimize epubs in folder $FOLDER"
             cd "$LOCATION" || exit 1
         fi
         ;;
@@ -77,6 +77,9 @@ case "$CHOICE" in
         EPUBFILE=$(find "$TEMP_PATH" -type f -name "*.epub" | fzf --prompt="Select EPUB file> " --height=15 --border --layout=reverse --exit-0)
         [ -z "$EPUBFILE" ] && exit 0
 
+        EPUB_NAME="$(basename "$EPUBFILE")"
+        echo "Working on $EPUB_NAME"
+
         # Submenu loop
         while true; do
             # TODO move this out of loop and just cut it down to actions
@@ -89,6 +92,7 @@ case "$CHOICE" in
                 "manuallyfixableissues: Display manually fixable issues"
                 "editeepub: Edit EPUB"
                 "move:"
+                "organizenotes:"
             )
             UPDATE_CHOICE=$(printf '%s\n' "${UPDATE_OPTIONS[@]}" | fzf --no-mouse --prompt="EPUB Actions> " --height=10 --border --layout=reverse --exit-0 | cut -d: -f1)
             case "$UPDATE_CHOICE" in
@@ -99,7 +103,8 @@ case "$CHOICE" in
                     validateepub "$EPUBFILE" out.txt && fixepub "$EPUBFILE" out.txt && rm out.txt && validateepub "$EPUBFILE"
                     ;;
                 manuallyfixableissues)
-                    echo "TODO: Display manually fixable issues (to implement later...)"
+                    # echo "TODO: Display manually fixable issues (to implement later...)"
+                    epubmanualfixes "$EPUBFILE" "use-tui"
                     ;;
                 editeepub)
                     editepub "$EPUBFILE" &
@@ -120,7 +125,7 @@ case "$CHOICE" in
                             mkdir -p "$TARGET_FOLDER"
                         fi
 
-                        EPUB_NAME="$(basename "$EPUBFILE")"
+                        EPUB_NAME="${EPUB_NAME// /_}"
                         NAME=$(find "$TARGET_FOLDER" -maxdepth 1 -type f -name "*.epub" -printf "%f\n" \
                             | fzf --prompt="Enter file name> " --height=15 --border --layout=reverse --print-query --query="$EPUB_NAME")
                         NAME=$(echo "$NAME" | head -n1)
@@ -130,6 +135,9 @@ case "$CHOICE" in
                         [ -f "$EPUBFILE.original" ] && rm "$EPUBFILE.original"
                         exit 0
                     fi
+                    ;;
+                organizenotes)
+                    organizenotes "$EPUBFILE"
                     ;;
                 *)
                     # Esc or closed menu

@@ -18,12 +18,12 @@ function enablebright() {
 
 # ebook functions
 
-# compressepub helps with compressing epubs so they take up less space
-function compressepub() {
+# optimizeepub helps with compressing epubs so they take up less space
+function optimizeepub() {
   if [ "$#" -eq 0 ]; then
-    epub-lint compress-and-lint -i
+    epub-lint optimize -i
   else
-    epub-lint compress-and-lint -i -l "$1"
+    epub-lint optimize -i -l "$1"
   fi
 }
 
@@ -31,7 +31,7 @@ function compressepub() {
 # the first param is expected to be an epub file
 # the second param is expected to be a Markdown file
 function epubreplaceallstrings() {
-  epub-lint replace-strings -f "$1" -e "$2"
+  epub-lint replace -f "$1" -e "$2"
 }
 
 # epubmanualfixes helps go through manually fixable epub issues
@@ -43,31 +43,40 @@ function epubmanualfixes() {
     echo "No arguments supplied"
     echo "Usage epubmanualfixes [epub-file] [any value to indicate that you want to use the TUI] [optional TUI log file]"
   elif [ "$#" -eq 1 ]; then
-    epub-lint fixable -f "$1" -a
+    epub-lint fix content -f "$1" -a
   elif [ "$#" -eq 2 ]; then
-    epub-lint fixable -f "$1" -a --use-tui
+    epub-lint fix content -f "$1" -a --use-tui
   else
-    epub-lint fixable -f "$1" -a --use-tui --log-file "$3"
+    epub-lint fix content -f "$1" -a --use-tui --log-file "$3"
   fi
 }
 
 function validateepub() {
   if [ "$#" -eq 0 ]; then
     echo "No arguments supplied"
-    echo "Usage validateepub [epub-file] [optional-json-output-file]"
+    echo "Usage validateepub [epub-file] [optional out]"
   elif [ "$#" -eq 1 ]; then
     epub-lint validate -f "$1"
   else
-    epub-lint validate -f "$1" --output-file "$2"
+    epub-lint validate -f "$1" --out "$2"
   fi
 }
 
 function fixepub() {
   if [ ! "$#" -eq 2 ]; then
     echo "Incorrect number of arguments supplied"
-    echo "Usage fixepub  [epub-file] [json-file]"
+    echo "Usage fixepub [epub-file] [json-file]"
   else
-    epub-lint fix-validation -f "$1" --issue-file "$2" --cleanup-jnovels
+    epub-lint fix validation -f "$1" --issues "$2" --cleanup-jnovels
+  fi
+}
+
+function organizenotes() {
+  if [ ! "$#" -eq 1 ]; then
+    echo "Incorrect number of arguments supplied"
+    echo "Usage organizenotes [epub-file]"
+  else
+    epub-lint organize-notes -f "$1"
   fi
 }
 

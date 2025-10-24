@@ -62,6 +62,7 @@ case "$CHOICE" in
 	if [ -n "$FOLDER" ] && [ -d "$FOLDER" ]; then
 		LOCATION="$(pwd)"
 		cd "$FOLDER" || exit 1
+		# shellcheck disable=SC2119 # it is not really used here as no params need to be handled
 		optimizeepub || echo "failed to optimize epubs in folder $FOLDER"
 		cd "$LOCATION" || exit 1
 	fi

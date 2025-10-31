@@ -30,7 +30,7 @@ MENU_OPTIONS=(
 	"Clean Temp"
 	"Download Cleanup"
 	"Move Temp"
-	"Optimze"
+	"Optimize"
 	"Mass Rename"
 	"Rename"
 	"Update"

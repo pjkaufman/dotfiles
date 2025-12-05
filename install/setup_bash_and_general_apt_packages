@@ -12,7 +12,6 @@ for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in
 declare -A apt_packages_to_install=(
 	["grep"]="grep"
 	["curl"]="curl"
-	["rg"]="ripgrep" # better version of grep
 	["fzf"]="fzf"    # fuzzy finder for the terminal
 	["btop"]="btop"  # linux task manager
 	["python3"]="python3"

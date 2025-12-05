@@ -49,7 +49,6 @@ install_script_section_text=(
   "setup flatpaks"
   "setup sway"
   "setup vscode"
-  "setup neovim"
   "setup doc converts"
 )
 
@@ -66,7 +65,6 @@ declare -A install_script_sections_files=(
   ["setup kitty"]="install/setup_kitty"
   ["setup rkhunter"]="install/setup_rkhunter"
   ["setup sway"]="install/setup_sway"
-  ["setup neovim"]="install/setup_neovim"
   ["setup vscode"]="install/setup_vscode"
   ["setup doc converts"]="install/setup_doc_converters"
 )

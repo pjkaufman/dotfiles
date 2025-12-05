@@ -15,12 +15,19 @@ source "$DOTFILES/bash/functions/flatpak_functions.sh"
 TEMP_PATH="$EBOOKS/Temp"
 DRM_PATH="$TEMP_PATH/drm"
 LIBRARY_PATH="$EBOOKS/Library"
+NOTES_PATH="$HOME/Notes/Obsidian"
 
 # Check if fzf is installed
 if ! command -v fzf >/dev/null 2>&1; then
 	echo "Error: 'fzf' is required but not installed. Please install fzf to use this menu."
 	exit 1
 fi
+
+function select_file_from_library() {
+	# we ignore the shell check here since we want to echo the result rather than just let it disappear
+	# shellcheck disable=SC2005
+	echo "$(find "$LIBRARY_PATH" -type f -name "*.epub" | fzf --prompt="Select EPUB file> " --height=15 --border --layout=reverse --exit-0)"
+}
 
 # TODO: can the logic in this file be refactored/made easier to use and maintain?
 
@@ -34,6 +41,8 @@ MENU_OPTIONS=(
 	"Mass Rename"
 	"Rename"
 	"Update"
+	"Copy from Library"
+	"Replace Strings"
 )
 
 # Main menu with fzf
@@ -86,7 +95,6 @@ case "$CHOICE" in
 		# TODO move this out of loop and just cut it down to actions
 		# add logic for TUI manual fixes
 		# add logic for non-TUI manual fixes
-		# add logic for moving tl notes in file
 		UPDATE_OPTIONS=(
 			"validateepub: Validate EPUB"
 			"validateandfixepub: Validate and Fix EPUB"
@@ -104,7 +112,6 @@ case "$CHOICE" in
 			validateepub "$EPUBFILE" out.txt && fixepub "$EPUBFILE" out.txt && rm out.txt && validateepub "$EPUBFILE"
 			;;
 		manuallyfixableissues)
-			# echo "TODO: Display manually fixable issues (to implement later...)"
 			epubmanualfixes "$EPUBFILE" "use-tui"
 			;;
 		editeepub)
@@ -146,6 +153,37 @@ case "$CHOICE" in
 			;;
 		esac
 	done
+	;;
+"Copy from Library")
+	EPUBFILE="$(select_file_from_library)"
+	[ -z "$EPUBFILE" ] && echo "You must select an actual file" && exit 0
+
+	DESTINATION_FOLDER="$TEMP_PATH/$(basename "$(dirname "$EPUBFILE")")"
+
+	[[ ! -d "$DESTINATION_FOLDER" ]] && mkdir "$DESTINATION_FOLDER"
+
+	cp "$EPUBFILE" "$DESTINATION_FOLDER"
+	echo "Copied $(basename "$EPUBFILE") to $DESTINATION_FOLDER"
+	;;
+"Replace Strings")
+	REPLACEMENTS_FILE="$NOTES_PATH/replaceme.md"
+	[[ ! -f "$REPLACEMENTS_FILE" ]] && echo "Replacements file \"$REPLACEMENTS_FILE\" must exist in order to run string replacements" && exit 0
+
+	EPUBFILE="$(select_file_from_library)"
+	[ -z "$EPUBFILE" ] && echo "You must select an actual file" && exit 0
+
+	DESTINATION_FOLDER="$TEMP_PATH/$(basename "$(dirname "$EPUBFILE")")"
+
+	[[ ! -d "$DESTINATION_FOLDER" ]] && mkdir "$DESTINATION_FOLDER"
+
+	cp "$EPUBFILE" "$DESTINATION_FOLDER"
+
+	EPUB_NAME="$(basename "$EPUBFILE")"
+	echo "Copied $EPUB_NAME to $DESTINATION_FOLDER"
+
+	TEMP_EPUB="$DESTINATION_FOLDER/$EPUB_NAME"
+
+	epubreplaceallstrings "$TEMP_EPUB" "$REPLACEMENTS_FILE"
 	;;
 *)
 	# Esc or closed menu

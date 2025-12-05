@@ -33,7 +33,6 @@ The current list of programs that need installing and are used are as follows:
 | Program Name | Installation Method | Use Case |
 | ------------ | ------------------- | -------- |
 | `grep` | apt | General cli utility for string searching |
-| `ripgrep` | apt | General cli utility for string searching that is used in some NeoVim plugins |
 | `curl` | apt | General cli utility for getting webpage content from the cli |
 | `fzf` | apt | Fuzzy finder for the cli |
 | `btop` | apt | Cli task/resource manager |
@@ -54,13 +53,6 @@ The current list of programs that need installing and are used are as follows:
 | `light` | apt | Program for handing brightness changes |
 | `pulseaudio-utils` | apt | Program for updating sound settings |
 | `kitty` | apt | Default terminal |
-| `NeoVim` | PPA | A personal development editor for editing different kinds of files |
-| `codespell` | pip3 | A linter for spelling correction for NeoVim |
-| `black` | pip3 | A linter for python used in NeoVim |
-| `flake8` | pip3 | A python formatter used in NeoVim |
-| `beautysh` | pip3 | A bash formatter for bash/sh files in NeoVim |
-| `protolint` | Golang | A proto file formatter/linter for NeoVim |
-| `golangci-lint` | Golang | A Golang file linter for NeoVim |
 | `goimports` | Golang | A Golang file modifier that adds missing imports where possible |
 | `dlv` | Golang | A Golang debugger server |
 | `eslint` | NPM | A JS/TS file formatter/linter |
@@ -75,14 +67,9 @@ The current list of programs that need installing and are used are as follows:
 
 ## Known Issues
 
-### Neovim
-
-- The clipboard does not seem to connect to the system clipboard properly
-- Running Go tests does not seem to work
-- golangci-lint does not seem to work for Go
+- VsCode is always updating a config when it launches
 
 ## TODOs
 
-- Convert NeoVim to a more stable setup
 - Add option to convert church songs to odf or similar format from html for flexibility
 - Add Obsidian configs if possible

@@ -4,12 +4,6 @@
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria (light novel)",
       "total_volumes": 14,
       "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 14 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? On the Side: Sword Oratoria, Vol. 14 (light novel)",
-          "release_date": "October 21, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -40,12 +34,6 @@
       "name": "Death March to the Parallel World Rhapsody",
       "total_volumes": 24,
       "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 24 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Death March to the Parallel World Rhapsody, Vol. 24 (light novel)",
-          "release_date": "November 11, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -84,12 +72,6 @@
       "name": "Re:ZERO -Starting Life in Another World",
       "total_volumes": 28,
       "latest_volume": "Re:ZERO -Starting Life in Another World-, Vol. 28 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Re:ZERO -Starting Life in Another World-, Vol. 28 (light novel)",
-          "release_date": "December 9, 2025"
-        }
-      ],
       "slug_override": "re-starting-life-in-another-world",
       "type": "LN",
       "publisher": "YenPress",
@@ -129,8 +111,14 @@
     },
     {
       "name": "Sword Art Online Progressive",
-      "total_volumes": 8,
-      "latest_volume": "Sword Art Online Progressive 8 (light novel)",
+      "total_volumes": 9,
+      "latest_volume": "Sword Art Online Progressive 9 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Sword Art Online Progressive 9 (light novel)",
+          "release_date": "May 12, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -185,8 +173,14 @@
     },
     {
       "name": "The Executioner and Her Way of Life",
-      "total_volumes": 9,
-      "latest_volume": "The Executioner and Her Way of Life, Vol. 9: Wish Upon a Star, Pray to a Flower",
+      "total_volumes": 10,
+      "latest_volume": "The Executioner and Her Way of Life, Vol. 10: Otherworlders Must Die",
+      "unreleased_volumes": [
+        {
+          "name": "The Executioner and Her Way of Life, Vol. 10: Otherworlders Must Die",
+          "release_date": "May 12, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -239,12 +233,6 @@
       "name": "The Saga of Tanya the Evil (light novel)",
       "total_volumes": 14,
       "latest_volume": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
-          "release_date": "October 21, 2025"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -264,7 +252,7 @@
       "unreleased_volumes": [
         {
           "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat, Vol. 8 (light novel)",
-          "release_date": "January 6, 2026"
+          "release_date": "February 3, 2026"
         }
       ],
       "type": "LN",
@@ -281,12 +269,12 @@
     },
     {
       "name": "How a Realist Hero Rebuilt the Kingdom",
-      "total_volumes": 20,
-      "latest_volume": "How a Realist Hero Rebuilt the Kingdom: Volume 20",
+      "total_volumes": 21,
+      "latest_volume": "How a Realist Hero Rebuilt the Kingdom: Short Story Chronicles",
       "unreleased_volumes": [
         {
-          "name": "How a Realist Hero Rebuilt the Kingdom: Volume 20",
-          "release_date": "December 29, 2025"
+          "name": "How a Realist Hero Rebuilt the Kingdom: Short Story Chronicles",
+          "release_date": "June 4, 2026"
         }
       ],
       "type": "LN",
@@ -377,8 +365,8 @@
     },
     {
       "name": "Blue Exorcist",
-      "total_volumes": 31,
-      "latest_volume": "Blue Exorcist, Vol. 31",
+      "total_volumes": 32,
+      "latest_volume": "Blue Exorcist, Vol. 1",
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -471,19 +459,7 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 12",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 11",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 10",
-          "release_date": "November 30, 2025"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 9",
-          "release_date": "October 30, 2025"
+          "release_date": "January 30, 2026"
         }
       ],
       "type": "LN",
@@ -492,8 +468,14 @@
     },
     {
       "name": "Black Summoner",
-      "total_volumes": 21,
-      "latest_volume": "Black Summoner: Volume 21",
+      "total_volumes": 22,
+      "latest_volume": "Black Summoner: Volume 22",
+      "unreleased_volumes": [
+        {
+          "name": "Black Summoner: Volume 22",
+          "release_date": "March 20, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -531,10 +513,10 @@
     {
       "name": "Re:ZERO Ex (light novel)",
       "total_volumes": 6,
-      "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel)",
+      "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel): The Battle Hymn of the Sword Devil",
       "unreleased_volumes": [
         {
-          "name": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel)",
+          "name": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel): The Battle Hymn of the Sword Devil",
           "release_date": "March 10, 2026"
         }
       ],
@@ -545,8 +527,14 @@
     },
     {
       "name": "An Archdemon's Dilemma: How to Love Your Elf Bride",
-      "total_volumes": 19,
-      "latest_volume": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 19",
+      "total_volumes": 20,
+      "latest_volume": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 20",
+      "unreleased_volumes": [
+        {
+          "name": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 20",
+          "release_date": "January 22, 2026"
+        }
+      ],
       "slug_override": "an-archdemon-s-dilemma-how-to-love-your-slave-elf-bride",
       "type": "LN",
       "publisher": "JNovelClub",

@@ -1,0 +1,166 @@
+@page {
+  size: 6in 9in;
+  margin: .5in .75in;
+}
+
+@page songs {
+  counter-increment: songpage; /* Increment our custom counter each songs page */
+
+  @bottom-center {
+    content: counter(songpage); /* Display the relative page number */
+    font-size: 12pt;
+    font-family: sans-serif; /* optional */
+  }
+}
+
+/* First songs page: reset and start at 1 (it will increment to 1 after reset) */
+@page songs:first {
+  counter-reset: songpage 0;
+}
+
+/* Apply the named page to #songs and everything after */
+#songs, #songs ~ * {
+  page: songs;
+}
+
+html {
+    font-family: arial;
+    font-size: small;
+}
+
+.keep-together { 
+    page-break-inside: avoid; 
+}
+
+.metadata {
+    width: 100%;
+    display: block;
+    font-size: smaller;
+    padding-bottom: 2px;
+}
+
+.row-padding {
+    padding-bottom: 2px;
+}
+
+.melody {
+    width: 50%;
+    float: left;
+}
+
+.melody-75 {
+    width: 75%;
+    float: left;
+}
+
+.verse {
+    width: 25%;
+    float: left;
+    text-align: right;
+}
+
+.verse-5 {
+    width: 5%;
+    float: left;
+    text-align: right;
+}
+
+.verse-40 {
+    width: 40%;
+    float: left;
+    text-align: right;
+}
+
+.author {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+.author-60 {
+  width: 60%;
+  float: left;
+  text-align: right;
+}
+
+.key {
+    width: 25%;
+    float: left;
+    text-align: right;
+}
+
+.key-10 {
+    width: 10%;
+    float: left;
+    text-align: right;
+}
+
+.key-45 {
+    width: 45%;
+    float: left;
+    text-align: right;
+}
+
+.other-title {
+    font-size: small;
+}
+
+p {
+    line-height: 1;
+    padding-bottom: 2px;
+}
+
+h1 {
+    font-size: 1em;
+}
+
+#songs > .keep-together > h1 {
+  text-align: center;
+}
+
+#cover {
+    text-align: center;
+}
+
+/* TOC Styles */
+#contents {
+    break-after: always;
+}
+
+#contents a {
+    text-decoration:none; color: black;
+}
+
+#contents a::before {
+    content: target-text(attr(href));
+}
+
+#contents a::after {
+    content: target-counter(attr(href), page);
+    float: right;
+}
+
+#contents .toc {
+    text-align: center;
+    font-size: 20px;
+}
+
+#contents li {
+    border-bottom: 1px dashed rgb(200,200,200);
+    list-style: none;
+}
+
+#contents ul {
+    padding-left: 0em;
+    font-size: small;
+}
+
+.page {
+  width: 10%;
+  float: right;
+  text-align: right;
+}
+
+.end-page {
+  page-break-after: always;
+}

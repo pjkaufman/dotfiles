@@ -11,11 +11,15 @@ extra:
 dark-html:
 	@$(eval type ?= 'Abridged')
 	@cat ./html/dark.css > ./html/styles.css && cat ./html/common.css >> ./html/styles.css
-	@song-converter create-html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
+	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
 html:
 	@$(eval type ?= 'Abridged')
 	@cat ./html/common.css > ./html/styles.css
-	@song-converter create-html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
+	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
+book:
+	@$(eval location ?= 'R')
+	@cat ./html/common.css > ./html/styles.css
+	@song-converter create book -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -l $(location)
 pdf:
 	@echo "Creating PDF"
 	weasyprint ./html/churchSongs.html churchSongs.pdf -s ./html/styles.css
@@ -25,7 +29,15 @@ odt:
 show:
 	evince churchSongs.pdf
 csv:
-	song-converter create-csv -d ./stagingGround/ -o churchSongs.csv
+	song-converter create csv -d ./stagingGround/ -o churchSongs.csv
+red-book:
+	@echo "Creating Songs We Love"
+	@make normal
+	@make book
+back:
+	@echo "Creating More Songs We Love"
+	@make normal
+	@make book
 all:
 	@echo "Creating Abridged Songs"
 	@make normal

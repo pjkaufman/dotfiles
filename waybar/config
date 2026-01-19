@@ -6,7 +6,7 @@
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "disk", "battery", "clock", "network"],
+    "modules-right": ["pulseaudio", "cpu", "memory", "backlight", "disk", "custom/camera", "battery", "clock", "network"],
     // Modules configuration
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -71,5 +71,11 @@
         "interval": 60,
         "format": "{used}/{total} ({percentage_used}%)",
         "path": "/"
+    },
+    "custom/camera": {
+        "exec": "~/dotfiles/waybar/scripts/camera-status.sh",
+        "interval": 15,
+        "return-type": "json",                  
+        "format": "{}  "
     }
 }

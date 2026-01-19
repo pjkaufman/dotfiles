@@ -52,7 +52,8 @@ window#waybar {
 #pulseaudio,
 #memory,
 #network,
-#power {
+#power,
+#custom-camera {
   background-color: @surface0;
   margin: 7px 0px 0px 5px;
   padding: 10px 5px;
@@ -104,4 +105,12 @@ tooltip {
 
 tooltip label {
     color: @text;
+}
+
+#custom-camera.no-camera {
+    color: @red;
+}
+
+#custom-camera.camera-found {
+    color: @green;
 }

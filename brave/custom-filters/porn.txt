@@ -5,3 +5,4 @@
 ! Homepage: https://github.com/pjkaufman/dotfiles
 
 ||toongod.org^
+||webtoonscan.com^

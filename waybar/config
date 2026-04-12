@@ -76,6 +76,6 @@
         "exec": "~/dotfiles/waybar/scripts/camera-status.sh",
         "interval": 15,
         "return-type": "json",                  
-        "format": "{}  "
+        "format": "{} 📷︎ "
     }
 }

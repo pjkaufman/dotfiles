@@ -224,11 +224,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 mode "exit: [l]ogout, [r]eboot, [s]hutdown [h]ibernate [x]lock" {
-  bindsym l exec "$XDG_CONFIG_HOME/sway/scripts/killbraveaction 'exit'"
-  bindsym r exec "$XDG_CONFIG_HOME/sway/scripts/killbraveaction 'reboot'"
-  bindsym s exec "$XDG_CONFIG_HOME/sway/scripts/killbraveaction 'shutdown'"
+  bindsym l exec "$HOME/.config/sway/scripts/killbraveaction 'exit'"
+  bindsym r exec "$HOME/.config/sway/scripts/killbraveaction 'reboot'"
+  bindsym s exec "$HOME/.config/sway/scripts/killbraveaction 'shutdown'"
   bindsym h exec systemctl hibernate
-  bindsym x exec swaylock -i "$HOME/dotfiles/resources/Laminin.png" default -n -e
+  bindsym x exec swaylock -i "$HOME/dotfiles/resources/Laminin.png" -n -e
   bindsym Escape mode "default"
   bindsym Return mode "default"
 }
@@ -249,8 +249,8 @@ bar {
 
 # initial workspace config setup
 # make sure that wlr portal gets properly loaded
-exec "$XDG_CONFIG_HOME/sway/scripts/session"
-exec_always "$XDG_CONFIG_HOME/sway/scripts/clipboardstart"
+exec "$HOME/.config/sway/scripts/session"
+exec_always "$HOME/.config/sway/scripts/clipboardstart"
 exec swaymsg 'workspace 1; exec kitty "$HOME/dotfiles/bin/starttmux"'
 exec swaymsg 'workspace 2; exec flatpak run com.brave.Browser --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations; sleep 5'
 exec swaymsg 'workspace 2; exec /usr/bin/syncthing'

@@ -45,9 +45,9 @@ function epubmanualfixes() {
   elif [ "$#" -eq 1 ]; then
     epub-lint fix content -f "$1" -a
   elif [ "$#" -eq 2 ]; then
-    epub-lint fix content -f "$1" -a --use-tui
+    epub-lint fix content -f "$1" -a -i
   else
-    epub-lint fix content -f "$1" -a --use-tui --log-file "$3"
+    epub-lint fix content -f "$1" -a -i --log-file "$3"
   fi
 }
 

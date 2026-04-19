@@ -20,7 +20,7 @@
       "latest_volume": "Solo Leveling, Vol. 8 (novel)",
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "C"
     },
     {
       "name": "The Asterisk War",
@@ -32,8 +32,14 @@
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
-      "total_volumes": 24,
-      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 24 (light novel)",
+      "total_volumes": 25,
+      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 25 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Death March to the Parallel World Rhapsody, Vol. 25 (light novel)",
+          "release_date": "September 8, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -58,12 +64,6 @@
       "name": "That Time I Got Reincarnated as a Slime (light novel)",
       "total_volumes": 22,
       "latest_volume": "That Time I Got Reincarnated as a Slime, Vol. 22 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "That Time I Got Reincarnated as a Slime, Vol. 22 (light novel)",
-          "release_date": "February 10, 2026"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -79,8 +79,14 @@
     },
     {
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
-      "total_volumes": 14,
-      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 14 (light novel)",
+      "total_volumes": 15,
+      "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 15 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 15 (light novel)",
+          "release_date": "August 11, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -203,12 +209,12 @@
     },
     {
       "name": "The Irregular at Magic High School",
-      "total_volumes": 26,
-      "latest_volume": "The Irregular at Magic High School, Vol. 26 (light novel)",
+      "total_volumes": 27,
+      "latest_volume": "The Irregular at Magic High School, Vol. 27 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "The Irregular at Magic High School, Vol. 26 (light novel)",
-          "release_date": "February 10, 2026"
+          "name": "The Irregular at Magic High School, Vol. 27 (light novel)",
+          "release_date": "September 8, 2026"
         }
       ],
       "type": "LN",
@@ -217,12 +223,12 @@
     },
     {
       "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 8,
-      "latest_volume": "The Misfit of Demon King Academy, Vol. 7 (light novel)",
+      "total_volumes": 9,
+      "latest_volume": "The Misfit of Demon King Academy, Vol. 8 (light novel)",
       "unreleased_volumes": [
         {
-          "name": "The Misfit of Demon King Academy, Vol. 7 (light novel)",
-          "release_date": "February 10, 2026"
+          "name": "The Misfit of Demon King Academy, Vol. 8 (light novel)",
+          "release_date": "September 8, 2026"
         }
       ],
       "type": "LN",
@@ -249,12 +255,6 @@
       "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (light novel)",
       "total_volumes": 8,
       "latest_volume": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat, Vol. 8 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat, Vol. 8 (light novel)",
-          "release_date": "February 3, 2026"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -291,8 +291,14 @@
     },
     {
       "name": "Seirei Gensouki: Spirit Chronicles",
-      "total_volumes": 26,
-      "latest_volume": "Seirei Gensouki: Spirit Chronicles Volume 26",
+      "total_volumes": 27,
+      "latest_volume": "Seirei Gensouki: Spirit Chronicles Volume 27",
+      "unreleased_volumes": [
+        {
+          "name": "Seirei Gensouki: Spirit Chronicles Volume 27",
+          "release_date": "May 22, 2026"
+        }
+      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -331,16 +337,16 @@
     },
     {
       "name": "Classroom of the Elite (Light Novel)",
-      "total_volumes": 30,
-      "latest_volume": "Classroom of the Elite: Year 3 (Light Novel) Vol. 1",
+      "total_volumes": 31,
+      "latest_volume": "Classroom of the Elite: Year 3 (Light Novel) Vol. 2",
       "unreleased_volumes": [
         {
-          "name": "Classroom of the Elite: Year 3 (Light Novel) Vol. 1",
+          "name": "Classroom of the Elite: Year 3 (Light Novel) Vol. 2",
           "release_date": "May 5, 2026"
         },
         {
-          "name": "Classroom of the Elite: Year 2 (Light Novel) Vol. 12.5",
-          "release_date": "January 6, 2026"
+          "name": "Classroom of the Elite: Year 3 (Light Novel) Vol. 1",
+          "release_date": "April 2, 2026"
         }
       ],
       "type": "LN",
@@ -349,8 +355,8 @@
     },
     {
       "name": "Seraph of the End",
-      "total_volumes": 33,
-      "latest_volume": "Seraph of the End, Vol. 33",
+      "total_volumes": 34,
+      "latest_volume": "Seraph of the End, Vol. 1",
       "type": "MN",
       "publisher": "VizMedia",
       "status": "O"
@@ -412,7 +418,7 @@
         },
         {
           "name": "The Wrong Way to Use Healing Magic Vol. 6",
-          "release_date": "TBA"
+          "release_date": "October 27, 2026"
         }
       ],
       "type": "LN",
@@ -447,19 +453,7 @@
         },
         {
           "name": "Tsukimichi: Moonlit Fantasy Vol. 15",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 14",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 13",
-          "release_date": "TBA"
-        },
-        {
-          "name": "Tsukimichi: Moonlit Fantasy Vol. 12",
-          "release_date": "January 30, 2026"
+          "release_date": "April 30, 2026"
         }
       ],
       "type": "LN",
@@ -470,12 +464,6 @@
       "name": "Black Summoner",
       "total_volumes": 22,
       "latest_volume": "Black Summoner: Volume 22",
-      "unreleased_volumes": [
-        {
-          "name": "Black Summoner: Volume 22",
-          "release_date": "March 20, 2026"
-        }
-      ],
       "type": "LN",
       "publisher": "JNovelClub",
       "status": "O"
@@ -484,12 +472,6 @@
       "name": "Mushoku Tensei: Redundant Reincarnation (Light Novel)",
       "total_volumes": 3,
       "latest_volume": "Mushoku Tensei: Redundant Reincarnation (Light Novel) Vol. 3",
-      "unreleased_volumes": [
-        {
-          "name": "Mushoku Tensei: Redundant Reincarnation (Light Novel) Vol. 3",
-          "release_date": "February 24, 2026"
-        }
-      ],
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
       "status": "O"
@@ -514,12 +496,6 @@
       "name": "Re:ZERO Ex (light novel)",
       "total_volumes": 6,
       "latest_volume": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel): The Battle Hymn of the Sword Devil",
-      "unreleased_volumes": [
-        {
-          "name": "Re:ZERO -Starting Life in Another World- Ex, Vol. 6 (light novel): The Battle Hymn of the Sword Devil",
-          "release_date": "March 10, 2026"
-        }
-      ],
       "slug_override": "reex-light-novel",
       "type": "LN",
       "publisher": "YenPress",
@@ -527,17 +503,32 @@
     },
     {
       "name": "An Archdemon's Dilemma: How to Love Your Elf Bride",
-      "total_volumes": 20,
-      "latest_volume": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 20",
+      "total_volumes": 21,
+      "latest_volume": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 21",
       "unreleased_volumes": [
         {
-          "name": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 20",
-          "release_date": "January 22, 2026"
+          "name": "An Archdemon's Dilemma: How to Love Your Elf Bride: Volume 21",
+          "release_date": "July 2, 2026"
         }
       ],
       "slug_override": "an-archdemon-s-dilemma-how-to-love-your-slave-elf-bride",
       "type": "LN",
       "publisher": "JNovelClub",
+      "status": "O"
+    },
+    {
+      "name": "Re:ZERO -Starting Life in Another World- Short Story Collection",
+      "total_volumes": 5,
+      "latest_volume": "Re:ZERO -Starting Life in Another World- Short Story Collection, Vol. 5 (light novel)",
+      "unreleased_volumes": [
+        {
+          "name": "Re:ZERO -Starting Life in Another World- Short Story Collection, Vol. 5 (light novel)",
+          "release_date": "June 9, 2026"
+        }
+      ],
+      "slug_override": "re-starting-life-in-another-world-short-story-collection",
+      "type": "LN",
+      "publisher": "YenPress",
       "status": "O"
     }
   ]

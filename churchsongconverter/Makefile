@@ -11,11 +11,11 @@ extra:
 dark-html:
 	@$(eval type ?= 'Abridged')
 	@cat ./html/dark.css > ./html/styles.css && cat ./html/common.css >> ./html/styles.css
-	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
+	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html --format $(type)
 html:
 	@$(eval type ?= 'Abridged')
 	@cat ./html/common.css > ./html/styles.css
-	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -v $(type)
+	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html --format $(type)
 book:
 	@$(eval location ?= 'R')
 	@cat ./html/common.css > ./html/styles.css

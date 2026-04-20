@@ -102,7 +102,7 @@ case "$CHOICE" in
 			"editeepub: Edit EPUB"
 			"move:"
 			"organizenotes:"
-      "undo:"
+			"undo:"
 		)
 		UPDATE_CHOICE=$(printf '%s\n' "${UPDATE_OPTIONS[@]}" | fzf --no-mouse --prompt="EPUB Actions> " --height=10 --border --layout=reverse --exit-0 | cut -d: -f1)
 		case "$UPDATE_CHOICE" in
@@ -148,7 +148,7 @@ case "$CHOICE" in
 		organizenotes)
 			organizenotes "$EPUBFILE"
 			;;
-    undo)
+		undo)
 			[ -f "$EPUBFILE.original" ] && mv "$EPUBFILE.original" "$EPUBFILE" && echo "Undid last backed up change"
 			;;
 		*)

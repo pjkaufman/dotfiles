@@ -1,8 +1,8 @@
 ! Title: Hide Porn Content Exceptions
 ! Description: Block content on porn sites that are not blocked at the DNS level to help avoid encountering porn
-! Version: 1.0.5
+! Version: 1.0.6
 ! Expires: 1 day (update frequency)
-! Last modified: 2026-08-07 01:14
+! Last modified: 2026-08-10 01:14
 ! Homepage: https://github.com/pjkaufman/dotfiles
 
 ||toongod.org^
@@ -23,3 +23,4 @@
 ||manhuato.com^
 ||www.manhwaden.com^
 ||www.tinytranslation.xyz^
+||icantreadjapanese.wordpress.com^

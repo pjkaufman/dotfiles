@@ -21,9 +21,9 @@ function enablebright() {
 # optimizeepub helps with compressing epubs so they take up less space
 function optimizeepub() {
   if [ "$#" -eq 0 ]; then
-    epub-lint optimize -i
+    epub-lint optimize -c
   else
-    epub-lint optimize -i -l "$1"
+    epub-lint optimize -c -l "$1"
   fi
 }
 

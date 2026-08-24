@@ -18,8 +18,15 @@ html:
 	@song-converter create html -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html --format $(type)
 book:
 	@$(eval location ?= 'R')
-	@cat ./html/common.css > ./html/styles.css
-	@song-converter create book -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/churchSongsCover.md -o ./html/churchSongs.html -l $(location)
+	@$(eval secondaryLocation ?= '')
+	@$(eval cover ?= 'songsWeLoveCover')
+	@if [ -z "$$(ls "$(HOME)/Notes/Obsidian/Songs/Book/$(location)"/*.md 2>/dev/null)" ]; then \
+		@echo "No file overrides found"; \
+	else \
+		cp "$(HOME)/Notes/Obsidian/Songs/Book/$(location)"/*.md ./stagingGround; \
+	fi
+	@cat ./html/red-book-styles.css > ./html/styles.css
+	@song-converter create book -d ./stagingGround/ -c ~/Notes/Obsidian/Songs/Cover/$(cover).md -o ./html/churchSongs.html -l $(location) --secondary-location $(secondaryLocation)
 pdf:
 	@echo "Creating PDF"
 	weasyprint ./html/churchSongs.html churchSongs.pdf -s ./html/styles.css
@@ -33,11 +40,11 @@ csv:
 red-book:
 	@echo "Creating Songs We Love"
 	@make normal
-	@make book
+	@make book location=R secondaryLocation=MS
 back:
 	@echo "Creating More Songs We Love"
 	@make normal
-	@make book
+	@make book location=MS cover=moreSongsWeLoveCover
 all:
 	@echo "Creating Abridged Songs"
 	@make normal

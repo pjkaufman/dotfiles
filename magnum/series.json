@@ -51,14 +51,6 @@
       "status": "O"
     },
     {
-      "name": "Goblin Slayer (light novel)",
-      "total_volumes": 16,
-      "latest_volume": "Goblin Slayer, Vol. 16 (light novel)",
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
       "name": "Sword Art Online",
       "total_volumes": 29,
       "latest_volume": "Sword Art Online 28 (light novel)",
@@ -95,7 +87,7 @@
       ],
       "type": "LN",
       "publisher": "YenPress",
-      "status": "O"
+      "status": "C"
     },
     {
       "name": "A Certain Magical Index (light novel)",
@@ -144,22 +136,6 @@
       "status": "H"
     },
     {
-      "name": "No Game No Life",
-      "total_volumes": 13,
-      "latest_volume": "No Game No Life Practical War Game",
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
-      "name": "No Game No Life, Please!",
-      "total_volumes": 4,
-      "latest_volume": "No Game No Life, Please!, Vol. 4",
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
       "name": "Overlord",
       "total_volumes": 16,
       "latest_volume": "Overlord, Vol. 16 (light novel): The Half-Elf Demigod Part II",
@@ -182,20 +158,6 @@
       "type": "LN",
       "publisher": "YenPress",
       "status": "C"
-    },
-    {
-      "name": "The Executioner and Her Way of Life",
-      "total_volumes": 11,
-      "latest_volume": "The Executioner and Her Way of Life, Vol. 11: Curtain Call",
-      "unreleased_volumes": [
-        {
-          "name": "The Executioner and Her Way of Life, Vol. 11: Curtain Call",
-          "release_date": "November 10, 2026"
-        }
-      ],
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
     },
     {
       "name": "The Greatest Demon Lord Is Reborn as a Typical Nobody (light novel)",
@@ -228,20 +190,6 @@
       "status": "O"
     },
     {
-      "name": "The Misfit of Demon King Academy (light novel)",
-      "total_volumes": 9,
-      "latest_volume": "The Misfit of Demon King Academy, Vol. 8 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "The Misfit of Demon King Academy, Vol. 8 (light novel)",
-          "release_date": "September 8, 2026"
-        }
-      ],
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
       "name": "The Saga of Tanya the Evil (light novel)",
       "total_volumes": 14,
       "latest_volume": "The Saga of Tanya the Evil, Vol. 14 (light novel)",
@@ -256,14 +204,6 @@
       "type": "LN",
       "publisher": "YenPress",
       "status": "C"
-    },
-    {
-      "name": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat (light novel)",
-      "total_volumes": 8,
-      "latest_volume": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat, Vol. 8 (light novel)",
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
     },
     {
       "name": "High School Prodigies Have It Easy Even in Another World! (light novel)",

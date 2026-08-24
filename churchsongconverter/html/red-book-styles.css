@@ -105,6 +105,15 @@ html {
     font-size: small;
 }
 
+#cover h1 {
+    font-size: 52pt;
+}
+
+.divider {
+    text-align: center;
+    font-size: 2.5em;
+}
+
 p {
     line-height: 1;
     padding-bottom: 2px;

@@ -58,4 +58,12 @@ all:
 	@mv churchSongs.pdf churchSongsUnabridged.pdf
 	@make dark-html type=Unabridged && make pdf
 	@mv churchSongs.pdf churchSongsUnabridgedDark.pdf
+	@echo "Creating Songs We Love"
+	@make normal
+	@make book location=R secondaryLocation=MS && make pdf
+	@mv churchSongs.pdf songsWeLove.pdf
+	@echo "Creating More Songs We Love"
+	@make normal
+	@make book location=MS cover=moreSongsWeLoveCover && make pdf
+	@mv churchSongs.pdf moreSongsWeLove.pdf
 	@echo "Done"

@@ -38,22 +38,18 @@
     },
     {
       "name": "Death March to the Parallel World Rhapsody",
-      "total_volumes": 25,
-      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 25 (light novel)",
+      "total_volumes": 26,
+      "latest_volume": "Death March to the Parallel World Rhapsody, Vol. 26 (light novel)",
       "unreleased_volumes": [
+        {
+          "name": "Death March to the Parallel World Rhapsody, Vol. 26 (light novel)",
+          "release_date": "January 12, 2027"
+        },
         {
           "name": "Death March to the Parallel World Rhapsody, Vol. 25 (light novel)",
           "release_date": "September 8, 2026"
         }
       ],
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
-      "name": "Sword Art Online",
-      "total_volumes": 29,
-      "latest_volume": "Sword Art Online 28 (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -79,12 +75,6 @@
       "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside (light novel)",
       "total_volumes": 15,
       "latest_volume": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 15 (light novel)",
-      "unreleased_volumes": [
-        {
-          "name": "Banished from the Hero's Party, I Decided to Live a Quiet Life in the Countryside, Vol. 15 (light novel)",
-          "release_date": "August 11, 2026"
-        }
-      ],
       "type": "LN",
       "publisher": "YenPress",
       "status": "C"
@@ -99,8 +89,8 @@
     },
     {
       "name": "Is It Wrong to Try to Pick Up Girls in a Dungeon? (light novel)",
-      "total_volumes": 1,
-      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 19 (light novel)",
+      "total_volumes": 20,
+      "latest_volume": "Is It Wrong to Try to Pick Up Girls in a Dungeon?, Vol. 20 (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -115,14 +105,6 @@
           "release_date": "December 8, 2026"
         }
       ],
-      "type": "LN",
-      "publisher": "YenPress",
-      "status": "O"
-    },
-    {
-      "name": "Sword Art Online Progressive",
-      "total_volumes": 9,
-      "latest_volume": "Sword Art Online Progressive 9 (light novel)",
       "type": "LN",
       "publisher": "YenPress",
       "status": "O"
@@ -287,10 +269,6 @@
         {
           "name": "Classroom of the Elite: Year 3 (Light Novel) Vol. 3",
           "release_date": "December 29, 2026"
-        },
-        {
-          "name": "Classroom of the Elite: Year 3 (Light Novel) Vol. 2",
-          "release_date": "August 6, 2026"
         }
       ],
       "type": "LN",
@@ -372,16 +350,12 @@
     },
     {
       "name": "Tsukimichi: Moonlit Fantasy",
-      "total_volumes": 20,
-      "latest_volume": "Tsukimichi - Vol. 19",
+      "total_volumes": 21,
+      "latest_volume": "Tsukimichi - Vol. 20",
       "unreleased_volumes": [
         {
-          "name": "Tsukimichi - Vol. 19",
-          "release_date": "August 30, 2026"
-        },
-        {
-          "name": "Tsukimichi - Vol. 18",
-          "release_date": "July 30, 2026"
+          "name": "Tsukimichi - Vol. 20",
+          "release_date": "September 30, 2026"
         }
       ],
       "slug_override": "tsukimichi",
@@ -473,12 +447,6 @@
       "name": "Venus Mission: I Was an Assassin-for-Hire Who Died, Now I'm Hunting Heroes in Another World (Light Novel)",
       "total_volumes": 2,
       "latest_volume": "Venus Mission: I Was an Assassin-for-Hire Who Died, Now I’m Hunting Heroes in Another World (Light Novel) Vol. 2",
-      "unreleased_volumes": [
-        {
-          "name": "Venus Mission: I Was an Assassin-for-Hire Who Died, Now I’m Hunting Heroes in Another World (Light Novel) Vol. 2",
-          "release_date": "August 13, 2026"
-        }
-      ],
       "slug_override": "venus-mission-i-was-an-assassin-for-hire-who-died-now-im-hunting-heroes-in-another-world-light-novel",
       "type": "LN",
       "publisher": "SevenSeasEntertainment",
@@ -486,12 +454,12 @@
     },
     {
       "name": "Hell Mode",
-      "total_volumes": 12,
-      "latest_volume": "Hell Mode: Volume 12",
+      "total_volumes": 13,
+      "latest_volume": "Hell Mode: Volume 13",
       "unreleased_volumes": [
         {
-          "name": "Hell Mode: Volume 12",
-          "release_date": "August 5, 2026"
+          "name": "Hell Mode: Volume 13",
+          "release_date": "December 30, 2026"
         }
       ],
       "type": "LN",
@@ -502,12 +470,6 @@
       "name": "From Old Country Bumpkin to Master Swordsman: My Hotshot Disciples Are All Grown Up Now, and They Won’t Leave Me Alone",
       "total_volumes": 10,
       "latest_volume": "From Old Country Bumpkin to Master Swordsman: My Hotshot Disciples Are All Grown Up Now, and They Won’t Leave Me Alone Volume 10",
-      "unreleased_volumes": [
-        {
-          "name": "From Old Country Bumpkin to Master Swordsman: My Hotshot Disciples Are All Grown Up Now, and They Won’t Leave Me Alone Volume 10",
-          "release_date": "August 10, 2026"
-        }
-      ],
       "slug_override": "from-old-country-bumpkin-to-master-swordsman-my-hotshot-disciples-are-all-grown-up-now-and-they-won-t-leave-me-alone",
       "type": "LN",
       "publisher": "JNovelClub",

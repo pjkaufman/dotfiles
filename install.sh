@@ -76,7 +76,7 @@ done
 unset header
 
 # remove any no longer needed packages
-sudo apt autoremove -y
+sudo dnf autoremove -y
 
 echo ""
 echo "environment setup complete"

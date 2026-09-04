@@ -33,3 +33,5 @@ ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
 ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
 ensure_folder_symlink_is_in_place "$DOTFILES/environment.d" "$XDG_CONFIG_HOME/environment.d"
 ensure_folder_symlink_is_in_place "$DOTFILES/xdg-desktop-portal" "$XDG_CONFIG_HOME/xdg-desktop-portal"
+ensure_file_symlink_is_in_place_as_sudo "$DOTFILES/ssdm/autologin.conf" "/etc/sddm.conf.d/autologin.conf"
+

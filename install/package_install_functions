@@ -14,29 +14,49 @@ check_if_command_exists_and_run_install_command_otherwise() {
 	fi
 }
 
-# install_apt_package installs an apt package if it does not already exist
-# $1 is the name of the command to verify exists
-# $2 is the actual name of the package to install for the command if the name is different from the command
-install_apt_package() {
-	if [ -z "$2" ]; then
-		check_if_command_exists_and_run_install_command_otherwise "$1" "sudo apt install -y $1"
-	else
-		check_if_command_exists_and_run_install_command_otherwise "$1" "sudo apt install -y $2"
-	fi
+install_missing() {
+    if (($# == 0)); then
+        echo "Usage: install_missing PACKAGE [PACKAGE ...]" >&2
+        return 2
+    fi
+
+    local missing=()
+    local pkg
+
+    for pkg in "$@"; do
+        if rpm -q "$pkg" &>/dev/null; then
+            printf '✓ %s\n' "$pkg"
+        else
+            printf '✗ %s (missing)\n' "$pkg"
+            missing+=("$pkg")
+        fi
+    done
+
+    if ((${#missing[@]} == 0)); then
+        echo "All packages are installed."
+        return 0
+    fi
+
+    echo
+    echo "Installing: ${missing[*]}"
+    sudo dnf install -y "${missing[@]}"
 }
+
 
 # install_flatpak_package installs a flatpak package if the flatpak name is not present
 # in the flatpak list of installed packages
 # $1 is the name of the flatpak to install
 # $2 is the actual package name to install (i.e. the one with all of the periods in it)
 install_flatpak_package() {
-	grep_output=$(flatpak list | grep "$2")
-	if [ -z "$grep_output" ]; then
-		echo "installing $1"
-		flatpak install --user "$2"
-	else
-		echo "$1 is already installed"
-	fi
+    local name="$1"
+    local app_id="$2"
+
+    if flatpak list --app | grep -qF "$app_id"; then
+        echo "$name is already installed"
+    else
+        echo "Installing $name..."
+        flatpak install -y flathub "$app_id"
+    fi
 }
 
 # install_apt_package_by_package_name_only makes sure that the provided package name

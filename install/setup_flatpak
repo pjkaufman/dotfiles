@@ -30,14 +30,43 @@ function setup_obsidian_settings() {
 
 	if [ ! "$(xdg-mime query default x-scheme-handler/obsidian)" == "$desktop_file" ]; then
 		xdg-mime default "$desktop_file" x-scheme-handler/obsidian
-		update-desktop-database
+		update-desktop-database "$HOME/.local/share/applications"
 	fi
 }
+
+function setup_brave_settings() {
+  xdg-settings get default-web-browser
+  xdg-mime query default x-scheme-handler/http
+  xdg-mime query default x-scheme-handler/https
+}
+
+setup_flathub() {
+    echo "Checking Flathub connectivity..."
+
+    if flatpak remotes --columns=name,url | grep -q '^flathub[[:space:]]'; then
+        if flatpak remote-info flathub org.freedesktop.Platform >/dev/null 2>&1; then
+            echo "Flathub is already configured and reachable."
+            return 0
+        fi
+
+        echo "Flathub is configured but not reachable."
+    else
+        echo "Flathub is not configured."
+    fi
+
+    echo "Setting up Flathub..."
+    flatpak remote-add --if-not-exists \
+        flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    echo "Flathub is configured."
+}
+
 
 if ! command -v flatpak &>/dev/null; then
 	echo "Flatpak not installed. Please install it."
 	return
 else
+	setup_flathub
 	install_flatpak_package "Brave Browser" "com.brave.Browser"
 	install_flatpak_package "Minecraft" "com.mojang.Minecraft"
 	install_flatpak_package "GnuCash" "org.gnucash.GnuCash"
@@ -48,8 +77,9 @@ fi
 setup_gnucash_settings
 setup_calibre_settings
 setup_obsidian_settings
+setup_brave_settings
 
 sudo flatpak override --filesystem="$HOME/.themes" --filesystem="$XDG_CONFIG_HOME/gtk-3.0" --env=GTK_THEME="$GTK_THEME"
-sudo flatpak override --user --socket=wayland
+flatpak override --user --socket=wayland
 # sudo flatpak override --env=XDG_CURRENT_DESKTOP="$XDG_CURRENT_DESKTOP"
 # sudo flatpak override --env=QT_QPA_PLATFORM=wayland # this currently does not seem to work

@@ -26,7 +26,7 @@ export NODE_VERSION=18.0
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 
 # Golang
-export GO_VERSION=1.24.12
+export GO_VERSION=1.26.8
 # Note: if GOPATH changes, please update the values in environment.d/sway.conf
 export GOPATH="$XDG_DATA_HOME"/go
 
@@ -46,8 +46,7 @@ export PROMPT_COMMAND='history -a; printf "\n";'
 
 # sets the place where scripts should send their downloads
 export DOWNLOADS="$HOME"/Downloads
-export DOCOUMENTS="$HOME"/Documents
-export EBOOKS="$DOCOUMENTS"/EBooks
+export EBOOKS="$HOME"/EBooks
 
 # gtk theme
 export GTK_THEME='Catppuccin-Mocha-Standard-Blue-Dark'
@@ -184,6 +183,8 @@ if [ "$color_prompt" = yes ]; then
 else
 	PS1="\w\$(__git_ps1_windows_mount ' (%s)')$ "
 fi
+
+_source_if /usr/share/git-core/contrib/completion/git-prompt.sh
 
 unset color_prompt force_color_prompt
 

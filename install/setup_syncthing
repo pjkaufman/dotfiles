@@ -6,4 +6,4 @@ if is_work_computer; then
 	return
 fi
 
-add_ppa_and_install_package "syncthing/stable" "syncthing"
+install_missing syncthing

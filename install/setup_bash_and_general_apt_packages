@@ -2,33 +2,26 @@
 
 # setup the bash and terminal related files
 
-declare -A bash_related_file_sylink_info=(
+declare -A bash_related_file_symlink_info=(
 	["$HOME/dotfiles/bash/bashrc"]="$HOME/.bashrc"
 	["$HOME/dotfiles/bash/hushlogin"]="$HOME/.hushlogin" # make sure that certain logs are not shown on startup
 )
 
-for file in "${!bash_related_file_sylink_info[@]}"; do ensure_file_symlink_is_in_place "$file" "${bash_related_file_sylink_info[$file]}"; done
+for file in "${!bash_related_file_symlink_info[@]}"; do
+	ensure_file_symlink_is_in_place "$file" "${bash_related_file_symlink_info[$file]}"
+done
 
-declare -A apt_packages_to_install=(
-	["grep"]="grep"
-	["curl"]="curl"
-	["fzf"]="fzf"   # fuzzy finder for the terminal
-	["btop"]="btop" # linux task manager
-	["python3"]="python3"
-	["pip3"]="python3-pip"      # python 3 package installer
-	["pipx"]="pipx"             # python 3 package installer
-	["rename"]="rename"         # easier renaming of files
-	["shellcheck"]="shellcheck" # bash warnings around potential issues
-	["batcat"]="bat"            # colorized cat
-)
+# Install packages
+install_missing grep curl fzf btop python3 python3-pip rename ShellCheck bat just make
+
+# Install personal packages on personal computers
+if ! is_work_computer; then
+	install_missing imgp evince               # pdf editor and viewer
+fi
 
 # alias batcat to bat for easier use
 batAliasPath="/usr/bin/batcat"
-[ ! -f "$batAliasPath" ] && mkdir -p "$HOME/.local/bin" && ln -s "$batAliasPath" "$HOME/.local/bin/bat"
-
-for pkg in "${!apt_packages_to_install[@]}"; do install_apt_package "$pkg" "${apt_packages_to_install[$pkg]}"; done
-
-pip_install_package "just" # simpler version of make for the base of my dotfiles
+[ ! -f "$batAliasPath" ] && ensure_file_symlink_is_in_place "$batAliasPath" "$HOME/.local/bin/bat"
 
 # source exports so later on we have all of our env variables ready to go
 # shellcheck source=./bash/bashrc
@@ -46,28 +39,16 @@ ensure_file_symlink_is_in_place "$DOTFILES/bash/inputrc" "$INPUTRC"
 ensure_file_symlink_is_in_place "$DOTFILES/btop/btop.conf" "$XDG_CONFIG_HOME/btop/btop.conf"
 ensure_folder_symlink_is_in_place "$DOTFILES/btop/themes/" "$XDG_CONFIG_HOME/btop/themes"
 
-[ -d "$XDG_CONFIG_HOME/bat" ] || mkdir -p "$XDG_CONFIG_HOME/bat"
-ensure_folder_symlink_is_in_place "$DOTFILES/bat/" "$XDG_CONFIG_HOME/bat"
+bat cache --build
 
-bat cache --build # rebuild the themes cache
-
-# only try to add the remaining packages if on a personal computer
+# only configure personal computer settings on personal computers
 if is_work_computer; then
 	return
 fi
 
-personal_apt_packages_to_install=(
-	"imgp"   # image compression
-	"evince" # pdf editor and viewer
-)
-
-for pkg in "${personal_apt_packages_to_install[@]}"; do install_apt_package "$pkg"; done
-
 # gtk-3.0
 gtk_config_dir="$XDG_CONFIG_HOME/gtk-3.0"
-if [ ! -d "$gtk_config_dir" ]; then
-	mkdir -p "$gtk_config_dir"
-fi
+[ -d "$gtk_config_dir" ] || mkdir -p "$gtk_config_dir"
 
 ensure_file_symlink_is_in_place "$DOTFILES/gtk-3.0/settings.ini" "$gtk_config_dir/settings.ini"
 ensure_folder_symlink_is_in_place "$DOTFILES/gtk-3.0/themes" "$HOME/.themes"

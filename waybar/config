@@ -1,7 +1,7 @@
 {
     // "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 25, // Waybar height (to be removed for auto height)
+    "height": 32, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 0, // Gaps between modules (4px)
     // Choose the order of the modules
@@ -17,12 +17,12 @@
     },
     "cpu": {
         "interval": 3,
-        "format": "{usage}% ",
+        "format": "{usage}% <span font_family='Hack Nerd Font' font_size='13000'></span>",
         "tooltip": false
     },
     "memory": {
         "interval": 60,
-        "format": "{used:0.2f}GB/{total:0.2f}GB ({percentage}%) ",
+        "format": "{used:0.2f}GB/{total:0.2f}GB ({percentage}%) <span font_family='Hack Nerd Font' font_size='13000'></span>",
         "tooltip": false
     },
     "backlight": {
@@ -35,28 +35,27 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% 🔋",
-        "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", ""],
-        "font-family": "Hack Nerd Font"
+        "format": "{capacity}% <span font_family='Hack Nerd Font' font_size='13000'>{icon}</span>",
+        "format-charging": "{capacity}% <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-plugged": "{capacity}% <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-alt": "{time} <span font_family='Hack Nerd Font' font_size='13000'>{icon}</span>",
+        "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        "format-wifi": "{essid} {signalStrength}% ({ipaddr}) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
+        "format-wifi": "{essid} {signalStrength}% ({ipaddr}) <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-ethernet": "{ipaddr}/{cidr} <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "tooltip-format": "{ifname} via {gwaddr} <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-linked": "{ifname} (No IP) <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-disconnected": "Disconnected <span font_family='Hack Nerd Font' font_size='13000'>⚠</span>",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "format": "{volume}% <span font_family='Hack Nerd Font' font_size='13000'>{icon}</span> {format_source}",
+        "format-bluetooth": "{volume}% <span font_family='Hack Nerd Font' font_size='13000'>{icon}</span> {format_source}",
+        "format-bluetooth-muted": "<span font_family='Hack Nerd Font' font_size='13000'> {icon}</span> {format_source}",
+        "format-muted": "<span font_family='Hack Nerd Font' font_size='13000'></span> {format_source}",
+        "format-source": "{volume}% <span font_family='Hack Nerd Font' font_size='13000'></span>",
+        "format-source-muted": "<span font_family='Hack Nerd Font' font_size='13000'></span>",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -77,5 +76,5 @@
         "interval": 15,
         "return-type": "json",                  
         "format": "{} 📷︎ "
-    }
+    },
 }

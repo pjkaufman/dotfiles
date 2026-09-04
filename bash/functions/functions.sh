@@ -18,7 +18,7 @@ function python() {
 }
 
 function update() {
-  sudo apt update -y && sudo apt upgrade && sudo apt autoremove
+  sudo dnf update -y && sudo dnf upgrade && sudo dnf autoremove
   pipx upgrade-all
 
   is_personal_computer && fwupdmgr update

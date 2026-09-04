@@ -9,7 +9,7 @@ fi
 
 ensure_file_symlink_is_in_place "$DOTFILES/tmux/tmux.conf" "$tmux_dir/tmux.conf"
 
-install_apt_package "tmux"
+install_missing tmux
 
 # install package manager for tmux
 tmux_plugin_dir="$XDG_DATA_HOME/tmux/plugins/tpm"

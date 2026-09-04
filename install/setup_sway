@@ -16,18 +16,19 @@ sway_packages_to_install=(
 	"jq"           # json processor for wayshot
 	"grim"         # part of screenshot taking as a part of wayshot
 	"slurp"        # part of screenshot taking as a part of wayshot
+	"pactl"
+	"pulseaudio-utils" # sound changes
+  # make sure wlroots and its portal is installed
+	"xdg-desktop-portal-wlr"
+	"wlroots"
 )
-for pkg in "${sway_packages_to_install[@]}"; do install_apt_package "$pkg"; done
 
-install_apt_package "pactl" "pulseaudio-utils" # sound changes
+install_missing "${sway_packages_to_install[@]}"
 
 # clipboard manager
 go_install_package "go.senan.xyz/cliphist" "cliphist"
 
-# make sure wlroots and its portal is installed
-install_apt_package_by_package_name_only "wlroots"
-install_apt_package_by_package_name_only "xdg-desktop-portal-wlr"
-
+ensure_folder_symlink_is_in_place "$DOTFILES/rofi" "$XDG_CONFIG_HOME/rofi"
 ensure_folder_symlink_is_in_place "$DOTFILES/sway" "$XDG_CONFIG_HOME/sway"
 ensure_folder_symlink_is_in_place "$DOTFILES/waybar" "$XDG_CONFIG_HOME/waybar"
 ensure_folder_symlink_is_in_place "$DOTFILES/environment.d" "$XDG_CONFIG_HOME/environment.d"

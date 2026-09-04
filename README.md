@@ -32,38 +32,38 @@ The current list of programs that need installing and are used are as follows:
 
 | Program Name | Installation Method | Use Case |
 | ------------ | ------------------- | -------- |
-| `grep` | apt | General cli utility for string searching |
-| `curl` | apt | General cli utility for getting webpage content from the cli |
-| `fzf` | apt | Fuzzy finder for the cli |
-| `btop` | apt | Cli task/resource manager |
-| `python3` | apt | Helps with writing some scripts and installing some programs used |
-| `pip3` | apt | Helps get some packages that are not available on in apt and are written in Python |
-| `rename` | apt | Helps rename files using regex from the cli |
-| `bat` | apt | Adds syntax highlighting to cat commands |
-| `imgp` | apt | A nice cli image compressor that I keep around for the time being |
-| `evince` | apt | A nice pdf viewer that can be launched from the cli |
+| `grep` | dnf | General cli utility for string searching |
+| `curl` | dnf | General cli utility for getting webpage content from the cli |
+| `fzf` | dnf | Fuzzy finder for the cli |
+| `btop` | dnf | Cli task/resource manager |
+| `python3` | dnf | Helps with writing some scripts and installing some programs used |
+| `pip3` | dnf | Helps get some packages that are not available on in dnf and are written in Python |
+| `rename` | dnf | Helps rename files using regex from the cli |
+| `bat` | dnf | Adds syntax highlighting to cat commands |
+| `imgp` | dnf | A nice cli image compressor that I keep around for the time being |
+| `evince` | dnf | A nice pdf viewer that can be launched from the cli |
 | `Brave` | flatpak | A chromium based browser |
 | `Minecraft` | flatpak | Minecraft game |
 | `GnuCash` | flatpak | A local way to do budgeting and track expenses |
 | `Calibre` | flatpak | An all in one ebook editor, viewer, and library |
 | `Obsidian` | flatpak | A good local first not taking app that is very extendable and a scratchpad for Spanish writing |
-| `git` | PPA | Cli program for interacting with git repos |
-| `openssh-server` | apt | Program for doing ssh key generation use for git authentication |
+| `git` | dnf | Cli program for interacting with git repos |
+| `openssh-server` | dnf | Program for doing ssh key generation use for git authentication |
 | `go` | script | Golang is a great program for developing scripts and programs that are more performant |
-| `light` | apt | Program for handing brightness changes |
-| `pulseaudio-utils` | apt | Program for updating sound settings |
-| `kitty` | apt | Default terminal |
+| `light` | dnf | Program for handing brightness changes |
+| `pulseaudio-utils` | dnf | Program for updating sound settings |
+| `kitty` | dnf | Default terminal |
 | `goimports` | Golang | A Golang file modifier that adds missing imports where possible |
 | `dlv` | Golang | A Golang debugger server |
 | `eslint` | NPM | A JS/TS file formatter/linter |
 | `stylua` | Cargo | A Lua file formatter/linter |
 | `nvm` | script | A file for managing node versions |
-| `rkhunter` | apt | A virus scanner and security checker for Linux |
-| `syncthing` | PPA | Program for syncing local files across devices more easily than would otherwise be possible |
-| `tmux` | apt | Program for easier session management in the cli |
+| `rkhunter` | dnf | A virus scanner and security checker for Linux |
+| `syncthing` | dnf | Program for syncing local files across devices more easily than would otherwise be possible |
+| `tmux` | dnf | Program for easier session management in the cli |
 | `tpm` | script | Plugin manager for tmux |
-| `weasyprint` | apt | Convert html to pdf |
-| `pandoc` | apt | Document converter |
+| `weasyprint` | dnf | Convert html to pdf |
+| `pandoc` | dnf | Document converter |
 
 ## Known Issues
 

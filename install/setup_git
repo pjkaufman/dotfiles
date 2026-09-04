@@ -2,10 +2,9 @@
 
 # based loosely on https://github.com/miguelgfierro/scripts/blob/main/git_configure.sh
 
-add_ppa_and_install_package "git-core/ppa" "git"
-
 # ssh client for github
-install_apt_package "ssh-keygen" "openssh-server"
+install_missing openssh-server git
+
 
 mkdir -p "$XDG_CONFIG_HOME/git"
 
